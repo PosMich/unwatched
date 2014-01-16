@@ -48,6 +48,7 @@ server.set "view options",
 server.set "views", process.cwd() + "/views"
 # Add Connect Assets.
 server.use assets
+  # [bugifx](https://github.com/adunkman/connect-assets/issues/221)
   helperContext: server.locals
   buildDir: "public"
 
