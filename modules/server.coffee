@@ -40,7 +40,7 @@ server.configure "production", "development", "testing", ->
 # ---
 # ## View initialization
 server.use express.logger("dev")
-# Set the view engine to ejs
+# Set the view engine to jade
 server.set "view engine", "jade"
 server.set "view options",
   layout: false
@@ -50,6 +50,8 @@ server.set "views", process.cwd() + "/views"
 server.use assets
   helperContext: server.locals
   buildDir: "public"
+# Render human readable html
+server.locals.pretty = true
 
 
 # Compress responses
@@ -59,6 +61,7 @@ server.use partials()
 # Add Session Cookie
 server.use express.cookieParser()
 # Enable Sessions
+
 
 server.use express.session(
   "secret": config.sessionSecret

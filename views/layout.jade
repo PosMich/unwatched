@@ -2,9 +2,95 @@ doctype html
 html
   head
     title #{title} - My Site
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(charset="utf-8")
     != css("app")
-  body
-    header
-      h1 My Site
-    footer
-      p Running on node with Express, Jade and Stylus
+  body(ng-app="app")
+    div(class="navbar navbar-default navbar-fixed-top")
+      .container
+        .navbar-header
+          a(href="#" class="navbar-brand") Unwatched
+          button(class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main")
+            span(class="icon-bar")
+            span(class="icon-bar")
+            span(class="icon-bar")
+        #navbar-main.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li
+              a(href="#") Menu 1
+            li
+              a(href="#") Menu 2
+            li
+              a(href="#") Menu 3
+
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href="http://expressjs.com/" target="_blank") Express
+            li
+              a(href="http://jade-lang.com/" target="_blank") Jade
+            li
+              a(href="http://learnboost.github.io/stylus/" target="_blank") Stylus
+              
+    .container
+      #banner.page-header
+        .row
+          .col-lg-6
+            h1 Cyborg
+            p.lead Jet black and electric blue
+          .col-lg-6
+            
+
+      .bs-docs-section
+        .row
+          .col-lg-12
+            .page-header
+              h1#type Typography
+        .row
+          .col-lg-4
+            .bs-example.bs-example-type
+              h1 Heading 1
+              h2 Heading 2
+              h3 Heading 3
+              h4 Heading 4
+              h5 Heading 5
+              h6 Heading 6
+            .bs-example
+              p.leadVivamus.
+                sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+          .col-lg-4
+            .bs-example
+              h2 Example body text
+              p
+                | Nullam quis risus eget
+                | <a href="#">urna mollis ornare</a>
+                | vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, 
+                | nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula.
+              p <small>This line of text is meant to be treated as fine print.</small>
+              p The following snippet of text is <strong>rendered as bold text</strong>.
+              p The following snippet of text is <em>rendered as italicized text</em>.
+              p An abbreviation of the word attribute is <abbr title="attribute">attr</abbr>.
+
+          .col-lg-4
+            h2 Emphasis classes
+            .bs-example
+              .text-muted Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.
+              .text-primary Nullam id dolor id nibh ultricies vehicula ut id elit.
+              .text-warning Etiam porta sem malesuada magna mollis euismod.
+              .text-danger Donec ullamcorper nulla non metus auctor fringilla.
+              .text-success Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+              .text-info Maecenas sed diam eget risus varius blandit sit amet non magna.
+
+        .row
+          .col-lg-12
+            h2#type-blockquotes Blockquotes
+        .row
+          .col-lg-6
+            blockquote
+              p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+              p Someone famous in <cite title="Source Title">Source Title</cite></small>
+          .col-lg-6
+            blockquote.pull-right
+              p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
+              small Someone famous in <cite title="Source Title">Source Title</cite>
+
+    != js("app")
