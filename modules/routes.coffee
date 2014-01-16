@@ -18,7 +18,6 @@ exports.route = (app) ->
     debug.info "send index"
     res.render "layout.jade"
 
-
   # ***
   # ### GET/POST/PUT/DELETE `/*`
   # > Not Found

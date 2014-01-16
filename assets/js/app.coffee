@@ -1,10 +1,13 @@
 # # Dependencies
 # ## [xxx](http://xxx.com/)
 
-# = require lib/jquery-2.0.3.min.js
-# = require lib/bootstrap.min.js
-# = require lib/angular.min.js
-# = require lib/angular-route.min.js
+# ## [jQuery](http://jquery.com/download/)
+# = require lib/jquery-2.0.3.js
+# ## [Bootstrap](http://getbootstrap.com/)
+# = require lib/bootstrap.js
+# ## [AngularJS](http://angularjs.org/)
+# = require lib/angular.js
+# = require lib/angular-route.js
 
 # # Here we go!
 
