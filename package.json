@@ -21,7 +21,8 @@
     "express-partials": "latest",
     "async": "latest",
     "jade": "latest",
-    "walk": "latest"
+    "walk": "latest",
+    "nib": "latest"
   },
   "devDependencies": {
     "coffee-script": "latest",
