@@ -40,8 +40,18 @@ server.configure "production", "development", "testing", ->
 # ---
 # ## View initialization
 server.use express.logger("dev")
+# Set the view engine to ejs
+server.set "view engine", "jade"
+server.set "view options",
+  layout: false
+# Set ***views*** directory
+server.set "views", process.cwd() + "/views"
 # Add Connect Assets.
-server.use assets()
+server.use assets
+  helperContext: server.locals
+  buildDir: "public"
+
+
 # Compress responses
 server.use express.compress()
 # Add Partials
@@ -74,13 +84,7 @@ server.use (req, res, next) ->
 
   next()
 
-# Set the view engine to ejs
-server.set "view engine", "jade"
-server.set "view options",
-  layout: false
 
-# Set ***views*** directory
-server.set "views", process.cwd() + "/views"
 
 # [Body parser middleware or better known as the random link, everyone needs](http://www.senchalabs.org/connect/middleware-bodyParser.html) parses JSON or XML bodies into `req.body` object
 # force UploadDir to be /tmp
