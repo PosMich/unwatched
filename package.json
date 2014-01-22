@@ -22,7 +22,9 @@
     "async": "~0.2.9",
     "jade": "latest",
     "walk": "latest",
-    "nib": "latest"
+    "nib": "latest",
+    "karma": "latest",
+    "karma-ng-scenario": "~0.1.0"
   },
   "devDependencies": {
     "coffee-script": "latest",

@@ -5,11 +5,11 @@ html
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(charset="utf-8")
     != css("app")
-  body(ng-app="app")
-    .navbar.navbar-default.navbar-fixed-top
+  body(ng-app="unwatched")
+    .navbar.navbar-default.navbar-fixed-topop")
       .container
         .navbar-header
-          a(href="#" class="navbar-brand") Unwatched
+          a#navbar-brand(href="#" class="navbar-brand") Unwatched
           button(class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main")
             span(class="icon-bar")
             span(class="icon-bar")
@@ -952,9 +952,4 @@ html
                 | . Favicon by
                 a(href='https://twitter.com/geraldhiller') Gerald Hiller
                 | .
-
-
-
-
-
   != js("app")
