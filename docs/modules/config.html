@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="en"><head><title>modules/config</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="modules/config"><meta name="groc-project-path" content="modules/config.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">modules/config.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h3 id="user-config">User Config</h3>
+
+<p>The userconfig file <em>must not be in your repository</em> cause it contains
+sensible data like database login data or user specific settings
+(e.g. local databse).</p></div></div><div class="code"><div class="wrapper"><span class="nv">userconfig = </span><span class="nx">require</span> <span class="s">&quot;../userconfig&quot;</span>
+
+<span class="nv">config = </span><span class="p">{}</span>
+
+<span class="nv">config.sessionSecret = </span><span class="nx">userconfig</span><span class="p">.</span><span class="nx">sessionSecret</span>
+<span class="nv">config.appName       = </span><span class="nx">userconfig</span><span class="p">.</span><span class="nx">appName</span>
+
+<span class="nv">config.DEBUG_LOG = </span><span class="kc">true</span>
+<span class="nv">config.DEBUG_WARN = </span><span class="kc">true</span>
+<span class="nv">config.DEBUG_ERROR = </span><span class="kc">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="config-file">Config file</h3>
+
+<p>Sets application config parameters depending on <code>env</code> name</p></div></div><div class="code"><div class="wrapper"><span class="nv">config.setEnvironment = </span><span class="nf">(env) -&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set app environment: </span><span class="si">#{</span><span class="nx">env</span><span class="si">}</span><span class="s">&quot;</span>
+
+  <span class="k">switch</span><span class="p">(</span><span class="nx">env</span><span class="p">)</span>
+    <span class="k">when</span> <span class="s">&quot;development&quot;</span>
+      <span class="nv">config.DEBUG_LOG = </span><span class="kc">true</span>
+      <span class="nv">config.DEBUG_WARN = </span><span class="kc">true</span>
+      <span class="nv">config.DEBUG_ERROR = </span><span class="kc">true</span>
+
+    <span class="k">when</span> <span class="s">&quot;testing&quot;</span>
+      <span class="nv">config.DEBUG_LOG = </span><span class="kc">true</span>
+      <span class="nv">config.DEBUG_WARN = </span><span class="kc">true</span>
+      <span class="nv">config.DEBUG_ERROR = </span><span class="kc">true</span>
+
+    <span class="k">when</span> <span class="s">&quot;production&quot;</span>
+      <span class="nv">config.DEBUG_LOG = </span><span class="kc">false</span>
+      <span class="nv">config.DEBUG_WARN = </span><span class="kc">false</span>
+      <span class="nv">config.DEBUG_ERROR = </span><span class="kc">true</span>
+
+    <span class="k">else</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;environment </span><span class="si">#{</span><span class="nx">env</span><span class="si">}</span><span class="s"> not found&quot;</span>
+
+<span class="nv">module.exports = </span><span class="nx">config</span></div></div></div></div></body></html>

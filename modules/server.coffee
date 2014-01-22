@@ -31,9 +31,11 @@ process.on "uncaughtException", (err) ->
 server = express()
 
 # Define Port
-server.port = process.env.PORT or process.env.VMC_APP_PORT or config.PORT or 3000
+server.port =
+  process.env.PORT or process.env.VMC_APP_PORT or config.PORT or 3000
 
-# Config module exports has `setEnvironment` function that sets server settings depending on environment.
+# Config module exports has `setEnvironment` function that sets server settings
+# depending on environment.
 server.configure "production", "development", "testing", ->
   config.setEnvironment server.settings.env
 
@@ -75,7 +77,7 @@ server.use express.session(
 server.use express.static(process.cwd() + "/public")
 
 # Set the favicon
-server.use express.favicon( process.cwd()+"public/favicon.ico")
+server.use express.favicon( process.cwd() + "public/favicon.ico")
 
 
 # ---
@@ -90,7 +92,9 @@ server.use (req, res, next) ->
 
 
 
-# [Body parser middleware or better known as the random link, everyone needs](http://www.senchalabs.org/connect/middleware-bodyParser.html) parses JSON or XML bodies into `req.body` object
+# [Body parser middleware or better known as the random link, everyone needs]
+# (http://www.senchalabs.org/connect/middleware-bodyParser.html)
+# parses JSON or XML bodies into `req.body` object
 # force UploadDir to be /tmp
 #server.use express.bodyParser <-- causing a problem!!!
 

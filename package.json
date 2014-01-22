@@ -19,7 +19,7 @@
     "wrench": "latest",
     "sty": "latest",
     "express-partials": "latest",
-    "async": "latest",
+    "async": "~0.2.9",
     "jade": "latest",
     "walk": "latest",
     "nib": "latest"
