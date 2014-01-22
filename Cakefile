@@ -5,102 +5,29 @@ which         = require "which"
 {spawn, exec} = require "child_process"
 pty           = require "pty.js"
 linter        = require "coffeelint"
-lintConfig    =
-  "coffeescript_error":
-    "level": "error"
-  "arrow_spacing":
-    "name": "arrow_spacing",
-    "level": "warn"
-  "no_tabs":
-    "name": "no_tabs",
-    "level": "error"
-  "no_trailing_whitespace":
-    "name": "no_trailing_whitespace",
-    "level": "warn",
-    "allowed_in_comments": false,
-    "allowed_in_empty_lines": true
-  "max_line_length":
-    "name": "max_line_length",
-    "value": 80,
-    "level": "warn",
-    "limitComments": true
-  "line_endings":
-    "name": "line_endings",
-    "level": "ignore",
-    "value": "unix"
-  "no_trailing_semicolons":
-    "name": "no_trailing_semicolons",
-    "level": "error"
-  "indentation":
-    "name": "indentation",
-    "value": 2,
-    "level": "error"
-  "camel_case_classes":
-    "name": "camel_case_classes",
-    "level": "error"
-  "colon_assignment_spacing":
-    "name": "colon_assignment_spacing",
-    "level": "warn",
-    "spacing":
-      "left": 0,
-      "right": 1
-  "no_implicit_braces":
-    "name": "no_implicit_braces",
-    "level": "ignore",
-    "strict": true
-  "no_plusplus":
-    "name": "no_plusplus",
-    "level": "ignore"
-  "no_throwing_strings":
-    "name": "no_throwing_strings",
-    "level": "error"
-  "no_backticks":
-    "name": "no_backticks",
-    "level": "error"
-  "no_implicit_parens":
-    "name": "no_implicit_parens",
-    "level": "ignore"
-  "no_empty_param_list":
-    "name": "no_empty_param_list",
-    "level": "warn"
-  "no_stand_alone_at":
-    "name": "no_stand_alone_at",
-    "level": "ignore"
-  "space_operators":
-    "name": "space_operators",
-    "level": "warn"
-  "duplicate_key":
-    "name": "duplicate_key",
-    "level": "error"
-  "empty_constructor_needs_parens":
-    "name": "empty_constructor_needs_parens",
-    "level": "ignore"
-  "cyclomatic_complexity":
-    "name": "cyclomatic_complexity",
-    "value": 10,
-    "level": "ignore"
-  "newlines_after_classes":
-    "name": "newlines_after_classes",
-    "value": 3,
-    "level": "ignore"
-  "no_unnecessary_fat_arrows":
-    "name": "no_unnecessary_fat_arrows",
-    "level": "warn"
-  "missing_fat_arrows":
-    "name": "missing_fat_arrows",
-    "level": "ignore"
-  "non_empty_constructor_needs_parens":
-    "name": "non_empty_constructor_needs_parens",
-    "level": "ignore"
+async         = require "async"
 
+lintConfig    = require "./coffeelint.json"
 
 
 {error, warn, info, infoSuccess, infoFail} = require "./modules/debug"
 
 debug_port    = 8989
+dirs          =
+  "coffee": [
+    "./modules"
+    "./assets/js"
+  ],
+  "styl": [
+    "./assets/css"
+  ],
+  "views": [
+    "./views"
+  ]
+
+
 
 # ANSI Terminal Colors
-
 bold           = "\x1B[0;1m"
 reset          = "\x1B[0;m"
 
@@ -125,81 +52,160 @@ bright_cyan    = "\x1B[0;1;36m"
 gray           = "\x1B[1;30m"
 bright_gray    = "\x1B[0;0;37m"
 
+good = "✓"
+warning = "⚡"
+bad = "✗"
+
+
 # ---
 # print unused exceptions
-process.on "uncaughtException", (err) ->
-  console.log "OMG :-S"
-  console.log "caught 'uncaught' exception: " + err
+process.on "uncaughtException", ( err ) ->
+  error "OMG :-S"
+  error "caught 'uncaught' exception: " + err
 
 
-pkg = JSON.parse fs.readFileSync("./package.json")
-startCmd = pkg.scripts.start
-
-
-log = (message, color, explanation) ->
+# ---
+# simple log function
+log = ( message, color, explanation ) ->
   console.log color + message + reset + " " + (explanation or "")
 
+# ---
+# #getCoffeeFiles()
+# >get all CoffeeScript Files
+getCoffeeFiles = ->
+  coffeeFiles = []
 
-build = (successCallback, failCallback) ->
+  for dir in dirs.coffee
+    for file in wrench.readdirSyncRecursive dir when /\.coffee$/.test file
+      coffeeFiles.push "#{dir}/#{file}"
+
+  return coffeeFiles
+
+
+# ---
+# #build( successCallback, failCallback )
+# >build CoffeeScript Files into .app directory
+build = ( callback ) ->
   log "cooking coffee ...", blue
-  options = ["-c","-b", "-o", ".app", "modules"]
+
+  options = ["-c","-b", "-o", ".app"].concat dirs.coffee
+
   cmd = which.sync "coffee"
+
   coffee = spawn cmd, options
   coffee.stdout.pipe process.stdout
   coffee.stderr.pipe process.stderr
-  coffee.on "exit", (status) ->
+
+  coffee.on "exit", ( status ) ->
     if status is 0
       log "Coffee is ready, enjoy it!", green
-      successCallback()
+      callback null
     else
       log "Wasn't able to cook coffee: ", red
-      failCallback?( status)
-
-lint = (source, successCallback, failCallback) ->
-  log "linting files ...", magenta
-  result = linter.lint " asdf = -> a+a", lintConfig
-  console.log result
+      callback status
 
 
-  successCallback()
+# ---
+# #lintSingleFile( data, config, callback )
+# >lint a single File, return result
+lintSingleFile = ( data, config, callback ) ->
+  results = linter.lint data, config
 
-#
-# Compiles app.coffee and src directory to the .app directory
-#
+  if results.length > 0
+    for result in results
+      if result.level is "warn"
+        console.log """
+          \t#{magenta}#{result.lineNumber}:#{reset} #{cyan}#{result.message}#{reset}
+        """
+      else if result.level is "error"
+        console.log """
+          \t#{magenta}#{result.lineNumber}:#{reset} #{red}#{result.message}#{reset}
+        """
+    callback results
+  else
+    callback null
+
+
+
+# ---
+# #lint( callback )
+# >lint all coffee files
+lint = ( callback ) ->
+  coffeeFiles = getCoffeeFiles()
+
+  lintFuncs = []
+
+  for file in coffeeFiles
+    do (file) ->
+      lintFuncs.push (cbInner) ->
+        console.log """
+          #{cyan}linting... #{reset}#{gray}#{file}
+        """
+        fs.readFile file, (err, data) ->
+          cbInner(err) if err
+          lintSingleFile data.toString(), lintConfig, (result) ->
+            cbInner null, result
+
+
+  #then lint each file
+  async.series lintFuncs, (err, result) ->
+    # warnings, errors
+    warnings = 0
+    errors   = 0
+    for lint_result in result
+      continue if lint_result is undefined or lint_result is null
+      for single_result in lint_result
+        warnings +=1 if single_result.level is "warn"
+        errors   +=1 if single_result.level is "error"
+    callback
+      "warnings": warnings
+      "errors":   errors
+
+
+# ---
+# #Task _build_
+# >Compiles app.coffee and src directory to the .app directory
 task "build"
 , "compiles coffeescript files to javascript into the .app directory", ->
-  build(
-    # build was successful
-    -> log ":)", green
-  ,
-    # build failed
-    (err) -> log err + " :(", red
-  )
 
-task "t", ->
-  lint "'./modules/debug.coffee'", ->
-    console.log "finished"
+  log "linting files ...", blue
+  lint (result) ->
+    if result.errors > 0 or result.warnings > 0
+      console.log """
+        \n\rresult:
+        \t#{cyan}#{result.warnings} warnings#{reset}, #{red}
+        \t#{result.errors} errors
 
+      """
+      log "the coffee beans look like mud :(\n\r", red
+    else
+      log "this coffee beans are high quality shit :)\n\r", green
+
+      build(
+        # build was successful
+        ->
+          log ":)", green
+        ,
+        # build failed
+        (err) -> log err + " :(", red
+      )
+
+# ---
+# #Task _lint_
+# >lints all CoffeeScript files
 task "lint", "lints all coffeescript files", ->
-  try
-    cmd = which.sync "coffeelint"
+  log "linting files ...", blue
+  lint (result)->
+    console.log """
+      \n\rresult:
+      \t#{cyan}#{result.warnings} warnings#{reset},
+      \t#{red}#{result.errors} errors
+    """
 
-    files = [
-      "./modules/"
-      "./assets/js"
-    ]
 
-    linter = spawn cmd, files
-    linter.stdout.pipe process.stdout
-    linter.stderr.pipe process.stderr
-
-    linter.on "exit", (status) -> callback?() if status is 0
-  catch err
-    log err.message, red
-    log "coffeelint is not installed - try npm install -g coffeelint", red
-#
-# generates annotated source code with Docco and move it to public dir
-#
+# ---
+# #Task _docs_
+# >generates annotated source code with Docco and move it to public dir
 task "docs"
 , "generates annotated source code with Docco and move it to public dir", ->
   build(
@@ -208,33 +214,19 @@ task "docs"
       # build was successful
       log ":)", green
 
+      coffeeFiles = getCoffeeFiles()
 
-      # read in all coffee files from the "modules" directory
-      moduleFiles = wrench.readdirSyncRecursive "modules"
-      moduleFiles = (
-        "modules/#{file}" for file in moduleFiles when /\.coffee$/.test file
-      )
+      log "Coffee Files: ", bright_blue
+      log "\t" + file, bright_green for file in coffeeFiles
 
-      appFiles = wrench.readdirSyncRecursive "assets/js"
-      appFiles = (
-        "assets/js/#{file}" for file in appFiles when /\.coffee$/.test file
-      )
-
-      log "Module Files: ", blue
-      log "\t" + file, green for file in moduleFiles
-      log "Asset Files: ", bright_blue
-      log "\t" + file, bright_green for file in appFiles
-
-      files = moduleFiles.concat appFiles
-
-      files.push "README.md"
-      files.push "--out"
-      files.push "./docs"
+      coffeeFiles.push "README.md"
+      coffeeFiles.push "--out"
+      coffeeFiles.push "./docs"
 
       # generate docs
       try
         cmd = which.sync "groc"
-        groc = spawn cmd, files
+        groc = spawn cmd, coffeeFiles
 
         # pipe stdout & stderr to process
         groc.stdout.pipe process.stdout
@@ -252,7 +244,7 @@ task "docs"
 #
 # watches coffee, js and html files
 #
-task "dev", "run 'build' task, start dev env", (options, cb) ->
+task "dev", "run 'build' task, start dev env", ( options ) ->
   build(
     ->
       # build was successful
@@ -287,7 +279,7 @@ task "dev", "run 'build' task, start dev env", (options, cb) ->
 #
 # watches coffee, js and html files and starts the node inspector
 #
-task "debug", "run 'build' task, start debug env", (options, cb) ->
+task "debug", "run 'build' task, start debug env", ( options ) ->
   build(
     ->
       # build was successful
@@ -330,7 +322,7 @@ task "debug", "run 'build' task, start debug env", (options, cb) ->
 #
 # runs the production environment
 #
-task "run", "run 'build' task, start production env", (options, cb) ->
+task "run", "run 'build' task, start production env", ( options ) ->
   build(
     ->
       # build was successful

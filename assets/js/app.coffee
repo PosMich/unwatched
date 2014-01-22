@@ -2,12 +2,12 @@
 # ## [xxx](http://xxx.com/)
 
 # ## [jQuery](http://jquery.com/download/)
-# = require lib/jquery-2.0.3.js
+#= require lib/jquery-2.0.3.js
 # ## [Bootstrap](http://getbootstrap.com/)
-# = require lib/bootstrap.js
+#= require lib/bootstrap.js
 # ## [AngularJS](http://angularjs.org/)
-# = require lib/angular.js
-# = require lib/angular-route.js
+#= require lib/angular.js
+#= require lib/angular-route.js
 
 # # Here we go!
 

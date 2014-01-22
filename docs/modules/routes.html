@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="en"><head><title>modules/routes</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="modules/routes"><meta name="groc-project-path" content="modules/routes.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">modules/routes.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="rest-interface-route-definitions">REST Interface Route Definitions</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nv">debug  = </span><span class="nx">require</span> <span class="s">&quot;./debug&quot;</span>
+<span class="nv">config = </span><span class="nx">require</span> <span class="s">&quot;./config&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="route-definitions">Route Definitions</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="nv">exports.route = </span><span class="nf">(app) -&gt;</span>
+
+  <span class="nx">debug</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;routes&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<h3 id="get">GET <code>/</code></h3>
+
+<blockquote>
+  <p>serve Angular App</p>
+</blockquote></div></div><div class="code"><div class="wrapper">  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="nf">(req, res) -&gt;</span>
+    <span class="nx">debug</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;send index&quot;</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span> <span class="s">&quot;layout2.jade&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<h3 id="getpostputdelete">GET/POST/PUT/DELETE <code>/*</code></h3>
+
+<blockquote>
+  <p>Not Found</p>
+</blockquote></div></div><div class="code"><div class="wrapper">  <span class="nx">app</span><span class="p">.</span><span class="nx">all</span> <span class="s">&quot;/*&quot;</span><span class="p">,</span> <span class="nf">(req, res) -&gt;</span>
+    <span class="nx">debug</span><span class="p">.</span><span class="nx">warn</span> <span class="s">&quot;Error 404, not found &quot;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">url</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">render</span> <span class="s">&quot;404.jade&quot;</span></div></div></div></div></body></html>

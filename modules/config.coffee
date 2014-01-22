@@ -7,13 +7,16 @@ userconfig = require "../userconfig"
 config = {}
 
 config.sessionSecret = userconfig.sessionSecret
+config.appName       = userconfig.appName
+
+config.DEBUG_LOG = true
+config.DEBUG_WARN = true
+config.DEBUG_ERROR = true
 
 # ### Config file
 # Sets application config parameters depending on `env` name
 config.setEnvironment = (env) ->
   console.log "set app environment: #{env}"
-
-  config.appName = "Unwatched - Playground"
 
   switch(env)
     when "development"
