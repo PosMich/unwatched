@@ -322,6 +322,161 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "depth": 2,
           "children": [
             {
+              "type": "folder",
+              "data": {
+                "path": "assets/js/angular-app",
+                "title": "angular-app"
+              },
+              "depth": 3,
+              "children": [
+                {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".coffee", "Cakefile"],
+                      "pygmentsLexer": "coffee-script",
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "strictMultiLineEnd": false,
+                      "singleLineComment": ["#"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "CoffeeScript"
+                    },
+                    "sourcePath": "/var/www/QPT3/unwatched/assets/js/angular-app/angular.coffee",
+                    "projectPath": "assets/js/angular-app/angular.coffee",
+                    "targetPath": "assets/js/angular-app/angular",
+                    "pageTitle": "assets/js/angular-app/angular",
+                    "title": "angular"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".coffee", "Cakefile"],
+                      "pygmentsLexer": "coffee-script",
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "strictMultiLineEnd": false,
+                      "singleLineComment": ["#"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "CoffeeScript"
+                    },
+                    "sourcePath": "/var/www/QPT3/unwatched/assets/js/angular-app/controllers.coffee",
+                    "projectPath": "assets/js/angular-app/controllers.coffee",
+                    "targetPath": "assets/js/angular-app/controllers",
+                    "pageTitle": "assets/js/angular-app/controllers",
+                    "firstHeader": {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Angular Controllers",
+                        "slug": "angular-controllers",
+                        "isFileHeader": true
+                      },
+                      "depth": 1
+                    },
+                    "title": "Angular Controllers"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".coffee", "Cakefile"],
+                      "pygmentsLexer": "coffee-script",
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "strictMultiLineEnd": false,
+                      "singleLineComment": ["#"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "CoffeeScript"
+                    },
+                    "sourcePath": "/var/www/QPT3/unwatched/assets/js/angular-app/directives.coffee",
+                    "projectPath": "assets/js/angular-app/directives.coffee",
+                    "targetPath": "assets/js/angular-app/directives",
+                    "pageTitle": "assets/js/angular-app/directives",
+                    "firstHeader": {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Angular Directives",
+                        "slug": "angular-directives",
+                        "isFileHeader": true
+                      },
+                      "depth": 1
+                    },
+                    "title": "Angular Directives"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".coffee", "Cakefile"],
+                      "pygmentsLexer": "coffee-script",
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "strictMultiLineEnd": false,
+                      "singleLineComment": ["#"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "CoffeeScript"
+                    },
+                    "sourcePath": "/var/www/QPT3/unwatched/assets/js/angular-app/filters.coffee",
+                    "projectPath": "assets/js/angular-app/filters.coffee",
+                    "targetPath": "assets/js/angular-app/filters",
+                    "pageTitle": "assets/js/angular-app/filters",
+                    "firstHeader": {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Angular Filters",
+                        "slug": "angular-filters",
+                        "isFileHeader": true
+                      },
+                      "depth": 1
+                    },
+                    "title": "Angular Filters"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }, {
+                  "type": "file",
+                  "data": {
+                    "language": {
+                      "nameMatchers": [".coffee", "Cakefile"],
+                      "pygmentsLexer": "coffee-script",
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "strictMultiLineEnd": false,
+                      "singleLineComment": ["#"],
+                      "ignorePrefix": "}",
+                      "foldPrefix": "^",
+                      "name": "CoffeeScript"
+                    },
+                    "sourcePath": "/var/www/QPT3/unwatched/assets/js/angular-app/services.coffee",
+                    "projectPath": "assets/js/angular-app/services.coffee",
+                    "targetPath": "assets/js/angular-app/services",
+                    "pageTitle": "assets/js/angular-app/services",
+                    "firstHeader": {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Angular Services",
+                        "slug": "angular-services",
+                        "isFileHeader": true
+                      },
+                      "depth": 1
+                    },
+                    "title": "Angular Services"
+                  },
+                  "depth": 4,
+                  "outline": []
+                }
+              ]
+            }, {
               "type": "file",
               "data": {
                 "language": {
