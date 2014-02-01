@@ -9,7 +9,6 @@ async         = require "async"
 
 lintConfig    = require "./coffeelint.json"
 
-
 {error, warn, info, infoSuccess, infoFail} = require "./modules/debug"
 
 debug_port    = 8989
@@ -18,7 +17,7 @@ dirs          =
     "./modules"
     "./assets/js"
   ],
-  "styl": [
+  "css": [
     "./assets/css"
   ],
   "views": [
@@ -26,35 +25,91 @@ dirs          =
   ]
 
 
+# ---
+# ANSI Terminal Colors/Styles
+styles =
+  bold       : 1
+  dim        : 2
+  italic     : 3
+  underlined : 4
+  blink      : 5
+  inverted   : 7
 
-# ANSI Terminal Colors
-bold           = "\x1B[0;1m"
-reset          = "\x1B[0;m"
+reset = "\x1B[0m"
 
-red            = "\x1B[0;31m"
-bright_red     = "\x1B[0;1;31m"
+colors =
+  black         : 30
+  white         : 97
+  red           : 31
+  light_red     : 91
+  green         : 32
+  light_green   : 92
+  yellow        : 33
+  light_yellow  : 93
+  blue          : 34
+  light_blue    : 94
+  magenta       : 35
+  light_magenta : 95
+  cyan          : 36
+  light_cyan    : 96
+  gray          : 90
+  light_gray    : 37
 
-green          = "\x1B[0;32m"
-bright_green   = "\x1B[0;1;32m"
+backgrounds =
+  black          : 40
+  red            : 41
+  green          : 42
+  yellow         : 43
+  blue           : 44
+  magenta        : 45
+  cyan           : 46
+  gray           : 100
+  light_red      : 101
+  light_green    : 102
+  light_yellow   : 103
+  light_blue     : 104
+  light_magenta  : 105
+  light_cyan     : 106
+  light_gray     : 47
 
-blue           = "\x1b[0;34m"
-bright_blue    = "\x1B[0;1;34m"
+colorize = ( input, color, bg, style... ) ->
+  str = "\x1B["
+  for sty in style
+    str += ";" + styles[sty] if styles[sty]?
+  str += ";" + colors[color] if colors[color]?
+  str += ";" + backgrounds[bg] if backgrounds[bg]?
+  str += "m"
 
-brown          = "\x1B[0;33m"
-bright_brown   = "\x1B[0;1;33m"
+  str+input+reset
 
-magenta        = "\x1B[0;35m"
-bright_magenta = "\x1B[0;1;35m"
-
-cyan           = "\x1B[0;36m"
-bright_cyan    = "\x1B[0;1;36m"
-
-gray           = "\x1B[1;30m"
-bright_gray    = "\x1B[0;0;37m"
-
-good = "✓"
-warning = "⚡"
-bad = "✗"
+# ---
+# various symbols
+symbol = (sym, option) ->
+  switch sym
+    when "true"                 #   ✔         #   ✓
+      if option is "bold" then "\u2714" else "\u2713"
+    when "false"                #   ✗         #   ✘
+      if option is "bold" then "\u2717" else "\u2718"
+    when "warning"   then "\u26A1" # ⚡
+    when "box"
+      switch option
+        when "true"  then "\u2611" # ☑
+        when "false" then "\u2612" # ☒
+        else "\u2610"              # ☐
+    when "smilie"
+      switch option
+        when "bad"   then "\u2639" # ☹
+        when "good"  then "\u263A" # ☺
+        else "\u263B"              # ☻
+    when "clock"     then "\u231A" # ⌚
+    when "hourglass" then "\u231B" # ⌛
+    when "keyboard"  then "\u2328" # ⌨
+    when "high-5"    then "\u270B" # ✋
+    when "attention" then "\u26A0" # ⚠
+    when "heart"     then "\u2665" # ♥
+    when "coffee"              #   ♨         #   ☕
+      if option is "alt" then "\u2668" else "\u2615"
+    when "skull"     then "\u2620" # ☠
 
 
 # ---
@@ -131,6 +186,8 @@ lintSingleFile = ( data, config, callback ) ->
 # #lint( callback )
 # >lint all coffee files
 lint = ( callback ) ->
+  log "linting files ...", blue
+
   coffeeFiles = getCoffeeFiles()
 
   lintFuncs = []
@@ -161,20 +218,13 @@ lint = ( callback ) ->
       "warnings": warnings
       "errors":   errors
 
-
-# ---
-# #Task _build_
-# >Compiles app.coffee and src directory to the .app directory
-task "build"
-, "compiles coffeescript files to javascript into the .app directory", ->
-
-  log "linting files ...", blue
+taskBuild = ->
   lint (result) ->
     if result.errors > 0 or result.warnings > 0
       console.log """
         \n\rresult:
-        \t#{cyan}#{result.warnings} warnings#{reset}, #{red}
-        \t#{result.errors} errors
+        \t#{cyan}#{symbol("warning")}#{result.warnings}#{reset},
+        \t#{red}#{symbold("error")}#{result.errors} errors
 
       """
       log "the coffee beans look like mud :(\n\r", red
@@ -191,15 +241,20 @@ task "build"
       )
 
 # ---
+# #Task _build_
+# >Compiles app.coffee and src directory to the .app directory
+task "build"
+, "compiles coffeescript files to javascript into the .app directory", taskBuild
+
+# ---
 # #Task _lint_
 # >lints all CoffeeScript files
 task "lint", "lints all coffeescript files", ->
-  log "linting files ...", blue
   lint (result)->
     console.log """
       \n\rresult:
-      \t#{cyan}#{result.warnings} warnings#{reset},
-      \t#{red}#{result.errors} errors
+      \t#{cyan}#{symbol("warning", "bold")} #{result.warnings}#{reset},
+      \t#{red}#{symbol("false", "bold")} #{result.errors}
     """
 
 
@@ -244,42 +299,55 @@ task "docs"
 #
 # watches coffee, js and html files
 #
-task "dev", "run 'build' task, start dev env", ( options ) ->
-  build(
-    ->
-      # build was successful
-      log ":)", green
+task "dev", "run 'build' task, start dev env", ->
+  lint (result) ->
+    if result.errors > 0 or result.warnings > 0
+      console.log """
+        \n\rresult:
+        \t#{cyan}#{result.warnings} warnings#{reset}, #{red}
+        \t#{result.errors} errors
 
-      # watch coffee files, automatically compile them
-      options = ["-c", "-b", "-w", "-o", ".app", "modules"]
-      cmd = which.sync "coffee"
-      coffee = spawn cmd, options
-      coffee.stdout.pipe process.stdout
-      coffee.stderr.pipe process.stderr
+      """
+      log "the coffee beans look like mud :(\n\r", red
+    else
+      log "this coffee beans are high quality shit :)\n\r", green
+      build( ->
+        # build was successful
+        log ":)", green
 
-      log "Watching coffee files", green
-      # watch js and html files and restart server if changes happend
-      supervisor = spawn "node", [
-        "./node_modules/supervisor/lib/cli-wrapper.js",
-        "-w",
-        ".app,views",
-        "-e",
-        "js|html",
-        "app"
-      ]
-      supervisor.stdout.pipe process.stdout
-      supervisor.stderr.pipe process.stderr
-      log "Watching js files and running server", green
-  ,
-    # build failed
-    (err) -> log err + " :(", red
-  )
+        # watch coffee files, automatically compile them
+        options = ["-c", "-b", "-w", "-o", ".app", "modules"]
+        cmd = which.sync "coffee"
+        coffee = spawn cmd, options
+        coffee.stdout.pipe process.stdout
+        coffee.stderr.pipe process.stderr
+
+        log "Watching coffee files", green
+        supervisor = new Object
+        # watch js and html files and restart server if changes happend
+        setTimeout ->
+          supervisor = spawn "node", [
+            "./node_modules/supervisor/lib/cli-wrapper.js",
+            "-w",
+            ".app,views",
+            "-e",
+            "js|html",
+            "app"
+          ]
+          supervisor.stdout.pipe process.stdout
+          supervisor.stderr.pipe process.stderr
+          log "Watching js files and running server", green
+        , 2000
+      ,
+        # build failed
+        (err) -> log err + " :(", red
+      )
 
 
 #
 # watches coffee, js and html files and starts the node inspector
 #
-task "debug", "run 'build' task, start debug env", ( options ) ->
+task "debug", "run 'build' task, start debug env", ->
   build(
     ->
       # build was successful
@@ -322,7 +390,7 @@ task "debug", "run 'build' task, start debug env", ( options ) ->
 #
 # runs the production environment
 #
-task "run", "run 'build' task, start production env", ( options ) ->
+task "run", "run 'build' task, start production env", ->
   build(
     ->
       # build was successful
@@ -339,3 +407,11 @@ task "run", "run 'build' task, start production env", ( options ) ->
     # build failed
     (err) -> log err + " :(", red
   )
+
+task "test-frontend", "run frontend tests", ->
+
+
+task "test-backend", "run backend tests", ->
+
+task "test", "run all tests", ->
+

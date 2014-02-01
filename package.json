@@ -22,9 +22,7 @@
     "async": "~0.2.9",
     "jade": "latest",
     "walk": "latest",
-    "nib": "latest",
-    "karma": "latest",
-    "karma-ng-scenario": "~0.1.0"
+    "nib": "latest"
   },
   "devDependencies": {
     "coffee-script": "latest",
@@ -32,7 +30,10 @@
     "groc": "latest",
     "node-inspector": "latest",
     "coffeelint": "latest",
-    "pty.js": "latest"
+    "pty.js": "latest",
+    "karma": "latest",
+    "karma-ng-scenario": "latest",
+    "jasmine-node": "latest"
   },
   "engines": {
     "node": "~0.10.x",
