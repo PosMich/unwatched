@@ -129,8 +129,10 @@ process.on "uncaughtException", ( err ) ->
 
 # ---
 # simple log function
-log = ( message, color, explanation ) ->
-  console.log color + message + reset + " " + (explanation or "")
+log = ( message, txtColor, explanation ) ->
+  if txtColor
+    message = color(txtColor, message)
+  console.log message + " " + (explanation or "")
 
 # ---
 # #getCoffeeFiles()
@@ -149,32 +151,33 @@ getCoffeeFiles = ->
 # #build( successCallback, failCallback )
 # >build CoffeeScript Files into .app directory
 build = ( callback ) ->
-  console.log color( "blue", "cooking coffee ...")
+  log "cooking coffee ...", "blue"
 
   options = ["-c","-b", "-o", ".app"].concat dirs.coffee
 
-  cmd = which.sync "coffee"
+  try
+    cmd = which.sync "coffee"
 
-  coffee = spawn cmd, options
-  coffee.stdout.pipe process.stdout
-  coffee.stderr.pipe process.stderr
+    coffee = spawn cmd, options
+    coffee.stdout.pipe process.stdout
+    coffee.stderr.pipe process.stderr
 
-  coffee.on "exit", ( status ) ->
-    if status is 0
-      console.log color("green", "Coffee is ready, enjoy it!")
-      callback null
-    else
-      console.log color(
-        "red",
-        "Wasn't able to cook coffee :("
-      )
-      callback status
+    coffee.on "exit", ( status ) ->
+      if status is 0
+        log "Coffee is ready, enjoy it!", "green"
+        callback null
+      else
+        log "Wasn't able to cook coffee :(", "red"
+        callback status
+  catch err
+    log err.message, "red"
+    log "Groc is not installed - try npm install -g groc", "red"
 
 # ---
 # #lint( callback )
 # >lint all coffee files
 lint = ( callback ) ->
-  console.log color("blue", "linting files ...")
+  log "linting files ...", "blue"
 
   warnings = 0
   errors   = 0
@@ -187,26 +190,21 @@ lint = ( callback ) ->
 
     # >>>if errors/warnings, print them
     if results.length > 0
-      console.log color("red", "\t"+
-        symbol("false"))+
-        " "+
-        color("light_gray", file)
+      log "\t"+symbol("false")+" "+color("light_gray", file), "red"
 
       for result in results
         if result.level is "warn"
           ++warnings
-          console.log "\t\t"+
-            color("magenta" , result.lineNumber)+
-            ": "+
-            color("yellow", result.message)
+          log "\t\t"+result.lineNumber+": "+
+            color("yellow", result.message), "magenta"
 
         else if result.level is "error"
           ++errors
-          console.log "\t\t#{color("magenta", result.lineNumber)}: "+
-            "#{color("red", result.message)}"
+          log "\t\t"+result.lineNumber+": "+
+            color("red", result.message), "magenta"
 
     else
-      console.log color("green", "\t"+symbol("true"))+" "+color("light_gray", file)
+      log "\t"+symbol("true")+" "+color("light_gray", file), "green"
 
   # >> print results
   if errors > 0 or warnings > 0
@@ -216,10 +214,10 @@ lint = ( callback ) ->
       color("red", symbol("false")+" "+errors+" error(s)")+
       "\n\r"
 
-    console.log color("red", "the coffee beans look like mud :(\n\r")
+    log "the coffee beans look like mud :(\n\r", "red"
     callback "error"
   else
-    console.log color("green", "this coffee beans are high quality shit :)\n\r")
+    log "this coffee beans are high quality shit :)\n\r", "green"
     callback null
 
 
@@ -249,16 +247,18 @@ task "lint", "lints all coffeescript files", ->
 # >generates annotated source code with Docco and move it to public dir
 task "docs"
 , "generates annotated source code with Docco and move it to public dir", ->
-  build(
-    ->
+  build (err) ->
+    if err
+      log err + " :(", "red"
+    else
 
       # build was successful
-      log ":)", green
+      log ":)", "green"
 
       coffeeFiles = getCoffeeFiles()
 
-      log "Coffee Files: ", bright_blue
-      log "\t" + file, bright_green for file in coffeeFiles
+      log "Coffee Files: ", "light_blue"
+      log("\t" + file, "light_green") for file in coffeeFiles
 
       coffeeFiles.push "README.md"
       coffeeFiles.push "--out"
@@ -274,32 +274,23 @@ task "docs"
         groc.stderr.pipe process.stderr
         groc.on "exit", (status) -> callback?() if status is 0
       catch err
-        log err.message, red
-        log "Groc is not installed - try npm install -g groc", red
-  ,
-    #build failed
-    (err) -> log err + " :(", red
-  )
+        log err.message, "red"
+        log "Groc is not installed - try npm install -g groc", "red"
+
 
 
 #
 # watches coffee, js and html files
 #
 task "dev", "run 'build' task, start dev env", ->
-  lint (result) ->
-    if result.errors > 0 or result.warnings > 0
-      console.log """
-        \n\rresult:
-        \t#{color("magenta", result.warnings+" warnings")},
-        \t#{color("red", result.errors+" errors")}
-
-      """
-      log "the coffee beans look like mud :(\n\r", red
+  lint (err) ->
+    if err
+      console.log " "
     else
-      log "this coffee beans are high quality shit :)\n\r", green
+      log "this coffee beans are high quality shit :)\n\r", "green"
       build( ->
         # build was successful
-        log ":)", green
+        log ":)", "green"
 
         # watch coffee files, automatically compile them
         options = ["-c", "-b", "-w", "-o", ".app", "modules"]
@@ -308,7 +299,7 @@ task "dev", "run 'build' task, start dev env", ->
         coffee.stdout.pipe process.stdout
         coffee.stderr.pipe process.stderr
 
-        log "Watching coffee files", green
+        log "Watching coffee files", "green"
         supervisor = new Object
         # watch js and html files and restart server if changes happend
         setTimeout ->
@@ -322,11 +313,11 @@ task "dev", "run 'build' task, start dev env", ->
           ]
           supervisor.stdout.pipe process.stdout
           supervisor.stderr.pipe process.stderr
-          log "Watching js files and running server", green
+          log "Watching js files and running server", "green"
         , 2000
       ,
         # build failed
-        (err) -> log err + " :(", red
+        (err) -> log err + " :(", "red"
       )
 
 
