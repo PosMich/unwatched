@@ -25,6 +25,6 @@ exports.route = (app) ->
   # ***
   # ### GET/POST/PUT/DELETE `/*`
   # > Not Found
-  app.all "/*", (req, res) ->
+  app.all "*", (req, res) ->
     debug.warn "Error 404, not found " + req.url
     res.render "404.jade"

@@ -3,9 +3,10 @@
 
 "use strict"
 
-angular.module("unwatched.controllers", [])
-.controller("IndexCtrl", [ ->
+app = angular.module "unwatched.controllers", []
+
+app.controller "IndexCtrl", ->
   console.log "index ctrl here"
-]).controller "CyborgCtrl", [ ->
-  
-]
+
+app.controller "CyborgCtrl",  ->
+  console.log "cyborg ctrl here"
