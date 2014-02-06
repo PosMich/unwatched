@@ -4,8 +4,8 @@
 "use strict"
 
 angular.module("unwatched.controllers", [])
-.controller("MyCtrl1", [ ->
-
-]).controller "MyCtrl2", [ ->
+.controller("IndexCtrl", [ ->
+  console.log "index ctrl here"
+]).controller "CyborgCtrl", [ ->
   
 ]
