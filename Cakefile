@@ -135,8 +135,8 @@ log = ( message, txtColor, explanation ) ->
   console.log message + " " + (explanation or "")
 
 # ---
-# #getCoffeeFiles()
-# >get all CoffeeScript Files
+# # getCoffeeFiles()
+# > get all CoffeeScript Files
 getCoffeeFiles = ->
   coffeeFiles = []
 
@@ -148,8 +148,8 @@ getCoffeeFiles = ->
 
 
 # ---
-# #build( successCallback, failCallback )
-# >build CoffeeScript Files into .app directory
+# # build( successCallback, failCallback )
+# > build CoffeeScript Files into .app directory
 build = ( callback ) ->
   log "cooking coffee ...", "blue"
 
@@ -164,18 +164,18 @@ build = ( callback ) ->
 
     coffee.on "exit", ( status ) ->
       if status is 0
-        log "Coffee is ready, enjoy it!", "green"
+        log "Coffee is ready, enjoy it!\n", "green"
         callback null
       else
-        log "Wasn't able to cook coffee :(", "red"
+        log "Wasn't able to cook coffee :(\n", "red"
         callback status
   catch err
     log err.message, "red"
     log "Groc is not installed - try npm install -g groc", "red"
 
 # ---
-# #lint( callback )
-# >lint all coffee files
+# # lint( callback )
+# > lint all coffee files
 lint = ( callback ) ->
   log "linting files ...", "blue"
 
@@ -183,12 +183,12 @@ lint = ( callback ) ->
   errors   = 0
 
   # ---
-  # >>traverse all CoffeeScript files
+  # >> traverse all CoffeeScript files
   for file in getCoffeeFiles()
     # >>>lint each file
     results = linter.lint fs.readFileSync(file).toString(), lintConfig
 
-    # >>>if errors/warnings, print them
+    # >>> if errors/warnings, print them
     if results.length > 0
       log "\t"+symbol("false")+" "+color("light_gray", file), "red"
 
@@ -221,35 +221,43 @@ lint = ( callback ) ->
     callback null
 
 
-
-taskBuild = ->
+buildTask = (callback) ->
   lint (err) ->
-    if !err?
+    if err
+      callback err
+    else
       build (err) ->
-        log err, "red"
+        callback err
 
 # ---
-# #Task _build_
-# >Compiles app.coffee and src directory to the .app directory
+# # Task _build_
+# > Compiles app.coffee and src directory to the .app directory
 task "build"
-, "compiles coffeescript files to javascript into the .app directory", taskBuild
-
+, "compiles coffeescript files to javascript into the .app directory", ->
+  buildTask (err) ->
+    if err
+      log err, "red"
 
 # ---
-# #Task _lint_
-# >lints all CoffeeScript files
+# # Task _lint_
+# > lints all CoffeeScript files
 task "lint", "lints all coffeescript files", ->
   lint (err) ->
+    if err
+      log err, "red"
 
 
 
 # ---
-# #Task _docs_
-# >generates annotated source code with Docco and move it to public dir
+# # Task _docs_
+# > generates annotated source code with Docco and move it to public dir
 task "docs"
 , "generates annotated source code with Docco and move it to public dir", ->
-  build (err) ->
-    if !err?
+
+  buildTask (err) ->
+    if err
+      log err, "red"
+    else
       coffeeFiles = getCoffeeFiles()
 
       log "Coffee Files: ", "light_blue"
@@ -261,6 +269,7 @@ task "docs"
 
       # generate docs
       try
+        log "generating docs ...", "light_blue"
         cmd = which.sync "groc"
         groc = spawn cmd, coffeeFiles
 
@@ -278,80 +287,100 @@ task "docs"
 # watches coffee, js and html files
 #
 task "dev", "run 'build' task, start dev env", ->
-  lint (err) ->
-    if !err?
-      build (err) ->
-        if err
-          log err, "red"
-        else
-          # build was successful
-          log ":)", "green"
-
-          # watch coffee files, automatically compile them
-          options = ["-c", "-b", "-w", "-o", ".app", "modules"]
-          cmd = which.sync "coffee"
-          coffee = spawn cmd, options
-          coffee.stdout.pipe process.stdout
-          coffee.stderr.pipe process.stderr
-
-          log "Watching coffee files", "green"
-          supervisor = new Object
-          # watch js and html files and restart server if changes happend
-          setTimeout ->
-            try
-              supervisor = spawn "node", [
-                "./node_modules/supervisor/lib/cli-wrapper.js",
-                "-w",
-                ".app,views",
-                "-e",
-                "js|html",
-                "app"
-              ]
-              supervisor.stdout.pipe process.stdout
-              supervisor.stderr.pipe process.stderr
-              log "Watching js files and running server", "green"
-            catch err
-          , 2000
-
-
-#
-# watches coffee, js and html files and starts the node inspector
-#
-task "debug", "run 'build' task, start debug env", ->
-  build (err) ->
-    if !err?
+  buildTask (err) ->
+    if err
+      log err, "red"
+    else
       # watch coffee files, automatically compile them
       options = ["-c", "-b", "-w", "-o", ".app", "modules"]
       cmd = which.sync "coffee"
       coffee = spawn cmd, options
       coffee.stdout.pipe process.stdout
       coffee.stderr.pipe process.stderr
+
       log "Watching coffee files", "green"
+      supervisor = new Object
+      # watch js and html files and restart server if changes happend
+      setTimeout ->
+        try
+          supervisor = spawn "node", [
+            "./node_modules/supervisor/lib/cli-wrapper.js",
+            "-w",
+            ".app,views",
+            "-e",
+            "js|html",
+            "app"
+          ]
+          supervisor.stdout.pipe process.stdout
+          supervisor.stderr.pipe process.stderr
+          log "Watching js files and running server", "green"
+        catch err
+          log err.message, "red"
+          log "supervisor/node is not installed?", "red"
+      , 2000
 
+
+#
+# watches coffee, js and html files and starts the node inspector
+#
+task "debug", "run 'build' task, start debug env", ->
+  buildTask (err) ->
+    if err
+      log err, "red"
+    else
+      # watch coffee files, automatically compile them
+      options = ["-c", "-b", "-w", "-o", ".app", "modules"]
       try
-        # run debug mode
-        app = spawn "node", [
-          "--debug",
-          "app"
-        ]
-        app.stdout.pipe process.stdout
-        app.stderr.pipe process.stderr
+        cmd = which.sync "coffee"
 
-        # run node-inspector
-        inspector = spawn "node-inspector", ["--web-port=" + debug_port]
-        inspector.stdout.pipe process.stdout
-        inspector.stderr.pipe process.stderr
+        coffee = spawn cmd, options
+        coffee.stdout.pipe process.stdout
+        coffee.stderr.pipe process.stderr
       catch err
+        log err.message, "red"
+        log "cofee is not installed?", "red"
 
+      if cmd
+        log "Watching coffee files", "green"
 
-      try
-        # run google chrome
-        chrome = spawn "google-chrome"
-        , ["http://localhost:" + debug_port + "/debug?port=5858"]
+        try
+          # run debug mode
+          app = spawn "node", [
+            "--debug",
+            "app"
+          ]
+          app.stdout.pipe process.stdout
+          app.stderr.pipe process.stderr
 
-        chrome.stdout.pipe process.stdout
-        chrome.stderr.pipe process.stderr
-        log "Debugging server", green
+          # run node-inspector
+          inspector = spawn "node-inspector", ["--web-port=" + debug_port]
+          inspector.stdout.pipe process.stdout
+          inspector.stderr.pipe process.stderr
+        catch err
+          log err.message, "red"
+          log "node/node-inspector is not installed?", "red"
+
+      if app
+        try
+          # run google chrome
+          browser = spawn "google-chrome"
+          , ["http://localhost:" + debug_port + "/debug?port=5858"]
+
+        catch err
+          log err.message, "red"
+          log "chrome is not installed?", "red"
+          try
+            browser = spawn "firefox"
+            , ["http://localhost:" + debug_port + "/debug?port=5858"]
+          catch err
+            log err.message, "red"
+            log "firefox is not installed?", "red"
+
+        if browser
+          browser.stdout.pipe process.stdout
+          browser.stderr.pipe process.stderr
+          log "Debugging server", "green"
+
 
 
 
@@ -359,22 +388,21 @@ task "debug", "run 'build' task, start debug env", ->
 # runs the production environment
 #
 task "run", "run 'build' task, start production env", ->
-  build(
-    ->
-      # build was successful
-      log ":)", green
-
-      # start app in production environment
-      cmd = spawn "node", ["app"],
-        env:
-          NODE_ENV: "production"
-      cmd.stdout.pipe process.stdout
-      cmd.stderr.pipe process.stderr
-      log "Running Server in production environment", green
-  ,
-    # build failed
-    (err) -> log err + " :(", red
-  )
+  buildTask (err)->
+    if err
+      log err, "red"
+    else
+      try
+        # start app in production environment
+        cmd = spawn "node", ["app"],
+          env:
+            NODE_ENV: "production"
+        cmd.stdout.pipe process.stdout
+        cmd.stderr.pipe process.stderr
+        log "Running Server in production environment", "green"
+      catch err
+        log err.message, "red"
+        log "node not installed?", "red"
 
 task "test-frontend", "run frontend tests", ->
   # karma --> jasmine --> phantomjs
