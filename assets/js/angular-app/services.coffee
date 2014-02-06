@@ -3,5 +3,6 @@
 
 "use strict"
 
-angular.module("unwatched.services", [])
-.value "version", "0.1"
+app = angular.module "unwatched.services", []
+
+app.value "version", "0.1"

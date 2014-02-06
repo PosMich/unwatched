@@ -3,8 +3,10 @@
 
 "use strict"
 
-angular.module("unwatched.directives", [])
-.directive "appVersion", ["version", (version) ->
-  (scope, elm, attrs) ->
-    elm.text version
-]
+app = angular.module "unwatched.directives", []
+
+app.directive "appVersion",
+  (version) ->
+    (scope, elm, attrs) ->
+      elm.text version
+
