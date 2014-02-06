@@ -1,11 +1,12 @@
 doctype html
-html
+html(ng-app="unwatched")
   head
     title #{title} - My Site
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(charset="utf-8")
+    meta(name="fragment" content="!")
     != css("app")
-  body(ng-app="unwatched")
+  body
     div(class="navbar navbar-default navbar-fixed-top", ng-controller="NavCtrl")
       .container
         .navbar-header
@@ -17,9 +18,9 @@ html
         #navbar-main.navbar-collapse.collapse
           ul.nav.navbar-nav
             li
-              a(href="/cyborg") Cyborg
+              a(href="cyborg") Cyborg
             li
-              a(href="/index") Index
+              a(href="index") Index
             li
               a(href="#") Menu 3
 
@@ -32,8 +33,13 @@ html
               a(href="http://jade-lang.com/" target="_blank") Jade
             li
               a(href="http://learnboost.github.io/stylus/" target="_blank") Stylus
+            li
+              a(href="/docs" target="_self") Documentation
 
 
     .container
       div(ng-view)
+    .footer
+      center v
+        span(app-version)
     != js("app")

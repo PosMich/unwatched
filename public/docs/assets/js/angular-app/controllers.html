@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title>assets/js/angular-app/controllers</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="assets/js/angular-app/controllers"><meta name="groc-project-path" content="assets/js/angular-app/controllers.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">assets/js/angular-app/controllers.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="unwatched-angular-controllers">Unwatched - Angular Controllers</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="s">&quot;use strict&quot;</span>
+
+<span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.controllers&quot;</span><span class="p">,</span> <span class="p">[]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;IndexCtrl&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;index ctrl here&quot;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;CyborgCtrl&quot;</span><span class="p">,</span>  <span class="nf">-&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;cyborg ctrl here&quot;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NavCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="s">&quot;$modal&quot;</span>
+  <span class="nf">($scope, $modal) -&gt;</span>
+
+    <span class="nv">$scope.open = </span><span class="nf">-&gt;</span>
+      <span class="nv">modalInstance = </span><span class="nx">$modal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/loginForm.jade&quot;</span>
+        <span class="nv">controller: </span><span class="s">&quot;SignupCtrl&quot;</span>
+      <span class="p">)</span>
+
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SignupCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="s">&quot;$modalInstance&quot;</span>
+  <span class="nf">($scope, $modalInstance) -&gt;</span>
+    <span class="nv">$scope.ok = </span><span class="nf">-&gt;</span>
+      <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">close</span>
+
+    <span class="nv">$scope.cancel = </span><span class="nf">-&gt;</span>
+      <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">dismiss</span> <span class="s">&quot;cancel&quot;</span>
+<span class="p">]</span></div></div></div></div></body></html>
