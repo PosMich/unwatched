@@ -5,7 +5,6 @@
 # installed via `npm install`
 express  = require "express"
 assets   = require "connect-assets"
-partials = require "express-partials"
 stylus   = require "stylus"
 
 # ---
@@ -59,8 +58,7 @@ server.locals.pretty = true
 
 # Compress responses
 server.use express.compress()
-# Add Partials
-server.use partials()
+
 # Add Session Cookie
 server.use express.cookieParser()
 # Enable Sessions

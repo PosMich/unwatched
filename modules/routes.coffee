@@ -12,6 +12,7 @@ exports.route = (app) ->
   # All partials. This is used by Angular.
   app.get "/partials/:name",  (req, res) ->
     name = req.params.name
+    debug.info "send partial with name " + name
     res.render "partials/" + name
 
   # ***
