@@ -226,6 +226,7 @@ taskBuild = ->
   lint (err) ->
     if !err?
       build (err) ->
+        log err, "red"
 
 # ---
 # #Task _build_
@@ -248,13 +249,7 @@ task "lint", "lints all coffeescript files", ->
 task "docs"
 , "generates annotated source code with Docco and move it to public dir", ->
   build (err) ->
-    if err
-      log err + " :(", "red"
-    else
-
-      # build was successful
-      log ":)", "green"
-
+    if !err?
       coffeeFiles = getCoffeeFiles()
 
       log "Coffee Files: ", "light_blue"
@@ -284,84 +279,80 @@ task "docs"
 #
 task "dev", "run 'build' task, start dev env", ->
   lint (err) ->
-    if err
-      console.log " "
-    else
-      log "this coffee beans are high quality shit :)\n\r", "green"
-      build( ->
-        # build was successful
-        log ":)", "green"
+    if !err?
+      build (err) ->
+        if err
+          log err, "red"
+        else
+          # build was successful
+          log ":)", "green"
 
-        # watch coffee files, automatically compile them
-        options = ["-c", "-b", "-w", "-o", ".app", "modules"]
-        cmd = which.sync "coffee"
-        coffee = spawn cmd, options
-        coffee.stdout.pipe process.stdout
-        coffee.stderr.pipe process.stderr
+          # watch coffee files, automatically compile them
+          options = ["-c", "-b", "-w", "-o", ".app", "modules"]
+          cmd = which.sync "coffee"
+          coffee = spawn cmd, options
+          coffee.stdout.pipe process.stdout
+          coffee.stderr.pipe process.stderr
 
-        log "Watching coffee files", "green"
-        supervisor = new Object
-        # watch js and html files and restart server if changes happend
-        setTimeout ->
-          supervisor = spawn "node", [
-            "./node_modules/supervisor/lib/cli-wrapper.js",
-            "-w",
-            ".app,views",
-            "-e",
-            "js|html",
-            "app"
-          ]
-          supervisor.stdout.pipe process.stdout
-          supervisor.stderr.pipe process.stderr
-          log "Watching js files and running server", "green"
-        , 2000
-      ,
-        # build failed
-        (err) -> log err + " :(", "red"
-      )
+          log "Watching coffee files", "green"
+          supervisor = new Object
+          # watch js and html files and restart server if changes happend
+          setTimeout ->
+            try
+              supervisor = spawn "node", [
+                "./node_modules/supervisor/lib/cli-wrapper.js",
+                "-w",
+                ".app,views",
+                "-e",
+                "js|html",
+                "app"
+              ]
+              supervisor.stdout.pipe process.stdout
+              supervisor.stderr.pipe process.stderr
+              log "Watching js files and running server", "green"
+            catch err
+          , 2000
 
 
 #
 # watches coffee, js and html files and starts the node inspector
 #
 task "debug", "run 'build' task, start debug env", ->
-  build(
-    ->
-      # build was successful
-      log ":)", green
-
+  build (err) ->
+    if !err?
       # watch coffee files, automatically compile them
       options = ["-c", "-b", "-w", "-o", ".app", "modules"]
       cmd = which.sync "coffee"
       coffee = spawn cmd, options
       coffee.stdout.pipe process.stdout
       coffee.stderr.pipe process.stderr
-      log "Watching coffee files", green
+      log "Watching coffee files", "green"
 
-      # run debug mode
-      app = spawn "node", [
-        "--debug",
-        "app"
-      ]
-      app.stdout.pipe process.stdout
-      app.stderr.pipe process.stderr
+      try
+        # run debug mode
+        app = spawn "node", [
+          "--debug",
+          "app"
+        ]
+        app.stdout.pipe process.stdout
+        app.stderr.pipe process.stderr
 
-      # run node-inspector
-      inspector = spawn "node-inspector", ["--web-port=" + debug_port]
-      inspector.stdout.pipe process.stdout
-      inspector.stderr.pipe process.stderr
+        # run node-inspector
+        inspector = spawn "node-inspector", ["--web-port=" + debug_port]
+        inspector.stdout.pipe process.stdout
+        inspector.stderr.pipe process.stderr
+      catch err
 
-      # run google chrome
-      chrome = spawn "google-chrome"
-      , ["http://localhost:" + debug_port + "/debug?port=5858"]
 
-      chrome.stdout.pipe process.stdout
-      chrome.stderr.pipe process.stderr
-      log "Debugging server", green
-  ,
-    #build failed
-    (err) -> log err + " :(", red
-  )
+      try
+        # run google chrome
+        chrome = spawn "google-chrome"
+        , ["http://localhost:" + debug_port + "/debug?port=5858"]
+
+        chrome.stdout.pipe process.stdout
+        chrome.stderr.pipe process.stderr
+        log "Debugging server", green
+
 
 
 #
