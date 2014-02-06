@@ -252,9 +252,9 @@ task "lint", "lints all coffeescript files", ->
 # # Task _docs_
 # > generates annotated source code with Docco and move it to public dir
 task "docs"
-, "generates annotated source code with Docco and move it to public dir", ->
+, "generates annotated source code with groc and move it to public dir", ->
 
-  buildTask (err) ->
+  lint (err) ->
     if err
       log err, "red"
     else
@@ -265,11 +265,11 @@ task "docs"
 
       coffeeFiles.push "README.md"
       coffeeFiles.push "--out"
-      coffeeFiles.push "./docs"
+      coffeeFiles.push "./public/docs"
 
       # generate docs
       try
-        log "generating docs ...", "light_blue"
+        log "\n\ngenerating docs ...", "light_blue"
         cmd = which.sync "groc"
         groc = spawn cmd, coffeeFiles
 
@@ -388,10 +388,11 @@ task "debug", "run 'build' task, start debug env", ->
 # runs the production environment
 #
 task "run", "run 'build' task, start production env", ->
-  buildTask (err)->
+  buildTask (err) ->
     if err
       log err, "red"
     else
+      console.log "asdf"
       try
         # start app in production environment
         cmd = spawn "node", ["app"],

@@ -15,15 +15,17 @@ exports.route = (app) ->
     debug.info "send partial with name " + name
     res.render "partials/" + name
 
+
   # ***
-  # ### GET `/`
+  # ### GET `*`
   # > serve Angular App
-  app.get "/", (req, res) ->
+  app.get "*", (req, res) ->
     debug.info "send index"
     res.render "layout.jade"
 
+
   # ***
-  # ### GET/POST/PUT/DELETE `/*`
+  # ### POST/PUT/DELETE `*`
   # > Not Found
   app.all "*", (req, res) ->
     debug.warn "Error 404, not found " + req.url

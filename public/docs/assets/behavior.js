@@ -346,10 +346,38 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "projectPath": "assets/js/angular-app/angular.coffee",
                     "targetPath": "assets/js/angular-app/angular",
                     "pageTitle": "assets/js/angular-app/angular",
-                    "title": "angular"
+                    "firstHeader": {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Unwatched - Angular App",
+                        "slug": "unwatched-angular-app",
+                        "isFileHeader": true
+                      },
+                      "depth": 1
+                    },
+                    "title": "Unwatched - Angular App"
                   },
                   "depth": 4,
-                  "outline": []
+                  "outline": [
+                    {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Config",
+                        "slug": "config"
+                      },
+                      "depth": 1
+                    }, {
+                      "type": "heading",
+                      "data": {
+                        "level": 1,
+                        "title": "Routes",
+                        "slug": "routes"
+                      },
+                      "depth": 1
+                    }
+                  ]
                 }, {
                   "type": "file",
                   "data": {
@@ -371,13 +399,13 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "type": "heading",
                       "data": {
                         "level": 1,
-                        "title": "Angular Controllers",
-                        "slug": "angular-controllers",
+                        "title": "Unwatched - Angular Controllers",
+                        "slug": "unwatched-angular-controllers",
                         "isFileHeader": true
                       },
                       "depth": 1
                     },
-                    "title": "Angular Controllers"
+                    "title": "Unwatched - Angular Controllers"
                   },
                   "depth": 4,
                   "outline": []
@@ -402,13 +430,13 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "type": "heading",
                       "data": {
                         "level": 1,
-                        "title": "Angular Directives",
-                        "slug": "angular-directives",
+                        "title": "Unwatched - Angular Directives",
+                        "slug": "unwatched-angular-directives",
                         "isFileHeader": true
                       },
                       "depth": 1
                     },
-                    "title": "Angular Directives"
+                    "title": "Unwatched - Angular Directives"
                   },
                   "depth": 4,
                   "outline": []
@@ -433,13 +461,13 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "type": "heading",
                       "data": {
                         "level": 1,
-                        "title": "Angular Filters",
-                        "slug": "angular-filters",
+                        "title": "Unwatched - Angular Filters",
+                        "slug": "unwatched-angular-filters",
                         "isFileHeader": true
                       },
                       "depth": 1
                     },
-                    "title": "Angular Filters"
+                    "title": "Unwatched - Angular Filters"
                   },
                   "depth": 4,
                   "outline": []
@@ -464,13 +492,13 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "type": "heading",
                       "data": {
                         "level": 1,
-                        "title": "Angular Services",
-                        "slug": "angular-services",
+                        "title": "Unwatched - Angular Services",
+                        "slug": "unwatched-angular-services",
                         "isFileHeader": true
                       },
                       "depth": 1
                     },
-                    "title": "Angular Services"
+                    "title": "Unwatched - Angular Services"
                   },
                   "depth": 4,
                   "outline": []
