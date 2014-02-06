@@ -6,7 +6,7 @@ html
     meta(charset="utf-8")
     != css("app")
   body(ng-app="unwatched")
-    div(class="navbar navbar-default navbar-fixed-top")
+    div(class="navbar navbar-default navbar-fixed-top", ng-controller="NavCtrl")
       .container
         .navbar-header
           a(href="/" class="navbar-brand") Unwatched
@@ -25,11 +25,14 @@ html
 
           ul.nav.navbar-nav.navbar-right
             li
+              a(ng-click="open()") Sign Up/In
+            li
               a(href="http://expressjs.com/" target="_blank") Express
             li
               a(href="http://jade-lang.com/" target="_blank") Jade
             li
               a(href="http://learnboost.github.io/stylus/" target="_blank") Stylus
+
 
     .container
       div(ng-view)

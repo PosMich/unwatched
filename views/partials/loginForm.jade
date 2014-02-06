@@ -1,0 +1,25 @@
+.modal-header
+  h3 Sign Up/In
+.modal-body
+  form.form-horizontal(name="signup", novalidate)
+    fieldset
+      legend Sign Up
+      .form-group(ng-class="{'has-error' : signup.email.$error.required || signup.email.$error.invalid}")
+        label.col-lg-4.control-label(for='inputEmail') Email
+        .col-lg-6
+          input#inputEmail.form-control(type='email', ng-model="user.email", 
+            name="email", placeholder='Email', required)
+      .form-group
+        label.col-lg-4.control-label(for='inputPassword') Password
+        .col-lg-6
+          input#inputPassword.form-control(type='password', ng-model="user.password", placeholder='Password', required)
+      .form-group
+        label.col-lg-4.control-label(for='inputConfirmPassword') Confirm Password
+        .col-lg-6
+          input#inputConfirmPassword.form-control(type='password', ng-model="user.passwordConfirm", placeholder='Confirm Password', required)
+
+  
+
+.modal-footer
+  button.btn.btn-success(ng-click="ok()" ng-disabled="signup.$invalid") OK
+  button.btn.btn-default(ng-click="cancel()") Cancel
