@@ -4,7 +4,7 @@
   form.form-horizontal(name="signup", novalidate)
     fieldset
       legend Sign Up
-      .form-group(ng-class="{'has-error' : signup.email.$error.required || signup.email.$error.invalid}")
+      .form-group(ng-class="{'has-error' : signup.email.$error.email}")
         label.col-lg-4.control-label(for='inputEmail') Email
         .col-lg-6
           input#inputEmail.form-control(type='email', ng-model="user.email", 
@@ -12,11 +12,14 @@
       .form-group
         label.col-lg-4.control-label(for='inputPassword') Password
         .col-lg-6
-          input#inputPassword.form-control(type='password', ng-model="user.password", placeholder='Password', required)
+          input#inputPassword.form-control(type='password', 
+            ng-model="user.password", placeholder='Password', required)
       .form-group
         label.col-lg-4.control-label(for='inputConfirmPassword') Confirm Password
         .col-lg-6
-          input#inputConfirmPassword.form-control(type='password', ng-model="user.passwordConfirm", placeholder='Confirm Password', required)
+          input#inputConfirmPassword.form-control(type='password', 
+            ng-model="user.passwordConfirm", placeholder='Confirm Password', 
+            required)
 
   
 

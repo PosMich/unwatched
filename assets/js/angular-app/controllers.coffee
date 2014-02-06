@@ -24,7 +24,7 @@ app.controller "NavCtrl", [
 
 ]
 
-app.controller "SignupCtrl",
+app.controller "SignupCtrl", [
   "$scope"
   "$modalInstance"
   ($scope, $modalInstance) ->
@@ -33,3 +33,4 @@ app.controller "SignupCtrl",
 
     $scope.cancel = ->
       $modalInstance.dismiss "cancel"
+]
