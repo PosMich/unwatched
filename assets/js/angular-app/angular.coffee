@@ -1,16 +1,18 @@
 "use strict"
 
-unwatchedApp = angular.module( "unwatched", [
+app = angular.module "unwatched", [
   "ngRoute"
   "unwatched.filters"
   "unwatched.services"
   "unwatched.directives"
   "unwatched.controllers"
   "ui.bootstrap"
-])
+]
 
-unwatchedApp.config [
-  "$routeProvider", "$locationProvider"
+
+app.config [
+  "$routeProvider"
+  "$locationProvider"
   ($routeProvider, $locationProvider) ->
 
     $locationProvider.html5Mode true
@@ -21,6 +23,6 @@ unwatchedApp.config [
     $routeProvider.when "/cyborg",
       templateUrl: "partials/cyborg.jade"
       controller: "CyborgCtrl"
-    
+
     $routeProvider.otherwise redirectTo: "/"
 ]
