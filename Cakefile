@@ -25,8 +25,11 @@ dirs          =
   ]
 
 
+
 # ---
 # ANSI Terminal Colors/Styles
+reset = "\x1B[0m"
+
 styles =
   bold       : 1
   dim        : 2
@@ -34,8 +37,6 @@ styles =
   underlined : 4
   blink      : 5
   inverted   : 7
-
-reset = "\x1B[0m"
 
 colors =
   black         : 30
@@ -81,6 +82,13 @@ colorize = ( input, color, bg, style... ) ->
   str += "m"
 
   str+input+reset
+
+color = ( clr, input ) ->
+  if input?
+    "\x1B[" + colors[clr] + "m"+input+reset
+  else
+    "\x1B[" + colors[clr] + "m"
+
 
 # ---
 # various symbols
@@ -141,7 +149,7 @@ getCoffeeFiles = ->
 # #build( successCallback, failCallback )
 # >build CoffeeScript Files into .app directory
 build = ( callback ) ->
-  log "cooking coffee ...", blue
+  console.log color( "blue", "cooking coffee ...")
 
   options = ["-c","-b", "-o", ".app"].concat dirs.coffee
 
@@ -153,92 +161,73 @@ build = ( callback ) ->
 
   coffee.on "exit", ( status ) ->
     if status is 0
-      log "Coffee is ready, enjoy it!", green
+      console.log color("green", "Coffee is ready, enjoy it!")
       callback null
     else
-      log "Wasn't able to cook coffee: ", red
+      console.log color(
+        "red",
+        "Wasn't able to cook coffee :("
+      )
       callback status
-
-
-# ---
-# #lintSingleFile( data, config, callback )
-# >lint a single File, return result
-lintSingleFile = ( data, config, callback ) ->
-  results = linter.lint data, config
-
-  if results.length > 0
-    for result in results
-      if result.level is "warn"
-        console.log """
-          \t#{magenta}#{result.lineNumber}:#{reset} #{cyan}#{result.message}#{reset}
-        """
-      else if result.level is "error"
-        console.log """
-          \t#{magenta}#{result.lineNumber}:#{reset} #{red}#{result.message}#{reset}
-        """
-    callback results
-  else
-    callback null
-
-
 
 # ---
 # #lint( callback )
 # >lint all coffee files
 lint = ( callback ) ->
-  log "linting files ...", blue
+  console.log color("blue", "linting files ...")
 
-  coffeeFiles = getCoffeeFiles()
+  warnings = 0
+  errors   = 0
 
-  lintFuncs = []
+  # ---
+  # >>traverse all CoffeeScript files
+  for file in getCoffeeFiles()
+    # >>>lint each file
+    results = linter.lint fs.readFileSync(file).toString(), lintConfig
 
-  for file in coffeeFiles
-    do (file) ->
-      lintFuncs.push (cbInner) ->
-        console.log """
-          #{cyan}linting... #{reset}#{gray}#{file}
-        """
-        fs.readFile file, (err, data) ->
-          cbInner(err) if err
-          lintSingleFile data.toString(), lintConfig, (result) ->
-            cbInner null, result
+    # >>>if errors/warnings, print them
+    if results.length > 0
+      console.log color("red", "\t"+
+        symbol("false"))+
+        " "+
+        color("light_gray", file)
+
+      for result in results
+        if result.level is "warn"
+          ++warnings
+          console.log "\t\t"+
+            color("magenta" , result.lineNumber)+
+            ": "+
+            color("yellow", result.message)
+
+        else if result.level is "error"
+          ++errors
+          console.log "\t\t#{color("magenta", result.lineNumber)}: "+
+            "#{color("red", result.message)}"
+
+    else
+      console.log color("green", "\t"+symbol("true"))+" "+color("light_gray", file)
+
+  # >> print results
+  if errors > 0 or warnings > 0
+    console.log "\n\r\tresult: "+
+      color("yellow", symbol("warning")+" "+warnings+" warning(s)")+
+      ", "+
+      color("red", symbol("false")+" "+errors+" error(s)")+
+      "\n\r"
+
+    console.log color("red", "the coffee beans look like mud :(\n\r")
+    callback "error"
+  else
+    console.log color("green", "this coffee beans are high quality shit :)\n\r")
+    callback null
 
 
-  #then lint each file
-  async.series lintFuncs, (err, result) ->
-    # warnings, errors
-    warnings = 0
-    errors   = 0
-    for lint_result in result
-      continue if lint_result is undefined or lint_result is null
-      for single_result in lint_result
-        warnings +=1 if single_result.level is "warn"
-        errors   +=1 if single_result.level is "error"
-    callback
-      "warnings": warnings
-      "errors":   errors
 
 taskBuild = ->
-  lint (result) ->
-    if result.errors > 0 or result.warnings > 0
-      console.log """
-        \n\rresult:
-        \t#{cyan}#{symbol("warning")}#{result.warnings}#{reset},
-        \t#{red}#{symbold("error")}#{result.errors} errors
-
-      """
-      log "the coffee beans look like mud :(\n\r", red
-    else
-      log "this coffee beans are high quality shit :)\n\r", green
-
-      build(
-        # build was successful
-        ->
-          log ":)", green
-        ,
-        # build failed
-        (err) -> log err + " :(", red
-      )
+  lint (err) ->
+    if !err?
+      build (err) ->
 
 # ---
 # #Task _build_
@@ -246,16 +235,13 @@ taskBuild = ->
 task "build"
 , "compiles coffeescript files to javascript into the .app directory", taskBuild
 
+
 # ---
 # #Task _lint_
 # >lints all CoffeeScript files
 task "lint", "lints all coffeescript files", ->
-  lint (result)->
-    console.log """
-      \n\rresult:
-      \t#{cyan}#{symbol("warning", "bold")} #{result.warnings}#{reset},
-      \t#{red}#{symbol("false", "bold")} #{result.errors}
-    """
+  lint (err) ->
+
 
 
 # ---
@@ -304,8 +290,8 @@ task "dev", "run 'build' task, start dev env", ->
     if result.errors > 0 or result.warnings > 0
       console.log """
         \n\rresult:
-        \t#{cyan}#{result.warnings} warnings#{reset}, #{red}
-        \t#{result.errors} errors
+        \t#{color("magenta", result.warnings+" warnings")},
+        \t#{color("red", result.errors+" errors")}
 
       """
       log "the coffee beans look like mud :(\n\r", red
@@ -409,9 +395,10 @@ task "run", "run 'build' task, start production env", ->
   )
 
 task "test-frontend", "run frontend tests", ->
-
+  # karma --> jasmine --> phantomjs
 
 task "test-backend", "run backend tests", ->
+  # --> jasmine only
 
 task "test", "run all tests", ->
 
