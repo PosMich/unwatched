@@ -19,7 +19,7 @@ exports.route = (app) ->
   # > serve Angular App
   app.get "/", (req, res) ->
     debug.info "send index"
-    res.render "layout2.jade"
+    res.render "layout.jade"
 
   # ***
   # ### GET/POST/PUT/DELETE `/*`
