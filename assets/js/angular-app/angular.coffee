@@ -10,13 +10,17 @@ unwatchedApp = angular.module( "unwatched", [
 ])
 
 unwatchedApp.config [
-  "$routeProvider"
-  ($routeProvider) ->
-    $routeProvider.when("/index",
+  "$routeProvider", "$locationProvider"
+  ($routeProvider, $locationProvider) ->
+
+    $locationProvider.html5Mode true
+
+    $routeProvider.when "/index",
       templateUrl: "partials/index.jade"
       controller: "IndexCtrl"
-    ).when("/cyborg",
+    $routeProvider.when "/cyborg",
       templateUrl: "partials/cyborg.jade"
       controller: "CyborgCtrl"
-    ).otherwise redirectTo: "/"
+    
+    $routeProvider.otherwise redirectTo: "/"
 ]
