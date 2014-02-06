@@ -12,20 +12,19 @@
   },
   "dependencies": {
     "express": "latest",
-    "coffee-script": "latest",
-    "connect-assets": "latest",
+    "coffee-script": "~1.6.3",
+    "connect-assets": "~2.5.4",
     "stylus": "latest",
     "which": "latest",
     "wrench": "latest",
     "sty": "latest",
     "express-partials": "latest",
-    "async": "~0.2.9",
+    "async": "latest",
     "jade": "latest",
     "walk": "latest",
     "nib": "latest"
   },
   "devDependencies": {
-    "coffee-script": "latest",
     "supervisor": "latest",
     "groc": "latest",
     "node-inspector": "latest",

@@ -98,6 +98,8 @@ Userconfig
 > A <b>*`userconfig.coffe`*</b> file must be created, because sensible data is stored here, it isn't checked in into the version control system.
 
     module.exports =
+        appName: "AppName"
+        sessionSecret: "Seeecreet 64 bit long"
         
 
 
