@@ -392,7 +392,6 @@ task "run", "run 'build' task, start production env", ->
     if err
       log err, "red"
     else
-      console.log "asdf"
       try
         env = process.env
         env["NODE_ENV"] = "production"
