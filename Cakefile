@@ -394,10 +394,10 @@ task "run", "run 'build' task, start production env", ->
     else
       console.log "asdf"
       try
+        env = process.env
+        env["NODE_ENV"] = "production"
         # start app in production environment
-        cmd = spawn "node", ["app"],
-          env:
-            NODE_ENV: "production"
+        cmd = spawn "node", ["app"], env
         cmd.stdout.pipe process.stdout
         cmd.stderr.pipe process.stderr
         log "Running Server in production environment", "green"
