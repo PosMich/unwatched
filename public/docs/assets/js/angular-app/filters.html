@@ -2,7 +2,9 @@
 
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s">&quot;unwatched.filters&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">filter</span> <span class="s">&quot;interpolate&quot;</span><span class="p">,</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">filter</span> <span class="s">&quot;interpolate&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;version&quot;</span>
   <span class="nf">(version) -&gt;</span>
     <span class="nf">(text) -&gt;</span>
-      <span class="nb">String</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">replace</span> <span class="sr">/\%VERSION\%/g</span><span class="p">,</span> <span class="nx">version</span></div></div></div></div></body></html>
+      <span class="nb">String</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">replace</span> <span class="sr">/\%VERSION\%/g</span><span class="p">,</span> <span class="nx">version</span>
+<span class="p">]</span></div></div></div></div></body></html>

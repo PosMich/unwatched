@@ -1,13 +1,13 @@
 # ## Dependencies
 
-# ---
+# ***
 # ### packages
 # installed via `npm install`
 express  = require "express"
 assets   = require "connect-assets"
 stylus   = require "stylus"
 
-# ---
+# ***
 # ### own modules
 # located in same directory as the server.coffee file
 config    = require "./config"
@@ -16,7 +16,7 @@ debug     = require "./debug"
 routesAPI = require "./routes.api"
 routes    = require "./routes"
 
-# ---
+# ***
 # print unused exceptions
 process.on "uncaughtException", (err) ->
   debug.error "OMG :-S"
@@ -24,7 +24,7 @@ process.on "uncaughtException", (err) ->
 
 
 
-# ---
+# ***
 # ## Basic application initialization
 # Create server instance.
 server = express()
@@ -38,7 +38,7 @@ server.port =
 server.configure "production", "development", "testing", ->
   config.setEnvironment server.settings.env
 
-# ---
+# ***
 # ## View initialization
 server.use express.logger("dev")
 # Set the view engine to jade
@@ -78,7 +78,7 @@ server.use express.static(process.cwd() + "/public")
 server.use express.favicon( process.cwd() + "public/favicon.ico")
 
 
-# ---
+# ***
 # This function will pass the current url to the template object.
 # It allows us to use this value for the navbar.
 server.use (req, res, next) ->
@@ -102,7 +102,7 @@ routesAPI.route server, "/api"
 routes.route server
 
 
-# ---
+# ***
 # ## Server start
 server.start = ->
   # Start Server

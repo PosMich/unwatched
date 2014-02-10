@@ -104,11 +104,15 @@ sudo apt-get install nodejs
   <h2 id="coffee-script-docco">coffee-script, docco</h2>
 </blockquote>
 
-<pre><code>npm install -g coffee-script 
+<pre><code>npm install -g coffee-script
 npm install -g coffeelint
-npm install -g docco 
+npm install -g groc
 npm install -g node-inspector
 </code></pre>
+
+<blockquote>
+  <p>you have to change</p>
+</blockquote>
 
 <h1 id="install">Install</h1>
 
@@ -174,7 +178,7 @@ cake run                  # run 'build' task, start production env
     <blockquote>
       <p>In Development mode <a href="https://npmjs.org/package/supervisor">node-supervisor</a> is used to watch several folders for file changes (atm the file extensions <code>js</code> and <code>html</code> in the folders <code>.app</code> and <code>views</code>).</p>
       
-      <p>If one of the these files change (or the server crashes) the node inspector automatically restarts the app. </p>
+      <p>If one of the these files change (or the server crashes) the node inspector automatically restarts the app.</p>
     </blockquote>
     
     <h3 id="start-debug-environment">Start Debug Environment</h3>
@@ -260,7 +264,7 @@ cake run                  # run 'build' task, start production env
       <li>a remote Git Endpoint (private or public)</li>
       <li>a Github shorthand <code>someone/some-package</code> (is resolved to: <code>http://github.com/someone/some-package</code>)</li>
       <li>a local endpoint (i.e. a folder containing a local Git repository)</li>
-      <li>a URL to a file (zip and tar will automatically be extracted) </li>
+      <li>a URL to a file (zip and tar will automatically be extracted)</li>
       </ul>
     </blockquote>
   </blockquote>

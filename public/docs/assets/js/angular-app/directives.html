@@ -2,7 +2,9 @@
 
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.directives&quot;</span><span class="p">,</span> <span class="p">[]</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;appVersion&quot;</span><span class="p">,</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;appVersion&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;version&quot;</span>
   <span class="nf">(version) -&gt;</span>
     <span class="nf">(scope, elm, attrs) -&gt;</span>
-      <span class="nx">elm</span><span class="p">.</span><span class="nx">text</span> <span class="nx">version</span></div></div></div></div></body></html>
+      <span class="nx">elm</span><span class="p">.</span><span class="nx">text</span> <span class="nx">version</span>
+<span class="p">]</span></div></div></div></div></body></html>

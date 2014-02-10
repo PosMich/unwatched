@@ -14,7 +14,7 @@ describe "server", ->
 
       expect(error).toBeNull()
       done()
-  , 5000
+  , 10000
 
   it "should return statusCode 200", (done) ->
     expect(response.statusCode).toBe 200

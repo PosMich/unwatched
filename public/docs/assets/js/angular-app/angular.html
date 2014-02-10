@@ -2,9 +2,9 @@
 
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;ngRoute&quot;</span>
-  <span class="s">&quot;unwatched.filters&quot;</span>
   <span class="s">&quot;unwatched.services&quot;</span>
   <span class="s">&quot;unwatched.directives&quot;</span>
+  <span class="s">&quot;unwatched.filters&quot;</span>
   <span class="s">&quot;unwatched.controllers&quot;</span>
   <span class="s">&quot;ui.bootstrap&quot;</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
@@ -48,17 +48,6 @@
 </blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/cyborg&quot;</span><span class="p">,</span>
       <span class="nv">templateUrl: </span><span class="s">&quot;partials/cyborg.jade&quot;</span>
       <span class="nv">controller: </span><span class="s">&quot;CyborgCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
-
-<p><ul>
-<li><h3>route <code>/docs</code></h3></p>
-
-<blockquote>
-  <p>Documentation
-  redirect to <strong><em>/docs</em></strong> and let express return the docs</li>
-  </ul></p>
-</blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/docs&quot;</span><span class="p">,</span> <span class="nf">($location) -&gt;</span>
-      <span class="nx">$location</span><span class="p">.</span><span class="nx">path</span> <span class="s">&quot;/docs&quot;</span>
-      <span class="nx">$location</span><span class="p">.</span><span class="nx">replace</span><span class="p">()</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
 <li><h3>route <code>/</code></h3></p>

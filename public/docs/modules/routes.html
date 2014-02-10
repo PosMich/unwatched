@@ -4,15 +4,15 @@
     <span class="nx">debug</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;send partial with name &quot;</span> <span class="o">+</span> <span class="nx">name</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">render</span> <span class="s">&quot;partials/&quot;</span> <span class="o">+</span> <span class="nx">name</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
-<h3 id="get">GET <code>/</code></h3>
+<h3 id="get">GET <code>*</code></h3>
 
 <blockquote>
   <p>serve Angular App</p>
-</blockquote></div></div><div class="code"><div class="wrapper">  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;/&quot;</span><span class="p">,</span> <span class="nf">(req, res) -&gt;</span>
+</blockquote></div></div><div class="code"><div class="wrapper">  <span class="nx">app</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;*&quot;</span><span class="p">,</span> <span class="nf">(req, res) -&gt;</span>
     <span class="nx">debug</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;send index&quot;</span>
     <span class="nx">res</span><span class="p">.</span><span class="nx">render</span> <span class="s">&quot;layout.jade&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
-<h3 id="getpostputdelete">GET/POST/PUT/DELETE <code>/*</code></h3>
+<h3 id="postputdelete">POST/PUT/DELETE <code>*</code></h3>
 
 <blockquote>
   <p>Not Found</p>

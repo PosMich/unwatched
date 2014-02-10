@@ -77,12 +77,12 @@ Prerequisites
 
 > ## coffee-script, docco
 
-    npm install -g coffee-script 
+    npm install -g coffee-script
     npm install -g coffeelint
-    npm install -g docco 
+    npm install -g groc
     npm install -g node-inspector
 
-
+> you have to change
 
 
 Install
@@ -100,7 +100,7 @@ Userconfig
     module.exports =
         appName: "AppName"
         sessionSecret: "Seeecreet 64 bit long"
-        
+
 
 
 Run
@@ -141,7 +141,7 @@ Build
 
 >>> In Development mode [node-supervisor](https://npmjs.org/package/supervisor) is used to watch several folders for file changes (atm the file extensions `js` and `html` in the folders `.app` and `views`).
 
->>> If one of the these files change (or the server crashes) the node inspector automatically restarts the app. 
+>>> If one of the these files change (or the server crashes) the node inspector automatically restarts the app.
 
 >> ### Start Debug Environment
 
@@ -194,7 +194,7 @@ Future?
 >>> * a remote Git Endpoint (private or public)
 >>> * a Github shorthand `someone/some-package` (is resolved to: `http://github.com/someone/some-package`)
 >>> * a local endpoint (i.e. a folder containing a local Git repository)
->>> * a URL to a file (zip and tar will automatically be extracted) 
+>>> * a URL to a file (zip and tar will automatically be extracted)
 
 
 > ## CI
