@@ -28,11 +28,10 @@
     "supervisor": "latest",
     "groc": "latest",
     "node-inspector": "latest",
-    "coffeelint": "latest",
-    "pty.js": "latest",
     "karma": "latest",
     "karma-ng-scenario": "latest",
-    "jasmine-node": "latest"
+    "jasmine-node": "latest",
+    "request": "latest"
   },
   "engines": {
     "node": "~0.10.x",

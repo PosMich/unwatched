@@ -31,7 +31,7 @@ server = express()
 
 # Define Port
 server.port =
-  process.env.PORT or process.env.VMC_APP_PORT or config.PORT or 3000
+  process.env.PORT or process.env.VMC_APP_PORT or config.port or 3000
 
 # Config module exports has `setEnvironment` function that sets server settings
 # depending on environment.

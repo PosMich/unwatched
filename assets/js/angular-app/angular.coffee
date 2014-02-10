@@ -5,9 +5,9 @@
 
 app = angular.module "unwatched", [
   "ngRoute"
-  "unwatched.filters"
   "unwatched.services"
   "unwatched.directives"
+  "unwatched.filters"
   "unwatched.controllers"
   "ui.bootstrap"
 ]

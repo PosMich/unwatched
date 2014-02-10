@@ -1,33 +1,26 @@
-fs            = require "fs"
+# # requires
+
 wrench        = require "wrench"
-{print}       = require "util"
 which         = require "which"
 {spawn, exec} = require "child_process"
-pty           = require "pty.js"
-linter        = require "coffeelint"
-async         = require "async"
 
-lintConfig    = require "./coffeelint.json"
-
-{error, warn, info, infoSuccess, infoFail} = require "./modules/debug"
-
+# # config
 debug_port    = 8989
+env           = process.env
 dirs          =
   "coffee": [
     "./modules"
     "./assets/js"
-  ],
+  ]
   "css": [
     "./assets/css"
-  ],
+  ]
   "views": [
     "./views"
   ]
 
 
-
-# ---
-# ANSI Terminal Colors/Styles
+# # ANSI Terminal Colors/Styles
 reset = "\x1B[0m"
 
 styles =
@@ -73,6 +66,36 @@ backgrounds =
   light_cyan     : 106
   light_gray     : 47
 
+
+g  = reset+"\x1B[#{backgrounds.black};#{colors.green}m"
+lg = reset+"\x1B[#{backgrounds.black};#{colors.light_green}m"
+header = """
+
+
+
+
+██╗   ██╗███╗   ██╗██╗    ██╗ █████╗ ████████╗ ██████╗██╗  ██╗███████╗██████╗
+██║   ██║████╗  ██║██║    ██║██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔══██╗
+██║   ██║██╔██╗ ██║██║ █╗ ██║███████║   ██║   ██║     ███████║█████╗  ██║  ██║
+██║   ██║██║╚██╗██║██║███╗██║██╔══██║   ██║   ██║     ██╔══██║██╔══╝  ██║  ██║
+╚██████╔╝██║ ╚████║╚███╔███╔╝██║  ██║   ██║   ╚██████╗██║  ██║███████╗██████╔╝
+ ╚═════╝ ╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝
+#{reset}\x1B[#{backgrounds.black};#{colors.light_blue}m
+                                                  - pretty close collaboration
+#{reset}
+
+
+"""
+
+header = header.replace /█/g, "#{reset}\x1B[#{backgrounds.black};#{colors.green}m█#{reset}"
+for char in ["╗","╝","║","═","╔","╚"]
+  header = header.replace new RegExp(char, "g"), "#{reset}\x1B[#{backgrounds.black};#{colors.light_blue}m#{char}#{reset}"
+
+#header = header.replace  /╗╝║═╔╚/g,
+
+console.log header
+
+
 colorize = ( input, color, bg, style... ) ->
   str = "\x1B["
   for sty in style
@@ -97,7 +120,7 @@ symbol = (sym, option) ->
     when "true"                 #   ✔         #   ✓
       if option is "bold" then "\u2714" else "\u2713"
     when "false"                #   ✗         #   ✘
-      if option is "bold" then "\u2717" else "\u2718"
+      if option is "bold" then "\u2718" else "\u2717"
     when "warning"   then "\u26A1" # ⚡
     when "box"
       switch option
@@ -147,80 +170,91 @@ getCoffeeFiles = ->
   return coffeeFiles
 
 
-# ---
-# # build( successCallback, failCallback )
+# ***
+# # Run( command, options, env, properties )
+# > spawns a command
+# > `command` &rarr; command name
+# > `options` &rarr; options array
+# > `env` &rarr; additional environment vars
+# > `properties` &rarr; json containing:
+# >> `pipeStdOut` &rarr; Boolean, set to false if _stdout_ should be emitted
+# >> `pipeStdErr` &rarr; Boolean, set to false if _stderr_ should be emitted
+EventEmitter = require('events').EventEmitter
+class Run extends EventEmitter
+  constructor: (command, options, env, properties) ->
+    @env        = process.env
+    @properties =
+      pipeStdOut: true
+      pipeStdErr: true
+
+    @env[attr]        = val for attr, val of env
+    @properties[attr] = val for attr, val of properties
+
+    try
+      @app = spawn which.sync(command), options, env
+
+      if @properties.pipeStdOut
+        @app.stdout.pipe process.stdout
+      else
+        @app.stdout.on "data", (data) =>
+          @.emit "stdout", data
+
+      if @properties.pipeStdErr
+        @app.stderr.pipe process.stderr
+      else
+        @app.stderr.on "data", (data) =>
+          @.emit "stderr", data
+
+      @app.on "exit", (args...)=>
+        @.emit "exit", args
+
+    catch err
+      log err, "red"
+      log command+" not installed?", "magenta"
+
+
+# ***
+# # build( callback )
 # > build CoffeeScript Files into .app directory
 build = ( callback ) ->
   log "cooking coffee ...", "blue"
 
   options = ["-c","-b", "-o", ".app"].concat dirs.coffee
 
-  try
-    cmd = which.sync "coffee"
+  coffee = new Run "coffee", options
+  coffee.on "exit", (args) ->
+    if args[0] is 0
+      log "Coffee is ready, enjoy it!\n", "green"
+      callback null
+    else
+      log "Wasn't able to cook coffee :(\n", "red"
+      callback args[0]
 
-    coffee = spawn cmd, options
-    coffee.stdout.pipe process.stdout
-    coffee.stderr.pipe process.stderr
-
-    coffee.on "exit", ( status ) ->
-      if status is 0
-        log "Coffee is ready, enjoy it!\n", "green"
-        callback null
-      else
-        log "Wasn't able to cook coffee :(\n", "red"
-        callback status
-  catch err
-    log err.message, "red"
-    log "Groc is not installed - try npm install -g groc", "red"
-
-# ---
+# ***
 # # lint( callback )
 # > lint all coffee files
-lint = ( callback ) ->
+lint = (callback) ->
   log "linting files ...", "blue"
 
-  warnings = 0
-  errors   = 0
+  opts = ["-f", "coffeelint.json"].concat dirs.coffee
 
-  # ---
-  # >> traverse all CoffeeScript files
-  for file in getCoffeeFiles()
-    # >>>lint each file
-    results = linter.lint fs.readFileSync(file).toString(), lintConfig
+  linter = new Run "coffeelint", opts, null,
+    pipeStdOut: false
 
-    # >>> if errors/warnings, print them
-    if results.length > 0
-      log "\t"+symbol("false")+" "+color("light_gray", file), "red"
+  #  pipeStdErr: false
 
-      for result in results
-        if result.level is "warn"
-          ++warnings
-          log "\t\t"+result.lineNumber+": "+
-            color("yellow", result.message), "magenta"
+  linter.on "stdout", (data) ->
+    str = data.toString()
+    str = str.replace(new RegExp(symbol("true"), "g"), color("green", symbol("true")))
+    str = str.replace(new RegExp(symbol("false"), "g"), color("red", symbol("false")))
+    console.log str
 
-        else if result.level is "error"
-          ++errors
-          log "\t\t"+result.lineNumber+": "+
-            color("red", result.message), "magenta"
+  linter.on "exit", (args) ->
+    callback args[0]
 
-    else
-      log "\t"+symbol("true")+" "+color("light_gray", file), "green"
-
-  # >> print results
-  if errors > 0 or warnings > 0
-    console.log "\n\r\tresult: "+
-      color("yellow", symbol("warning")+" "+warnings+" warning(s)")+
-      ", "+
-      color("red", symbol("false")+" "+errors+" error(s)")+
-      "\n\r"
-
-    log "the coffee beans look like mud :(\n\r", "red"
-    callback "error"
-  else
-    log "this coffee beans are high quality shit :)\n\r", "green"
-    callback null
-
-
+# ***
+# # buildTask( callback )
+# > lints and builds all coffee files
 buildTask = (callback) ->
   lint (err) ->
     if err
@@ -229,7 +263,7 @@ buildTask = (callback) ->
       build (err) ->
         callback err
 
-# ---
+# ***
 # # Task _build_
 # > Compiles app.coffee and src directory to the .app directory
 task "build"
@@ -238,7 +272,7 @@ task "build"
     if err
       log err, "red"
 
-# ---
+# ***
 # # Task _lint_
 # > lints all CoffeeScript files
 task "lint", "lints all coffeescript files", ->
@@ -248,7 +282,7 @@ task "lint", "lints all coffeescript files", ->
 
 
 
-# ---
+# ***
 # # Task _docs_
 # > generates annotated source code with Docco and move it to public dir
 task "docs"
@@ -270,8 +304,14 @@ task "docs"
       # generate docs
       try
         log "\n\ngenerating docs ...", "light_blue"
+
+        #groc = new Run "groc", coffeeFiles
+
         cmd = which.sync "groc"
-        groc = spawn cmd, coffeeFiles
+
+        console.log cmd
+
+        groc = spawn cmd, coffeeFiles #, env
 
         # pipe stdout & stderr to process
         groc.stdout.pipe process.stdout
@@ -294,7 +334,7 @@ task "dev", "run 'build' task, start dev env", ->
       # watch coffee files, automatically compile them
       options = ["-c", "-b", "-w", "-o", ".app", "modules"]
       cmd = which.sync "coffee"
-      coffee = spawn cmd, options
+      coffee = spawn cmd, options, env
       coffee.stdout.pipe process.stdout
       coffee.stderr.pipe process.stderr
 
@@ -304,13 +344,13 @@ task "dev", "run 'build' task, start dev env", ->
       setTimeout ->
         try
           supervisor = spawn "node", [
-            "./node_modules/supervisor/lib/cli-wrapper.js",
-            "-w",
-            ".app,views",
-            "-e",
-            "js|html",
+            "./node_modules/supervisor/lib/cli-wrapper.js"
+            "-w"
+            ".app,views"
+            "-e"
+            "js|html"
             "app"
-          ]
+          ], env
           supervisor.stdout.pipe process.stdout
           supervisor.stderr.pipe process.stderr
           log "Watching js files and running server", "green"
@@ -346,14 +386,14 @@ task "debug", "run 'build' task, start debug env", ->
         try
           # run debug mode
           app = spawn "node", [
-            "--debug",
+            "--debug"
             "app"
-          ]
+          ], env
           app.stdout.pipe process.stdout
           app.stderr.pipe process.stderr
 
           # run node-inspector
-          inspector = spawn "node-inspector", ["--web-port=" + debug_port]
+          inspector = spawn "node-inspector", ["--web-port=" + debug_port], env
           inspector.stdout.pipe process.stdout
           inspector.stderr.pipe process.stderr
         catch err
@@ -393,7 +433,6 @@ task "run", "run 'build' task, start production env", ->
       log err, "red"
     else
       try
-        env = process.env
         env["NODE_ENV"] = "production"
         # start app in production environment
         cmd = spawn "node", ["app"], env
@@ -409,6 +448,41 @@ task "test-frontend", "run frontend tests", ->
 
 task "test-backend", "run backend tests", ->
   # --> jasmine only
+  buildTask (err) ->
+    if err
+      log err, "red"
+    else
+      try
+        env["NODE_ENV"] = "production"
+        app = spawn "node", ["app"], env
+        app.stdout.on "data", (chunk) ->
+
+          if chunk.toString().match "Press CTRL-C to stop server"
+            app.stdout.removeAllListeners "data"
+            try
+              jasmine = spawn "jasmine-node", [
+                "--coffee"
+                "spec/backend"
+                "--verbose"
+                "--color"
+                "--forceexit"
+              ], env
+
+              jasmine.stdout.pipe process.stdout
+              jasmine.stderr.pipe process.stderr
+
+              jasmine.on "exit", ->
+                app.kill()
+            catch err
+              log err.message, "red"
+              log "jasmine-node not installed?", "red"
+
+      catch err
+        log err.message, "red"
+        log "problem when starting server"
+
+
 
 task "test", "run all tests", ->
+
 

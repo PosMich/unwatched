@@ -6,8 +6,7 @@ userconfig = require "../userconfig"
 
 config = {}
 
-config.sessionSecret = userconfig.sessionSecret
-config.appName       = userconfig.appName
+config[prop] = value for prop,value of userconfig
 
 config.DEBUG_LOG = true
 config.DEBUG_WARN = true

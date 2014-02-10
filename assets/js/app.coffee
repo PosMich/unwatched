@@ -9,9 +9,9 @@
 #= require lib/angular-route.js
 
 #= require angular-app/controllers
-#= require angular-app/directives
 #= require angular-app/filters
 #= require angular-app/services
+#= require angular-app/directives
 #= require angular-app/angular
 #= require lib/ui-bootstrap-tpls-0.10.0.js
 
