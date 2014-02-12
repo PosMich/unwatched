@@ -13,7 +13,7 @@ app = angular.module "unwatched", [
 ]
 
 # ***
-# # Config
+# ## Config
 # > contains routing stuff only (atm)
 # >
 # > see
@@ -22,12 +22,14 @@ app = angular.module "unwatched", [
 app.config [
   "$routeProvider"
   "$locationProvider"
-  ($routeProvider, $locationProvider) ->
+  "RTCProvider"
+  ($routeProvider, $locationProvider, RTCProvider) ->
+    RTCProvider.setName "Alibert"
 
     $locationProvider.html5Mode true
     $locationProvider.hashPrefix "!"
 
-    # # Routes
+    # ### Routes
 
     # ***
     # * <h3>route `/index`</h3>

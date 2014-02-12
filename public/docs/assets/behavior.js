@@ -354,7 +354,29 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                         "slug": "unwatched-angular-app",
                         "isFileHeader": true
                       },
-                      "depth": 1
+                      "depth": 1,
+                      "children": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "Config",
+                            "slug": "config"
+                          },
+                          "depth": 2,
+                          "children": [
+                            {
+                              "type": "heading",
+                              "data": {
+                                "level": 3,
+                                "title": "Routes",
+                                "slug": "routes"
+                              },
+                              "depth": 3
+                            }
+                          ]
+                        }
+                      ]
                     },
                     "title": "Unwatched - Angular App"
                   },
@@ -363,19 +385,22 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     {
                       "type": "heading",
                       "data": {
-                        "level": 1,
+                        "level": 2,
                         "title": "Config",
                         "slug": "config"
                       },
-                      "depth": 1
-                    }, {
-                      "type": "heading",
-                      "data": {
-                        "level": 1,
-                        "title": "Routes",
-                        "slug": "routes"
-                      },
-                      "depth": 1
+                      "depth": 2,
+                      "children": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 3,
+                            "title": "Routes",
+                            "slug": "routes"
+                          },
+                          "depth": 3
+                        }
+                      ]
                     }
                   ]
                 }, {
@@ -403,12 +428,33 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                         "slug": "unwatched-angular-controllers",
                         "isFileHeader": true
                       },
-                      "depth": 1
+                      "depth": 1,
+                      "children": [
+                        {
+                          "type": "heading",
+                          "data": {
+                            "level": 2,
+                            "title": "Config",
+                            "slug": "config"
+                          },
+                          "depth": 2
+                        }
+                      ]
                     },
                     "title": "Unwatched - Angular Controllers"
                   },
                   "depth": 4,
-                  "outline": []
+                  "outline": [
+                    {
+                      "type": "heading",
+                      "data": {
+                        "level": 2,
+                        "title": "Config",
+                        "slug": "config"
+                      },
+                      "depth": 2
+                    }
+                  ]
                 }, {
                   "type": "file",
                   "data": {

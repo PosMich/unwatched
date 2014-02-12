@@ -3,6 +3,20 @@
 
 "use strict"
 
-app = angular.module "unwatched.services", []
+class RTConnection
+  constructor: ->
+    console.log "BLAAAA!"
+    @.name = "asdf"
+  setName: (name) ->
+    console.log "blubb"
+    @.name = name
+  $get: ->
+    logName: =>
+      console.log "Hello " + @.name
+    setName: (name) =>
+      @.name = name
 
+
+app = angular.module "unwatched.services", []
+app.provider "RTC", RTConnection
 app.value "version", "0.1"

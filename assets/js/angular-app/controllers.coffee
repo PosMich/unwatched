@@ -11,10 +11,22 @@ app.controller "IndexCtrl", ->
 app.controller "CyborgCtrl",  ->
   console.log "cyborg ctrl here"
 
+# ***
+# ## Config
+# > contains routing stuff only (atm)
+# >
+# > see
+# > [angular docs](http://docs.angularjs.org/guide/dev_guide.services.$location)
+# > for $locationProvider details
 app.controller "NavCtrl", [
   "$scope"
   "$modal"
-  ($scope, $modal) ->
+  "RTC"
+  ($scope, $modal, RTCProvider) ->
+    console.log RTCProvider
+    RTCProvider.logName()
+    RTCProvider.setName "Friedrich"
+    RTCProvider.logName()
 
     $scope.open = ->
       modalInstance = $modal.open(
@@ -27,7 +39,9 @@ app.controller "NavCtrl", [
 app.controller "SignupCtrl", [
   "$scope"
   "$modalInstance"
-  ($scope, $modalInstance) ->
+  "RTC"
+  ($scope, $modalInstance, RTCProvider) ->
+    RTCProvider.logName()
     $scope.ok = ->
       $modalInstance.close
 
