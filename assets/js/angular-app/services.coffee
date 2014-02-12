@@ -18,5 +18,5 @@ class RTCProvider
 
 
 app = angular.module "unwatched.services", []
-app.provider "RTC", RTConnection
+app.provider "RTC", RTCProvider
 app.value "version", "0.1"
