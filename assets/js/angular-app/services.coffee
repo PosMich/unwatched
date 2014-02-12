@@ -3,7 +3,7 @@
 
 "use strict"
 
-class RTConnection
+class RTCProvider
   constructor: ->
     console.log "BLAAAA!"
     @.name = "asdf"
