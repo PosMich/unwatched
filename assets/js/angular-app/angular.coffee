@@ -36,7 +36,7 @@ app.config [
     # > this is the `/index` route
     # >
     # > load IndexCtrl
-    $routeProvider.when "/index",
+    $routeProvider.when "/",
       templateUrl: "partials/index.jade"
       controller: "IndexCtrl"
 
@@ -45,9 +45,9 @@ app.config [
     # > bla bla route to rule them all
     # >
     # > load CyborgCtrl
-    $routeProvider.when "/cyborg",
-      templateUrl: "partials/cyborg.jade"
-      controller: "CyborgCtrl"
+    $routeProvider.when "/spacelab",
+      templateUrl: "partials/spacelab.jade"
+      controller: "SpacelabCtrl"
 
     # ***
     # * <h3>route `/`</h3>
