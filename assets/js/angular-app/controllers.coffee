@@ -8,8 +8,8 @@ app = angular.module "unwatched.controllers", []
 app.controller "IndexCtrl", ->
   console.log "index ctrl here"
 
-app.controller "CyborgCtrl",  ->
-  console.log "cyborg ctrl here"
+app.controller "SpacelabCtrl",  ->
+  console.log "spacelab ctrl here"
 
 # ***
 # ## Config

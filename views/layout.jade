@@ -18,27 +18,21 @@ html(ng-app="unwatched")
         #navbar-main.navbar-collapse.collapse.navbar-inverse-collapse
           ul.nav.navbar-nav
             li
-              a(href="cyborg") Cyborg
-            li
-              a(href="index") Index
-            li
-              a(href="#") Menu 3
+              a(href="spacelab") Spacelab
 
           ul.nav.navbar-nav.navbar-right
             li
-              a(ng-click="open()") Sign Up/In
+              a(href="#") Tutorial
             li
-              a(href="http://expressjs.com/" target="_blank") Express
+              a(href="#") About  
             li
-              a(href="http://jade-lang.com/" target="_blank") Jade
-            li
-              a(href="http://learnboost.github.io/stylus/" target="_blank") Stylus
+              a(href="#" ng-click="open()") Login
             li
               a(href="/docs" target="_self") Documentation
 
-
     .container
       div(ng-view)
+
     .footer
       center v
         span(app-version)
