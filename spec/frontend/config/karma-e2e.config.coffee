@@ -15,11 +15,11 @@ module.exports = (config) ->
 
     # list of files / patterns to load in the browser
     files: [
-      'test/e2e/*.coffee'
+      'e2e/*.coffee'
     ]
 
     # enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false
+    autoWatch: true
 
     # Start these browsers, currently available:
     # - Chrome
@@ -29,18 +29,18 @@ module.exports = (config) ->
     # - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     # - PhantomJS
     # - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome']
+    browsers: ['PhantomJS']
 
     # frameworks to use
     frameworks: ['ng-scenario']
 
-    singleRun: true
+    singleRun: false
 
     proxies:
       '/': 'http://localhost:3000/'
 
     plugins: [
-      'karma-chrome-launcher',
+      'karma-phantomjs-launcher',
       'karma-jasmine',
       'karma-ng-scenario'
       'karma-coffee-preprocessor'

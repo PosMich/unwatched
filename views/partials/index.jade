@@ -5,20 +5,20 @@
       p.lead Pretty Close Collaboration
 
       .well.well-lg.col-sm-8.col-sm-offset-2.col-lg-6.col-lg-offset-3
-        form.form-horizontal(name="createRoom", novalidate)
+        form#createRoom.form-horizontal(name="createRoom", novalidate)
           .form-group(ng-class="{'has-error' : false}")
             label.col-sm-5.control-label(for='inputRoomname') Room-Name
             .col-sm-7
               input#inputRoomname.form-control(type='text', ng-model="room.name", 
                 name="roomname", placeholder='Room-Name', required)
           .form-group
-            label.col-sm-5.control-label(for='roomPassword') Room-Password
+            label.col-sm-5.control-label(for='inputRoomPassword') Room-Password
             .col-sm-7
-              input#roomPassword.form-control(type='password', 
+              input#inputRoomPassword.form-control(type='password', 
                 ng-model="room.password", placeholder='Room-Password', required)
           .row
             .col-sm-12
-              a.btn.btn-lg.btn-primary(ng-click="createRoom()" 
+              a#submitCreateRoom.btn.btn-lg.btn-primary(ng-click="createRoom()" 
                 ng-disabled="createRoom.$invalid") Create Room
 
   .row
@@ -33,20 +33,20 @@
           img(src="http://placehold.it/120x120")
         .col-xs-8
           p.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 
-            voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet 
-            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
-            amet.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
+            erat, sed diam voluptua. At vero eos et accusam et justo duo 
+            dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+            sanctus est Lorem ipsum dolor sit amet.
       .row
         h3.text-center Benefit #2
         .col-xs-8
           p.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 
-            voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet 
-            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
-            amet.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
+            erat, sed diam voluptua. At vero eos et accusam et justo duo 
+            dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+            sanctus est Lorem ipsum dolor sit amet.
         .col-xs-4
           img(src="http://placehold.it/120x120")
       .row
@@ -55,8 +55,8 @@
           img(src="http://placehold.it/120x120")
         .col-xs-8
           p.
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
-            eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam 
-            voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet 
-            clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit 
-            amet.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam 
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam 
+            erat, sed diam voluptua. At vero eos et accusam et justo duo 
+            dolores et ea rebum. Stet clita kasd gubergren, no sea takimata 
+            sanctus est Lorem ipsum dolor sit amet.
