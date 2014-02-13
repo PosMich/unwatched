@@ -445,8 +445,7 @@ task "run", "run 'build' task, start production env", ->
         log err.message, "red"
         log "node not installed?", "red"
 
-task "test-frontend", "run frontend tests", ->
-  # karma --> jasmine --> phantomjs
+
 
 task "test-backend", "run backend tests", ->
   # --> jasmine only
@@ -482,6 +481,12 @@ task "test-backend", "run backend tests", ->
       catch err
         log err.message, "red"
         log "problem when starting server"
+
+
+
+task "test-frontend", "run frontend tests", ->
+  # karma --> jasmine --> phantomjs
+
 
 
 task "test", "run all tests", ->

@@ -3,7 +3,7 @@
 
 "use strict"
 
-class RTConnection
+class RTCProvider
   constructor: ->
     console.log "BLAAAA!"
     @.name = "asdf"
@@ -18,5 +18,5 @@ class RTConnection
 
 
 app = angular.module "unwatched.services", []
-app.provider "RTC", RTConnection
+app.provider "RTC", RTCProvider
 app.value "version", "0.1"
