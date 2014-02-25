@@ -60,14 +60,6 @@ describe "Unwatched App Index Page - ", ->
         it "should recognize a wrong password confirmation", ->
           input("user.password").enter "lorem"
           input("user.passwordConfirm").enter "ipsum"
-
-          keyboardEvent = document.createEvent = "keyboardEvent"
-          initMethod = (if typeof keyboardEvent.initKeyboardEvent isnt "undefined" then "initKeyboardEvent" else "initKeyEvent")
-
-          keyboardEvent[initMethod] "keydown", true, true, window, false, false, false, false, 40, 0 # charCodeArgs : unsigned long the Unicode character associated with the depressed key, else 0
-
-          element("#inputPasswordConfirm").dispatchEvent(keyboardEvent)
-
           expect(element("#inputPasswordConfirm.ng-invalid-input-match").count()).toBe 1
 
       it "should recognize valid input and enable the submit button", ->
