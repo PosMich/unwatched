@@ -8,18 +8,23 @@
         .col-sm-6
           input#inputEmail.form-control(type='email', ng-model="user.email", 
             name="email", placeholder='Email', required)
-      .form-group
+
+      .form-group(ng-class="{'has-error' : signup.password.$error.minlength}")
         label.col-sm-4.control-label(for='inputPassword') Password
         .col-sm-6
-          input#inputPassword.form-control(type='password', 
-            ng-model="user.password", placeholder='Password', required)
-      .form-group
+          input#inputPassword.form-control(type='password', ng-minlength="5",
+            name="password", ng-model="user.password", placeholder='Password', 
+            required)
+
+      .form-group(ng-class="{'has-error' : signup.passwordConfirm.$error.minlength || signup.passwordConfirm.$error.inputMatch}")
         label.col-sm-4.control-label(for='inputConfirmPassword') Confirm Password
         .col-sm-6
-          input#inputConfirmPassword.form-control(type='password', 
+          input#inputPasswordConfirm.form-control(type='password', 
+            name="passwordConfirm", ng-minlength="5", input-match="inputPassword"
             ng-model="user.passwordConfirm", placeholder='Confirm Password', 
             required) 
 
 .modal-footer
-  button.btn.btn-success(ng-click="ok()" ng-disabled="signup.$invalid") OK
-  button.btn.btn-default(ng-click="cancel()") Cancel
+  span.
+  button#submit-login.btn.btn-success(ng-click="ok()" ng-disabled="signup.$invalid") OK
+  button#close-login.btn.btn-default(ng-click="cancel()") Cancel
