@@ -23,17 +23,15 @@ describe "Unwatched App Index Page - ", ->
       element("#close-login").click()
       expect(element("body").attr("class")).toBe ""
 
-    describe "Login Form - ", ->
+    describe "Login/Signup Form - ", ->
 
       beforeEach ->
         browser().navigateTo "/"
         element("#open-login").click()
 
-      it "should contain the empty input-fields 'user.email', 'user.password' 
-            and 'user.passwordConfirm'", ->
+      it "should contain the empty input-fields 'user.email' and 'user.password'", ->
         expect(input("user.email").val()).toBe ""
         expect(input("user.password").val()).toBe ""
-        expect(input("user.passwordConfirm").val()).toBe ""
 
       it "should contain a disabled submit button", ->
         expect(element("#submit-login").attr("disabled")).toBe "disabled"
@@ -43,30 +41,84 @@ describe "Unwatched App Index Page - ", ->
         beforeEach ->
           input("user.email").enter ""
           input("user.password").enter ""
-          input("user.passwordConfirm").enter ""
 
-        it "should recognize an invalid email adress", ->
-          input("user.email").enter "invalid-email-adress"
+        it "should recognize an invalid email address", ->
+          input("user.email").enter "invalid-email-address"
           expect(element("#inputEmail.ng-invalid-email").count()).toBe 1
 
         it "should recognize invalid/too short password - min 5 chars", ->
           input("user.password").enter "lore"
           expect(element("#inputPassword.ng-invalid-minlength").count()).toBe 1
 
-        it "should recognize invalid/too short password confirmation - min 5 chars", ->
-          input("user.passwordConfirm").enter "lore"
-          expect(element("#inputPasswordConfirm.ng-invalid-minlength").count()).toBe 1
-
-        it "should recognize a wrong password confirmation", ->
-          input("user.password").enter "lorem"
-          input("user.passwordConfirm").enter "ipsum"
-          expect(element("#inputPasswordConfirm.ng-invalid-input-match").count()).toBe 1
-
       it "should recognize valid input and enable the submit button", ->
         input("user.email").enter "lorem@ipsum.org"
         input("user.password").enter "lorem"
-        input("user.passwordConfirm").enter "lorem"
         expect(element("#submit-login").attr("disabled")).toBe undefined
+
+      it "should toggle sign up fields on 'Not yet/Allready registered?'", ->
+        element("#toggle-signup-form").click()
+        expect(element("#signup-fields-container.collapsing").count()).toBe 1
+        element("#toggle-signup-form").click()
+        expect(element("#signup-fields-container.collapse.in").count()).toBe 0
+
+      it "should accept correct input after toggling", ->
+        input("user.email").enter "lorem@ipsum.org"
+        input("user.password").enter "lorem"
+        expect(element("#submit-login").attr("disabled")).toBe undefined
+        element("#toggle-signup-form").click()
+        expect(element("#submit-login").attr("disabled")).toBe "disabled"
+        element("#toggle-signup-form").click()
+        expect(element("#submit-login").attr("disabled")).toBe undefined
+
+      describe "Signup Fields - ", ->
+
+        beforeEach ->
+          browser().navigateTo "/"
+          element("#open-login").click()
+          element("#toggle-signup-form").click()
+
+        it "should contain the empty input fields 'user.confirmEmail', 
+              'user.disblayName' and 'user.confirmPassword'", ->
+          expect(input("user.confirmPassword").val()).toBe ""
+          expect(input("user.confirmEmail").val()).toBe ""
+          expect(input("user.displayName").val()).toBe ""
+
+        it "should contain a disabled submit button", ->
+          expect(element("#submit-login").attr("disabled")).toBe "disabled"
+
+        describe "invalid input recognition - ", ->
+
+          beforeEach ->
+            input("user.email").enter ""
+            input("user.password").enter ""
+            input("user.confirmEmail").enter ""
+            input("user.confirmPassword").enter ""
+            input("user.displayName").enter ""
+
+          it "should recognize invalid/too short display name - min 5 chars", ->
+            input("user.displayName").enter "lore"
+            expect(element("#inputDisplayName.ng-invalid-minlength").count()).toBe 1
+
+          it "should recognize invalid/too short password confirmation - min 5 chars", ->
+            input("user.confirmPassword").enter "lore"
+            expect(element("#inputConfirmPassword.ng-invalid-minlength").count()).toBe 1
+
+          it "should recognize a wrong password confirmation", ->
+            input("user.password").enter "lorem"
+            input("user.confirmPassword").enter "ipsum"
+            expect(element("#inputConfirmPassword.ng-invalid-input-match").count()).toBe 1
+
+          it "should recognize a wrong email confirmation", ->
+            input("user.email").enter "lorem@ipsum.org"
+            input("user.confirmEmail").enter "ipsum@lorem.org"
+            expect(element("#inputConfirmEmail.ng-invalid-input-match").count()).toBe 1
+
+        it "should recognize valid input and enable the submit button", ->
+          input("user.email").enter "lorem@ipsum.org"
+          input("user.password").enter "lorem"
+          input("user.confirmEmail").enter "lorem@ipsum.org"
+          input("user.confirmPassword").enter "lorem"
+          input("user.displayName").enter "Lorem Ipsum"
 
 
   describe "Unwatched 'createRoom' form", ->

@@ -19,7 +19,7 @@ module.exports = (config) ->
     ]
 
     # enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true
+    autoWatch: false
 
     # Start these browsers, currently available:
     # - Chrome
@@ -34,7 +34,7 @@ module.exports = (config) ->
     # frameworks to use
     frameworks: ['ng-scenario']
 
-    singleRun: false
+    singleRun: true
 
     proxies:
       '/': 'http://localhost:3000/'
