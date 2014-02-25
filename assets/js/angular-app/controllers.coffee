@@ -42,6 +42,7 @@ app.controller "SignupCtrl", [
   "RTC"
   ($scope, $modalInstance, RTCProvider) ->
     RTCProvider.logName()
+    $scope.isCollapsed = true
     $scope.ok = ->
       $modalInstance.close
 

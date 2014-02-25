@@ -1,30 +1,52 @@
 .modal-header
   h3 Login
 .modal-body
-  form.form-horizontal(name="signup", novalidate)
-    fieldset
-      .form-group(ng-class="{'has-error' : signup.email.$error.email}")
+  fieldset
+    form.form-horizontal(name="login", novalidate)
+      .form-group(ng-class="{'has-error' : login.email.$error.email}")
         label.col-sm-4.control-label(for='inputEmail') Email
         .col-sm-6
           input#inputEmail.form-control(type='email', ng-model="user.email", 
             name="email", placeholder='Email', required)
 
-      .form-group(ng-class="{'has-error' : signup.password.$error.minlength}")
+      .form-group(ng-class="{'has-error' : login.password.$error.minlength}")
         label.col-sm-4.control-label(for='inputPassword') Password
         .col-sm-6
           input#inputPassword.form-control(type='password', ng-minlength="5",
             name="password", ng-model="user.password", placeholder='Password', 
             required)
 
-      .form-group(ng-class="{'has-error' : signup.passwordConfirm.$error.minlength || signup.passwordConfirm.$error.inputMatch}")
-        label.col-sm-4.control-label(for='inputConfirmPassword') Confirm Password
-        .col-sm-6
-          input#inputPasswordConfirm.form-control(type='password', 
-            name="passwordConfirm", ng-minlength="5", input-match="inputPassword"
-            ng-model="user.passwordConfirm", placeholder='Confirm Password', 
-            required) 
+    form.form-horizontal(name="signup", novalidate)
+      #signup-fields-container(collapse="isCollapsed")
+        .form-group(ng-class="{'has-error' : signup.confirmEmail.$error.email || signup.confirmEmail.$error.inputMatch}")
+          label.col-sm-4.control-label(for='inputEmailConfirm') Confirm Email
+          .col-sm-6
+            input#inputConfirmEmail.form-control(type='email', 
+              name="confirmEmail", ng-minlength="5", input-match="inputEmail"
+              ng-model="user.confirmEmail", placeholder='Confirm Email', 
+              required)
+
+        .form-group(ng-class="{'has-error' : signup.confirmPassword.$error.minlength || signup.confirmPassword.$error.inputMatch}")
+          label.col-sm-4.control-label(for='inputConfirmPassword') Confirm Password
+          .col-sm-6
+            input#inputConfirmPassword.form-control(type='password', 
+              name="confirmPassword", ng-minlength="5", input-match="inputPassword"
+              ng-model="user.confirmPassword", placeholder='Confirm Password', 
+              required)
+
+        .form-group(ng-class="{'has-error' : signup.displayName.$error.minlength}")
+          label.col-sm-4.control-label(for='inputDisplayName') Display Name
+          .col-sm-6
+            input#inputDisplayName.form-control(type='text', ng-minlength="5",
+              name="displayName", ng-model="user.displayName", placeholder='Display Name', 
+              required)
+
 
 .modal-footer
+
+  a#toggle-signup-form.pull-left(ng-click="isCollapsed = !isCollapsed", ng-href="#").
+        Not yet registered?
   span.
-  button#submit-login.btn.btn-success(ng-click="ok()" ng-disabled="signup.$invalid") OK
+  {{isCollapsed}}
+  button#submit-login.btn.btn-success(ng-click="ok()" ng-disabled="login.$invalid || (!isCollapsed && signup.$invalid)") Login
   button#close-login.btn.btn-default(ng-click="cancel()") Cancel
