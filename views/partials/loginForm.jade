@@ -45,8 +45,8 @@
 .modal-footer
 
   a#toggle-signup-form.pull-left(ng-click="isCollapsed = !isCollapsed", ng-href="#").
-        Not yet registered?
+    {{isCollapsed | iif : "Not yet registered?" : "Already registered?"}}
   span.
-  {{isCollapsed}}
-  button#submit-login.btn.btn-success(ng-click="ok()" ng-disabled="login.$invalid || (!isCollapsed && signup.$invalid)") Login
+  button#submit-login.btn.btn-success(ng-click="ok()" ng-disabled="login.$invalid || (!isCollapsed && signup.$invalid)")
+    {{isCollapsed | iif : "Login" : "Sign Up"}}
   button#close-login.btn.btn-default(ng-click="cancel()") Cancel
