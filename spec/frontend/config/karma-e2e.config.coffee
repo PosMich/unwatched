@@ -1,6 +1,8 @@
 # Karma configuration
 # Generated on Mon Jan 20 2014 17:57:25 GMT+0100 (CET)
 
+userConfig = require "../../../modules/config"
+
 module.exports = (config) ->
   config.set
 
@@ -37,7 +39,7 @@ module.exports = (config) ->
     singleRun: true
 
     proxies:
-      '/': 'http://localhost:3000/'
+      '/': 'http://localhost:#{userConfig.port}/'
 
     plugins: [
       'karma-phantomjs-launcher',
