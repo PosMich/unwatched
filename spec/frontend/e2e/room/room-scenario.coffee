@@ -26,8 +26,15 @@ describe "Unwatched Room Page - ", ->
 
     it "should contain the icons 'share screen to' and 'share webcam to' on mouseover for each client", ->
       # not yet implemented - how to simulate "hovers" in ng-scenario?
-      # expect(repeater(".client .options i.share-screen-to")).toBeGreaterThan 4
-      # expect(repeater(".client .options i.share-webcam-to")).toBeGreaterThan 4
+
+      expect(repeater(".client .options i.share-screen-to")).toBeGreaterThan 0
+      expect(repeater(".client .options i.share-webcam-to")).toBeGreaterThan 0
+
+      element(".client").query( (elements, done) ->
+        elements.hover()
+        expect(element(".client .options.show").count()).toBe 1
+        done()
+      )
 
     it "should contain the icons 'share screen to all' and 'share webcam to all'", ->
       # not yet implemented
@@ -81,3 +88,15 @@ describe "Unwatched Room Page - ", ->
       expect(repeater(".note i.edit-note").count()).toBe 1
       expect(repeater(".note i.download-note").count()).toBe 1
       expect(repeater(".note i.delete-note").count()).toBe 1
+
+#this function extends the Angular Scenario DSL to enable JQuery functions in e2e tests
+# angular.scenario.dsl "jqFunction", ->
+#   (selector, functionName) -> #, args
+#     args = Array::slice.call(arguments_, 2)
+#     @addFutureAction functionName, ($window, $document, done) ->
+#       $ = $window.$ # jQuery inside the iframe
+#       elem = $(selector)
+#       return done("Selector " + selector + " did not match any elements.")  unless elem.length
+#       done null, elem[functionName].apply(elem, args)
+#       return
+
