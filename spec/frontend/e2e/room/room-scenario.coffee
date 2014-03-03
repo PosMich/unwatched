@@ -25,7 +25,7 @@ describe "Unwatched Room Page - ", ->
       expect(repeater(".client .client-header .controls i.remove").count()).toBeGreaterThan 0
 
     it "should contain the icons 'share screen to' and 'share webcam to' on mouseover for each client", ->
-      # not yet implemented - how to simulate "hovers" in ng-scenario?
+      # not yet implemented - how to simulate "hovers" with ng-scenario?
       # expect(repeater(".client .options i.share-screen-to")).toBeGreaterThan 4
       # expect(repeater(".client .options i.share-webcam-to")).toBeGreaterThan 4
 
@@ -36,13 +36,18 @@ describe "Unwatched Room Page - ", ->
 
   describe "chat", ->
 
+    it "should be a tab", ->
+      expect(element(".tab-content #chat").count()).toBe 1
+
     it "should contain the container for 'chat-messages', an input field for 'chat-message' and a disabled 'submit-chat-message' button ", ->
+      element("li#chat-tab a").click()
       expect(element("#chat-messages").count()).toBe 1
       expect(element("#input-chat-message").count()).toBe 1
       expect(element("#submit-chat-message").count()).toBe 1
       expect(element("#submit-chat-message").attr("disabled")).toBe "disabled"
 
     it "should be able to submit a chat-message", ->
+      element("li#chat-tab a").click()
       input("chat.message").enter "Lorem Ipsum"
       expect(element("#submit-chat-message").attr("disabled")).toBe undefined
       element("#submit-chat-message").click()
@@ -51,6 +56,7 @@ describe "Unwatched Room Page - ", ->
     it "should contain a 'chat-message-sender' and a 'chat-message-content' -field for each chat-message", ->
       
       browser().navigateTo "/room"
+      element("li#chat-tab a").click()
 
       input("chat.message").enter "Lorem Ipsum"
       element("#submit-chat-message").click()
@@ -66,18 +72,18 @@ describe "Unwatched Room Page - ", ->
   describe "notes", ->
 
     it "should contain an option icon to add a new note to the room", ->
-      expect(element("#notes i#addNote").count()).toBe 1
+      expect(element("#notes p#add-note").count()).toBe 1
 
     it "should be able to add notes", ->
-      element("#notes i#addNote").click()
-      element("#notes i#addNote").click()
+      element("#notes p#add-note").click()
+      element("#notes p#add-note").click()
 
       expect(repeater(".note").count()).toBe 2
 
     it "should contain the controls icons 'view-note', 'edit-note', 'download-note' and 'delete-note' for each note", ->
-      element("#notes i#addNote").click()
+      element("#notes p#add-note").click()
+      element("#notes p#add-note").click()
 
-      expect(repeater(".note i.view-note").count()).toBe 1
-      expect(repeater(".note i.edit-note").count()).toBe 1
-      expect(repeater(".note i.download-note").count()).toBe 1
-      expect(repeater(".note i.delete-note").count()).toBe 1
+      expect(repeater(".note").count()).toBe 2
+      expect(repeater(".note i.download-note").count()).toBe 2
+      expect(repeater(".note i.delete-note").count()).toBe 2
