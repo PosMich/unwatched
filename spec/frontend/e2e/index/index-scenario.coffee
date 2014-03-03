@@ -77,8 +77,7 @@ describe "Unwatched App Index Page - ", ->
           element("#open-login").click()
           element("#toggle-signup-form").click()
 
-        it "should contain the empty input fields 'user.confirmEmail', 
-              'user.disblayName' and 'user.confirmPassword'", ->
+        it "should contain the empty input fields 'user.confirmEmail', 'user.disblayName' and 'user.confirmPassword'", ->
           expect(input("user.confirmPassword").val()).toBe ""
           expect(input("user.confirmEmail").val()).toBe ""
           expect(input("user.displayName").val()).toBe ""
@@ -122,8 +121,7 @@ describe "Unwatched App Index Page - ", ->
 
 
   describe "Unwatched 'createRoom' form", ->
-    it "should contain the form 'createRoom' with the input fields 'room-name' 
-          and 'room-password'", ->
+    it "should contain the form 'createRoom' with the input fields 'room-name' and 'room-password'", ->
       expect(element("form#createRoom").count()).toBe 1
       expect(input("room.name").val()).toBe ""
       expect(input("room.password").val()).toBe ""
@@ -131,7 +129,14 @@ describe "Unwatched App Index Page - ", ->
     it "should contain an invisible submit button", ->
       expect(element("#submitCreateRoom").attr("disabled")).toBe "disabled"
 
+
+    it "should validate too short inputs - min 5 chars", ->
+      input("room.name").enter "lore"
+      input("room.password").enter "ipsu"
+      expect(element("#inputRoomName.ng-invalid-minlength").count()).toBe 1
+      expect(element("#inputRoomPassword.ng-invalid-minlength").count()).toBe 1
+      
     it "should contain an enabled button when the right input is given", ->
-      input("room.name").enter "a"
-      input("room.password").enter "a"
+      input("room.name").enter "lorem"
+      input("room.password").enter "ipsum"
       expect(element("#submitCreateRoom").attr("disabled")).toBe undefined

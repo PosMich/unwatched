@@ -1,0 +1,10 @@
+.client-header.clearfix.navbar-inverse
+  span.pull-left.name {{client.name}}
+  span.pull-right.controls
+    i.minimize.glyphicon.glyphicon-minus
+    i.maximize.glyphicon.glyphicon-resize-full
+    i.remove.glyphicon.glyphicon-remove
+.client-content(style="background-image: url('{{client.avatar}}')")
+  .client-options
+    i.share-screen-to
+    i.share-webcam-to

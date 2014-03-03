@@ -20,6 +20,78 @@
         <span class="k">return</span>
       <span class="k">return</span>
     <span class="k">return</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>client</h3></p>
+
+<blockquote>
+  <p>Loads the template for a single client (/partials/client.jade)
+  and adds a watcher to keep the dimensions 1:1 <br/>
+  Frontend-usage: div(client)</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;client&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$window&quot;</span>
+  <span class="nf">($window) -&gt;</span>
+    <span class="nv">templateUrl: </span><span class="s">&quot;/partials/client.jade&quot;</span>
+    <span class="nv">link: </span><span class="nf">(scope, elem) -&gt;</span>
+      <span class="nv">w = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">)</span>
+
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
+
+      <span class="nx">w</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+        <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
+        <span class="k">return</span>
+
+      <span class="k">return</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>UpdateScrollPosition</h3></p>
+
+<blockquote>
+  <p>Scrolls the container view to the bottom if new child-elements appear<br/>
+  Frontend-usage: div(update-scroll-position="containerElementId")<br/>
+  Additional note: window.setTimeout-Workaround - the directives is triggered
+  by an update on the model. To get the right height of the container element
+  we need to wait 1ms until the view is up-to-date - this is just a workaround
+  and needs optimization</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;updateScrollPosition&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
+  <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+    <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">updateScrollPosition</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span> <span class="p">(</span><span class="nf">-&gt;</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">scrollTop</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">height</span><span class="p">()),</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>delayDisplay</h3></p>
+
+<blockquote>
+  <p>Delays the display of a certain hidden element. Adds the "show" css-class,
+  after the element has been added to the view.<br/>
+  Frontend-usage: div(delay-display="modelOfDelayedElement")<br/>
+  Additional note: Atm it just works with opacity: 0 elements.</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;delayDisplay&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
+  <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+    <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">delayDisplay</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">addClass</span> <span class="s">&quot;show&quot;</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>focusOnClick</h3></p>
+
+<blockquote>
+  <p>Sets the focus on a certain input field after a click event was fired.<br/>
+  Frontend-usage: a(focus-on-click="fieldToBeFocusedId")</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;focusOnClick&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
+  <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+    <span class="nv">focusField = </span><span class="s">&quot;</span><span class="err">#</span><span class="s">&quot;</span> <span class="o">+</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">focusOnClick</span>
+    <span class="nx">elem</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;click&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="nx">focusField</span><span class="p">).</span><span class="nx">focus</span><span class="p">()</span>
+      <span class="k">return</span>
+    <span class="k">return</span>
 <span class="p">]</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;appVersion&quot;</span><span class="p">,</span> <span class="p">[</span>

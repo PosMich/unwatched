@@ -50,6 +50,15 @@ app.config [
       controller: "SpacelabCtrl"
 
     # ***
+    # * <h3>route `/room`</h3>
+    # > bla bla route to rule them all
+    # >
+    # > load RoomCtrl
+    $routeProvider.when "/room",
+      templateUrl: "partials/room.jade"
+      controller: "RoomCtrl"
+
+    # ***
     # * <h3>route `/`</h3>
     # > not found - route
     # >

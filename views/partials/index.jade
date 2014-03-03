@@ -1,4 +1,5 @@
 #banner.page-header
+  a(ng-click="test()") test
   .row
     .col-sm-12.jumbotron.text-center
       h1 Unwatched
@@ -6,20 +7,22 @@
 
       .well.well-lg.col-sm-8.col-sm-offset-2.col-lg-6.col-lg-offset-3
         form#createRoom.form-horizontal(name="createRoom", novalidate)
-          .form-group(ng-class="{'has-error' : false}")
+          .form-group(ng-class="{'has-error' : createRoom.roomName.$error.minlength}")
             label.col-sm-5.control-label(for='inputRoomname') Room-Name
             .col-sm-7
-              input#inputRoomname.form-control(type='text', ng-model="room.name", 
-                name="roomname", placeholder='Room-Name', required)
-          .form-group
+              input#inputRoomName.form-control(type='text', ng-model="room.name", 
+                name="roomName", placeholder='Room-Name', required,
+                ng-minlength="5")
+          .form-group(ng-class="{'has-error' : createRoom.roomPassword.$error.minlength}")
             label.col-sm-5.control-label(for='inputRoomPassword') Room-Password
             .col-sm-7
               input#inputRoomPassword.form-control(type='password', 
-                ng-model="room.password", placeholder='Room-Password', required)
+                ng-model="room.password", placeholder='Room-Password', required,
+                ng-minlength="5", name="roomPassword")
           .row
             .col-sm-12
-              a#submitCreateRoom.btn.btn-lg.btn-primary(ng-click="createRoom()" 
-                ng-disabled="createRoom.$invalid") Create Room
+              a#submitCreateRoom.btn.btn-lg.btn-primary(ng-click="submitCreateRoom()" 
+                ng-disabled="createRoom.$invalid", ng-href="#") Create Room
 
   .row
     .col-sm-12.text-center

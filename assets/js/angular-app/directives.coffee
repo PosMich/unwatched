@@ -23,6 +23,67 @@ app.directive "inputMatch", [ ->
     return
 ]
 
+# ***
+# * <h3>client</h3>
+# > Loads the template for a single client (/partials/client.jade)
+# > and adds a watcher to keep the dimensions 1:1 <br/>
+# > Frontend-usage: div(client)
+
+app.directive "client", [
+  "$window"
+  ($window) ->
+    templateUrl: "/partials/client.jade"
+    link: (scope, elem) ->
+      w = angular.element($window)
+
+      elem.height elem.width()
+
+      w.bind "resize", ->
+        elem.height elem.width()
+        return
+
+      return
+]
+
+# ***
+# * <h3>UpdateScrollPosition</h3>
+# > Scrolls the container view to the bottom if new child-elements appear<br/>
+# > Frontend-usage: div(update-scroll-position="containerElementId")<br/>
+# > Additional note: window.setTimeout-Workaround - the directives is triggered
+# > by an update on the model. To get the right height of the container element
+# > we need to wait 1ms until the view is up-to-date - this is just a workaround
+# > and needs optimization
+app.directive "updateScrollPosition", [ ->
+  link: (scope, elem, attrs) ->
+    scope.$watch attrs.updateScrollPosition, ->
+      window.setTimeout( (-> $(elem).parent().scrollTop $(elem).height()), 1 )
+]
+
+# ***
+# * <h3>delayDisplay</h3>
+# > Delays the display of a certain hidden element. Adds the "show" css-class,
+# > after the element has been added to the view.<br/>
+# > Frontend-usage: div(delay-display="modelOfDelayedElement")<br/>
+# > Additional note: Atm it just works with opacity: 0 elements.
+app.directive "delayDisplay", [ ->
+  link: (scope, elem, attrs) ->
+    scope.$watch attrs.delayDisplay, ->
+      $(elem).addClass "show"
+]
+
+# ***
+# * <h3>focusOnClick</h3>
+# > Sets the focus on a certain input field after a click event was fired.<br/>
+# > Frontend-usage: a(focus-on-click="fieldToBeFocusedId")
+app.directive "focusOnClick", [ ->
+  link: (scope, elem, attrs) ->
+    focusField = "#" + attrs.focusOnClick
+    elem.on "click", ->
+      $(focusField).focus()
+      return
+    return
+]
+
 app.directive "appVersion", [
   "version"
   (version) ->

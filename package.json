@@ -31,7 +31,8 @@
     "karma": "latest",
     "karma-ng-scenario": "latest",
     "jasmine-node": "latest",
-    "request": "latest"
+    "request": "latest",
+    "coffee-script": "~1.6.3"
   },
   "engines": {
     "node": "~0.10.x",

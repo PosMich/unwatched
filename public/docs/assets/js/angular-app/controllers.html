@@ -2,10 +2,15 @@
 
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.controllers&quot;</span><span class="p">,</span> <span class="p">[]</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;IndexCtrl&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;index ctrl here&quot;</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;IndexCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="nf">($scope) -&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;index ctrl here&quot;</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SpacelabCtrl&quot;</span><span class="p">,</span>  <span class="nf">-&gt;</span>
+    <span class="nv">$scope.submitCreateRoom = </span><span class="nf">-&gt;</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SpacelabCtrl&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;spacelab ctrl here&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <h2 id="config">Config</h2>
@@ -32,17 +37,122 @@
         <span class="nv">controller: </span><span class="s">&quot;SignupCtrl&quot;</span>
       <span class="p">)</span>
 
-<span class="p">]</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SignupCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+<p><ul>
+<li><h3>Signup Controller</h3></p>
+
+<blockquote>
+  <p></li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SignupCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;$scope&quot;</span>
   <span class="s">&quot;$modalInstance&quot;</span>
   <span class="s">&quot;RTC&quot;</span>
   <span class="nf">($scope, $modalInstance, RTCProvider) -&gt;</span>
+
+    <span class="nv">$scope.user = </span><span class="p">{}</span>
+
     <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
-    <span class="nv">$scope.ok = </span><span class="nf">-&gt;</span>
+    <span class="nv">$scope.hideSignUp = </span><span class="kc">true</span>
+
+    <span class="nv">$scope.submit = </span><span class="nf">-&gt;</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">user</span>
       <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">close</span>
 
     <span class="nv">$scope.cancel = </span><span class="nf">-&gt;</span>
       <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">dismiss</span> <span class="s">&quot;cancel&quot;</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>Room Controller</h3></p>
+
+<blockquote>
+  <p></li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;RoomCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="nf">($scope) -&gt;</span>
+    <span class="nv">$scope.room =</span>
+      <span class="nv">name: </span><span class="s">&quot;Untitled Room&quot;</span>
+      <span class="nv">activePanel: </span><span class="s">&quot;clients&quot;</span>
+
+    <span class="nv">$scope.setActivePanel = </span><span class="nf">(panelId) -&gt;</span>
+      <span class="nv">$scope.room.activePanel = </span><span class="nx">panelId</span>
+
+    <span class="nv">$scope.getActivePanel = </span><span class="nf">(panelId) -&gt;</span>
+      <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">activePanel</span> <span class="o">is</span> <span class="nx">panelId</span>
+        <span class="k">return</span> <span class="s">&quot;panel-primary&quot;</span>
+      <span class="k">else</span>
+        <span class="k">return</span> <span class="s">&quot;panel-default&quot;</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>Clients Controller</h3></p>
+
+<blockquote>
+  <p></li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ClientsCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="nf">($scope) -&gt;</span>
+    <span class="nv">$scope.clients = </span><span class="p">[]</span>
+    
+    <span class="nv">clientsAmount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="nx">clientsAmount</span> <span class="o">-=</span> <span class="mi">1</span>
+      <span class="nx">$scope</span><span class="p">.</span><span class="nx">clients</span><span class="p">.</span><span class="nx">push</span>
+        <span class="nv">name: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
+        <span class="nv">avatar: </span><span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="s">&quot;/images/avatar.png&quot;</span>
+        <span class="k">else</span> <span class="s">&quot;/images/avatar_inverted.png&quot;</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>Chat Controller</h3></p>
+
+<blockquote>
+  <p></li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ChatCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="nf">($scope) -&gt;</span>
+    <span class="nv">$scope.chat = </span><span class="p">{}</span>
+    <span class="nv">$scope.chat.messages = </span><span class="p">[]</span>
+
+    <span class="nv">$scope.submitChatMessage = </span><span class="nf">-&gt;</span>
+      <span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">push</span>
+        <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
+        <span class="nv">content: </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">message</span>
+      <span class="nv">$scope.chat.message = </span><span class="s">&quot;&quot;</span>
+
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>Notes Controller</h3></p>
+
+<blockquote>
+  <p>Contains the logic to add/remove notes - the title of a note is the key
+  of the note-model-object - the path to the note is the corresponding value.</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NotesCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+  <span class="s">&quot;$scope&quot;</span>
+  <span class="nf">($scope) -&gt;</span>
+    <span class="nv">$scope.room.notes = </span><span class="p">{}</span>
+
+    <span class="nv">$scope.addNote = </span><span class="nf">-&gt;</span>
+      <span class="nv">occupied = </span><span class="kc">false</span>
+      <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="kc">undefined</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;future/path/to/note&quot;</span>
+      <span class="k">else</span>
+        <span class="nv">occupied = </span><span class="kc">true</span>
+        <span class="nv">index = </span><span class="mi">1</span>
+        <span class="k">while</span> <span class="nx">occupied</span>
+          <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document(&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="kc">undefined</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document(&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">]</span> <span class="o">=</span>
+              <span class="s">&quot;future/path/to/note&quot;</span>
+            <span class="nv">occupied = </span><span class="kc">false</span>
+          <span class="k">else</span> <span class="nx">index</span><span class="o">++</span>
+
+    <span class="nv">$scope.removeNote = </span><span class="nf">(key) -&gt;</span>
+      <span class="k">delete</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+
 <span class="p">]</span></div></div></div></div></body></html>
