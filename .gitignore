@@ -24,7 +24,7 @@ node_modules
 builtAssets/
 tmp/
 
-public/css
+public/*.css
 public/js
 
 userconfig.coffee
