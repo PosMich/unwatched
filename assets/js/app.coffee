@@ -9,7 +9,7 @@
 #= require lib/angular-route.js
 
 # ## [TinyMCE](http://www.tinymce.com/)
-#= require lib/tinymce/js/tinymce/tinymce.min.js
+#= require lib/tinymce.full.min.js
 #= require lib/ui-bootstrap-tpls-0.10.0.js
 
 # ## [fitText](https://github.com/patrickmarabeas/ng-FitText.js)
