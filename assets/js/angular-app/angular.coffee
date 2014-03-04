@@ -10,6 +10,7 @@ app = angular.module "unwatched", [
   "unwatched.filters"
   "unwatched.controllers"
   "ui.bootstrap"
+  "ngFitText"
 ]
 
 # ***

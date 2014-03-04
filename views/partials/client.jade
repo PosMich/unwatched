@@ -5,6 +5,10 @@
     i.maximize.glyphicon.glyphicon-resize-full
     i.remove.glyphicon.glyphicon-remove
 .client-content(style="background-image: url('{{client.avatar}}')")
-  .client-options
-    i.share-screen-to
-    i.share-webcam-to
+  .client-options(data-fittext=".35")
+      span.alert.alert-info.share-screen-to(ng-class="{showOption: screenActive}",
+          ng-mouseenter="screenActive = true", ng-mouseleave="screenActive = false")
+        i.glyphicon.glyphicon-picture
+      span.alert.alert-info.share-webcam-to(ng-class="{showOption: webcamActive}",
+          ng-mouseenter="webcamActive = true", ng-mouseleave="webcamActive = false")
+        i.glyphicon.glyphicon-facetime-video

@@ -71,7 +71,7 @@ app.controller "RoomCtrl", [
   ($scope) ->
     $scope.room =
       name: "Untitled Room"
-      activePanel: "clients"
+      activePanel: "clients-chat"
 
     $scope.setActivePanel = (panelId) ->
       $scope.room.activePanel = panelId
@@ -123,23 +123,31 @@ app.controller "ChatCtrl", [
 app.controller "NotesCtrl", [
   "$scope"
   ($scope) ->
-    $scope.room.notes = {}
+    $scope.room.notes = []
 
     $scope.addNote = ->
-      occupied = false
-      if $scope.room.notes["Untitled Document"] is undefined
-        $scope.room.notes["Untitled Document"] = "future/path/to/note"
-      else
-        occupied = true
-        index = 1
-        while occupied
-          if $scope.room.notes["Untitled Document(" + index + ")"] is undefined
-            $scope.room.notes["Untitled Document(" + index + ")"] =
-              "future/path/to/note"
-            occupied = false
-          else index++
+      console.log $scope.room.notes
+      # occupied = false
+      # if $scope.room.notes["Untitled Document"] is undefined
+      $scope.room.notes.push
+        "title": "Untitled Document"
+        "content": "Click to edit"
+        "path": "future/path/to/note"
+      # else
+      #   occupied = true
+      #   index = 1
+      #   while occupied
+      #     if $scope.room.notes["Untitled Document(" + index + ")"] is undefined
+      #       $scope.room.notes["Untitled Document(" + index + ")"] = {}
+      #       $scope.room.notes["Untitled Document(" + index + ")"]["path"] = "future/path/to/note"
+      #       $scope.room.notes["Untitled Document(" + index + ")"]["content"] = "Click to edit"
+            
+      #       occupied = false
+      #     else index++
+      # $scope.room.notesAmount++
 
-    $scope.removeNote = (key) ->
-      delete $scope.room.notes[key]
+    $scope.removeNote = (index) ->
+      # $scope.room.notesAmount--
+      delete $scope.room.notes.splice index, 1
 
 ]

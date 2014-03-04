@@ -35,11 +35,11 @@ app.directive "client", [
     templateUrl: "/partials/client.jade"
     link: (scope, elem) ->
       w = angular.element($window)
-
       elem.height elem.width()
-
+      $(elem).find(".options span").height elem.width()
       w.bind "resize", ->
         elem.height elem.width()
+        $(elem).find(".options span").height elem.width()
         return
 
       return
@@ -57,6 +57,36 @@ app.directive "updateScrollPosition", [ ->
   link: (scope, elem, attrs) ->
     scope.$watch attrs.updateScrollPosition, ->
       window.setTimeout( (-> $(elem).parent().scrollTop $(elem).height()), 1 )
+]
+
+# ***
+# * <h3>UpdateScrollPosition</h3>
+# > Scrolls the container view to the bottom if new child-elements appear<br/>
+# > Frontend-usage: div(update-scroll-position="containerElementId")<br/>
+# > Additional note: window.setTimeout-Workaround - the directives is triggered
+# > by an update on the model. To get the right height of the container element
+# > we need to wait 1ms until the view is up-to-date - this is just a workaround
+# > and needs optimization
+app.directive "adjustWidth", [
+  "$window"
+  ($window) ->
+    link: (scope, elem, attrs) ->
+
+      adjustElementWidth = (elem, attrs) ->
+        adjustedWidth = $(elem).find("ul").width()
+        elems = $(elem).find( "ul li" ).length
+        adjustedWidth = ((adjustedWidth / elems) - 2)  if elems > 0
+        $(elem).find("ul li a").css( "width",  adjustedWidth)
+        return
+
+      scope.$watch attrs.adjustWidth, ->
+        window.setTimeout( (->
+          adjustElementWidth(elem, attrs)
+        ), 1)
+
+      angular.element($window).bind "resize", ->
+        adjustElementWidth(elem, attrs)
+        return
 ]
 
 # ***

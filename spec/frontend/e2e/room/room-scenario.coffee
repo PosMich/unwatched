@@ -20,21 +20,25 @@ describe "Unwatched Room Page - ", ->
       expect(element(".client .client-content").attr("style")).toContain "background-image:"
 
     it "should contain the icons 'minimize', 'maximize' and 'close' for each client", ->
-      expect(repeater(".client .client-header .controls i.minimize").count()).toBeGreaterThan 0
-      expect(repeater(".client .client-header .controls i.maximize").count()).toBeGreaterThan 0
-      expect(repeater(".client .client-header .controls i.remove").count()).toBeGreaterThan 0
+      expect(repeater(".client .client-header .controls i.minimize").count()).not().toBe 0
+      expect(repeater(".client .client-header .controls i.maximize").count()).not().toBe 0
+      expect(repeater(".client .client-header .controls i.remove").count()).not().toBe 0
 
     it "should contain the icons 'share screen to' and 'share webcam to' on mouseover for each client", ->
-      # not yet implemented - how to simulate "hovers" in ng-scenario?
 
-      expect(repeater(".client .options i.share-screen-to")).toBeGreaterThan 0
-      expect(repeater(".client .options i.share-webcam-to")).toBeGreaterThan 0
+      expect(repeater(".client .client-options span.share-screen-to").count()).not().toBe 0
+      expect(repeater(".client .client-options span.share-webcam-to").count()).not().toBe 0
 
-      element(".client").query( (elements, done) ->
-        elements.hover()
-        expect(element(".client .options.show").count()).toBe 1
-        done()
-      )
+      appElement ".client .client-options span.share-screen-to", (elem) ->
+        elem.trigger "mouseover"
+        expect(element(".client .client-options span.share-screen-to.showOption").count()).not().toBe 0
+        return
+
+      appElement ".client .client-options span.share-webcam-to", (elem) ->
+        elem.trigger "mouseover"
+        expect(element(".client .client-options span.share-webcam-to.showOption").count()).not().toBe 0
+        return
+
 
     it "should contain the icons 'share screen to all' and 'share webcam to all'", ->
       # not yet implemented
@@ -43,13 +47,18 @@ describe "Unwatched Room Page - ", ->
 
   describe "chat", ->
 
+    it "should be a tab", ->
+      expect(element(".tab-content #chat").count()).toBe 1
+
     it "should contain the container for 'chat-messages', an input field for 'chat-message' and a disabled 'submit-chat-message' button ", ->
+      element("li#chat-tab a").click()
       expect(element("#chat-messages").count()).toBe 1
       expect(element("#input-chat-message").count()).toBe 1
       expect(element("#submit-chat-message").count()).toBe 1
       expect(element("#submit-chat-message").attr("disabled")).toBe "disabled"
 
     it "should be able to submit a chat-message", ->
+      element("li#chat-tab a").click()
       input("chat.message").enter "Lorem Ipsum"
       expect(element("#submit-chat-message").attr("disabled")).toBe undefined
       element("#submit-chat-message").click()
@@ -58,6 +67,7 @@ describe "Unwatched Room Page - ", ->
     it "should contain a 'chat-message-sender' and a 'chat-message-content' -field for each chat-message", ->
       
       browser().navigateTo "/room"
+      element("li#chat-tab a").click()
 
       input("chat.message").enter "Lorem Ipsum"
       element("#submit-chat-message").click()
@@ -66,37 +76,33 @@ describe "Unwatched Room Page - ", ->
       input("chat.message").enter "Lorem Ipsum"
       element("#submit-chat-message").click()
 
-      # why the hell does this test keep failing??
       expect(repeater(".chat-message").column("message.sender")).toEqual ["Lorem Ipsum", "Lorem Ipsum", "Lorem Ipsum"]
-      expect(repeater(".chat-message").column("message.content")).toEqual ["Lorem Ipsum", "Ipsum Lorem", "Lorem Ipsum"]
+      expect(repeater(".chat-message").column("message.content")).toEqual ["Lorem Ipsum", "Lorem Ipsum", "Lorem Ipsum"]
 
   describe "notes", ->
 
     it "should contain an option icon to add a new note to the room", ->
-      expect(element("#notes i#addNote").count()).toBe 1
+      expect(element("#notes p#add-note").count()).toBe 1
 
     it "should be able to add notes", ->
-      element("#notes i#addNote").click()
-      element("#notes i#addNote").click()
+      element("#notes p#add-note").click()
+      element("#notes p#add-note").click()
 
       expect(repeater(".note").count()).toBe 2
 
     it "should contain the controls icons 'view-note', 'edit-note', 'download-note' and 'delete-note' for each note", ->
-      element("#notes i#addNote").click()
+      element("#notes p#add-note").click()
+      element("#notes p#add-note").click()
 
-      expect(repeater(".note i.view-note").count()).toBe 1
-      expect(repeater(".note i.edit-note").count()).toBe 1
-      expect(repeater(".note i.download-note").count()).toBe 1
-      expect(repeater(".note i.delete-note").count()).toBe 1
+      expect(repeater(".note").count()).toBe 2
+      expect(repeater(".note i.download-note").count()).toBe 2
+      expect(repeater(".note i.delete-note").count()).toBe 2
 
-#this function extends the Angular Scenario DSL to enable JQuery functions in e2e tests
-# angular.scenario.dsl "jqFunction", ->
-#   (selector, functionName) -> #, args
-#     args = Array::slice.call(arguments_, 2)
-#     @addFutureAction functionName, ($window, $document, done) ->
-#       $ = $window.$ # jQuery inside the iframe
-#       elem = $(selector)
-#       return done("Selector " + selector + " did not match any elements.")  unless elem.length
-#       done null, elem[functionName].apply(elem, args)
-#       return
+
+angular.scenario.dsl "appElement", ->
+  (selector, fn) ->
+    @addFutureAction "element " + selector, ($window, $document, done) ->
+      fn.call this, $window.angular.element(selector)
+      done()
+      return
 

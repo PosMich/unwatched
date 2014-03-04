@@ -15,6 +15,9 @@
 #= require angular-app/angular
 #= require lib/ui-bootstrap-tpls-0.10.0.js
 
+# ## [fitText](https://github.com/patrickmarabeas/ng-FitText.js)
+#= require lib/ng-FitText.js
+
 # # Here we go!
 
 # ***

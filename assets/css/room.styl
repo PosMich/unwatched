@@ -1,8 +1,14 @@
+.tabbable
+  ul.nav.nav-tabs
+    li
+      cursor pointer
+
 #clients
   .client
     position relative
     margin 10px
     opacity: 0.6
+    transition all 150ms ease-in-out
 
     &:hover
       opacity 1
@@ -41,6 +47,30 @@
       background-repeat no-repeat
       background-position center center
       background-size 100%
+
+      .client-options
+        height 100%
+        width 100%
+        display table
+
+        span
+          text-align center
+          width 50%
+          display table-cell
+          vertical-align middle
+          opacity 0
+          cursor pointer
+          border 0
+          border-radius 0
+          transition all 150ms ease-in-out
+
+          i
+            padding-top 25px
+
+          &.showOption
+            opacity 0.7
+            display table-cell
+            
 
   &:not(.client):hover
     .panel-body
@@ -96,6 +126,18 @@
       line-height 34px
 
 #notes
+
+  .tabbable
+    
+    .tab-content
+      transition all 250ms ease-in-out
+
+    ul.nav-tabs
+      li
+        a
+          white-space nowrap
+          text-overflow ellipsis
+          overflow hidden
   
   .panel-primary
     .panel-heading
@@ -106,6 +148,11 @@
     i
       font-size 0.8em
       padding 6px
+      
+    .well
+      color #333333
+      padding 2px
+      padding-left 10px
 
       &:hover
         cursor pointer
@@ -115,36 +162,10 @@
   .panel-body
     
     .note
-      margin 5px
-      margin-bottom 25px
-      position relative
-
-      .heading
-        font-size 0.8em
-        font-weight bold
-        margin-bottom 5px
 
       .controls
-        text-align center
-        position absolute
-        top -11px
-        opacity 0
-        padding 5px
-        transition all 250ms ease-in-out
-
-        &:hover
-          opacity 0.85
-
-        i
-          border 1px transparent solid
-          border-radius 3px
-          padding 5px
-
-          &:not(.glyphicon-file):hover
-            cursor pointer
-            border 1px grey solid
-            background-color #ddd
-            opacity 1
-
-        .glyphicon-file
-          font-size 3.0em
+        margin-top 15px
+        
+        button
+          i
+            padding-left 5px
