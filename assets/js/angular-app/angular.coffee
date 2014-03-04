@@ -9,6 +9,7 @@ app = angular.module "unwatched", [
   "unwatched.directives"
   "unwatched.filters"
   "unwatched.controllers"
+  "ui.tinymce"
   "ui.bootstrap"
   "ngFitText"
 ]

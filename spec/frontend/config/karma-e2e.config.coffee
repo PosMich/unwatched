@@ -17,7 +17,7 @@ module.exports = (config) ->
 
     # list of files / patterns to load in the browser
     files: [
-      'e2e/*.coffee'
+      'e2e/**/*.coffee'
     ]
 
     # enable / disable watching file and executing tests whenever any file changes

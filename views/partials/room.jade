@@ -49,12 +49,13 @@
             tabset(adjust-width="room.notes.length")
               tab(ng-repeat="room in room.notes", heading="{{room.title}}")
                 .note
-                  form.form-horizontal.clearfix(novalidate, name="note-form-{{$index}}")
+                  form.form-horizontal.clearfix(novalidate, name="note-form-{{$index}}", method="post")
                     .col-xs-12
                       h3
                         input.form-control(ng-model="room.title")
                     .col-xs-12
-                      textarea.form-control(ng-model="room.content", rows="15")
+                      textarea.form-control(ng-model="room.content", rows="15", 
+                        ui-tinymce="tinymceOptions", name="test")
                     .col-xs-12
                       .pull-right.controls
                         button.btn.btn-sm.btn-primary(alt="Download note") Download 

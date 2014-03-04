@@ -125,29 +125,16 @@ app.controller "NotesCtrl", [
   ($scope) ->
     $scope.room.notes = []
 
+    $scope.tinymceOptions =
+      script_url: 'http://tinymce.moxiecode.com/js/tinymce/jscripts/tiny_mce/tiny_mce.js'
+
     $scope.addNote = ->
-      console.log $scope.room.notes
-      # occupied = false
-      # if $scope.room.notes["Untitled Document"] is undefined
       $scope.room.notes.push
         "title": "Untitled Document"
         "content": "Click to edit"
         "path": "future/path/to/note"
-      # else
-      #   occupied = true
-      #   index = 1
-      #   while occupied
-      #     if $scope.room.notes["Untitled Document(" + index + ")"] is undefined
-      #       $scope.room.notes["Untitled Document(" + index + ")"] = {}
-      #       $scope.room.notes["Untitled Document(" + index + ")"]["path"] = "future/path/to/note"
-      #       $scope.room.notes["Untitled Document(" + index + ")"]["content"] = "Click to edit"
-            
-      #       occupied = false
-      #     else index++
-      # $scope.room.notesAmount++
 
     $scope.removeNote = (index) ->
-      # $scope.room.notesAmount--
-      delete $scope.room.notes.splice index, 1
+      $scope.room.notes.splice index, 1
 
 ]
