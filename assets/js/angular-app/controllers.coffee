@@ -30,9 +30,13 @@ app.controller "NavCtrl", [
   ($scope, $modal, RTCProvider) ->
     console.log RTCProvider
     RTCProvider.logName()
-    RTCProvider.setName "Friedrich"
+    console.log RTCProvider.createHash()
+    #RTCProvider.setName "Friedrich"
     RTCProvider.logName()
 
+    RTCProvider.addClient "Herbert", "herbert@herbert.com"
+    RTCProvider.addClient "Franz", "franz@franz.fr"
+    RTCProvider.listClients()
     $scope.open = ->
       modalInstance = $modal.open(
         templateUrl: "/partials/loginForm.jade"
@@ -49,7 +53,6 @@ app.controller "SignupCtrl", [
   "$modalInstance"
   "RTC"
   ($scope, $modalInstance, RTCProvider) ->
-
     $scope.user = {}
 
     RTCProvider.logName()
@@ -57,6 +60,9 @@ app.controller "SignupCtrl", [
 
     $scope.submit = ->
       console.log $scope.user
+
+    $scope.isCollapsed = true
+    $scope.ok = ->
       $modalInstance.close
 
     $scope.cancel = ->
@@ -90,7 +96,7 @@ app.controller "ClientsCtrl", [
   "$scope"
   ($scope) ->
     $scope.clients = []
-    
+
     clientsAmount = Math.floor(Math.random() * 10 + 1) + 1
     while clientsAmount -= 1
       $scope.clients.push

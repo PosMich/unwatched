@@ -3,18 +3,70 @@
 
 "use strict"
 
-class RTCProvider
+class Client
+  @name:  ""
+  @eMail: ""
+  hash:  ""
+  connections: []
+  constructor: (@name, @email) ->
+
+###
+class RTConnection
+  servers:
+    iceServers: [
+      url: "stun:stun.l.google.com:19302"
+    ]
+  configs:
   constructor: ->
-    console.log "BLAAAA!"
-    @.name = "asdf"
-  setName: (name) ->
-    console.log "blubb"
-    @.name = name
+  createOffer: ->
+  createAnswer: ->
+  onIce: ->
+  addReliableChannel: ->
+  addUnreliableChannel: ->
+###
+
+
+class RTCProvider
+  @::isMaster   = true
+  @::name       = ""
+  @::clients    = []
+  @::moderators = []
+  # exposed to .config
+  constructor: ->
+  setName: (@name) ->
+  addClients: (name, eMail) ->
+    console.log "+++ addClients"
+    console.log @clients
+    console.log @name
+    @clients.push new Client(name, eMail)
+    console.log "--- addClients"
+  getClients: ->
+    console.log "+++ getClients"
+    console.log @clients
+    console.log "--- getClients"
+  # exposed to everyone
   $get: ->
-    logName: =>
-      console.log "Hello " + @.name
-    setName: (name) =>
-      @.name = name
+    logName: ->
+      console.log "+++ logName"
+      console.log "Hello " + @name
+      console.log "--- logName"
+    createHash: ->
+      return "HAAASh"
+    setName: (@name) ->
+    addClient: (name, eMail) =>
+      console.log "+++ addClient"
+      @addClients name, eMail
+      console.log "--- addClient"
+    listClients: ->
+      console.log "+++ listClients"
+      console.log @
+      console.log @name
+      console.log @clients
+      console.log "--- listClients"
+      #@getClients()
+      #console.log @asdf
+      #console.log "bluuuuuu"
+      #console.log @clients
 
 
 app = angular.module "unwatched.services", []
