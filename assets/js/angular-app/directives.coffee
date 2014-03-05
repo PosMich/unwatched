@@ -36,12 +36,13 @@ app.directive "client", [
     link: (scope, elem) ->
       w = angular.element($window)
       elem.height elem.width()
-      $(elem).find(".options span").height elem.width()
+      $(elem).find(".client-options span i").css("line-height",
+        (elem.width() / 2) + "px")
       w.bind "resize", ->
         elem.height elem.width()
-        $(elem).find(".options span").height elem.width()
+        $(elem).find(".client-options span i").css("line-height",
+          (elem.width() / 2) + "px")
         return
-
       return
 ]
 
@@ -60,13 +61,12 @@ app.directive "updateScrollPosition", [ ->
 ]
 
 # ***
-# * <h3>UpdateScrollPosition</h3>
-# > Scrolls the container view to the bottom if new child-elements appear<br/>
-# > Frontend-usage: div(update-scroll-position="containerElementId")<br/>
-# > Additional note: window.setTimeout-Workaround - the directives is triggered
-# > by an update on the model. To get the right height of the container element
-# > we need to wait 1ms until the view is up-to-date - this is just a workaround
-# > and needs optimization
+# * <h3>adjustWidth</h3>
+# > Is used on the tab-directive. Similar to the attribute "justified", but
+# > sets a definite width on each tab. (value = containerWidth / n)<br/>
+# > Adjusts width on init, on change of the given attr and on window resize<br/>
+# > Frontend-usage: tabset(adjust-width="attr")<br/>
+# > Additional note: window.setTimeout-Workaround, as mentioned above
 app.directive "adjustWidth", [
   "$window"
   ($window) ->

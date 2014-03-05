@@ -132,7 +132,7 @@ app.controller "NotesCtrl", [
     $scope.room.notes = []
 
     $scope.tinymceOptions =
-      script_url: 'http://tinymce.moxiecode.com/js/tinymce/jscripts/tiny_mce/tiny_mce.js'
+      menubar: false
 
     $scope.addNote = ->
       $scope.room.notes.push

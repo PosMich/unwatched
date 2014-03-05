@@ -1,5 +1,4 @@
 #banner.page-header
-  a(ng-click="test()") test
   .row
     .col-sm-12.jumbotron.text-center
       h1 Unwatched
@@ -12,13 +11,16 @@
             .col-sm-7
               input#inputRoomName.form-control(type='text', ng-model="room.name", 
                 name="roomName", placeholder='Room-Name', required,
-                ng-minlength="5")
+                ng-minlength="5", popover="At least 5 characters", 
+                popover-placement="right", popover-trigger="focus")
           .form-group(ng-class="{'has-error' : createRoom.roomPassword.$error.minlength}")
             label.col-sm-5.control-label(for='inputRoomPassword') Room-Password
             .col-sm-7
               input#inputRoomPassword.form-control(type='password', 
                 ng-model="room.password", placeholder='Room-Password', required,
-                ng-minlength="5", name="roomPassword")
+                ng-minlength="5", name="roomPassword", popover-trigger="focus",
+                popover="At least 5 characters", popover-placement="right")
+
           .row
             .col-sm-12
               a#submitCreateRoom.btn.btn-lg.btn-primary(ng-click="submitCreateRoom()" 

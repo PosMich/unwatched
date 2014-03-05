@@ -1,6 +1,6 @@
 .page-header
   fieldset
-    legend {{room.name}}
+    legend {{room.name}} "{{room.activeClientsContainer}}"
     .row.clearfix
       .col-sm-6
         .panel(ng-class="getActivePanel('clients-chat')", ng-click="setActivePanel('clients-chat')")
@@ -8,8 +8,8 @@
           .panel-body
             tabset(justified="true")
               tab#clients-tab(ng-controller="ClientsCtrl", heading="Clients")
-                #clients
-                  .col-md-4.col-sm-4.col-xs-4.no-padding(ng-repeat="client in clients")
+                #clients.clearfix
+                  .col-xs-4(ng-repeat="client in clients")
                     .client(client resize)
                   .options
                     i.share-screen-to-all
@@ -47,14 +47,15 @@
               i.no-margin.glyphicon.glyphicon-file
           .panel-body
             tabset(adjust-width="room.notes.length")
-              tab(ng-repeat="room in room.notes", heading="{{room.title}}")
+              tab(ng-repeat="note in room.notes", heading="{{note.title}}", 
+                popover="{{note.title}}", popover-trigger="mouseenter")
                 .note
                   form.form-horizontal.clearfix(novalidate, name="note-form-{{$index}}", method="post")
                     .col-xs-12
                       h3
-                        input.form-control(ng-model="room.title")
+                        input.form-control(ng-model="note.title")
                     .col-xs-12
-                      textarea.form-control(ng-model="room.content", rows="15", 
+                      textarea.form-control(ng-model="note.content", rows="15", 
                         ui-tinymce="tinymceOptions", name="test")
                     .col-xs-12
                       .pull-right.controls

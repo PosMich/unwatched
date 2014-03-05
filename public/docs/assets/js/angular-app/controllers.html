@@ -28,9 +28,13 @@
   <span class="nf">($scope, $modal, RTCProvider) -&gt;</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">RTCProvider</span>
     <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">setName</span> <span class="s">&quot;Friedrich&quot;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">createHash</span><span class="p">()</span>
+    <span class="c1">#RTCProvider.setName &quot;Friedrich&quot;</span>
     <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
 
+    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">addClient</span> <span class="s">&quot;Herbert&quot;</span><span class="p">,</span> <span class="s">&quot;herbert@herbert.com&quot;</span>
+    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">addClient</span> <span class="s">&quot;Franz&quot;</span><span class="p">,</span> <span class="s">&quot;franz@franz.fr&quot;</span>
+    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">listClients</span><span class="p">()</span>
     <span class="nv">$scope.open = </span><span class="nf">-&gt;</span>
       <span class="nv">modalInstance = </span><span class="nx">$modal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
         <span class="nv">templateUrl: </span><span class="s">&quot;/partials/loginForm.jade&quot;</span>
@@ -50,7 +54,6 @@
   <span class="s">&quot;$modalInstance&quot;</span>
   <span class="s">&quot;RTC&quot;</span>
   <span class="nf">($scope, $modalInstance, RTCProvider) -&gt;</span>
-
     <span class="nv">$scope.user = </span><span class="p">{}</span>
 
     <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
@@ -58,6 +61,9 @@
 
     <span class="nv">$scope.submit = </span><span class="nf">-&gt;</span>
       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">user</span>
+
+    <span class="nv">$scope.isCollapsed = </span><span class="kc">true</span>
+    <span class="nv">$scope.ok = </span><span class="nf">-&gt;</span>
       <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">close</span>
 
     <span class="nv">$scope.cancel = </span><span class="nf">-&gt;</span>
@@ -75,7 +81,7 @@
   <span class="nf">($scope) -&gt;</span>
     <span class="nv">$scope.room =</span>
       <span class="nv">name: </span><span class="s">&quot;Untitled Room&quot;</span>
-      <span class="nv">activePanel: </span><span class="s">&quot;clients&quot;</span>
+      <span class="nv">activePanel: </span><span class="s">&quot;clients-chat&quot;</span>
 
     <span class="nv">$scope.setActivePanel = </span><span class="nf">(panelId) -&gt;</span>
       <span class="nv">$scope.room.activePanel = </span><span class="nx">panelId</span>
@@ -97,7 +103,7 @@
   <span class="s">&quot;$scope&quot;</span>
   <span class="nf">($scope) -&gt;</span>
     <span class="nv">$scope.clients = </span><span class="p">[]</span>
-    
+
     <span class="nv">clientsAmount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="k">while</span> <span class="nx">clientsAmount</span> <span class="o">-=</span> <span class="mi">1</span>
       <span class="nx">$scope</span><span class="p">.</span><span class="nx">clients</span><span class="p">.</span><span class="nx">push</span>
@@ -136,23 +142,18 @@
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NotesCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;$scope&quot;</span>
   <span class="nf">($scope) -&gt;</span>
-    <span class="nv">$scope.room.notes = </span><span class="p">{}</span>
+    <span class="nv">$scope.room.notes = </span><span class="p">[]</span>
+
+    <span class="nv">$scope.tinymceOptions =</span>
+      <span class="nv">menubar: </span><span class="kc">false</span>
 
     <span class="nv">$scope.addNote = </span><span class="nf">-&gt;</span>
-      <span class="nv">occupied = </span><span class="kc">false</span>
-      <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="kc">undefined</span>
-        <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;future/path/to/note&quot;</span>
-      <span class="k">else</span>
-        <span class="nv">occupied = </span><span class="kc">true</span>
-        <span class="nv">index = </span><span class="mi">1</span>
-        <span class="k">while</span> <span class="nx">occupied</span>
-          <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document(&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">]</span> <span class="o">is</span> <span class="kc">undefined</span>
-            <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="s">&quot;Untitled Document(&quot;</span> <span class="o">+</span> <span class="nx">index</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">]</span> <span class="o">=</span>
-              <span class="s">&quot;future/path/to/note&quot;</span>
-            <span class="nv">occupied = </span><span class="kc">false</span>
-          <span class="k">else</span> <span class="nx">index</span><span class="o">++</span>
+      <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">push</span>
+        <span class="s">&quot;title&quot;</span><span class="o">:</span> <span class="s">&quot;Untitled Document&quot;</span>
+        <span class="s">&quot;content&quot;</span><span class="o">:</span> <span class="s">&quot;Click to edit&quot;</span>
+        <span class="s">&quot;path&quot;</span><span class="o">:</span> <span class="s">&quot;future/path/to/note&quot;</span>
 
-    <span class="nv">$scope.removeNote = </span><span class="nf">(key) -&gt;</span>
-      <span class="k">delete</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span>
+    <span class="nv">$scope.removeNote = </span><span class="nf">(index) -&gt;</span>
+      <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>
 
 <span class="p">]</span></div></div></div></div></body></html>
