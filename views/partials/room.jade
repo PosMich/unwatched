@@ -1,6 +1,6 @@
 .page-header
   fieldset
-    legend {{room.name}} "{{room.activeClientsContainer}}"
+    legend {{room.name}}
     .row.clearfix
       .col-sm-6
         .panel(ng-class="getActivePanel('clients-chat')", ng-click="setActivePanel('clients-chat')")
@@ -8,12 +8,17 @@
           .panel-body
             tabset(justified="true")
               tab#clients-tab(ng-controller="ClientsCtrl", heading="Clients")
-                #clients.clearfix
-                  .col-xs-4(ng-repeat="client in clients")
-                    .client(client resize)
-                  .options
-                    i.share-screen-to-all
-                    i.share-webcam-to-all
+                #clients
+                  .row.options
+                    .col-xs-12
+                      button.btn.btn-primary.btn-sm.share-screen-to-all Share Screen
+                        i.glyphicon.glyphicon-picture
+                      button.btn.btn-primary.btn-sm.share-webcam-to-all Share Webcam
+                        i.glyphicon.glyphicon-facetime-video
+                  .row.clearfix
+                    .col-md-4.col-sm-6.col-xs-3(ng-repeat="client in clients")
+                      .client(client resize)
+
               tab#chat-tab(ng-controller="ChatCtrl", heading="Chat")
                 #chat
                   .panel(ng-class="getActivePanel('chat')", 

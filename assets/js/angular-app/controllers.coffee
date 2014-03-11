@@ -26,17 +26,17 @@ app.controller "SpacelabCtrl", ->
 app.controller "NavCtrl", [
   "$scope"
   "$modal"
-  "RTC"
-  ($scope, $modal, RTCProvider) ->
-    console.log RTCProvider
-    RTCProvider.logName()
-    console.log RTCProvider.createHash()
+  # "RTC"
+  ($scope, $modal) ->
+    # console.log RTCProvider
+    # RTCProvider.logName()
+    # console.log RTCProvider.createHash()
     #RTCProvider.setName "Friedrich"
-    RTCProvider.logName()
+    # RTCProvider.logName()
 
-    RTCProvider.addClient "Herbert", "herbert@herbert.com"
-    RTCProvider.addClient "Franz", "franz@franz.fr"
-    RTCProvider.listClients()
+    # RTCProvider.addClient "Herbert", "herbert@herbert.com"
+    # RTCProvider.addClient "Franz", "franz@franz.fr"
+    # RTCProvider.listClients()
     $scope.open = ->
       modalInstance = $modal.open(
         templateUrl: "/partials/loginForm.jade"
@@ -52,10 +52,10 @@ app.controller "SignupCtrl", [
   "$scope"
   "$modalInstance"
   "RTC"
-  ($scope, $modalInstance, RTCProvider) ->
+  ($scope, $modalInstance) ->
     $scope.user = {}
 
-    RTCProvider.logName()
+    # RTCProvider.logName()
     $scope.hideSignUp = true
 
     $scope.submit = ->

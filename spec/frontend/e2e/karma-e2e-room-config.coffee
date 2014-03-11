@@ -13,6 +13,10 @@ module.exports = (config) ->
     # page of unwatched
     urlRoot: '/__testacular/'
 
+    preprocessors: {
+      '**/*.coffee': ['coffee']
+    }
+
     # list of files / patterns to load in the browser
     files: [
       'room/*.coffee'
@@ -29,8 +33,8 @@ module.exports = (config) ->
     # - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     # - PhantomJS
     # - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    # browsers: ['PhantomJS']
-    browsers: ['Chrome']
+    browsers: ['PhantomJS']
+    # browsers: ['Chrome']
 
     # frameworks to use
     frameworks: ['ng-scenario']
@@ -42,7 +46,7 @@ module.exports = (config) ->
 
     plugins: [
       'karma-phantomjs-launcher',
-      'karma-chrome-launcher',
+      # 'karma-chrome-launcher',
       'karma-jasmine',
       'karma-ng-scenario'
       'karma-coffee-preprocessor'

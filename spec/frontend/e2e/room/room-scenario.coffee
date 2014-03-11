@@ -42,8 +42,8 @@ describe "Unwatched Room Page - ", ->
 
     it "should contain the icons 'share screen to all' and 'share webcam to all'", ->
       # not yet implemented
-      # expect(element("#clients i.share-screen-to-all").count()).toBe 1
-      # expect(element("#clients i.share-webcam-to-all").count()).toBe 1
+      expect(element("#clients button.share-screen-to-all").count()).toBe 1
+      expect(element("#clients button.share-webcam-to-all").count()).toBe 1
 
   describe "chat", ->
 
