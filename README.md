@@ -99,7 +99,7 @@ Userconfig
 
     module.exports =
         appName: "AppName"
-        sessionSecret: "Seeecreet 64 bit long"
+        sessionSecret: "Seeecreet 64 chars long"
 
 
 
