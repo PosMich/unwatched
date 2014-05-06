@@ -26,6 +26,7 @@ tmp/
 
 public/*.css
 public/js
+public/css
 
 userconfig.coffee
 userconfig*
