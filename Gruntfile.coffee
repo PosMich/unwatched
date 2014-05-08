@@ -1,79 +1,79 @@
 path = require "path"
 LIVERELOAD_PORT = 35729
 
+
+# # ANSI Terminal Colors/Styles
+reset = "\x1B[0m"
+
+styles =
+    bold       : 1
+    dim        : 2
+    italic     : 3
+    underlined : 4
+    blink      : 5
+    inverted   : 7
+
+colors =
+    black         : 30
+    white         : 97
+    red           : 31
+    light_red     : 91
+    green         : 32
+    light_green   : 92
+    yellow        : 33
+    light_yellow  : 93
+    blue          : 34
+    light_blue    : 94
+    magenta       : 35
+    light_magenta : 95
+    cyan          : 36
+    light_cyan    : 96
+    gray          : 90
+    light_gray    : 37
+
+backgrounds =
+    black          : 40
+    red            : 41
+    green          : 42
+    yellow         : 43
+    blue           : 44
+    magenta        : 45
+    cyan           : 46
+    gray           : 100
+    light_red      : 101
+    light_green    : 102
+    light_yellow   : 103
+    light_blue     : 104
+    light_magenta  : 105
+    light_cyan     : 106
+    light_gray     : 47
+
+header = """
+
+
+
+ ██╗   ██╗███╗   ██╗██╗    ██╗ █████╗ ████████╗ ██████╗██╗  ██╗███████╗██████╗
+ ██║   ██║████╗  ██║██║    ██║██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔══██╗
+ ██║   ██║██╔██╗ ██║██║ █╗ ██║███████║   ██║   ██║     ███████║█████╗  ██║  ██║
+ ██║   ██║██║╚██╗██║██║███╗██║██╔══██║   ██║   ██║     ██╔══██║██╔══╝  ██║  ██║
+ ╚██████╔╝██║ ╚████║╚███╔███╔╝██║  ██║   ██║   ╚██████╗██║  ██║███████╗██████╔╝
+  ╚═════╝ ╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝
+#{reset}\x1B[#{colors.light_blue}m
+                                                  - pretty close collaboration
+#{reset}
+
+"""
+
+header = header.replace /█/g, "#{reset}\x1B[#{colors.green}m█#{reset}"
+for char in ["╗","╝","║","═","╔","╚"]
+    header = header.replace new RegExp(char, "g"),
+        "#{reset}\x1B[#{colors.light_blue}m#{char}#{reset}"
+
+console.log header
+
+
+
 module.exports = (grunt) ->
-    # # ANSI Terminal Colors/Styles
-    reset = "\x1B[0m"
-
-    styles =
-        bold       : 1
-        dim        : 2
-        italic     : 3
-        underlined : 4
-        blink      : 5
-        inverted   : 7
-
-    colors =
-        black         : 30
-        white         : 97
-        red           : 31
-        light_red     : 91
-        green         : 32
-        light_green   : 92
-        yellow        : 33
-        light_yellow  : 93
-        blue          : 34
-        light_blue    : 94
-        magenta       : 35
-        light_magenta : 95
-        cyan          : 36
-        light_cyan    : 96
-        gray          : 90
-        light_gray    : 37
-
-    backgrounds =
-        black          : 40
-        red            : 41
-        green          : 42
-        yellow         : 43
-        blue           : 44
-        magenta        : 45
-        cyan           : 46
-        gray           : 100
-        light_red      : 101
-        light_green    : 102
-        light_yellow   : 103
-        light_blue     : 104
-        light_magenta  : 105
-        light_cyan     : 106
-        light_gray     : 47
-
-    # # Header
-    g  = reset+"\x1B[#{backgrounds.black};#{colors.green}m"
-    lg = reset+"\x1B[#{backgrounds.black};#{colors.light_green}m"
-
-    header = """
-
-
-
-     ██╗   ██╗███╗   ██╗██╗    ██╗ █████╗ ████████╗ ██████╗██╗  ██╗███████╗██████╗
-     ██║   ██║████╗  ██║██║    ██║██╔══██╗╚══██╔══╝██╔════╝██║  ██║██╔════╝██╔══██╗
-     ██║   ██║██╔██╗ ██║██║ █╗ ██║███████║   ██║   ██║     ███████║█████╗  ██║  ██║
-     ██║   ██║██║╚██╗██║██║███╗██║██╔══██║   ██║   ██║     ██╔══██║██╔══╝  ██║  ██║
-     ╚██████╔╝██║ ╚████║╚███╔███╔╝██║  ██║   ██║   ╚██████╗██║  ██║███████╗██████╔╝
-      ╚═════╝ ╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝
-    #{reset}\x1B[#{colors.light_blue}m
-                                                      - pretty close collaboration
-    #{reset}
-
-    """
-
-    header = header.replace /█/g, "#{reset}\x1B[#{colors.green}m█#{reset}"
-    for char in ["╗","╝","║","═","╔","╚"]
-        header = header.replace new RegExp(char, "g"),
-            "#{reset}\x1B[#{colors.light_blue}m#{char}#{reset}"
-
-    console.log header
 
     require( "load-grunt-tasks" )(grunt)
     require( "time-grunt" )(grunt)
