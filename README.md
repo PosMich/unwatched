@@ -73,19 +73,12 @@ Userconfig
 
 
 
-Run
-===
+Take a look at the Gruntfile
+============================
 
-> Run <b>*`cake`*</b> to see all available commands:
 
-    [ubuser@ubuthink playground]$ cake
-    Cakefile defines the following tasks:<br>
+    grunt --help
 
-    cake docs                 # Generate annotated source code with Docco and move it to public dir
-    cake build                # compiles coffeescript files to javascript into the .app directory
-    cake dev                  # run 'build' task, start dev env
-    cake debug                # run 'build' task, start debug env
-    cake run                  # run 'build' task, start production env
 
 
 Docs
@@ -94,12 +87,6 @@ Docs
 > [groc](https://github.com/nevir/groc/) is used for generating the documentation.
 
 > The files are moved to the <b>*`public`*</b> dir, you can access them via **`http://servername/docs`**.
-
-
-Take a look at the Gruntfile
-============================
-
-    grunt --help
 
 
 TODO
