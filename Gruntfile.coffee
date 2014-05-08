@@ -65,8 +65,7 @@ module.exports = (grunt) ->
       ╚═════╝ ╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝
     #{reset}\x1B[#{backgrounds.black};#{colors.light_blue}m
                                                       - pretty close collaboration
-    #{reset}\x1B[#{backgrounds.black}m
-
+    #{reset}
 
     """
 
