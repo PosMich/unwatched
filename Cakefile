@@ -71,8 +71,6 @@ g  = reset+"\x1B[#{backgrounds.black};#{colors.green}m"
 lg = reset+"\x1B[#{backgrounds.black};#{colors.light_green}m"
 
 header = """
-\x1B[#{backgrounds.black}m
-
 
 
  ██╗   ██╗███╗   ██╗██╗    ██╗ █████╗ ████████╗ ██████╗██╗  ██╗███████╗██████╗
@@ -81,17 +79,17 @@ header = """
  ██║   ██║██║╚██╗██║██║███╗██║██╔══██║   ██║   ██║     ██╔══██║██╔══╝  ██║  ██║
  ╚██████╔╝██║ ╚████║╚███╔███╔╝██║  ██║   ██║   ╚██████╗██║  ██║███████╗██████╔╝
   ╚═════╝ ╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝   ╚═╝    ╚═════╝╚═╝  ╚═╝╚══════╝╚═════╝
-#{reset}\x1B[#{backgrounds.black};#{colors.light_blue}m
+#{reset}\x1B[#{colors.light_blue}m
                                                   - pretty close collaboration
-#{reset}\x1B[#{backgrounds.black}m
+#{reset}
 
 
 """
 
-header = header.replace /█/g, "#{reset}\x1B[#{backgrounds.black};#{colors.green}m█#{reset}"
+header = header.replace /█/g, "#{reset}\x1B[#{colors.green}m█#{reset}"
 for char in ["╗","╝","║","═","╔","╚"]
   header = header.replace new RegExp(char, "g"),
-    "#{reset}\x1B[#{backgrounds.black};#{colors.light_blue}m#{char}#{reset}"
+    "#{reset}\x1B[#{colors.light_blue}m#{char}#{reset}"
 
 console.log header
 
