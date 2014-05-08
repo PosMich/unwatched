@@ -5,7 +5,7 @@ html(ng-app="unwatched")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(charset="utf-8")
     meta(name="fragment" content="!")
-    != css("app")
+    link(type='text/css', rel='stylesheet', href='/css/app.css')
   body
     div(class="navbar navbar-inverse navbar-fixed-top", ng-controller="NavCtrl")
       .container
@@ -36,4 +36,4 @@ html(ng-app="unwatched")
     .footer
       center v
         span(app-version)
-    != js("app")
+    script(src='/js/app.js')

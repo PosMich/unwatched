@@ -2,9 +2,10 @@
 # The userconfig file *must not be in your repository* cause it contains
 # sensible data like database login data or user specific settings
 # (e.g. local databse).
-userconfig = require "../userconfig"
+userconfig = require "./userconfig"
 
 config = {}
+
 
 config[prop] = value for prop,value of userconfig
 

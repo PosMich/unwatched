@@ -1,7 +1,8 @@
 "use strict"
 
-describe "Midway Testing: Controllers", ->
-  it "should say bla", ->
-    expect(true).toBe false
-  it "should say blu", ->
-    expect(true).toBe true
+describe "Unit Testing: Controllers", ->
+    it "should say bla", ->
+        expect(true).toBe true
+
+    it "should say blu", ->
+        expect(true).toBe true

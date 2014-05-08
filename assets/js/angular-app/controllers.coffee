@@ -51,7 +51,7 @@ app.controller "NavCtrl", [
 app.controller "SignupCtrl", [
   "$scope"
   "$modalInstance"
-  "RTC"
+  #"RTC"
   ($scope, $modalInstance) ->
     $scope.user = {}
 
@@ -139,6 +139,7 @@ app.controller "NotesCtrl", [
         "title": "Untitled Document"
         "content": "Click to edit"
         "path": "future/path/to/note"
+        
 
     $scope.removeNote = (index) ->
       $scope.room.notes.splice index, 1

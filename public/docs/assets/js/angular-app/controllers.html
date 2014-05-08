@@ -23,19 +23,11 @@
   for $locationProvider details</p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NavCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;$scope&quot;</span>
-  <span class="s">&quot;$modal&quot;</span>
-  <span class="s">&quot;RTC&quot;</span>
-  <span class="nf">($scope, $modal, RTCProvider) -&gt;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">RTCProvider</span>
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">createHash</span><span class="p">()</span>
-    <span class="c1">#RTCProvider.setName &quot;Friedrich&quot;</span>
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
-
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">addClient</span> <span class="s">&quot;Herbert&quot;</span><span class="p">,</span> <span class="s">&quot;herbert@herbert.com&quot;</span>
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">addClient</span> <span class="s">&quot;Franz&quot;</span><span class="p">,</span> <span class="s">&quot;franz@franz.fr&quot;</span>
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">listClients</span><span class="p">()</span>
-    <span class="nv">$scope.open = </span><span class="nf">-&gt;</span>
+  <span class="s">&quot;$modal&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>"RTC"</p></div></div><div class="code"><div class="wrapper">  <span class="nf">($scope, $modal) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log RTCProvider
+RTCProvider.logName()
+console.log RTCProvider.createHash()</p></div></div><div class="code"><div class="wrapper">    <span class="c1">#RTCProvider.setName &quot;Friedrich&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.logName()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.addClient "Herbert", "herbert@herbert.com"
+RTCProvider.addClient "Franz", "franz@franz.fr"
+RTCProvider.listClients()</p></div></div><div class="code"><div class="wrapper">    <span class="nv">$scope.open = </span><span class="nf">-&gt;</span>
       <span class="nv">modalInstance = </span><span class="nx">$modal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
         <span class="nv">templateUrl: </span><span class="s">&quot;/partials/loginForm.jade&quot;</span>
         <span class="nv">controller: </span><span class="s">&quot;SignupCtrl&quot;</span>
@@ -52,12 +44,9 @@
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SignupCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;$scope&quot;</span>
   <span class="s">&quot;$modalInstance&quot;</span>
-  <span class="s">&quot;RTC&quot;</span>
-  <span class="nf">($scope, $modalInstance, RTCProvider) -&gt;</span>
-    <span class="nv">$scope.user = </span><span class="p">{}</span>
-
-    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">logName</span><span class="p">()</span>
-    <span class="nv">$scope.hideSignUp = </span><span class="kc">true</span>
+  <span class="c1">#&quot;RTC&quot;</span>
+  <span class="nf">($scope, $modalInstance) -&gt;</span>
+    <span class="nv">$scope.user = </span><span class="p">{}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.logName()</p></div></div><div class="code"><div class="wrapper">    <span class="nv">$scope.hideSignUp = </span><span class="kc">true</span>
 
     <span class="nv">$scope.submit = </span><span class="nf">-&gt;</span>
       <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">user</span>
@@ -152,6 +141,7 @@
         <span class="s">&quot;title&quot;</span><span class="o">:</span> <span class="s">&quot;Untitled Document&quot;</span>
         <span class="s">&quot;content&quot;</span><span class="o">:</span> <span class="s">&quot;Click to edit&quot;</span>
         <span class="s">&quot;path&quot;</span><span class="o">:</span> <span class="s">&quot;future/path/to/note&quot;</span>
+        
 
     <span class="nv">$scope.removeNote = </span><span class="nf">(index) -&gt;</span>
       <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>

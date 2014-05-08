@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>#</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="angular.html">
+                angular.coffee
+              </a>
+            
+              
+              <a class="source" href="controllers.html">
+                controllers.coffee
+              </a>
+            
+              
+              <a class="source" href="directives.html">
+                directives.coffee
+              </a>
+            
+              
+              <a class="source" href="filters.html">
+                filters.coffee
+              </a>
+            
+              
+              <a class="source" href="services.html">
+                services.coffee
+              </a>
+            
+              
+              <a class="source" href="app.html">
+                app.coffee
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.coffee
+              </a>
+            
+              
+              <a class="source" href="debug.html">
+                debug.coffee
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.api.html">
+                routes.api.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.html">
+                routes.coffee
+              </a>
+            
+              
+              <a class="source" href="server.html">
+                server.coffee
+              </a>
+            
+              
+              <a class="source" href="userconfig.html">
+                userconfig.coffee
+              </a>
+            
+              
+              <a class="source" href="README.html">
+                README.md
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="-">#</h1>
+<h2 id="dependencies">Dependencies</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <hr>
+<h2 id="-packages"># packages</h2>
+<p>installed via <code>npm install</code></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>express  = <span class="hljs-built_in">require</span> <span class="hljs-string">"express"</span>
+assets   = <span class="hljs-built_in">require</span> <span class="hljs-string">"connect-assets"</span>
+stylus   = <span class="hljs-built_in">require</span> <span class="hljs-string">"stylus"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <hr>
+<h2 id="-own-modules"># own modules</h2>
+<p>located in same directory as the server.coffee file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>config    = <span class="hljs-built_in">require</span> <span class="hljs-string">"./config"</span>
+debug     = <span class="hljs-built_in">require</span> <span class="hljs-string">"./debug"</span>
+
+routesAPI = <span class="hljs-built_in">require</span> <span class="hljs-string">"./routes.api"</span>
+routes    = <span class="hljs-built_in">require</span> <span class="hljs-string">"./routes"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <hr>
+<p>print unused exceptions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>process.<span class="hljs-literal">on</span> <span class="hljs-string">"uncaughtException"</span>, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+  debug.error <span class="hljs-string">"OMG :-S"</span>
+  debug.error <span class="hljs-string">"caught 'uncaught' exception: "</span> + err
+  <span class="hljs-built_in">console</span>.log err.stack</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <hr>
+<h2 id="basic-application-initialization">Basic application initialization</h2>
+<p>Create server instance.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server = express()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Define Port</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.port =
+  process.env.PORT <span class="hljs-keyword">or</span> process.env.VMC_APP_PORT <span class="hljs-keyword">or</span> config.port <span class="hljs-keyword">or</span> <span class="hljs-number">3000</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Config module exports has <code>setEnvironment</code> function that sets server settings
+depending on environment.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>config.setEnvironment server.settings.env</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <hr>
+<h2 id="view-initialization">View initialization</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use express.logger(<span class="hljs-string">"dev"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Set the view engine to jade</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.set <span class="hljs-string">"view engine"</span>, <span class="hljs-string">"jade"</span>
+server.set <span class="hljs-string">"view options"</span>,
+  <span class="hljs-attribute">layout</span>: <span class="hljs-literal">false</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Set <strong><em>views</em></strong> directory</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.set <span class="hljs-string">"views"</span>, process.cwd() + <span class="hljs-string">"/views"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Add Connect Assets.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use assets</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p><a href="https://github.com/adunkman/connect-assets/issues/221">bugifx</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-attribute">helperContext</span>: server.locals
+  <span class="hljs-attribute">buildDir</span>: <span class="hljs-string">"public"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Render human readable html</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.locals.pretty = <span class="hljs-literal">true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Compress responses</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use express.compress()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Add Session Cookie</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use express.cookieParser()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Enable Sessions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+server.use express.session(
+  <span class="hljs-string">"secret"</span>: config.sessionSecret
+  <span class="hljs-string">"cookie"</span>:
+    <span class="hljs-string">"maxAge"</span>: <span class="hljs-number">365</span> * <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>
+    <span class="hljs-string">"expires"</span>: <span class="hljs-literal">false</span>
+)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Set the <strong><em>public</em></strong> folder as static assets.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use express.static(process.cwd() + <span class="hljs-string">"/public"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Set the favicon</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use express.favicon( process.cwd() + <span class="hljs-string">"public/favicon.ico"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <hr>
+<p>This function will pass the current url to the template object.
+It allows us to use this value for the navbar.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.use <span class="hljs-function"><span class="hljs-params">(req, res, next)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <hr>
+<blockquote>
+<p>set cookie max age to 14 days</p>
+</blockquote>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  req.session.cookie.maxAge = <span class="hljs-number">14</span> * <span class="hljs-number">24</span> * <span class="hljs-number">60</span> * <span class="hljs-number">60</span> * <span class="hljs-number">1000</span>
+
+  next()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>[Body parser middleware or better known as the random link, everyone needs]
+(<a href="http://www.senchalabs.org/connect/middleware-bodyParser.html">http://www.senchalabs.org/connect/middleware-bodyParser.html</a>)
+parses JSON or XML bodies into <code>req.body</code> object
+force UploadDir to be /tmp
+server.use express.bodyParser &lt;— causing a problem!!!</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <h2 id="add-routes">Add routes</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>routesAPI.route server, <span class="hljs-string">"/api"</span>
+routes.route server</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <hr>
+<h2 id="server-start">Server start</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>server.<span class="hljs-function"><span class="hljs-title">start</span> = -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Start Server</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  server.listen server.port,<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"Listening on "</span> + server.port + <span class="hljs-string">"\nPress CTRL-C to stop server."</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>Export server object</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = server</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <h1 id="-">#</h1>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+process.<span class="hljs-literal">on</span> <span class="hljs-string">"uncaughtException"</span>, <span class="hljs-function"><span class="hljs-params">(err)</span> -&gt;</span>
+  debug.error <span class="hljs-string">"OMG :-S"</span>
+  debug.error <span class="hljs-string">"caught 'uncaught' exception: "</span> + err
+  <span class="hljs-built_in">console</span>.log err.stack
+
+express = <span class="hljs-built_in">require</span> <span class="hljs-string">"express"</span>
+assets  = <span class="hljs-built_in">require</span> <span class="hljs-string">"connect-assets"</span>
+
+config    = <span class="hljs-built_in">require</span> <span class="hljs-string">"./config"</span>
+debug     = <span class="hljs-built_in">require</span> <span class="hljs-string">"./debug"</span>
+routes    = <span class="hljs-built_in">require</span> <span class="hljs-string">"./routes"</span>
+routesAPI = <span class="hljs-built_in">require</span> <span class="hljs-string">"./routes.api"</span>
+
+app = express()
+
+app.port =
+  process.env.PORT <span class="hljs-keyword">or</span> process.env.VMC_APP_PORT <span class="hljs-keyword">or</span> config?.port <span class="hljs-keyword">or</span> <span class="hljs-number">3000</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <hr>
+<h2 id="view-initialization">View initialization</h2>
+<p>app.use express.logger(“dev”)
+Set the view engine to jade</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.set <span class="hljs-string">"view engine"</span>, <span class="hljs-string">"jade"</span>
+app.set <span class="hljs-string">"view options"</span>,
+  <span class="hljs-attribute">layout</span>: <span class="hljs-literal">false</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>Set <strong><em>views</em></strong> directory</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.set <span class="hljs-string">"views"</span>, process.cwd() + <span class="hljs-string">"/views"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>Add Connect Assets.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>app.use assets
+<a href="https://github.com/adunkman/connect-assets/issues/221">bugifx</a>
+ helperContext: app.locals
+ buildDir: “public”</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Render human readable html</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.locals.pretty = <span class="hljs-literal">true</span>
+
+app.use <span class="hljs-built_in">require</span>(<span class="hljs-string">"compression"</span>)()
+app.use <span class="hljs-built_in">require</span>(<span class="hljs-string">"serve-static"</span>)(process.cwd() + <span class="hljs-string">"/public"</span>)
+app.use <span class="hljs-built_in">require</span>(<span class="hljs-string">"connect-livereload"</span>)(<span class="hljs-attribute">port</span>: <span class="hljs-number">35729</span>)
+
+routes.route app
+routesAPI.route app
+
+
+app.<span class="hljs-function"><span class="hljs-title">start</span> = -&gt;</span>
+  app.listen app.port,<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"Listening on "</span> + app.port + <span class="hljs-string">"\nPress CTRL-C to stop server."</span>
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = app</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

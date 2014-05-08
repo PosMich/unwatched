@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Unwatched - Angular Controllers</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="angular.html">
+                angular.coffee
+              </a>
+            
+              
+              <a class="source" href="controllers.html">
+                controllers.coffee
+              </a>
+            
+              
+              <a class="source" href="directives.html">
+                directives.coffee
+              </a>
+            
+              
+              <a class="source" href="filters.html">
+                filters.coffee
+              </a>
+            
+              
+              <a class="source" href="services.html">
+                services.coffee
+              </a>
+            
+              
+              <a class="source" href="app.html">
+                app.coffee
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.coffee
+              </a>
+            
+              
+              <a class="source" href="debug.html">
+                debug.coffee
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.api.html">
+                routes.api.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.html">
+                routes.coffee
+              </a>
+            
+              
+              <a class="source" href="server.html">
+                server.coffee
+              </a>
+            
+              
+              <a class="source" href="userconfig.html">
+                userconfig.coffee
+              </a>
+            
+              
+              <a class="source" href="README.html">
+                README.md
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="unwatched-angular-controllers">Unwatched - Angular Controllers</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-string">"use strict"</span>
+
+app = angular.<span class="hljs-built_in">module</span> <span class="hljs-string">"unwatched.controllers"</span>, []
+
+app.controller <span class="hljs-string">"IndexCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-function"><span class="hljs-params">($scope)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"index ctrl here"</span>
+
+    $scope.<span class="hljs-function"><span class="hljs-title">submitCreateRoom</span> = -&gt;</span>
+]
+
+app.controller <span class="hljs-string">"SpacelabCtrl"</span>,<span class="hljs-function"> -&gt;</span>
+  <span class="hljs-built_in">console</span>.log <span class="hljs-string">"spacelab ctrl here"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <hr>
+<h2 id="config">Config</h2>
+<blockquote>
+<p>contains routing stuff only (atm)</p>
+<p>see
+<a href="http://docs.angularjs.org/guide/dev_guide.services.$location">angular docs</a>
+for $locationProvider details</p>
+</blockquote>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller <span class="hljs-string">"NavCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-string">"$modal"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>“RTC”</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-params">($scope, $modal)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>console.log RTCProvider
+RTCProvider.logName()
+console.log RTCProvider.createHash()
+RTCProvider.setName “Friedrich”
+RTCProvider.logName()</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>RTCProvider.addClient “Herbert”, “herbert@herbert.com”
+RTCProvider.addClient “Franz”, “franz@franz.fr”
+RTCProvider.listClients()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $scope.<span class="hljs-function"><span class="hljs-title">open</span> = -&gt;</span>
+      modalInstance = $modal.open(
+        <span class="hljs-attribute">templateUrl</span>: <span class="hljs-string">"/partials/loginForm.jade"</span>
+        <span class="hljs-attribute">controller</span>: <span class="hljs-string">"SignupCtrl"</span>
+      )
+
+]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <hr>
+<ul>
+<li><h3>Signup Controller</h3>
+&gt;</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller <span class="hljs-string">"SignupCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-string">"$modalInstance"</span>
+  <span class="hljs-string">"RTC"</span>
+  <span class="hljs-function"><span class="hljs-params">($scope, $modalInstance)</span> -&gt;</span>
+    $scope.user = {}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>RTCProvider.logName()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $scope.hideSignUp = <span class="hljs-literal">true</span>
+
+    $scope.<span class="hljs-function"><span class="hljs-title">submit</span> = -&gt;</span>
+      <span class="hljs-built_in">console</span>.log $scope.user
+
+    $scope.isCollapsed = <span class="hljs-literal">true</span>
+    $scope.<span class="hljs-function"><span class="hljs-title">ok</span> = -&gt;</span>
+      $modalInstance.close
+
+    $scope.<span class="hljs-function"><span class="hljs-title">cancel</span> = -&gt;</span>
+      $modalInstance.dismiss <span class="hljs-string">"cancel"</span>
+]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <hr>
+<ul>
+<li><h3>Room Controller</h3>
+&gt;</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller <span class="hljs-string">"RoomCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-function"><span class="hljs-params">($scope)</span> -&gt;</span>
+    $scope.room =
+      <span class="hljs-attribute">name</span>: <span class="hljs-string">"Untitled Room"</span>
+      <span class="hljs-attribute">activePanel</span>: <span class="hljs-string">"clients-chat"</span>
+
+    $scope.<span class="hljs-function"><span class="hljs-title">setActivePanel</span> = <span class="hljs-params">(panelId)</span> -&gt;</span>
+      $scope.room.activePanel = panelId
+
+    $scope.<span class="hljs-function"><span class="hljs-title">getActivePanel</span> = <span class="hljs-params">(panelId)</span> -&gt;</span>
+      <span class="hljs-keyword">if</span> $scope.room.activePanel <span class="hljs-keyword">is</span> panelId
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"panel-primary"</span>
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"panel-default"</span>
+]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <hr>
+<ul>
+<li><h3>Clients Controller</h3>
+&gt;</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller <span class="hljs-string">"ClientsCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-function"><span class="hljs-params">($scope)</span> -&gt;</span>
+    $scope.clients = []
+
+    clientsAmount = Math.floor(Math.random() * <span class="hljs-number">10</span> + <span class="hljs-number">1</span>) + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> clientsAmount -= <span class="hljs-number">1</span>
+      $scope.clients.push
+        <span class="hljs-attribute">name</span>: <span class="hljs-string">"Lorem Ipsum"</span>
+        <span class="hljs-attribute">avatar</span>: <span class="hljs-keyword">if</span> Math.round(Math.random()) <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-string">"/images/avatar.png"</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-string">"/images/avatar_inverted.png"</span>
+]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <hr>
+<ul>
+<li><h3>Chat Controller</h3>
+&gt;</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller <span class="hljs-string">"ChatCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-function"><span class="hljs-params">($scope)</span> -&gt;</span>
+    $scope.chat = {}
+    $scope.chat.messages = []
+
+    $scope.<span class="hljs-function"><span class="hljs-title">submitChatMessage</span> = -&gt;</span>
+      $scope.chat.messages.push
+        <span class="hljs-attribute">sender</span>: <span class="hljs-string">"Lorem Ipsum"</span>
+        <span class="hljs-attribute">content</span>: $scope.chat.message
+      $scope.chat.message = <span class="hljs-string">""</span>
+
+]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <hr>
+<ul>
+<li><h3>Notes Controller</h3><blockquote>
+<p>Contains the logic to add/remove notes - the title of a note is the key
+of the note-model-object - the path to the note is the corresponding value.</p>
+</blockquote>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.controller <span class="hljs-string">"NotesCtrl"</span>, [
+  <span class="hljs-string">"$scope"</span>
+  <span class="hljs-function"><span class="hljs-params">($scope)</span> -&gt;</span>
+    $scope.room.notes = []
+
+    $scope.tinymceOptions =
+      <span class="hljs-attribute">menubar</span>: <span class="hljs-literal">false</span>
+
+    $scope.<span class="hljs-function"><span class="hljs-title">addNote</span> = -&gt;</span>
+      $scope.room.notes.push
+        <span class="hljs-string">"title"</span>: <span class="hljs-string">"Untitled Document"</span>
+        <span class="hljs-string">"content"</span>: <span class="hljs-string">"Click to edit"</span>
+        <span class="hljs-string">"path"</span>: <span class="hljs-string">"future/path/to/note"</span>
+
+    $scope.<span class="hljs-function"><span class="hljs-title">removeNote</span> = <span class="hljs-params">(index)</span> -&gt;</span>
+      $scope.room.notes.splice index, <span class="hljs-number">1</span>
+
+]</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

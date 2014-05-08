@@ -9,11 +9,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       "type": "file",
       "data": {
         "language": {
-          "nameMatchers": [".md"],
+          "nameMatchers": [".md", ".markdown", ".mkd", ".mkdn", ".mdown"],
           "commentsOnly": true,
           "name": "Markdown"
         },
-        "sourcePath": "/var/www/unwatched/README.md",
+        "sourcePath": "/home/ubuser/www/unwatched/README.md",
         "projectPath": "README.md",
         "targetPath": "index",
         "pageTitle": "index",
@@ -99,32 +99,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "type": "heading",
                   "data": {
                     "level": 3,
-                    "title": "Debian",
-                    "slug": "debian"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "Ubuntu",
-                    "slug": "ubuntu"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "Fedora",
-                    "slug": "fedora"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "RHEL/CentOS",
-                    "slug": "rhelcentos"
+                    "title": "NVM",
+                    "slug": "nvm"
                   },
                   "depth": 3
                 }, {
@@ -141,8 +117,16 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "type": "heading",
               "data": {
                 "level": 2,
-                "title": "coffee-script, docco",
-                "slug": "coffee-script-docco"
+                "title": "coffee-script, grunt",
+                "slug": "coffee-script-grunt"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Pygments",
+                "slug": "pygments"
               },
               "depth": 2
             }
@@ -335,14 +319,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "language": {
                       "nameMatchers": [".coffee", "Cakefile"],
                       "pygmentsLexer": "coffee-script",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
                       "strictMultiLineEnd": false,
                       "singleLineComment": ["#"],
                       "ignorePrefix": "}",
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/var/www/unwatched/assets/js/angular-app/angular.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/angular.coffee",
                     "projectPath": "assets/js/angular-app/angular.coffee",
                     "targetPath": "assets/js/angular-app/angular",
                     "pageTitle": "assets/js/angular-app/angular",
@@ -409,14 +393,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "language": {
                       "nameMatchers": [".coffee", "Cakefile"],
                       "pygmentsLexer": "coffee-script",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
                       "strictMultiLineEnd": false,
                       "singleLineComment": ["#"],
                       "ignorePrefix": "}",
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/var/www/unwatched/assets/js/angular-app/controllers.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/controllers.coffee",
                     "projectPath": "assets/js/angular-app/controllers.coffee",
                     "targetPath": "assets/js/angular-app/controllers",
                     "pageTitle": "assets/js/angular-app/controllers",
@@ -461,14 +445,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "language": {
                       "nameMatchers": [".coffee", "Cakefile"],
                       "pygmentsLexer": "coffee-script",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
                       "strictMultiLineEnd": false,
                       "singleLineComment": ["#"],
                       "ignorePrefix": "}",
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/var/www/unwatched/assets/js/angular-app/directives.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/directives.coffee",
                     "projectPath": "assets/js/angular-app/directives.coffee",
                     "targetPath": "assets/js/angular-app/directives",
                     "pageTitle": "assets/js/angular-app/directives",
@@ -492,14 +476,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "language": {
                       "nameMatchers": [".coffee", "Cakefile"],
                       "pygmentsLexer": "coffee-script",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
                       "strictMultiLineEnd": false,
                       "singleLineComment": ["#"],
                       "ignorePrefix": "}",
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/var/www/unwatched/assets/js/angular-app/filters.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/filters.coffee",
                     "projectPath": "assets/js/angular-app/filters.coffee",
                     "targetPath": "assets/js/angular-app/filters",
                     "pageTitle": "assets/js/angular-app/filters",
@@ -523,14 +507,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                     "language": {
                       "nameMatchers": [".coffee", "Cakefile"],
                       "pygmentsLexer": "coffee-script",
-                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                      "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
                       "strictMultiLineEnd": false,
                       "singleLineComment": ["#"],
                       "ignorePrefix": "}",
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/var/www/unwatched/assets/js/angular-app/services.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/services.coffee",
                     "projectPath": "assets/js/angular-app/services.coffee",
                     "targetPath": "assets/js/angular-app/services",
                     "pageTitle": "assets/js/angular-app/services",
@@ -556,14 +540,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "language": {
                   "nameMatchers": [".coffee", "Cakefile"],
                   "pygmentsLexer": "coffee-script",
-                  "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+                  "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
                   "strictMultiLineEnd": false,
                   "singleLineComment": ["#"],
                   "ignorePrefix": "}",
                   "foldPrefix": "^",
                   "name": "CoffeeScript"
                 },
-                "sourcePath": "/var/www/unwatched/assets/js/app.coffee",
+                "sourcePath": "/home/ubuser/www/unwatched/assets/js/app.coffee",
                 "projectPath": "assets/js/app.coffee",
                 "targetPath": "assets/js/app",
                 "pageTitle": "assets/js/app",
@@ -609,14 +593,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "language": {
               "nameMatchers": [".coffee", "Cakefile"],
               "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
               "strictMultiLineEnd": false,
               "singleLineComment": ["#"],
               "ignorePrefix": "}",
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/var/www/unwatched/modules/config.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/config.coffee",
             "projectPath": "modules/config.coffee",
             "targetPath": "modules/config",
             "pageTitle": "modules/config",
@@ -648,14 +632,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "language": {
               "nameMatchers": [".coffee", "Cakefile"],
               "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
               "strictMultiLineEnd": false,
               "singleLineComment": ["#"],
               "ignorePrefix": "}",
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/var/www/unwatched/modules/debug.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/debug.coffee",
             "projectPath": "modules/debug.coffee",
             "targetPath": "modules/debug",
             "pageTitle": "modules/debug",
@@ -679,14 +663,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "language": {
               "nameMatchers": [".coffee", "Cakefile"],
               "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
               "strictMultiLineEnd": false,
               "singleLineComment": ["#"],
               "ignorePrefix": "}",
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/var/www/unwatched/modules/index.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/index.coffee",
             "projectPath": "modules/index.coffee",
             "targetPath": "modules/index",
             "pageTitle": "modules/index",
@@ -700,14 +684,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "language": {
               "nameMatchers": [".coffee", "Cakefile"],
               "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
               "strictMultiLineEnd": false,
               "singleLineComment": ["#"],
               "ignorePrefix": "}",
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/var/www/unwatched/modules/routes.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.coffee",
             "projectPath": "modules/routes.coffee",
             "targetPath": "modules/routes",
             "pageTitle": "modules/routes",
@@ -752,14 +736,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "language": {
               "nameMatchers": [".coffee", "Cakefile"],
               "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
               "strictMultiLineEnd": false,
               "singleLineComment": ["#"],
               "ignorePrefix": "}",
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/var/www/unwatched/modules/routes.api.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.api.coffee",
             "projectPath": "modules/routes.api.coffee",
             "targetPath": "modules/routes.api",
             "pageTitle": "modules/routes.api",
@@ -804,14 +788,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "language": {
               "nameMatchers": [".coffee", "Cakefile"],
               "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###"],
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
               "strictMultiLineEnd": false,
               "singleLineComment": ["#"],
               "ignorePrefix": "}",
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/var/www/unwatched/modules/server.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/server.coffee",
             "projectPath": "modules/server.coffee",
             "targetPath": "modules/server",
             "pageTitle": "modules/server",
@@ -826,26 +810,23 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "title": "Dependencies",
                 "slug": "dependencies"
               },
-              "depth": 2,
-              "children": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "packages",
-                    "slug": "packages"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "own modules",
-                    "slug": "own-modules"
-                  },
-                  "depth": 3
-                }
-              ]
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "# packages",
+                "slug": "-packages"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "# own modules",
+                "slug": "-own-modules"
+              },
+              "depth": 2
             }, {
               "type": "heading",
               "data": {
@@ -865,21 +846,61 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             }, {
               "type": "heading",
               "data": {
-                "level": 2,
-                "title": "Add routes",
-                "slug": "add-routes"
+                "level": 1,
+                "title": "server.use express.bodyParser &lt;-- causing a problem!!!",
+                "slug": "serveruse-expressbodyparser-lt-causing-a-problem"
               },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Server start",
-                "slug": "server-start"
-              },
-              "depth": 2
+              "depth": 1,
+              "children": [
+                {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Add routes",
+                    "slug": "add-routes"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "Server start",
+                    "slug": "server-start"
+                  },
+                  "depth": 2
+                }, {
+                  "type": "heading",
+                  "data": {
+                    "level": 2,
+                    "title": "View initialization",
+                    "slug": "view-initialization"
+                  },
+                  "depth": 2
+                }
+              ]
             }
           ]
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".coffee", "Cakefile"],
+              "pygmentsLexer": "coffee-script",
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+              "strictMultiLineEnd": false,
+              "singleLineComment": ["#"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "CoffeeScript"
+            },
+            "sourcePath": "/home/ubuser/www/unwatched/modules/userconfig.coffee",
+            "projectPath": "modules/userconfig.coffee",
+            "targetPath": "modules/userconfig",
+            "pageTitle": "modules/userconfig",
+            "title": "userconfig"
+          },
+          "depth": 2,
+          "outline": []
         }
       ]
     }

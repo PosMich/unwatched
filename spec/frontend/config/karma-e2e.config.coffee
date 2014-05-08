@@ -7,18 +7,26 @@ module.exports = (config) ->
   config.set
 
     # base path, that will be used to resolve all patterns, eg. files, exclude
-    basePath: '../'
+    basePath: "../"
 
-    # changing the urlRoot from '/' is necessary because the testing server
-    # 'testacular' occupies the same url root as the real unwatched app due
-    # the same origin policy - otherwise we wouldn't be able to test the root
+    # changing the urlRoot from "/" is necessary because the testing server
+    # "testacular" occupies the same url root as the real unwatched app due
+    # the same origin policy - otherwise we wouldn"t be able to test the root
     # page of unwatched
-    urlRoot: '/__testacular/'
+
+    urlRoot: "/__testacular/"
+
+
+    
+    # preprocessors
+    preprocessors: 
+        "**/*.coffee": ["coffee"]
 
     # list of files / patterns to load in the browser
     files: [
-      'e2e/**/*.coffee'
+      "e2e/**/*-scenario.coffee"
     ]
+
 
     # enable / disable watching file and executing tests whenever any file changes
     autoWatch: false
@@ -31,19 +39,19 @@ module.exports = (config) ->
     # - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     # - PhantomJS
     # - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['PhantomJS']
+    browsers: ["PhantomJS"]
 
     # frameworks to use
-    frameworks: ['ng-scenario']
+    frameworks: ["ng-scenario"]
 
     singleRun: true
 
     proxies:
-      '/': 'http://localhost:#{userConfig.port}/'
+      "/": "http://localhost:3000/"
 
     plugins: [
-      'karma-phantomjs-launcher',
-      'karma-jasmine',
-      'karma-ng-scenario'
-      'karma-coffee-preprocessor'
+      "karma-phantomjs-launcher",
+      "karma-jasmine",
+      "karma-ng-scenario"
+      "karma-coffee-preprocessor"
     ]

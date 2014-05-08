@@ -1,4 +1,6 @@
 .app/
+.grunt/
+.rebooted
 .DS_Store
 lib-cov
 *.seed

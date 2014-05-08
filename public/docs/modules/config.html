@@ -2,9 +2,10 @@
 
 <p>The userconfig file <em>must not be in your repository</em> cause it contains
 sensible data like database login data or user specific settings
-(e.g. local databse).</p></div></div><div class="code"><div class="wrapper"><span class="nv">userconfig = </span><span class="nx">require</span> <span class="s">&quot;../userconfig&quot;</span>
+(e.g. local databse).</p></div></div><div class="code"><div class="wrapper"><span class="nv">userconfig = </span><span class="nx">require</span> <span class="s">&quot;./userconfig&quot;</span>
 
 <span class="nv">config = </span><span class="p">{}</span>
+
 
 <span class="nx">config</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span> <span class="k">for</span> <span class="nx">prop</span><span class="p">,</span><span class="nx">value</span> <span class="k">of</span> <span class="nx">userconfig</span>
 

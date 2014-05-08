@@ -28,9 +28,8 @@
                       #chat-messages(update-scroll-position="chat.messages.length")
                         .chat-message.clearfix(ng-repeat="message in chat.messages", 
                                                 delay-display="message")
-                          span.well.well-sm(ng-class-even="'own-msg'")
-                            b {{message.sender}}: 
-                            {{message.content}}
+                          span.well.well-sm(ng-class-even="'own-msg'").
+                            <b>{{message.sender}}: </b>{{message.content}}
                     .panel-footer.no-padding
                       .row
                         form(name="chatMessage", no-validate, 

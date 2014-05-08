@@ -8,7 +8,6 @@ config = require "./config"
 # Route Definitions
 # -----------------
 exports.route = (app) ->
-
   # All partials. This is used by Angular.
   app.get "/partials/:name",  (req, res) ->
     name = req.params.name

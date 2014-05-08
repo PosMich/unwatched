@@ -35,55 +35,24 @@ Prerequisites
 
 > ## Node.js
 
->> ### Debian
+>> ### NVM
 
->>> For Debian Sid Node.js is available in the official repo.
-
->>> For Wheezy, you should compile it by yourself:
-
-    sudo apt-get install python g++ make checkinstall
-    mkdir ~/src && cd $_
-    wget -N http://nodejs.org/dist/node-latest.tar.gz
-    tar xzvf node-latest.tar.gz && cd node-v*
-    ./configure
-    checkinstall #(remove the "v" in front of the version number in the dialog)
-    sudo dpkg -i node_*
-
-
->> ### Ubuntu
-
-    sudo apt-get update
-    sudo apt-get install python-software-properties python g++ make software-properties-common
-    sudo add-apt-repository ppa:chris-lea/node.js
-    sudo apt-get update
-    sudo apt-get install nodejs
-
-
->> ### Fedora
-
-    sudo yum install npm
-
-
->> ### RHEL/CentOS
-
->>> EPEL must be enabled.
-
-    su -c 'yum install npm'
-
+>>>[Go there](https://github.com/creationix/nvm)
 
 >> ### Windows
 
 >>> [Try this](http://www.ubuntu.com/download/desktop), [this](http://wiki.centos.org/Download), or [this](http://fedoraproject.org/get-fedora).
 
-> ## coffee-script, docco
+> ## coffee-script, grunt
 
     npm install -g coffee-script
-    npm install -g coffeelint
-    npm install -g groc
-    npm install -g node-inspector
+    npm install -g grunt-cli
 
-> you have to change
+> ## Pygments
 
+>> needed to generate documentation
+>> 
+>> `pip install Pygments`
 
 Install
 =======

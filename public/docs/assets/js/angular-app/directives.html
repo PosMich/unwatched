@@ -37,12 +37,13 @@
     <span class="nv">link: </span><span class="nf">(scope, elem) -&gt;</span>
       <span class="nv">w = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">)</span>
       <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
-      <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.client-options span i&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;line-height&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;px&quot;</span><span class="p">)</span>
+      <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.client-options span i&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;line-height&quot;</span><span class="p">,</span>
+        <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;px&quot;</span><span class="p">)</span>
       <span class="nx">w</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
         <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
-        <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.client-options span i&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;line-height&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;px&quot;</span><span class="p">)</span>
+        <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.client-options span i&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;line-height&quot;</span><span class="p">,</span>
+          <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;px&quot;</span><span class="p">)</span>
         <span class="k">return</span>
-
       <span class="k">return</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
@@ -68,10 +69,9 @@
 
 <blockquote>
   <p>Is used on the tab-directive. Similar to the attribute "justified", but
-  sets a definite width on each tab.
-  value = containerWidth / n 
-  Adjusts width on init, on change of the given attr and on window resize
-  Frontend-usage: tabset(adjust-width="attr")
+  sets a definite width on each tab. (value = containerWidth / n)<br/>
+  Adjusts width on init, on change of the given attr and on window resize<br/>
+  Frontend-usage: tabset(adjust-width="attr")<br/>
   Additional note: window.setTimeout-Workaround, as mentioned above</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;adjustWidth&quot;</span><span class="p">,</span> <span class="p">[</span>

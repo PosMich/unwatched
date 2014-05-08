@@ -5,30 +5,29 @@ module.exports = (config) ->
   config.set
 
     # base path, that will be used to resolve all patterns, eg. files, exclude
-    basePath: '../'
+    basePath: "../../../"
 
     # frameworks to use
-    frameworks: ['jasmine']
+    frameworks: ["jasmine"]
+
+    # preprocessors
+    preprocessors: 
+        "**/*.coffee": ["coffee"]
 
     # list of files / patterns to load in the browser
     files: [
-      'assets/js/lib/angular.js',
-      'assets/js/lib/angular-*.js',
-      'assets/js/lib/jquery-2.0.3.js',
-      'assets/js/lib/bootstrap.js',
-      'assets/js/lib/ui-bootstrap-tpls-0.10.0.js',
-      'assets/js/*.coffee',
-      'test/unit/*.coffee'
+      "public/js/app.js"
+      "spec/frontend/unit/**/*.*"
     ]
 
     # list of files to exclude
     exclude: [
-      'assets/js/lib/angular-scenario.js',
+      "assets/js/lib/angular-scenario.js",
     ]
 
     # test results reporter to use
-    # possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress']
+    # possible values: "dots", "progress", "junit", "growl", "coverage"
+    reporters: ["progress"]
 
     # web server port
     port: 9876
@@ -41,7 +40,7 @@ module.exports = (config) ->
     logLevel: config.LOG_INFO
 
     # enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true
+    autoWatch: false
 
     # Start these browsers, currently available:
     # - Chrome
@@ -51,11 +50,11 @@ module.exports = (config) ->
     # - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
     # - PhantomJS
     # - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-    browsers: ['Chrome']
+    browsers: ["PhantomJS"]
 
     # If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000
 
     # Continuous Integration mode
     # if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true

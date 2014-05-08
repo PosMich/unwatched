@@ -38,62 +38,12 @@
   <h2 id="nodejs">Node.js</h2>
   
   <blockquote>
-    <h3 id="debian">Debian</h3>
+    <h3 id="nvm">NVM</h3>
     
     <blockquote>
-      <p>For Debian Sid Node.js is available in the official repo.</p>
-      
-      <p>For Wheezy, you should compile it by yourself:</p>
+      <p><a href="https://github.com/creationix/nvm">Go there</a></p>
     </blockquote>
-  </blockquote>
-</blockquote>
-
-<pre><code>sudo apt-get install python g++ make checkinstall
-mkdir ~/src &amp;&amp; cd $_
-wget -N http://nodejs.org/dist/node-latest.tar.gz
-tar xzvf node-latest.tar.gz &amp;&amp; cd node-v*
-./configure
-checkinstall #(remove the "v" in front of the version number in the dialog)
-sudo dpkg -i node_*
-</code></pre>
-
-<blockquote>
-  <blockquote>
-    <h3 id="ubuntu">Ubuntu</h3>
-  </blockquote>
-</blockquote>
-
-<pre><code>sudo apt-get update
-sudo apt-get install python-software-properties python g++ make software-properties-common
-sudo add-apt-repository ppa:chris-lea/node.js
-sudo apt-get update
-sudo apt-get install nodejs
-</code></pre>
-
-<blockquote>
-  <blockquote>
-    <h3 id="fedora">Fedora</h3>
-  </blockquote>
-</blockquote>
-
-<pre><code>sudo yum install npm
-</code></pre>
-
-<blockquote>
-  <blockquote>
-    <h3 id="rhelcentos">RHEL/CentOS</h3>
     
-    <blockquote>
-      <p>EPEL must be enabled.</p>
-    </blockquote>
-  </blockquote>
-</blockquote>
-
-<pre><code>su -c 'yum install npm'
-</code></pre>
-
-<blockquote>
-  <blockquote>
     <h3 id="windows">Windows</h3>
     
     <blockquote>
@@ -101,17 +51,21 @@ sudo apt-get install nodejs
     </blockquote>
   </blockquote>
   
-  <h2 id="coffee-script-docco">coffee-script, docco</h2>
+  <h2 id="coffee-script-grunt">coffee-script, grunt</h2>
 </blockquote>
 
 <pre><code>npm install -g coffee-script
-npm install -g coffeelint
-npm install -g groc
-npm install -g node-inspector
+npm install -g grunt-cli
 </code></pre>
 
 <blockquote>
-  <p>you have to change</p>
+  <h2 id="pygments">Pygments</h2>
+  
+  <blockquote>
+    <p>needed to generate documentation</p>
+    
+    <p><code>pip install Pygments</code></p>
+  </blockquote>
 </blockquote>
 
 <h1 id="install">Install</h1>
@@ -129,7 +83,7 @@ npm install
 
 <pre><code>module.exports =
     appName: "AppName"
-    sessionSecret: "Seeecreet 64 bit long"
+    sessionSecret: "Seeecreet 64 chars long"
 </code></pre>
 
 <h1 id="run">Run</h1>

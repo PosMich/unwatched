@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>debug.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="angular.html">
+                angular.coffee
+              </a>
+            
+              
+              <a class="source" href="controllers.html">
+                controllers.coffee
+              </a>
+            
+              
+              <a class="source" href="directives.html">
+                directives.coffee
+              </a>
+            
+              
+              <a class="source" href="filters.html">
+                filters.coffee
+              </a>
+            
+              
+              <a class="source" href="services.html">
+                services.coffee
+              </a>
+            
+              
+              <a class="source" href="app.html">
+                app.coffee
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.coffee
+              </a>
+            
+              
+              <a class="source" href="debug.html">
+                debug.coffee
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.api.html">
+                routes.api.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.html">
+                routes.coffee
+              </a>
+            
+              
+              <a class="source" href="server.html">
+                server.coffee
+              </a>
+            
+              
+              <a class="source" href="userconfig.html">
+                userconfig.coffee
+              </a>
+            
+              
+              <a class="source" href="README.html">
+                README.md
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>debug.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <hr>
+<h3 id="debug-outputs">Debug Outputs</h3>
+<hr>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>config = <span class="hljs-built_in">require</span> <span class="hljs-string">"./config"</span>
+sty    = <span class="hljs-built_in">require</span> <span class="hljs-string">"sty"</span>
+
+
+debug = {}
+
+style = {}
+
+style.error       = <span class="hljs-string">"<span class="hljs-subst">#{sty.bgwhite sty.black config.appName}</span> "</span> +
+                    <span class="hljs-string">"<span class="hljs-subst">#{sty.red sty.bold <span class="hljs-string">'ERROR:'</span>}</span> "</span>
+style.warn        = <span class="hljs-string">"<span class="hljs-subst">#{sty.bgwhite sty.black config.appName}</span> "</span> +
+                    <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'WARNING:'</span>}</span> "</span>
+style.info        = <span class="hljs-string">"<span class="hljs-subst">#{sty.bgwhite sty.black config.appName}</span> "</span> +
+                    <span class="hljs-string">"<span class="hljs-subst">#{sty.cyan <span class="hljs-string">'INFO:'</span>}</span> "</span>
+style.infoSuccess = <span class="hljs-string">"<span class="hljs-subst">#{sty.green <span class="hljs-string">'SUCCESS: '</span>}</span>"</span>
+style.infoFail    = <span class="hljs-string">"<span class="hljs-subst">#{sty.red <span class="hljs-string">'FAIL: '</span>}</span>"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <hr>
+<p>prints error message formatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">ferror</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_ERROR
+  <span class="hljs-built_in">console</span>.log style.error + format(msg)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <hr>
+<p>prints warn message formatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">fwarn</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_WARN
+  <span class="hljs-built_in">console</span>.log style.warn + format(msg)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <hr>
+<p>print info message formatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">finfo</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_LOG
+  <span class="hljs-built_in">console</span>.log style.info + format(msg)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <hr>
+<p>print “success” info message formatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">finfoSuccess</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_LOG
+  debug.info style.infoSuccess + format(msg)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <hr>
+<p>print “fail” info message formatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">finfoFail</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_LOG
+  debug.info style.infoFail + format(msg)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <hr>
+<p>prints error message unformatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">error</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_ERROR
+  <span class="hljs-built_in">console</span>.log style.error + msg</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <hr>
+<p>prints warn message unformatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">warn</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_WARN
+  <span class="hljs-built_in">console</span>.log style.warn + msg</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <hr>
+<p>print info message unformatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">info</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_LOG
+  <span class="hljs-built_in">console</span>.log style.info + msg</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <hr>
+<p>print “success” info message unformatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">infoSuccess</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_LOG
+  debug.info style.infoSuccess + msg</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <hr>
+<p>print “fail” info message unformatted</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>debug.<span class="hljs-function"><span class="hljs-title">infoFail</span> = <span class="hljs-params">(msg)</span> -&gt;</span>
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">unless</span> config.DEBUG_LOG
+  debug.info style.infoFail + msg</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <hr>
+<p>simple typeof alternative</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">type</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
+  <span class="hljs-keyword">if</span> obj == <span class="hljs-literal">undefined</span> <span class="hljs-keyword">or</span> obj == <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">return</span> String obj
+  classToType = {
+    <span class="hljs-string">"[object Boolean]"</span>: <span class="hljs-string">"boolean"</span>,
+    <span class="hljs-string">"[object Number]"</span>: <span class="hljs-string">"number"</span>,
+    <span class="hljs-string">"[object String]"</span>: <span class="hljs-string">"string"</span>,
+    <span class="hljs-string">"[object Function]"</span>: <span class="hljs-string">"function"</span>,
+    <span class="hljs-string">"[object Array]"</span>: <span class="hljs-string">"array"</span>,
+    <span class="hljs-string">"[object Date]"</span>: <span class="hljs-string">"date"</span>,
+    <span class="hljs-string">"[object RegExp]"</span>: <span class="hljs-string">"regexp"</span>,
+    <span class="hljs-string">"[object Object]"</span>: <span class="hljs-string">"object"</span>
+  }
+  <span class="hljs-keyword">return</span> classToType[Object.prototype.toString.call(obj)]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <hr>
+<p>used to format vars/objs/whatever for debug output</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">format</span> = <span class="hljs-params">(data, indent)</span> -&gt;</span>
+  result = <span class="hljs-string">""</span>
+  indent = <span class="hljs-string">""</span>  <span class="hljs-keyword">unless</span> indent?
+
+  <span class="hljs-keyword">switch</span>( type(data) )
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"boolean"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'Boolean:'</span>}</span> "</span> + data
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"number"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'Number:'</span>}</span> "</span> + data
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"string"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'String:'</span>}</span> "</span> + data
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"function"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'Function:'</span>}</span> "</span> + data
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"array"</span>
+      value = <span class="hljs-string">""</span>
+      <span class="hljs-keyword">for</span> item <span class="hljs-keyword">of</span> data
+        value += format( data[item], indent )
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'Array:'</span>}</span> ["</span> + value + <span class="hljs-string">"]"</span>
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"date"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'Date:'</span>}</span> "</span> + data
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"regexp"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'regexp:'</span>}</span> "</span> + data
+
+    <span class="hljs-keyword">when</span> <span class="hljs-string">"object"</span>
+      result = <span class="hljs-string">"<span class="hljs-subst">#{sty.yellow <span class="hljs-string">'Object:'</span>}</span> { "</span>
+      <span class="hljs-keyword">for</span> property <span class="hljs-keyword">of</span> data
+        value = data[property]
+
+        <span class="hljs-keyword">switch</span>( type(data[property]) )
+          <span class="hljs-keyword">when</span> <span class="hljs-string">"object"</span>
+            formattedObj = format( value, indent + <span class="hljs-string">"  "</span> )
+            value = <span class="hljs-string">"\n"</span> + indent + <span class="hljs-string">"{\n"</span> + formattedObj + <span class="hljs-string">"\n"</span> + indent + <span class="hljs-string">"}"</span>
+          <span class="hljs-keyword">else</span>
+            value = format( value )
+        result += indent + <span class="hljs-string">"'"</span> + property + <span class="hljs-string">"' : "</span> + value + <span class="hljs-string">",\n"</span>
+      result += <span class="hljs-string">" }"</span>
+      result.replace <span class="hljs-regexp">/,\n$/</span>, <span class="hljs-string">""</span>
+  <span class="hljs-keyword">return</span> result
+
+<span class="hljs-built_in">module</span>.<span class="hljs-built_in">exports</span> = debug</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

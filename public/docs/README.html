@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Unwatched - Playground</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="angular.html">
+                angular.coffee
+              </a>
+            
+              
+              <a class="source" href="controllers.html">
+                controllers.coffee
+              </a>
+            
+              
+              <a class="source" href="directives.html">
+                directives.coffee
+              </a>
+            
+              
+              <a class="source" href="filters.html">
+                filters.coffee
+              </a>
+            
+              
+              <a class="source" href="services.html">
+                services.coffee
+              </a>
+            
+              
+              <a class="source" href="app.html">
+                app.coffee
+              </a>
+            
+              
+              <a class="source" href="config.html">
+                config.coffee
+              </a>
+            
+              
+              <a class="source" href="debug.html">
+                debug.coffee
+              </a>
+            
+              
+              <a class="source" href="index.html">
+                index.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.api.html">
+                routes.api.coffee
+              </a>
+            
+              
+              <a class="source" href="routes.html">
+                routes.coffee
+              </a>
+            
+              
+              <a class="source" href="server.html">
+                server.coffee
+              </a>
+            
+              
+              <a class="source" href="userconfig.html">
+                userconfig.coffee
+              </a>
+            
+              
+              <a class="source" href="README.html">
+                README.md
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="unwatched-playground">Unwatched - Playground</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <h1 id="repository">Repository</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>xxxx</p>
+<blockquote>
+<h2 id="branches-ci">Branches &amp; CI</h2>
+<blockquote>
+<h3 id="dev">dev</h3>
+<blockquote>
+<p>Here’s where the developers are circling around, doing random stuff (on their local environments ;)).</p>
+<p>Here the development and debug environments are used.</p>
+</blockquote>
+<h3 id="test">test</h3>
+<blockquote>
+<p>If there’s a ne plus ultra (or not) feature, the developer merges it into the <em><code>test</code></em> branch and runs tests (atm. manually). Usually the CI server watches the test brunch and runs the tests automatically when something has changed.</p>
+<p>Here’s debug land.</p>
+</blockquote>
+<h3 id="master">master</h3>
+<blockquote>
+<p>If all tests are passed successfully, the CI server (or some human like individual) merges the test branch into the master and deploys the code to the production server.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="prerequisites">Prerequisites</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <blockquote>
+<h2 id="node-js">Node.js</h2>
+<blockquote>
+<h3 id="debian">Debian</h3>
+<blockquote>
+<p>For Debian Sid Node.js is available in the official repo.</p>
+<p>For Wheezy, you should compile it by yourself:</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>sudo apt-get install python g++ make checkinstall
+mkdir ~/src &amp;&amp; cd $<em>
+wget -N <a href="http://nodejs.org/dist/node-latest.tar.gz">http://nodejs.org/dist/node-latest.tar.gz</a>
+tar xzvf node-latest.tar.gz &amp;&amp; cd node-v*
+./configure
+checkinstall #(remove the “v” in front of the version number in the dialog)
+sudo dpkg -i node</em>*</p>
+<blockquote>
+<blockquote>
+<h3 id="ubuntu">Ubuntu</h3>
+</blockquote>
+</blockquote>
+<p>sudo apt-get update
+sudo apt-get install python-software-properties python g++ make software-properties-common
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs</p>
+<blockquote>
+<blockquote>
+<h3 id="fedora">Fedora</h3>
+</blockquote>
+</blockquote>
+<p>sudo yum install npm</p>
+<blockquote>
+<blockquote>
+<h3 id="rhel-centos">RHEL/CentOS</h3>
+<blockquote>
+<p>EPEL must be enabled.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>su -c ‘yum install npm’</p>
+<blockquote>
+<blockquote>
+<h3 id="windows">Windows</h3>
+<blockquote>
+<p><a href="http://www.ubuntu.com/download/desktop">Try this</a>, <a href="http://wiki.centos.org/Download">this</a>, or <a href="http://fedoraproject.org/get-fedora">this</a>.</p>
+</blockquote>
+</blockquote>
+<h2 id="coffee-script-docco">coffee-script, docco</h2>
+</blockquote>
+<p>npm install -g coffee-script
+npm install -g coffeelint
+npm install -g groc
+npm install -g node-inspector</p>
+<blockquote>
+<p>you have to change</p>
+</blockquote>
+<h1 id="install">Install</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>git clone xxxxx <name>
+cd <name>
+npm install</p>
+<h1 id="userconfig">Userconfig</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <blockquote>
+<p>A <b><em><code>userconfig.coffe</code></em></b> file must be created, because sensible data is stored here, it isn’t checked in into the version control system.</p>
+</blockquote>
+<p>module.exports =
+appName: “AppName”
+sessionSecret: “Seeecreet 64 chars long”</p>
+<h1 id="run">Run</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <blockquote>
+<p>Run <b><em><code>cake</code></em></b> to see all available commands:</p>
+</blockquote>
+<p>[ubuser@ubuthink playground]$ cake
+Cakefile defines the following tasks:<br></p>
+<p>cake docs                 # Generate annotated source code with Docco and move it to public dir
+cake build                # compiles coffeescript files to javascript into the .app directory
+cake dev                  # run ‘build’ task, start dev env
+cake debug                # run ‘build’ task, start debug env
+cake run                  # run ‘build’ task, start production env</p>
+<h1 id="docs">Docs</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <blockquote>
+<p><a href="http://jashkenas.github.io/docco/">Docco</a> is used for generating the documentation.</p>
+<p>The files are moved to the <b><em><code>public</code></em></b> dir, you can access them via <strong><code>http://servername/docs</code></strong>.</p>
+</blockquote>
+<h1 id="build">Build</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <blockquote>
+<p>The cake task <b><em><code>cake build</code></em></b> compiles the <em><code>.coffeescript</code></em> files to plain js for easier debugging.</p>
+<h2 id="environments">Environments</h2>
+<blockquote>
+<p>Before starting each environment, the <b><em><code>build</code></em></b> task is invoked to generate the js files.</p>
+<h3 id="start-development-environment">Start Development Environment</h3>
+</blockquote>
+</blockquote>
+<p>cake dev</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>In Development mode <a href="https://npmjs.org/package/supervisor">node-supervisor</a> is used to watch several folders for file changes (atm the file extensions <code>js</code> and <code>html</code> in the folders <code>.app</code> and <code>views</code>).</p>
+<p>If one of the these files change (or the server crashes) the node inspector automatically restarts the app.</p>
+</blockquote>
+<h3 id="start-debug-environment">Start Debug Environment</h3>
+</blockquote>
+</blockquote>
+<p>cake debug</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>In Debug Environment, all coffee files are watched and the server is started in debug mode.</p>
+<p>The <a href="https://npmjs.org/package/node-inspector">node-inspector</a> is used as debugging interface.</p>
+<p>After invoking the node-inspector, google-chrome will open a new window with the debug interface (usually <a href="http://localhost:8989/debug?port=5858">http://localhost:8989/debug?port=5858</a>).
+If something strange happens, take a look at the used ports.</p>
+</blockquote>
+<h3 id="start-production-environment">Start Production Environment</h3>
+</blockquote>
+</blockquote>
+<p>cake run</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>In Production Environment, all files located in <em><code>assets/</code></em> are compiled, concenated and moved to <em><code>buildAssets</code></em>. These files are served with an MD5 hash suffix and use a far-future expires header. These files are not stored in the repository.</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h1 id="debugging">Debugging</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>cake debug</p>
+<blockquote>
+<p>See <em><code>Debug Environment</code></em>, <a href="https://npmjs.org/package/node-inspector">node-inspector</a>.</p>
+</blockquote>
+<h1 id="todo">TODO</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <blockquote>
+<p><em>XSS!!!</em> node-validator</p>
+</blockquote>
+<h1 id="future-">Future?</h1>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <blockquote>
+<h2 id="mocha-testing">Mocha-Testing</h2>
+<p><a href="http://visionmedia.github.io/mocha/">http://visionmedia.github.io/mocha/</a></p>
+<h2 id="yeoman">yeoman</h2>
+<p><a href="http://yeoman.io/">http://yeoman.io/</a>:</p>
+<blockquote>
+<p>Yeoman 1.0 is more than just a tool. It’s a workflow; a collection of tools and best practices working in harmony to make developing for the web even better.</p>
+<h3 id="yo">yo</h3>
+<blockquote>
+<p><em><code>yo</code></em> is used to scaffold out a application. This means that you can make (or use existing templates) several templates (Hale specific node.js with express, node.js with angular, angular.js projects, rails projects, whatever…) and reuse them.</p>
+</blockquote>
+<h3 id="grunt">grunt</h3>
+<blockquote>
+<p><a href="http://gruntjs.com/">Grunt</a> runs several tasks, like to build, preview and test your project.</p>
+</blockquote>
+<h3 id="bower">bower</h3>
+<blockquote>
+<p><a href="http://bower.io/">Bower</a> is used for dependency management, so that you don’t need to manually download and manage your scripts (like jquery, jquery UI, angular, ….). Beside the official packages you can add:</p>
+<ul>
+<li>a remote Git Endpoint (private or public)</li>
+<li>a Github shorthand <code>someone/some-package</code> (is resolved to: <code>http://github.com/someone/some-package</code>)</li>
+<li>a local endpoint (i.e. a folder containing a local Git repository)</li>
+<li>a URL to a file (zip and tar will automatically be extracted)</li>
+</ul>
+</blockquote>
+</blockquote>
+<h2 id="ci">CI</h2>
+<blockquote>
+<p>Would be nice :)</p>
+</blockquote>
+</blockquote>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

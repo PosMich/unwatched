@@ -1,54 +1,160 @@
-<!DOCTYPE html><html lang="en"><head><title>modules/server</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="modules/server"><meta name="groc-project-path" content="modules/server.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">modules/server.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h2 id="dependencies">Dependencies</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<!DOCTYPE html><html lang="en"><head><title>modules/server</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="modules/server"><meta name="groc-project-path" content="modules/server.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">modules/server.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h2 id="dependencies">Dependencies</h2>
 
-<h3 id="packages">packages</h3>
+<hr />
 
-<p>installed via <code>npm install</code></p></div></div><div class="code"><div class="wrapper"><span class="nv">express  = </span><span class="nx">require</span> <span class="s">&quot;express&quot;</span>
-<span class="nv">assets   = </span><span class="nx">require</span> <span class="s">&quot;connect-assets&quot;</span>
-<span class="nv">stylus   = </span><span class="nx">require</span> <span class="s">&quot;stylus&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<h2 id="-packages"># packages</h2>
 
-<h3 id="own-modules">own modules</h3>
+<p>installed via <code>npm install</code>
+express  = require "express"
+assets   = require "connect-assets"
+stylus   = require "stylus"</p>
 
-<p>located in same directory as the server.coffee file</p></div></div><div class="code"><div class="wrapper"><span class="nv">config    = </span><span class="nx">require</span> <span class="s">&quot;./config&quot;</span>
-<span class="nv">debug     = </span><span class="nx">require</span> <span class="s">&quot;./debug&quot;</span>
+<hr />
 
-<span class="nv">routesAPI = </span><span class="nx">require</span> <span class="s">&quot;./routes.api&quot;</span>
-<span class="nv">routes    = </span><span class="nx">require</span> <span class="s">&quot;./routes&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<h2 id="-own-modules"># own modules</h2>
 
-<p>print unused exceptions</p></div></div><div class="code"><div class="wrapper"><span class="nx">process</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;uncaughtException&quot;</span><span class="p">,</span> <span class="nf">(err) -&gt;</span>
-  <span class="nx">debug</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;OMG :-S&quot;</span>
-  <span class="nx">debug</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;caught &#39;uncaught&#39; exception: &quot;</span> <span class="o">+</span> <span class="nx">err</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<p>located in same directory as the server.coffee file
+config    = require "./config"
+debug     = require "./debug"</p>
+
+<p>routesAPI = require "./routes.api"
+routes    = require "./routes"</p>
+
+<hr />
+
+<p>print unused exceptions
+process.on "uncaughtException", (err) ->
+  debug.error "OMG :-S"
+  debug.error "caught 'uncaught' exception: " + err
+  console.log err.stack</p>
+
+<hr />
 
 <h2 id="basic-application-initialization">Basic application initialization</h2>
 
-<p>Create server instance.</p></div></div><div class="code"><div class="wrapper"><span class="nv">server = </span><span class="nx">express</span><span class="p">()</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Define Port</p></div></div><div class="code"><div class="wrapper"><span class="nv">server.port =</span>
-  <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">or</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VMC_APP_PORT</span> <span class="o">or</span> <span class="nx">config</span><span class="p">.</span><span class="nx">port</span> <span class="o">or</span> <span class="mi">3000</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Config module exports has <code>setEnvironment</code> function that sets server settings
-depending on environment.</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">configure</span> <span class="s">&quot;production&quot;</span><span class="p">,</span> <span class="s">&quot;development&quot;</span><span class="p">,</span> <span class="s">&quot;testing&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-  <span class="nx">config</span><span class="p">.</span><span class="nx">setEnvironment</span> <span class="nx">server</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">env</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<p>Create server instance.
+server = express()</p>
 
-<h2 id="view-initialization">View initialization</h2></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">logger</span><span class="p">(</span><span class="s">&quot;dev&quot;</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the view engine to jade</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;view engine&quot;</span><span class="p">,</span> <span class="s">&quot;jade&quot;</span>
-<span class="nx">server</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;view options&quot;</span><span class="p">,</span>
-  <span class="nv">layout: </span><span class="kc">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set <strong><em>views</em></strong> directory</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;views&quot;</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;/views&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add Connect Assets.</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">assets</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><a href="https://github.com/adunkman/connect-assets/issues/221">bugifx</a></p></div></div><div class="code"><div class="wrapper">  <span class="nv">helperContext: </span><span class="nx">server</span><span class="p">.</span><span class="nx">locals</span>
-  <span class="nv">buildDir: </span><span class="s">&quot;public&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Render human readable html</p></div></div><div class="code"><div class="wrapper"><span class="nv">server.locals.pretty = </span><span class="kc">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Compress responses</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">compress</span><span class="p">()</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add Session Cookie</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">cookieParser</span><span class="p">()</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Enable Sessions</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">session</span><span class="p">(</span>
-  <span class="s">&quot;secret&quot;</span><span class="o">:</span> <span class="nx">config</span><span class="p">.</span><span class="nx">sessionSecret</span>
-  <span class="s">&quot;cookie&quot;</span><span class="o">:</span>
-    <span class="s">&quot;maxAge&quot;</span><span class="o">:</span> <span class="mi">365</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>
-    <span class="s">&quot;expires&quot;</span><span class="o">:</span> <span class="kc">false</span>
-<span class="p">)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the <strong><em>public</em></strong> folder as static assets.</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">static</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;/public&quot;</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the favicon</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nx">express</span><span class="p">.</span><span class="nx">favicon</span><span class="p">(</span> <span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;public/favicon.ico&quot;</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<p>Define Port
+server.port =
+  process.env.PORT or process.env.VMC<em>APP</em>PORT or config.port or 3000</p>
+
+<p>Config module exports has <code>setEnvironment</code> function that sets server settings
+depending on environment.
+config.setEnvironment server.settings.env</p>
+
+<hr />
+
+<h2 id="view-initialization">View initialization</h2>
+
+<p>server.use express.logger("dev")
+Set the view engine to jade
+server.set "view engine", "jade"
+server.set "view options",
+  layout: false
+Set <strong><em>views</em></strong> directory
+server.set "views", process.cwd() + "/views"
+Add Connect Assets.
+server.use assets
+<a href="https://github.com/adunkman/connect-assets/issues/221">bugifx</a>
+  helperContext: server.locals
+  buildDir: "public"
+Render human readable html
+server.locals.pretty = true</p>
+
+<p>Compress responses
+server.use express.compress()</p>
+
+<p>Add Session Cookie
+server.use express.cookieParser()
+Enable Sessions</p>
+
+<p>server.use express.session(
+  "secret": config.sessionSecret
+  "cookie":
+    "maxAge": 365 * 24 * 60 * 60 * 1000
+    "expires": false
+)</p>
+
+<p>Set the <strong><em>public</em></strong> folder as static assets.
+server.use express.static(process.cwd() + "/public")</p>
+
+<p>Set the favicon
+server.use express.favicon( process.cwd() + "public/favicon.ico")</p>
+
+<hr />
 
 <p>This function will pass the current url to the template object.
-It allows us to use this value for the navbar.</p></div></div><div class="code"><div class="wrapper"><span class="nx">server</span><span class="p">.</span><span class="nx">use</span> <span class="nf">(req, res, next) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+It allows us to use this value for the navbar.
+server.use (req, res, next) -></p>
+
+<hr />
 
 <blockquote>
-  <p>set cookie max age to 14 days</p>
-</blockquote></div></div><div class="code"><div class="wrapper">  <span class="nv">req.session.cookie.maxAge = </span><span class="mi">14</span> <span class="o">*</span> <span class="mi">24</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span>
+  <p>set cookie max age to 14 days
+    req.session.cookie.maxAge = 14 * 24 * 60 * 60 * 1000</p>
+</blockquote>
 
-  <span class="nx">next</span><span class="p">()</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>[Body parser middleware or better known as the random link, everyone needs]
+<p>next()</p>
+
+<p>[Body parser middleware or better known as the random link, everyone needs]
 (http://www.senchalabs.org/connect/middleware-bodyParser.html)
 parses JSON or XML bodies into <code>req.body</code> object
-force UploadDir to be /tmp</p></div></div><div class="code"><div class="wrapper"><span class="c1">#server.use express.bodyParser &lt;-- causing a problem!!!</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+force UploadDir to be /tmp</p>
 
-<h2 id="add-routes">Add routes</h2></div></div><div class="code"><div class="wrapper"><span class="nx">routesAPI</span><span class="p">.</span><span class="nx">route</span> <span class="nx">server</span><span class="p">,</span> <span class="s">&quot;/api&quot;</span>
-<span class="nx">routes</span><span class="p">.</span><span class="nx">route</span> <span class="nx">server</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+<h1 id="serveruse-expressbodyparser-lt-causing-a-problem">server.use express.bodyParser &lt;-- causing a problem!!!</h1>
 
-<h2 id="server-start">Server start</h2></div></div><div class="code"><div class="wrapper"><span class="nv">server.start = </span><span class="nf">-&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Start Server</p></div></div><div class="code"><div class="wrapper">  <span class="nx">server</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">server</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nf">-&gt;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Listening on &quot;</span> <span class="o">+</span> <span class="nx">server</span><span class="p">.</span><span class="nx">port</span> <span class="o">+</span> <span class="s">&quot;\nPress CTRL-C to stop server.&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Export server object</p></div></div><div class="code"><div class="wrapper"><span class="nv">module.exports = </span><span class="nx">server</span></div></div></div></div></body></html>
+<hr />
+
+<h2 id="add-routes">Add routes</h2>
+
+<p>routesAPI.route server, "/api"
+routes.route server</p>
+
+<hr />
+
+<h2 id="server-start">Server start</h2>
+
+<p>server.start = ->
+Start Server
+  server.listen server.port, ->
+    console.log "Listening on " + server.port + "\nPress CTRL-C to stop server."</p>
+
+<p>Export server object
+module.exports = server</p></div></div><div class="code"><div class="wrapper"><span class="nx">process</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;uncaughtException&quot;</span><span class="p">,</span> <span class="nf">(err) -&gt;</span>
+  <span class="nx">debug</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;OMG :-S&quot;</span>
+  <span class="nx">debug</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;caught &#39;uncaught&#39; exception: &quot;</span> <span class="o">+</span> <span class="nx">err</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">err</span><span class="p">.</span><span class="nx">stack</span>
+
+<span class="nv">express = </span><span class="nx">require</span> <span class="s">&quot;express&quot;</span>
+<span class="nv">assets  = </span><span class="nx">require</span> <span class="s">&quot;connect-assets&quot;</span>
+
+<span class="nv">config    = </span><span class="nx">require</span> <span class="s">&quot;./config&quot;</span>
+<span class="nv">debug     = </span><span class="nx">require</span> <span class="s">&quot;./debug&quot;</span>
+<span class="nv">routes    = </span><span class="nx">require</span> <span class="s">&quot;./routes&quot;</span>
+<span class="nv">routesAPI = </span><span class="nx">require</span> <span class="s">&quot;./routes.api&quot;</span>
+
+<span class="nv">app = </span><span class="nx">express</span><span class="p">()</span>
+
+<span class="nv">app.port =</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span> <span class="o">or</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">VMC_APP_PORT</span> <span class="o">or</span> <span class="nx">config</span><span class="o">?</span><span class="p">.</span><span class="nx">port</span> <span class="o">or</span> <span class="mi">3000</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<h2 id="view-initialization">View initialization</h2></div></div><div class="code"><div class="wrapper"><span class="c1">#app.use express.logger(&quot;dev&quot;)</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the view engine to jade</p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;view engine&quot;</span><span class="p">,</span> <span class="s">&quot;jade&quot;</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;view options&quot;</span><span class="p">,</span>
+  <span class="nv">layout: </span><span class="kc">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set <strong><em>views</em></strong> directory</p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">set</span> <span class="s">&quot;views&quot;</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;/views&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add Connect Assets.</p></div></div><div class="code"><div class="wrapper"><span class="c1">#app.use assets</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><a href="https://github.com/adunkman/connect-assets/issues/221">bugifx</a>
+ helperContext: app.locals
+ buildDir: "public"</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Render human readable html</p></div></div><div class="code"><div class="wrapper"><span class="nv">app.locals.pretty = </span><span class="kc">true</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&quot;compression&quot;</span><span class="p">)()</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&quot;serve-static&quot;</span><span class="p">)(</span><span class="nx">process</span><span class="p">.</span><span class="nx">cwd</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;/public&quot;</span><span class="p">)</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span> <span class="nx">require</span><span class="p">(</span><span class="s">&quot;connect-livereload&quot;</span><span class="p">)(</span><span class="nv">port: </span><span class="mi">35729</span><span class="p">)</span>
+
+<span class="nx">routes</span><span class="p">.</span><span class="nx">route</span> <span class="nx">app</span>
+<span class="nx">routesAPI</span><span class="p">.</span><span class="nx">route</span> <span class="nx">app</span>
+
+
+<span class="nv">app.start = </span><span class="nf">-&gt;</span>
+  <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span> <span class="nx">app</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Listening on &quot;</span> <span class="o">+</span> <span class="nx">app</span><span class="p">.</span><span class="nx">port</span> <span class="o">+</span> <span class="s">&quot;\nPress CTRL-C to stop server.&quot;</span>
+
+<span class="nv">module.exports = </span><span class="nx">app</span></div></div></div></div></body></html>

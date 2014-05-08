@@ -1,14 +1,15 @@
+###
 # ## Dependencies
 
 # ***
-# ### packages
+# ## # packages
 # installed via `npm install`
 express  = require "express"
 assets   = require "connect-assets"
 stylus   = require "stylus"
 
 # ***
-# ### own modules
+# ## # own modules
 # located in same directory as the server.coffee file
 config    = require "./config"
 debug     = require "./debug"
@@ -21,7 +22,7 @@ routes    = require "./routes"
 process.on "uncaughtException", (err) ->
   debug.error "OMG :-S"
   debug.error "caught 'uncaught' exception: " + err
-
+  console.log err.stack
 
 
 # ***
@@ -35,8 +36,7 @@ server.port =
 
 # Config module exports has `setEnvironment` function that sets server settings
 # depending on environment.
-server.configure "production", "development", "testing", ->
-  config.setEnvironment server.settings.env
+config.setEnvironment server.settings.env
 
 # ***
 # ## View initialization
@@ -111,3 +111,56 @@ server.start = ->
 
 # Export server object
 module.exports = server
+###
+
+process.on "uncaughtException", (err) ->
+  debug.error "OMG :-S"
+  debug.error "caught 'uncaught' exception: " + err
+  console.log err.stack
+
+express = require "express"
+assets  = require "connect-assets"
+
+config    = require "./config"
+debug     = require "./debug"
+routes    = require "./routes"
+routesAPI = require "./routes.api"
+
+app = express()
+
+app.port =
+  process.env.PORT or process.env.VMC_APP_PORT or config?.port or 3000
+
+# ***
+# ## View initialization
+#app.use express.logger("dev")
+# Set the view engine to jade
+app.set "view engine", "jade"
+app.set "view options",
+  layout: false
+# Set ***views*** directory
+app.set "views", process.cwd() + "/views"
+# Add Connect Assets.
+
+
+#app.use assets
+  # [bugifx](https://github.com/adunkman/connect-assets/issues/221)
+#  helperContext: app.locals
+#  buildDir: "public"
+
+# Render human readable html
+app.locals.pretty = true
+
+app.use require("compression")()
+app.use require("serve-static")(process.cwd() + "/public")
+app.use require("connect-livereload")(port: 35729)
+
+routes.route app
+routesAPI.route app
+
+
+app.start = ->
+  app.listen app.port, ->
+    console.log "Listening on " + app.port + "\nPress CTRL-C to stop server."
+
+module.exports = app
