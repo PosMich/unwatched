@@ -13,7 +13,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "commentsOnly": true,
           "name": "Markdown"
         },
-        "sourcePath": "/home/ubuser/www/unwatched/README.md",
+        "sourcePath": "/home/calvitium/www/unwatched/README.md",
         "projectPath": "README.md",
         "targetPath": "index",
         "pageTitle": "index",
@@ -151,8 +151,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "type": "heading",
           "data": {
             "level": 1,
-            "title": "Run",
-            "slug": "run"
+            "title": "Take a look at the Gruntfile",
+            "slug": "take-a-look-at-the-gruntfile"
           },
           "depth": 1
         }, {
@@ -167,117 +167,12 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "type": "heading",
           "data": {
             "level": 1,
-            "title": "Build",
-            "slug": "build"
-          },
-          "depth": 1,
-          "children": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Environments",
-                "slug": "environments"
-              },
-              "depth": 2,
-              "children": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "Start Development Environment",
-                    "slug": "start-development-environment"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "Start Debug Environment",
-                    "slug": "start-debug-environment"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "Start Production Environment",
-                    "slug": "start-production-environment"
-                  },
-                  "depth": 3
-                }
-              ]
-            }
-          ]
-        }, {
-          "type": "heading",
-          "data": {
-            "level": 1,
-            "title": "Debugging",
-            "slug": "debugging"
-          },
-          "depth": 1
-        }, {
-          "type": "heading",
-          "data": {
-            "level": 1,
             "title": "TODO",
             "slug": "todo"
           },
-          "depth": 1
-        }, {
-          "type": "heading",
-          "data": {
-            "level": 1,
-            "title": "Future?",
-            "slug": "future"
-          },
           "depth": 1,
           "children": [
             {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Mocha-Testing",
-                "slug": "mocha-testing"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "yeoman",
-                "slug": "yeoman"
-              },
-              "depth": 2,
-              "children": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "yo",
-                    "slug": "yo"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "grunt",
-                    "slug": "grunt"
-                  },
-                  "depth": 3
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 3,
-                    "title": "bower",
-                    "slug": "bower"
-                  },
-                  "depth": 3
-                }
-              ]
-            }, {
               "type": "heading",
               "data": {
                 "level": 2,
@@ -326,7 +221,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/angular.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/angular.coffee",
                     "projectPath": "assets/js/angular-app/angular.coffee",
                     "targetPath": "assets/js/angular-app/angular",
                     "pageTitle": "assets/js/angular-app/angular",
@@ -400,7 +295,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/controllers.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/controllers.coffee",
                     "projectPath": "assets/js/angular-app/controllers.coffee",
                     "targetPath": "assets/js/angular-app/controllers",
                     "pageTitle": "assets/js/angular-app/controllers",
@@ -452,7 +347,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/directives.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/directives.coffee",
                     "projectPath": "assets/js/angular-app/directives.coffee",
                     "targetPath": "assets/js/angular-app/directives",
                     "pageTitle": "assets/js/angular-app/directives",
@@ -483,7 +378,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/filters.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/filters.coffee",
                     "projectPath": "assets/js/angular-app/filters.coffee",
                     "targetPath": "assets/js/angular-app/filters",
                     "pageTitle": "assets/js/angular-app/filters",
@@ -514,7 +409,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/services.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/services.coffee",
                     "projectPath": "assets/js/angular-app/services.coffee",
                     "targetPath": "assets/js/angular-app/services",
                     "pageTitle": "assets/js/angular-app/services",
@@ -547,7 +442,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "foldPrefix": "^",
                   "name": "CoffeeScript"
                 },
-                "sourcePath": "/home/ubuser/www/unwatched/assets/js/app.coffee",
+                "sourcePath": "/home/calvitium/www/unwatched/assets/js/app.coffee",
                 "projectPath": "assets/js/app.coffee",
                 "targetPath": "assets/js/app",
                 "pageTitle": "assets/js/app",
@@ -600,7 +495,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/config.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/config.coffee",
             "projectPath": "modules/config.coffee",
             "targetPath": "modules/config",
             "pageTitle": "modules/config",
@@ -639,7 +534,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/debug.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/debug.coffee",
             "projectPath": "modules/debug.coffee",
             "targetPath": "modules/debug",
             "pageTitle": "modules/debug",
@@ -670,7 +565,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/index.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/index.coffee",
             "projectPath": "modules/index.coffee",
             "targetPath": "modules/index",
             "pageTitle": "modules/index",
@@ -691,7 +586,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/routes.coffee",
             "projectPath": "modules/routes.coffee",
             "targetPath": "modules/routes",
             "pageTitle": "modules/routes",
@@ -743,7 +638,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.api.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/routes.api.coffee",
             "projectPath": "modules/routes.api.coffee",
             "targetPath": "modules/routes.api",
             "pageTitle": "modules/routes.api",
@@ -795,7 +690,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/server.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/server.coffee",
             "projectPath": "modules/server.coffee",
             "targetPath": "modules/server",
             "pageTitle": "modules/server",
@@ -893,7 +788,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/userconfig.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/userconfig.coffee",
             "projectPath": "modules/userconfig.coffee",
             "targetPath": "modules/userconfig",
             "pageTitle": "modules/userconfig",

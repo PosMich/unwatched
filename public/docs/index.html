@@ -63,10 +63,11 @@ npm install -g grunt-cli
   
   <blockquote>
     <p>needed to generate documentation</p>
-    
-    <p><code>pip install Pygments</code></p>
   </blockquote>
 </blockquote>
+
+<pre><code>pip install Pygments
+</code></pre>
 
 <h1 id="install">Install</h1>
 
@@ -78,150 +79,32 @@ npm install
 <h1 id="userconfig">Userconfig</h1>
 
 <blockquote>
-  <p>A <b><em><code>userconfig.coffe</code></em></b> file must be created, because sensible data is stored here, it isn't checked in into the version control system.</p>
+  <p>A <b><em><code>userconfig.coffe</code></em></b> file must be created in the <code>modules</code> directory, because sensible data is stored here, it isn't checked in into the version control system.</p>
 </blockquote>
 
 <pre><code>module.exports =
+    port:    3000
     appName: "AppName"
     sessionSecret: "Seeecreet 64 chars long"
 </code></pre>
 
-<h1 id="run">Run</h1>
+<h1 id="take-a-look-at-the-gruntfile">Take a look at the Gruntfile</h1>
 
-<blockquote>
-  <p>Run <b><em><code>cake</code></em></b> to see all available commands:</p>
-</blockquote>
-
-<pre><code>[ubuser@ubuthink playground]$ cake
-Cakefile defines the following tasks:&lt;br&gt;
-
-cake docs                 # Generate annotated source code with Docco and move it to public dir
-cake build                # compiles coffeescript files to javascript into the .app directory
-cake dev                  # run 'build' task, start dev env
-cake debug                # run 'build' task, start debug env
-cake run                  # run 'build' task, start production env
+<pre><code>grunt --help
 </code></pre>
 
 <h1 id="docs">Docs</h1>
 
 <blockquote>
-  <p><a href="http://jashkenas.github.io/docco/">Docco</a> is used for generating the documentation.</p>
+  <p><a href="https://github.com/nevir/groc/">groc</a> is used for generating the documentation.</p>
   
   <p>The files are moved to the <b><em><code>public</code></em></b> dir, you can access them via <strong><code>http://servername/docs</code></strong>.</p>
-</blockquote>
-
-<h1 id="build">Build</h1>
-
-<blockquote>
-  <p>The cake task <b><em><code>cake build</code></em></b> compiles the <em><code>.coffeescript</code></em> files to plain js for easier debugging.</p>
-  
-  <h2 id="environments">Environments</h2>
-  
-  <blockquote>
-    <p>Before starting each environment, the <b><em><code>build</code></em></b> task is invoked to generate the js files.</p>
-    
-    <h3 id="start-development-environment">Start Development Environment</h3>
-  </blockquote>
-</blockquote>
-
-<pre><code>cake dev
-</code></pre>
-
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <p>In Development mode <a href="https://npmjs.org/package/supervisor">node-supervisor</a> is used to watch several folders for file changes (atm the file extensions <code>js</code> and <code>html</code> in the folders <code>.app</code> and <code>views</code>).</p>
-      
-      <p>If one of the these files change (or the server crashes) the node inspector automatically restarts the app.</p>
-    </blockquote>
-    
-    <h3 id="start-debug-environment">Start Debug Environment</h3>
-  </blockquote>
-</blockquote>
-
-<pre><code>cake debug
-</code></pre>
-
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <p>In Debug Environment, all coffee files are watched and the server is started in debug mode.</p>
-      
-      <p>The <a href="https://npmjs.org/package/node-inspector">node-inspector</a> is used as debugging interface.</p>
-      
-      <p>After invoking the node-inspector, google-chrome will open a new window with the debug interface (usually http://localhost:8989/debug?port=5858).
-      If something strange happens, take a look at the used ports.</p>
-    </blockquote>
-    
-    <h3 id="start-production-environment">Start Production Environment</h3>
-  </blockquote>
-</blockquote>
-
-<pre><code>cake run
-</code></pre>
-
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <p>In Production Environment, all files located in <em><code>assets/</code></em> are compiled, concenated and moved to <em><code>buildAssets</code></em>. These files are served with an MD5 hash suffix and use a far-future expires header. These files are not stored in the repository.</p>
-    </blockquote>
-  </blockquote>
-</blockquote>
-
-<h1 id="debugging">Debugging</h1>
-
-<pre><code>cake debug
-</code></pre>
-
-<blockquote>
-  <p>See <em><code>Debug Environment</code></em>, <a href="https://npmjs.org/package/node-inspector">node-inspector</a>.</p>
 </blockquote>
 
 <h1 id="todo">TODO</h1>
 
 <blockquote>
   <p><em>XSS!!!</em> node-validator</p>
-</blockquote>
-
-<h1 id="future">Future?</h1>
-
-<blockquote>
-  <h2 id="mocha-testing">Mocha-Testing</h2>
-  
-  <p><a href="http://visionmedia.github.io/mocha/">http://visionmedia.github.io/mocha/</a></p>
-  
-  <h2 id="yeoman">yeoman</h2>
-  
-  <p><a href="http://yeoman.io/">http://yeoman.io/</a>:</p>
-  
-  <blockquote>
-    <p>Yeoman 1.0 is more than just a tool. It's a workflow; a collection of tools and best practices working in harmony to make developing for the web even better.</p>
-    
-    <h3 id="yo">yo</h3>
-    
-    <blockquote>
-      <p><em><code>yo</code></em> is used to scaffold out a application. This means that you can make (or use existing templates) several templates (Hale specific node.js with express, node.js with angular, angular.js projects, rails projects, whatever...) and reuse them.</p>
-    </blockquote>
-    
-    <h3 id="grunt">grunt</h3>
-    
-    <blockquote>
-      <p><a href="http://gruntjs.com/">Grunt</a> runs several tasks, like to build, preview and test your project.</p>
-    </blockquote>
-    
-    <h3 id="bower">bower</h3>
-    
-    <blockquote>
-      <p><a href="http://bower.io/">Bower</a> is used for dependency management, so that you don't need to manually download and manage your scripts (like jquery, jquery UI, angular, ....). Beside the official packages you can add:</p>
-      
-      <ul>
-      <li>a remote Git Endpoint (private or public)</li>
-      <li>a Github shorthand <code>someone/some-package</code> (is resolved to: <code>http://github.com/someone/some-package</code>)</li>
-      <li>a local endpoint (i.e. a folder containing a local Git repository)</li>
-      <li>a URL to a file (zip and tar will automatically be extracted)</li>
-      </ul>
-    </blockquote>
-  </blockquote>
   
   <h2 id="ci">CI</h2>
   
