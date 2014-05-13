@@ -1,5 +1,5 @@
-Unwatched - Playground
-======================
+Unwatched
+=========
 
 Prerequisites
 =============
