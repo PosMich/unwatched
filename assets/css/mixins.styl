@@ -6,3 +6,12 @@ transition(property, duration, function)
   transition property duration function
 
   -webkit-backface-visibility: hidden;
+
+
+radial-gradient-with-image(startClr, startPos, endClr, endPos, imageUrl)
+    background: -moz-radial-gradient(center, ellipse cover, startClr startPos, endClr endPos), url(imageUrl) /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(startPos,startClr), color-stop(endPos,endClr)), url(imageUrl) /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover, startClr startPos,endClr endPos), url(imageUrl) /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover, startClr startPos,endClr endPos), url(imageUrl) /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover, startClr startPos,endClr endPos), url(imageUrl) /* IE10+ */
+    background: radial-gradient(ellipse at center, startClr startPos,endClr endPos), url(imageUrl) /* W3C */

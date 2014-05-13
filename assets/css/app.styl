@@ -1,16 +1,43 @@
-@require "lib/tinymce/content.inline.min.css"
-@require "lib/tinymce/content.min.css"
-@require "lib/tinymce/skin.ie7.min.css"
-@require "lib/tinymce/skin.min.css"
-@require "lib/bootstrap.css"
-@require "lib/bootstrap-spacelab.css"
 @require "mixins.styl"
 @require "room.styl"
 body
   //background-color #333
 
 .no-padding
-  padding 0
+    padding 0
 
 .no-margin
-  margin 0
+    margin 0
+
+
+body
+    margin: 0
+    padding: 0
+    padding-left:50px
+    radial-gradient-with-image(rgba(255,255,255,10), 0%, rgba(180,180,180,0.2), 100%, "img/bg_noise.png")
+
+.sidenav-container
+    position:fixed
+    left: 0
+    top: 0
+    height: 100%
+    width: 35px
+    background-color: black
+
+.sidenav
+    display: table
+    height: 100%
+    width: 20px
+
+.icon-container
+    display: table-cell
+    vertical-align:middle
+    
+.icons
+    position:relative
+
+.icon
+    background-color: green
+    margin:20px
+    width: 40px
+    height:40px
