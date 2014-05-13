@@ -1,86 +1,42 @@
-<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">README.md</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="unwatched-playground">Unwatched - Playground</h1>
+<!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">README.md</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="unwatched">Unwatched</h1>
 
-<h1 id="repository">Repository</h1>
+<h2 id="prerequisites">Prerequisites</h2>
 
-<p>xxxx</p>
-
-<blockquote>
-  <h2 id="branches-amp-ci">Branches &amp; CI</h2>
-  
-  <blockquote>
-    <h3 id="dev">dev</h3>
-    
-    <blockquote>
-      <p>Here's where the developers are circling around, doing random stuff (on their local environments ;)).</p>
-      
-      <p>Here the development and debug environments are used.</p>
-    </blockquote>
-    
-    <h3 id="test">test</h3>
-    
-    <blockquote>
-      <p>If there's a ne plus ultra (or not) feature, the developer merges it into the <em><code>test</code></em> branch and runs tests (atm. manually). Usually the CI server watches the test brunch and runs the tests automatically when something has changed.</p>
-      
-      <p>Here's debug land.</p>
-    </blockquote>
-    
-    <h3 id="master">master</h3>
-    
-    <blockquote>
-      <p>If all tests are passed successfully, the CI server (or some human like individual) merges the test branch into the master and deploys the code to the production server.</p>
-    </blockquote>
-  </blockquote>
-</blockquote>
-
-<h1 id="prerequisites">Prerequisites</h1>
+<h3 id="nodejs">Node.js</h3>
 
 <blockquote>
-  <h2 id="nodejs">Node.js</h2>
+  <h4 id="nvm">NVM</h4>
   
-  <blockquote>
-    <h3 id="nvm">NVM</h3>
-    
-    <blockquote>
-      <p><a href="https://github.com/creationix/nvm">Go there</a></p>
-    </blockquote>
-    
-    <h3 id="windows">Windows</h3>
-    
-    <blockquote>
-      <p><a href="http://www.ubuntu.com/download/desktop">Try this</a>, <a href="http://wiki.centos.org/Download">this</a>, or <a href="http://fedoraproject.org/get-fedora">this</a>.</p>
-    </blockquote>
-  </blockquote>
+  <p><a href="https://github.com/creationix/nvm">Go there</a></p>
   
-  <h2 id="coffee-script-grunt">coffee-script, grunt</h2>
+  <h4 id="windows">Windows</h4>
+  
+  <p><a href="http://www.ubuntu.com/download/desktop">Try this</a>, <a href="http://wiki.centos.org/Download">this</a>, or <a href="http://fedoraproject.org/get-fedora">this</a>.</p>
 </blockquote>
+
+<h3 id="coffee-script-grunt">coffee-script, grunt</h3>
 
 <pre><code>npm install -g coffee-script
 npm install -g grunt-cli
 </code></pre>
 
-<blockquote>
-  <h2 id="pygments">Pygments</h2>
-  
-  <blockquote>
-    <p>needed to generate documentation</p>
-  </blockquote>
-</blockquote>
+<h3 id="pygments">Pygments</h3>
+
+<p>needed to generate documentation</p>
 
 <pre><code>pip install Pygments
 </code></pre>
 
-<h1 id="install">Install</h1>
+<h2 id="install">Install</h2>
 
 <pre><code>git clone xxxxx &lt;name&gt;
 cd &lt;name&gt;
 npm install
 </code></pre>
 
-<h1 id="userconfig">Userconfig</h1>
+<h2 id="userconfig">Userconfig</h2>
 
-<blockquote>
-  <p>A <b><em><code>userconfig.coffe</code></em></b> file must be created in the <code>modules</code> directory, because sensible data is stored here, it isn't checked in into the version control system.</p>
-</blockquote>
+<p>A <b><em><code>userconfig.coffe</code></em></b> file must be created in the <code>modules</code> directory, because sensible data is stored here, it isn't checked in into the version control system.</p>
 
 <pre><code>module.exports =
     port:    3000
@@ -88,27 +44,21 @@ npm install
     sessionSecret: "Seeecreet 64 chars long"
 </code></pre>
 
-<h1 id="take-a-look-at-the-gruntfile">Take a look at the Gruntfile</h1>
+<h2 id="take-a-look-at-the-gruntfile">Take a look at the Gruntfile!</h2>
 
 <pre><code>grunt --help
 </code></pre>
 
-<h1 id="docs">Docs</h1>
+<h2 id="docs">Docs</h2>
 
-<blockquote>
-  <p><a href="https://github.com/nevir/groc/">groc</a> is used for generating the documentation.</p>
-  
-  <p>The files are moved to the <b><em><code>public</code></em></b> dir, you can access them via <strong><code>http://servername/docs</code></strong>.</p>
-</blockquote>
+<p><a href="https://github.com/nevir/groc/">groc</a> is used for generating the documentation.</p>
 
-<h1 id="todo">TODO</h1>
+<p>The files are moved to the <b><em><code>public</code></em></b> dir, you can access them via <strong><code>http://servername/docs</code></strong>.</p>
 
-<blockquote>
-  <p><em>XSS!!!</em> node-validator</p>
-  
-  <h2 id="ci">CI</h2>
-  
-  <blockquote>
-    <p>Would be nice :)</p>
-  </blockquote>
-</blockquote></div></div></div></div></body></html>
+<h2 id="todo">TODO</h2>
+
+<p><em>XSS!!!</em> node-validator</p>
+
+<h3 id="ci">CI</h3>
+
+<p>Would be nice :)</p></div></div></div></div></body></html>
