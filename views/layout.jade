@@ -15,29 +15,7 @@ html(ng-app="unwatched")
             .icon  
             .icon  
             .icon  
-    div(class="navbar navbar-inverse navbar-fixed-top", ng-controller="NavCtrl")
-      .container
-        .navbar-header
-          a(href="/" class="navbar-brand") Unwatched
-          button(class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main")
-            span(class="icon-bar")
-            span(class="icon-bar")
-            span(class="icon-bar")
-        #navbar-main.navbar-collapse.collapse.navbar-inverse-collapse
-          ul.nav.navbar-nav
-            li
-              a(href="spacelab") Spacelab
-
-          ul.nav.navbar-nav.navbar-right
-            li
-              a(href="#") Tutorial
-            li
-              a(href="#") About  
-            li
-              a#open-login(href="#" ng-click="open()") Login
-            li
-              a(href="/docs" target="_self") Documentation
-
+    
     .container
       div(ng-view)
 

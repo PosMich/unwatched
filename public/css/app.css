@@ -1,0 +1,354 @@
+
+/* line 44 : /home/ubuser/www/unwatched/assets/css/app.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+
+/* line 297 : /home/ubuser/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+
+/* line 1 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
+
+/* line 18 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
+
+/* line 18 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 1 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 32 : /home/ubuser/www/unwatched/assets/css/room.styl */
+.tabbable ul.nav.nav-tabs li {
+  cursor: pointer;
+}
+
+/* line 34 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 35 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .options {
+  margin-top: 20px;
+}
+
+/* line 37 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .options i {
+  padding: 4px 4px 4px 8px;
+}
+
+/* line 39 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client {
+  position: relative;
+  opacity: 0.6;
+  -webkit-transition: all 150ms ease-in-out;
+  -moz-transition: all 150ms ease-in-out;
+  -ms-transition: all 150ms ease-in-out;
+  -o-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  -webkit-backface-visibility: hidden;
+  margin-top: 25px;
+}
+
+/* line 44 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client:hover {
+  opacity: 1;
+}
+
+/* line 46 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-header {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  padding: 5px;
+  color: #fff;
+  border: none;
+  opacity: 0.85;
+}
+
+/* line 54 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-header span.name {
+  font-size: 0.8em;
+}
+
+/* line 56 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-header span.controls {
+  line-height: 0.8em;
+}
+
+/* line 58 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-header span.controls i {
+  font-size: 0.6em;
+  margin: 0 1px;
+  color: #ccc;
+}
+
+/* line 62 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-header span.controls i:hover {
+  cursor: pointer;
+  color: #fff;
+}
+
+/* line 65 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+}
+
+/* line 75 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-content .client-options {
+  height: 100%;
+  width: 100%;
+}
+
+/* line 78 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-content .client-options span {
+  text-align: center;
+  width: 50%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: 0;
+  border-radius: 0;
+  -webkit-transition: all 150ms ease-in-out;
+  -moz-transition: all 150ms ease-in-out;
+  -ms-transition: all 150ms ease-in-out;
+  -o-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  -webkit-backface-visibility: hidden;
+}
+
+/* line 87 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-content .client-options span i {
+  padding-top: 25px;
+}
+
+/* line 89 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients .client .client-content .client-options span.showOption {
+  opacity: 0.7;
+  display: table-cell;
+}
+
+/* line 92 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 93 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#clients:not(.client):hover .panel-body {
+  background-color: #808080;
+}
+
+/* line 95 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 96 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-body {
+  width: 100%;
+  height: 300px;
+  overflow-y: auto;
+}
+
+/* line 100 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-body #chat-messages {
+  width: 100%;
+  position: relative;
+  word-wrap: break-word;
+}
+
+/* line 104 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-body .chat-message {
+  -webkit-transition: all 250ms ease-in-out;
+  -moz-transition: all 250ms ease-in-out;
+  -ms-transition: all 250ms ease-in-out;
+  -o-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
+  -webkit-backface-visibility: hidden;
+  opacity: 0;
+}
+
+/* line 107 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-body .chat-message.show {
+  opacity: 1;
+}
+
+/* line 109 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-body .chat-message span {
+  display: inline-block;
+  max-width: 80%;
+}
+
+/* line 112 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-body .chat-message span.own-msg {
+  color: #3a87ad;
+  float: right;
+}
+
+/* line 115 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 116 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-footer .col-xs-10,
+#chat .panel-footer input {
+  font-size: 1em;
+  border: none;
+  border-radius: none;
+  height: 34px;
+}
+
+/* line 122 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-footer .col-xs-2 {
+  padding: 0;
+}
+
+/* line 124 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-footer .col-xs-2:hover {
+  cursor: pointer;
+}
+
+/* line 126 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-footer .col-xs-2:hover .icon-submit-chat-message {
+  color: #446e9b;
+}
+
+/* line 128 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#chat .panel-footer .icon-submit-chat-message {
+  color: #808080;
+  height: 34px;
+  line-height: 34px;
+}
+
+/* line 132 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 134 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 136 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .tabbable .tab-content {
+  -webkit-transition: all 250ms ease-in-out;
+  -moz-transition: all 250ms ease-in-out;
+  -ms-transition: all 250ms ease-in-out;
+  -o-transition: all 250ms ease-in-out;
+  transition: all 250ms ease-in-out;
+  -webkit-backface-visibility: hidden;
+}
+
+/* line 148 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 149 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 150 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .tabbable ul.nav-tabs li a {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* line 154 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 155 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 156 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .panel-primary .panel-heading i {
+  color: #000;
+}
+
+/* line 158 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 159 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .panel-heading i {
+  font-size: 0.8em;
+  padding: 6px;
+}
+
+/* line 162 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .panel-heading .well {
+  color: #333;
+  padding: 2px;
+  padding-left: 10px;
+}
+
+/* line 166 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .panel-heading .well:hover {
+  cursor: pointer;
+  background-color: #ddd;
+}
+
+/* line 169 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 170 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 171 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .panel-body .note .controls {
+  margin-top: 15px;
+}
+
+/* line 173 : /home/ubuser/www/unwatched/assets/css/room.styl */
+
+/* line 174 : /home/ubuser/www/unwatched/assets/css/room.styl */
+#notes .panel-body .note .controls button i {
+  padding-left: 5px;
+}
+
+/* line 3 : /home/ubuser/www/unwatched/assets/css/app.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.no-padding {
+  padding: 0;
+}
+
+/* line 9 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.no-margin {
+  margin: 0;
+}
+
+/* line 13 : /home/ubuser/www/unwatched/assets/css/app.styl */
+body {
+  margin: 0;
+  padding: 0;
+  padding-left: 50px;
+  background: -moz-radial-gradient(center, ellipse cover, #fff 0%, rgba(0,0,255,0.075) 100%), url("img/bg_noise.png");
+/* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, rgba(0,0,255,0.075))), url("img/bg_noise.png");
+/* Chrome,Safari4+ */
+  background: -webkit-radial-gradient(center, ellipse cover, #fff 0%, rgba(0,0,255,0.075) 100%), url("img/bg_noise.png");
+/* Chrome10+,Safari5.1+ */
+  background: -o-radial-gradient(center, ellipse cover, #fff 0%, rgba(0,0,255,0.075) 100%), url("img/bg_noise.png");
+/* Opera 12+ */
+  background: -ms-radial-gradient(center, ellipse cover, #fff 0%, rgba(0,0,255,0.075) 100%), url("img/bg_noise.png");
+/* IE10+ */
+  background: radial-gradient(ellipse at center, #fff 0%, rgba(0,0,255,0.075) 100%), url("img/bg_noise.png");
+/* W3C */
+}
+
+/* line 19 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.sidenav-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 35px;
+  background-color: #000;
+}
+
+/* line 27 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.sidenav {
+  display: table;
+  height: 100%;
+  width: 20px;
+}
+
+/* line 32 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon-container {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* line 36 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icons {
+  position: relative;
+}
+
+/* line 39 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon {
+  background-color: #008000;
+  margin: 20px;
+  width: 50px;
+  height: 50px;
+}
