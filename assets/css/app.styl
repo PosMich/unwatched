@@ -12,22 +12,24 @@ body
     margin 0
 
 
-body
+html
     margin: 0
     padding: 0
     padding-left:50px
-    radial-gradient( rgba(255,255,0,1), 0%, rgba(180,180,180,1), 100% )
+    radial-gradient_( rgba(255,255,255,1), 0%, rgba(240,240,240,1), 100% )
     z-index: 0
 
-body:after
+html:after
     content: '';
+    position:fixed
     display: block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: .15;
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    height: 100%
+    width: 100%
+    opacity: 0.2;
     background-image url("img/noise.png")
     z-index: -2
 

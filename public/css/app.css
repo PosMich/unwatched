@@ -1,15 +1,15 @@
 
-/* line 123 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 125 : /home/ubuser/www/unwatched/assets/css/app.styl */
 
 /* line 2 : /home/ubuser/www/unwatched/node_modules/stylus/lib/functions/index.styl */
 
-/* line 124 : /home/ubuser/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+/* line 27 : /home/ubuser/www/unwatched/node_modules/stylus/lib/functions/index.styl */
 
 /* line 1 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
 
-/* line 18 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
+/* line 27 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
 
-/* line 18 : /home/ubuser/www/unwatched/assets/css/room.styl */
+/* line 27 : /home/ubuser/www/unwatched/assets/css/room.styl */
 
 /* line 1 : /home/ubuser/www/unwatched/assets/css/room.styl */
 
@@ -303,31 +303,68 @@
 }
 
 /* line 15 : /home/ubuser/www/unwatched/assets/css/app.styl */
-body {
+html {
   margin: 0;
   padding: 0;
   padding-left: 50px;
-#b4b4b4
+  background: -moz--webkit-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -moz--moz-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -moz--o-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -moz--ms-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -moz-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+/* FF3.6+ */
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #f0f0f0));
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #f0f0f0));
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #f0f0f0));
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #f0f0f0));
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #fff), color-stop(100%, #f0f0f0));
+/* Chrome,Safari4+ */
+  background: -webkit--webkit-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -webkit--moz-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -webkit--o-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -webkit--ms-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -webkit-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+/* Chrome10+,Safari5.1+ */
+  background: -o--webkit-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -o--moz-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -o--o-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -o--ms-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -o-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+/* Opera 12+ */
+  background: -ms--webkit-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -ms--moz-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -ms--o-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -ms--ms-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+  background: -ms-radial-gradient(center, ellipse cover, #fff 0%, #f0f0f0 100%);
+/* IE10+ */
+  background: -webkit-radial-gradient(ellipse at center, #fff 0%, #f0f0f0 100%);
+  background: -moz-radial-gradient(ellipse at center, #fff 0%, #f0f0f0 100%);
+  background: -o-radial-gradient(ellipse at center, #fff 0%, #f0f0f0 100%);
+  background: -ms-radial-gradient(ellipse at center, #fff 0%, #f0f0f0 100%);
+  background: radial-gradient(ellipse at center, #fff 0%, #f0f0f0 100%);
+/* W3C */
   z-index: 0;
 }
 
 /* line 22 : /home/ubuser/www/unwatched/assets/css/app.styl */
-body:after {
+html:after {
   content: '';
+  position: fixed;
   display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
   left: 0;
-  opacity: 0.15;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=15)";
-  filter: alpha(opacity=15);
+  right: 0;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
   background-image: url("img/noise.png");
   z-index: -2;
 }
 
-/* line 34 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 36 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav-container {
   position: fixed;
   left: -20px;
@@ -384,12 +421,12 @@ body:after {
   border-right: 2px solid #00f;
 }
 
-/* line 57 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 59 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav-container:hover {
   left: 0px;
 }
 
-/* line 60 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 62 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav {
   position: relative;
   display: table;
@@ -398,19 +435,19 @@ body:after {
   width: 20px;
 }
 
-/* line 68 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 70 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon-container {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 73 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 75 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icons {
   position: relative;
   left: -10px;
 }
 
-/* line 77 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 79 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon {
   overflow: hidden;
   margin: 20px;
@@ -425,20 +462,20 @@ body:after {
   transition: width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 87 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 89 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover {
   overflow: visible;
   width: 65px;
   height: 65px;
 }
 
-/* line 92 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 94 : /home/ubuser/www/unwatched/assets/css/app.styl */
 /*.icon:hover .subicon-container
     visibility visible
     opacity 1
 */
 
-/* line 96 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 98 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon-container {
   display: table;
   position: relative;
@@ -447,13 +484,13 @@ body:after {
   top: -270px;
 }
 
-/* line 104 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 106 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicons {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 109 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 111 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon {
   visibility: hidden;
   opacity: 0;
@@ -470,7 +507,7 @@ body:after {
   margin: 20px;
 }
 
-/* line 118 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 120 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover .subicon,
 .icon:hover .subicon:hover {
   visibility: visible;
@@ -479,7 +516,7 @@ body:after {
   filter: none;
 }
 
-/* line 122 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 124 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:hover {
   width: 65px;
   height: 65px;

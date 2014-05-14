@@ -17,7 +17,8 @@ radial-gradient-with-image(startClr, startPos, endClr, endPos, imageUrl)
     background: radial-gradient(ellipse at center, startClr startPos,endClr endPos), url(imageUrl) /* W3C */
 
 
-radial-gradient(startClr, startPos, endClr, endPos)
+
+radial-gradient_(startClr, startPos, endClr, endPos)
     background: -moz-radial-gradient(center, ellipse cover, startClr startPos, endClr endPos) /* FF3.6+ */
     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(startPos,startClr), color-stop(endPos,endClr)) /* Chrome,Safari4+ */
     background: -webkit-radial-gradient(center, ellipse cover, startClr startPos,endClr endPos) /* Chrome10+,Safari5.1+ */
