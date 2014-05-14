@@ -12,7 +12,8 @@ html(ng-app="unwatched")
         .icon-container
           .icons
             .icon
-              i.fa.fa-home.fa-inverse
+              a(href="/")
+                i.fa.fa-home.fa-inverse
               .subicon-container
                 .subicons
                   .subicon.top2
@@ -20,7 +21,8 @@ html(ng-app="unwatched")
                   .subicon.bottom2
                     i.fa.fa-question
             .icon
-              i.fa.fa-users.fa-inverse
+              a(href="/members")
+                i.fa.fa-users.fa-inverse
               .subicon-container
                 .subicons
                   .subicon.top2
@@ -49,7 +51,7 @@ html(ng-app="unwatched")
                     .fa.fa-floppy-o
                   .subicon.bottom2
                     .fa.fa-camera
-    .container
-      .clearfix(ng-view)
+    .view-container
+      .clearfix.view-frame(ng-view)
 
     script(src='/js/app.js')

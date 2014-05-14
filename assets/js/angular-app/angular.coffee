@@ -5,6 +5,7 @@
 
 app = angular.module "unwatched", [
   "ngRoute"
+  "ngAnimate"
   "unwatched.services"
   "unwatched.directives"
   "unwatched.filters"
@@ -59,6 +60,16 @@ app.config [
     $routeProvider.when "/room",
       templateUrl: "partials/room.jade"
       controller: "RoomCtrl"
+
+    # ***
+    # * <h3>route `/mermbers`</h3>
+    # > loads a list of all members of the current room and a maximized chat
+    # > window.
+    # >
+    # > load RoomCtrl
+    $routeProvider.when "/members",
+      templateUrl: "partials/members.jade"
+      controller: "MemberCtrl"
 
     # ***
     # * <h3>route `/`</h3>

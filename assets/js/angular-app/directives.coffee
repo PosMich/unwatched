@@ -25,26 +25,26 @@ app.directive "inputMatch", [ ->
 ]
 
 # ***
-# * <h3>client</h3>
-# > Loads the template for a single client (/partials/client.jade)
+# * <h3>member</h3>
+# > Loads the template for a single member (/partials/member.jade)
 # > and adds a watcher to keep the dimensions 1:1 <br/>
-# > Frontend-usage: div(client)
+# > Frontend-usage: div(member)
 
-app.directive "client", [
+app.directive "member", [
   "$window"
   ($window) ->
-    templateUrl: "/partials/client.jade"
+    templateUrl: "/partials/member.jade"
     link: (scope, elem) ->
-      w = angular.element($window)
-      elem.height elem.width()
-      $(elem).find(".client-options span i").css("line-height",
-        (elem.width() / 2) + "px")
-      w.bind "resize", ->
-        elem.height elem.width()
-        $(elem).find(".client-options span i").css("line-height",
-          (elem.width() / 2) + "px")
-        return
-      return
+      # w = angular.element($window)
+      # elem.height elem.width()
+      # $(elem).find(".member-options span i").css("line-height",
+        # (elem.width() / 2) + "px")
+      # w.bind "resize", ->
+      #   elem.height elem.width()
+      #   $(elem).find(".member-options span i").css("line-height",
+      #     (elem.width() / 2) + "px")
+      #   return
+      # return
 ]
 
 # ***

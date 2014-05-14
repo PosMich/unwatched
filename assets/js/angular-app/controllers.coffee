@@ -91,16 +91,16 @@ app.controller "RoomCtrl", [
 ]
 
 # ***
-# * <h3>Clients Controller</h3>
+# * <h3>Membes Controller</h3>
 # >
-app.controller "ClientsCtrl", [
+app.controller "MemberCtrl", [
   "$scope"
   ($scope) ->
-    $scope.clients = []
+    $scope.members = []
 
-    clientsAmount = Math.floor(Math.random() * 10 + 1) + 1
-    while clientsAmount -= 1
-      $scope.clients.push
+    membersAmount = Math.floor(Math.random() * 10 + 1) + 6
+    while membersAmount -= 1
+      $scope.members.push
         name: "Lorem Ipsum"
         avatar: if Math.round(Math.random()) is 0 then "/images/avatar.png"
         else "/images/avatar_inverted.png"
