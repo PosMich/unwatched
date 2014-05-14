@@ -36443,6 +36443,7 @@ angular.module('ui.tinymce', [])
             scope.$apply(function() {
               var v;
               v = elem.val() === $(originInput).val();
+              console.log("asdf");
               ctrl.$setValidity("inputMatch", v);
             });
           });

@@ -1,69 +1,73 @@
-.page-header
-  fieldset
-    legend {{room.name}}
-    .row.clearfix
-      .col-sm-6
-        .panel(ng-class="getActivePanel('clients-chat')", ng-click="setActivePanel('clients-chat')")
-          .panel-heading Clients/Chat
-          .panel-body
-            tabset(justified="true")
-              tab#clients-tab(ng-controller="ClientsCtrl", heading="Clients")
-                #clients
-                  .row.options
-                    .col-xs-12
-                      button.btn.btn-primary.btn-sm.share-screen-to-all Share Screen
-                        i.glyphicon.glyphicon-picture
-                      button.btn.btn-primary.btn-sm.share-webcam-to-all Share Webcam
-                        i.glyphicon.glyphicon-facetime-video
-                  .row.clearfix
-                    .col-md-4.col-sm-6.col-xs-3(ng-repeat="client in clients")
-                      .client(client resize)
 
-              tab#chat-tab(ng-controller="ChatCtrl", heading="Chat")
-                #chat
-                  .panel(ng-class="getActivePanel('chat')", 
-                          ng-click="setActivePanel('chat')", 
-                          focus-on-click="input-chat-message")
-                    .panel-body
-                      #chat-messages(update-scroll-position="chat.messages.length")
-                        .chat-message.clearfix(ng-repeat="message in chat.messages", 
-                                                delay-display="message")
-                          span.well.well-sm(ng-class-even="'own-msg'").
-                            <b>{{message.sender}}: </b>{{message.content}}
-                    .panel-footer.no-padding
-                      .row
-                        form(name="chatMessage", no-validate, 
-                              ng-submit="submitChatMessage()")
-                          .col-xs-10
-                            input#input-chat-message.form-control(type="text", 
-                              required, ng-model="chat.message")
-                          a#submit-chat-message.btn.col-xs-2(
-                              ng-click="submitChatMessage()", ng-href="#",
-                              ng-disabled="chatMessage.$invalid", 
-                              focus-on-click="input-chat-message")
-                            i.icon-submit-chat-message.glyphicon.glyphicon-share-alt
 
-      .col-sm-6#notes(ng-controller="NotesCtrl")
-        .panel(ng-class="getActivePanel('notes')", ng-click="setActivePanel('notes')")
-          .panel-heading.clearfix
-            span Notes
-            p#add-note.pull-right.well.well-sm.no-margin(ng-click="addNote()") Add Note
-              i.no-margin.glyphicon.glyphicon-file
-          .panel-body
-            tabset(adjust-width="room.notes.length")
-              tab(ng-repeat="note in room.notes", heading="{{note.title}}", 
-                popover="{{note.title}}", popover-trigger="mouseenter")
-                .note
-                  form.form-horizontal.clearfix(novalidate, name="note-form-{{$index}}", method="post")
-                    .col-xs-12
-                      h3
-                        input.form-control(ng-model="note.title")
-                    .col-xs-12
-                      textarea.form-control(ng-model="note.content", rows="15", 
-                        ui-tinymce="tinymceOptions", name="test")
-                    .col-xs-12
-                      .pull-right.controls
-                        button.btn.btn-sm.btn-primary(alt="Download note") Download 
-                          i.glyphicon.glyphicon-cloud-download.download-note
-                        button.btn.btn-sm.btn-danger(ng-click="removeNote(title)") Delete 
-                          i.glyphicon.glyphicon-trash.delete-note(alt="Delete note")
+
+
+//- .page-header
+//-   fieldset
+//-     legend {{room.name}}
+//-     .row.clearfix
+//-       .col-sm-6
+//-         .panel(ng-class="getActivePanel('clients-chat')", ng-click="setActivePanel('clients-chat')")
+//-           .panel-heading Clients/Chat
+//-           .panel-body
+//-             tabset(justified="true")
+//-               tab#clients-tab(ng-controller="ClientsCtrl", heading="Clients")
+//-                 #clients
+//-                   .row.options
+//-                     .col-xs-12
+//-                       button.btn.btn-primary.btn-sm.share-screen-to-all Share Screen
+//-                         i.glyphicon.glyphicon-picture
+//-                       button.btn.btn-primary.btn-sm.share-webcam-to-all Share Webcam
+//-                         i.glyphicon.glyphicon-facetime-video
+//-                   .row.clearfix
+//-                     .col-md-4.col-sm-6.col-xs-3(ng-repeat="client in clients")
+//-                       .client(client resize)
+
+//-               tab#chat-tab(ng-controller="ChatCtrl", heading="Chat")
+//-                 #chat
+//-                   .panel(ng-class="getActivePanel('chat')", 
+//-                           ng-click="setActivePanel('chat')", 
+//-                           focus-on-click="input-chat-message")
+//-                     .panel-body
+//-                       #chat-messages(update-scroll-position="chat.messages.length")
+//-                         .chat-message.clearfix(ng-repeat="message in chat.messages", 
+//-                                                 delay-display="message")
+//-                           span.well.well-sm(ng-class-even="'own-msg'").
+//-                             <b>{{message.sender}}: </b>{{message.content}}
+//-                     .panel-footer.no-padding
+//-                       .row
+//-                         form(name="chatMessage", no-validate, 
+//-                               ng-submit="submitChatMessage()")
+//-                           .col-xs-10
+//-                             input#input-chat-message.form-control(type="text", 
+//-                               required, ng-model="chat.message")
+//-                           a#submit-chat-message.btn.col-xs-2(
+//-                               ng-click="submitChatMessage()", ng-href="#",
+//-                               ng-disabled="chatMessage.$invalid", 
+//-                               focus-on-click="input-chat-message")
+//-                             i.icon-submit-chat-message.glyphicon.glyphicon-share-alt
+
+//-       .col-sm-6#notes(ng-controller="NotesCtrl")
+//-         .panel(ng-class="getActivePanel('notes')", ng-click="setActivePanel('notes')")
+//-           .panel-heading.clearfix
+//-             span Notes
+//-             p#add-note.pull-right.well.well-sm.no-margin(ng-click="addNote()") Add Note
+//-               i.no-margin.glyphicon.glyphicon-file
+//-           .panel-body
+//-             tabset(adjust-width="room.notes.length")
+//-               tab(ng-repeat="note in room.notes", heading="{{note.title}}", 
+//-                 popover="{{note.title}}", popover-trigger="mouseenter")
+//-                 .note
+//-                   form.form-horizontal.clearfix(novalidate, name="note-form-{{$index}}", method="post")
+//-                     .col-xs-12
+//-                       h3
+//-                         input.form-control(ng-model="note.title")
+//-                     .col-xs-12
+//-                       textarea.form-control(ng-model="note.content", rows="15", 
+//-                         ui-tinymce="tinymceOptions", name="test")
+//-                     .col-xs-12
+//-                       .pull-right.controls
+//-                         button.btn.btn-sm.btn-primary(alt="Download note") Download 
+//-                           i.glyphicon.glyphicon-cloud-download.download-note
+//-                         button.btn.btn-sm.btn-danger(ng-click="removeNote(title)") Delete 
+//-                           i.glyphicon.glyphicon-trash.delete-note(alt="Delete note")

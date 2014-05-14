@@ -1,175 +1,179 @@
-.tabbable
-  ul.nav.nav-tabs
-    li
-      cursor pointer
 
-#clients
+
+
+
+// .tabbable
+//   ul.nav.nav-tabs
+//     li
+//       cursor pointer
+
+// #clients
   
-  .options
-    margin-top 20px
-    i
-      padding 4px 4px 4px 8px
+//   .options
+//     margin-top 20px
+//     i
+//       padding 4px 4px 4px 8px
 
-  .client
-    position relative
-    opacity: 0.6
-    transition all 150ms ease-in-out
-    margin-top 25px
+//   .client
+//     position relative
+//     opacity: 0.6
+//     transition all 150ms ease-in-out
+//     margin-top 25px
 
-    &:hover
-      opacity 1
+//     &:hover
+//       opacity 1
 
-    .client-header
-      position absolute
-      width 100%
-      z-index 10
-      padding 5px
-      color white
-      border none
-      opacity: 0.85
+//     .client-header
+//       position absolute
+//       width 100%
+//       z-index 10
+//       padding 5px
+//       color white
+//       border none
+//       opacity: 0.85
 
-      span.name
-        font-size 0.8em
+//       span.name
+//         font-size 0.8em
 
-      span.controls
-        line-height 0.8em
+//       span.controls
+//         line-height 0.8em
 
-        i
-          font-size 0.6em
-          margin: 0 1px
-          color: #ccc
+//         i
+//           font-size 0.6em
+//           margin: 0 1px
+//           color: #ccc
 
-          &:hover
-            cursor: pointer
-            color: white
+//           &:hover
+//             cursor: pointer
+//             color: white
 
-    .client-content
-      position absolute
-      top 0
-      left 0
-      width 100%
-      height 100%
-      z-index 0
-      background-repeat no-repeat
-      background-position center center
-      background-size 100%
+//     .client-content
+//       position absolute
+//       top 0
+//       left 0
+//       width 100%
+//       height 100%
+//       z-index 0
+//       background-repeat no-repeat
+//       background-position center center
+//       background-size 100%
 
-      .client-options
-        height 100%
-        width 100%
+//       .client-options
+//         height 100%
+//         width 100%
 
-        span
-          text-align center
-          width 50%
-          height 100%
-          opacity 0
-          cursor pointer
-          border 0
-          border-radius 0
-          transition all 150ms ease-in-out
+//         span
+//           text-align center
+//           width 50%
+//           height 100%
+//           opacity 0
+//           cursor pointer
+//           border 0
+//           border-radius 0
+//           transition all 150ms ease-in-out
 
-          i
-            padding-top 25px
+//           i
+//             padding-top 25px
 
-          &.showOption
-            opacity 0.7
-            display table-cell
+//           &.showOption
+//             opacity 0.7
+//             display table-cell
             
 
-  &:not(.client):hover
-    .panel-body
-      background-color grey        
+//   &:not(.client):hover
+//     .panel-body
+//       background-color grey        
 
-#chat
+// #chat
 
-  .panel-body
-    width 100%
-    height 300px
-    overflow-y auto
+//   .panel-body
+//     width 100%
+//     height 300px
+//     overflow-y auto
 
-    #chat-messages
-      width 100%
-      position relative
-      word-wrap break-word
+//     #chat-messages
+//       width 100%
+//       position relative
+//       word-wrap break-word
 
-    .chat-message
-      transition all 250ms ease-in-out
-      opacity 0
+//     .chat-message
+//       transition all 250ms ease-in-out
+//       opacity 0
 
-      &.show
-        opacity 1
+//       &.show
+//         opacity 1
 
-      span
-        display inline-block
-        max-width 80%
+//       span
+//         display inline-block
+//         max-width 80%
 
-      span.own-msg
-        color #3a87ad
-        float right
+//       span.own-msg
+//         color #3a87ad
+//         float right
 
-  .panel-footer
+//   .panel-footer
     
-    .col-xs-10
+//     .col-xs-10
 
-    input
-      font-size 1.0em
-      border none
-      border-radius none
-      height 34px
+//     input
+//       font-size 1.0em
+//       border none
+//       border-radius none
+//       height 34px
 
-    .col-xs-2
-      padding: 0
-      &:hover
-        cursor pointer
-        .icon-submit-chat-message
-          color #446e9b
+//     .col-xs-2
+//       padding: 0
+//       &:hover
+//         cursor pointer
+//         .icon-submit-chat-message
+//           color #446e9b
 
-    .icon-submit-chat-message
-      color grey
-      height 34px
-      line-height 34px
+//     .icon-submit-chat-message
+//       color grey
+//       height 34px
+//       line-height 34px
 
-#notes
+// #notes
 
-  .tabbable
+//   .tabbable
     
-    .tab-content
-      transition all 250ms ease-in-out
+//     .tab-content
+//       transition all 250ms ease-in-out
 
-    ul.nav-tabs
-      li
-        a
-          white-space nowrap
-          text-overflow ellipsis
-          overflow hidden
+//     ul.nav-tabs
+//       li
+//         a
+//           white-space nowrap
+//           text-overflow ellipsis
+//           overflow hidden
   
-  .panel-primary
-    .panel-heading
-      i
-        color black
+//   .panel-primary
+//     .panel-heading
+//       i
+//         color black
 
-  .panel-heading
-    i
-      font-size 0.8em
-      padding 6px
+//   .panel-heading
+//     i
+//       font-size 0.8em
+//       padding 6px
       
-    .well
-      color #333333
-      padding 2px
-      padding-left 10px
+//     .well
+//       color #333333
+//       padding 2px
+//       padding-left 10px
 
-      &:hover
-        cursor pointer
-        background-color #ddd
+//       &:hover
+//         cursor pointer
+//         background-color #ddd
 
 
-  .panel-body
+//   .panel-body
     
-    .note
+//     .note
 
-      .controls
-        margin-top 15px
+//       .controls
+//         margin-top 15px
         
-        button
-          i
-            padding-left 5px
+//         button
+//           i
+//             padding-left 5px

@@ -13,9 +13,13 @@
                 label.col.span_4_of_12.control-label(for='roomName') Room Name
                 .col.span_6_of_12(ng-class="{'has-error': createRoom.rName.$invalid && createRoom.rName.$dirty}")
                     input#roomName.form-control(type='text', name="rName"
-                        ng-model="room.name", placeholder='Room Name' required)
-                    span.help-block
-                        | texti text
+                        ng-model="room.name", placeholder='Room Name',
+                        ng-minlength="5", required)
+                    span.help-block(ng-show="createRoom.rName.$error.required && createRoom.rName.$dirty")
+                        | *Required field.
+                    span.help-block(ng-show="createRoom.rName.$error.minlength && createRoom.rName.$dirty")
+                        | *Type in at least 5 characters.
+
                 .col.span_1_of_12
             .form-group
                 .col.span_1_of_12
@@ -24,7 +28,11 @@
                 .col.span_6_of_12(ng-class="{'has-error': createRoom.rPassword.$invalid && createRoom.rPassword.$dirty}")
                     input#roomPassword.form-control(type='password',
                         name="rPassword" ng-model="room.password",
-                        placeholder='Password', required)
+                        placeholder='Password', ng-minlength="5", required)
+                    span.help-block(ng-show="createRoom.rPassword.$error.required && createRoom.rPassword.$dirty")
+                        | *Required field.
+                    span.help-block(ng-show="createRoom.rPassword.$error.minlength && createRoom.rPassword.$dirty")
+                        | *Type in at least 5 characters.
                 .col.span_1_of_12
             .form-group
                 .col.span_1_of_12
@@ -33,11 +41,17 @@
                 .col.span_6_of_12(ng-class="{'has-error': createRoom.rPasswordRepeat.$invalid && createRoom.rPasswordRepeat.$dirty}")
                     input#roomPasswordRepeat.form-control(type='password',
                         name="rPasswordRepeat", ng-model="room.passwordRepeat",
-                        placeholder='Repeat Password', required)
+                        placeholder='Repeat Password', 
+                        input-match="roomPassword", required)
+                    span.help-block(ng-show="createRoom.rPasswordRepeat.$error.required && createRoom.rPasswordRepeat.$dirty")
+                        | *Required field.
+                    span.help-block(ng-show="createRoom.rPasswordRepeat.$error.inputMatch && createRoom.rPasswordRepeat.$dirty && !createRoom.rPasswordRepeat.$error.required")
+                        | Passwords don't match.
+                    
                 .col.span_1_of_12
             .form-group
                 .col.span_2_of_12
                 .col.span_9_of_12
                     button.btn.btn-primary.pull-right(type='submit',
-                        ng-disabled="createRoom") Submit
+                        ng-disabled="createRoom.$invalid") Submit
                 .col.span_1_of_12
