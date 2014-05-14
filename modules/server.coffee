@@ -114,9 +114,9 @@ module.exports = server
 ###
 
 process.on "uncaughtException", (err) ->
-  debug.error "OMG :-S"
-  debug.error "caught 'uncaught' exception: " + err
-  console.log err.stack
+    debug.error "OMG :-S"
+    debug.error "caught 'uncaught' exception: " + err
+    console.log err.stack
 
 express = require "express"
 assets  = require "connect-assets"
@@ -129,7 +129,7 @@ routesAPI = require "./routes.api"
 app = express()
 
 app.port =
-  process.env.PORT or process.env.VMC_APP_PORT or config?.port or 3000
+    process.env.PORT or process.env.VMC_APP_PORT or config?.port or 3000
 
 # ***
 # ## View initialization
@@ -137,7 +137,7 @@ app.port =
 # Set the view engine to jade
 app.set "view engine", "jade"
 app.set "view options",
-  layout: false
+    layout: false
 # Set ***views*** directory
 app.set "views", process.cwd() + "/views"
 # Add Connect Assets.
@@ -155,12 +155,13 @@ app.use require("compression")()
 app.use require("serve-static")(process.cwd() + "/public")
 app.use require("connect-livereload")(port: 35729)
 
+
 routes.route app
 routesAPI.route app
 
 
 app.start = ->
-  app.listen app.port, ->
-    console.log "Listening on " + app.port + "\nPress CTRL-C to stop server."
+    app.listen app.port, ->
+        console.log "Listening on " + app.port + "\nPress CTRL-C to stop server."
 
 module.exports = app

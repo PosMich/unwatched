@@ -376,7 +376,7 @@ module.exports = (grunt) ->
 
     grunt.registerTask "docs", ["coffeelint", "groc"]          
 
-    grunt.registerTask "default", [ "build:dev" ]
+    grunt.registerTask "default", [ "serve:dev" ]
 
     grunt.registerTask "build", "build assets for :environment | available: production (=default), dev, debug", (env = "production") ->
         grunt.task.run grunt.config("build."+env+".taskList")

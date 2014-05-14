@@ -1,5 +1,7 @@
 @require "mixins.styl"
 @require "room.styl"
+@import 'nib'
+
 body
   //background-color #333
 
@@ -14,30 +16,109 @@ body
     margin: 0
     padding: 0
     padding-left:50px
-    radial-gradient-with-image(rgba(255,255,255,100), 0%, rgba(0,0,255,0.075), 100%, "img/bg_noise.png")
+    radial-gradient( rgba(255,255,0,1), 0%, rgba(180,180,180,1), 100% )
+    z-index: 0
+
+body:after
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: .15;
+    background-image url("img/noise.png")
+    z-index: -2
 
 .sidenav-container
-    position:fixed
-    left: 0
-    top: 0
-    height: 100%
-    width: 35px
-    background-color: black
+    position fixed
+    left -20px
+    top 0
+    height 100%
+    width 35px
+    
+    background: rgb(27,27,27); /* Old browsers */
+    background: -moz-linear-gradient(left,  rgba(27,27,27,1) 0%, rgba(56,56,56,1) 0%, rgba(10,10,10,1) 47%, rgba(1,1,1,1) 50%, rgba(13,13,13,1) 76%, rgba(13,13,13,1) 76%, rgba(63,63,63,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(27,27,27,1)), color-stop(0%,rgba(56,56,56,1)), color-stop(47%,rgba(10,10,10,1)), color-stop(50%,rgba(1,1,1,1)), color-stop(76%,rgba(13,13,13,1)), color-stop(76%,rgba(13,13,13,1)), color-stop(100%,rgba(63,63,63,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  rgba(27,27,27,1) 0%,rgba(56,56,56,1) 0%,rgba(10,10,10,1) 47%,rgba(1,1,1,1) 50%,rgba(13,13,13,1) 76%,rgba(13,13,13,1) 76%,rgba(63,63,63,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  rgba(27,27,27,1) 0%,rgba(56,56,56,1) 0%,rgba(10,10,10,1) 47%,rgba(1,1,1,1) 50%,rgba(13,13,13,1) 76%,rgba(13,13,13,1) 76%,rgba(63,63,63,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  rgba(27,27,27,1) 0%,rgba(56,56,56,1) 0%,rgba(10,10,10,1) 47%,rgba(1,1,1,1) 50%,rgba(13,13,13,1) 76%,rgba(13,13,13,1) 76%,rgba(63,63,63,1) 100%); /* IE10+ */
+    background: linear-gradient(to right,  rgba(27,27,27,1) 0%,rgba(56,56,56,1) 0%,rgba(10,10,10,1) 47%,rgba(1,1,1,1) 50%,rgba(13,13,13,1) 76%,rgba(13,13,13,1) 76%,rgba(63,63,63,1) 100%); /* W3C */
+    //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1b1b1b', endColorstr='#3f3f3f',GradientType=1 ); /* IE6-9 */
+
+
+    transition left 300ms ease-in-out
+    -webkit-box-shadow: 0px 0px 19px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 19px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 19px 0px rgba(50, 50, 50, 0.75);
+    border-right: 2px solid rgb(0,0,255)
+
+.sidenav-container:hover
+    left 0px
 
 .sidenav
-    display: table
-    height: 100%
-    width: 20px
+    position relative
+    display table
+    left 0px
+    height 100%
+    width 20px
+    
 
 .icon-container
-    display: table-cell
-    vertical-align:middle
-    
+    display table-cell
+    vertical-align middle
+    //background-color rgba(0,0,255,0.1)
+
 .icons
-    position:relative
+    position relative
+    left -10px
 
 .icon
-    background-color: green
-    margin:20px
-    width: 50px
-    height:50px
+    overflow hidden // <-- firefox problem
+    margin 20px
+    margin-right 30px
+    width 50px
+    height 50px
+    background gray
+    //float left
+    transition width 300ms ease-in-out, height 300ms ease-in-out
+
+.icon:hover
+    overflow visible // <-- firefox problem
+    width 65px
+    height 65px
+
+/*.icon:hover .subicon-container
+    visibility visible
+    opacity 1
+*/
+.subicon-container
+    display table
+    position relative
+    left 65px
+    height 600px
+    top -270px
+    //background-color rgba(255,0,255,0.5)
+
+.subicons
+    display table-cell
+    vertical-align middle
+    //background-color rgba(0,0,0,0.5)
+
+.subicon
+    visibility hidden
+    opacity 0
+    transition visibility 800ms ease-in-out, opacity 800ms ease-in-out, width 300ms ease-in-out, height 300ms ease-in-out
+    height 50px
+    width 50px
+    background-color rgba(255,255,0,1)
+    margin 20px
+
+.icon:hover .subicon, .icon:hover .subicon:hover
+    visibility visible
+    opacity 1
+
+.subicon:hover
+    width 65px
+    height 65px
