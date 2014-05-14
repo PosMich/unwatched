@@ -7,7 +7,7 @@
     "url": "asdf"
   },
   "scripts": {
-    "install": "node node_modules/coffee-script/bin/cake build",
+    "install": "node node_modules/ build",
     "start": "node app.js"
   },
   "dependencies": {
@@ -58,7 +58,7 @@
     "node-inspector": "^0.7.3",
     "open": "0.0.5",
     "request": "latest",
-    "stylus": "^0.45.0",
+    "stylus": "latest",
     "supervisor": "latest",
     "time-grunt": "^0.3.1"
   },
