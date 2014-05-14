@@ -16,6 +16,7 @@ app.controller "IndexCtrl", [
 app.controller "SpacelabCtrl", ->
   console.log "spacelab ctrl here"
 
+
 # ***
 # ## Config
 # > contains routing stuff only (atm)

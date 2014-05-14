@@ -275,7 +275,7 @@ module.exports = (grunt) ->
 
         nodemon:
             options:
-                watch: ["modules", "public/js", "public/css"]
+                watch: ["modules"]
                 callback:  (nodemon) ->
                     nodemon.on "log", (event) ->
                         console.log event.colour
@@ -284,12 +284,10 @@ module.exports = (grunt) ->
                     nodemon.on "config:update", ->
                         setTimeout -> 
                             require("open")("http://localhost:3000")
-                        , 1000
+                        , 2000
 
                     nodemon.on "restart", ->
-                        setTimeout ->
-                            require("fs").writeFileSync( ".rebooted", "rebooted" )      
-                        , 1000
+                        console.log nodemon
                     
             debug:
                 script: "app.js"
