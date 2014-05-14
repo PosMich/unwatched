@@ -9,13 +9,13 @@ html(ng-app="unwatched")
   body
     .sidenav-container
       .sidenav
-        .icon-container 
+        .icon-container
           .icons
             .icon
               .subicon-container
                 .subicons
                   .subicon.top1
-                  .subicon.middle 
+                  .subicon.middle
                   .subicon.bottom1
             .icon
               .subicon-container
@@ -25,24 +25,21 @@ html(ng-app="unwatched")
                   .subicon.middle
                   .subicon.bottom1
                   .subicon.bottom2
-            .icon 
+            .icon
               .subicon-container
                 .subicons
                   .subicon.top2
                   .subicon.top1
                   .subicon.bottom1
                   .subicon.bottom2
-            .icon 
+            .icon
               .subicon-container
                 .subicons
                   .subicon.top1
                   .subicon.middle
                   .subicon.bottom1
-    
-    .container
-      div(ng-view)
 
-    .footer
-      center v
-        span(app-version)
+    .container
+      .clearfix(ng-view)
+
     script(src='/js/app.js')

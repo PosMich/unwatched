@@ -128,7 +128,7 @@ app.directive "centerVertical", [
       link: (scope, elem, attrs) ->
 
         centerVertical = (elem, attrs) ->
-            marginTop = ( $($window).height()-($(elem).height()+100) )/2
+            marginTop = ( $($window).height()-$(elem).height() )/2
             $(elem).css "margin-top", marginTop
             return
 

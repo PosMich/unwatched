@@ -1,7 +1,19 @@
+.info-container(center-vertical)
+    .info
+        | Chat with others
+    .info
+        | Share anything
+
 #create-room-container.well(center-vertical)
     form.form-horizontal
         fieldset
             legend Create Room
+            .form-group
+                .col.span_2_of_12
+                label.col.span_2_of_12.control-label(for='inputEmail') Name
+                .col.span_6_of_12
+                    input#inputName.form-control(type='text', placeholder='Name')
+                .col.span_2_of_12
             .form-group
                 .col.span_2_of_12
                 label.col.span_2_of_12.control-label(for='inputEmail') Email
@@ -15,8 +27,7 @@
                     input#inputPassword.form-control(type='password', placeholder='Password')
                 .col.span_2_of_12
             .form-group
-                .col.span_1_of_12
-                .col.span_10_of_12
-                    button.btn.btn-default Cancel
-                    button.btn.btn-primary(type='submit') Submit
-                .col.span_1_of_12
+                .col.span_2_of_12
+                .col.span_8_of_12
+                    button.btn.btn-primary.pull-right(type='submit') Submit
+                .col.span_2_of_12
