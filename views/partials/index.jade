@@ -5,29 +5,39 @@
         | Share anything
 
 #create-room-container.well(center-vertical)
-    form.form-horizontal
+    form.form-horizontal(novalidate, name="createRoom")
         fieldset
             legend Create Room
             .form-group
-                .col.span_2_of_12
-                label.col.span_2_of_12.control-label(for='inputEmail') Name
-                .col.span_6_of_12
-                    input#inputName.form-control(type='text', placeholder='Name')
-                .col.span_2_of_12
+                .col.span_1_of_12
+                label.col.span_4_of_12.control-label(for='roomName') Room Name
+                .col.span_6_of_12(ng-class="{'has-error': createRoom.rName.$invalid && createRoom.rName.$dirty}")
+                    input#roomName.form-control(type='text', name="rName"
+                        ng-model="room.name", placeholder='Room Name' required)
+                    span.help-block
+                        | texti text
+                .col.span_1_of_12
+            .form-group
+                .col.span_1_of_12
+                label.col.span_4_of_12.control-label(for='roomPassword')
+                    | Password
+                .col.span_6_of_12(ng-class="{'has-error': createRoom.rPassword.$invalid && createRoom.rPassword.$dirty}")
+                    input#roomPassword.form-control(type='password',
+                        name="rPassword" ng-model="room.password",
+                        placeholder='Password', required)
+                .col.span_1_of_12
+            .form-group
+                .col.span_1_of_12
+                label.col.span_4_of_12.control-label(for='roomPasswordRepeat')
+                    | Repeat Password
+                .col.span_6_of_12(ng-class="{'has-error': createRoom.rPasswordRepeat.$invalid && createRoom.rPasswordRepeat.$dirty}")
+                    input#roomPasswordRepeat.form-control(type='password',
+                        name="rPasswordRepeat", ng-model="room.passwordRepeat",
+                        placeholder='Repeat Password', required)
+                .col.span_1_of_12
             .form-group
                 .col.span_2_of_12
-                label.col.span_2_of_12.control-label(for='inputEmail') Email
-                .col.span_6_of_12
-                    input#inputEmail.form-control(type='text', placeholder='Email')
-                .col.span_2_of_12
-            .form-group
-                .col.span_2_of_12
-                label.col.span_2_of_12.control-label(for='inputPassword') Password
-                .col.span_6_of_12
-                    input#inputPassword.form-control(type='password', placeholder='Password')
-                .col.span_2_of_12
-            .form-group
-                .col.span_2_of_12
-                .col.span_8_of_12
-                    button.btn.btn-primary.pull-right(type='submit') Submit
-                .col.span_2_of_12
+                .col.span_9_of_12
+                    button.btn.btn-primary.pull-right(type='submit',
+                        ng-disabled="createRoom") Submit
+                .col.span_1_of_12
