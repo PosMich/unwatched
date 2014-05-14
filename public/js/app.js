@@ -36544,6 +36544,27 @@ angular.module('ui.tinymce', [])
     }
   ]);
 
+  app.directive("centerVertical", [
+    "$window", function($window) {
+      return {
+        link: function(scope, elem, attrs) {
+          var centerVertical;
+          centerVertical = function(elem, attrs) {
+            console.log($window.height());
+          };
+          scope.$watch(attrs.adjustWidth, function() {
+            return window.setTimeout((function() {
+              return centerVertical(elem, attrs);
+            }), 1);
+          });
+          return angular.element($window).bind("resize", function() {
+            centerVertical(elem, attrs);
+          });
+        }
+      };
+    }
+  ]);
+
 }).call(this);
 
 (function() {

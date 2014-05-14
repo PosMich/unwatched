@@ -1,4 +1,7 @@
+@require "lib/responsivegridsystem/*.css"
+@require "lib/bootstrap-custom/*.css"
 @require "mixins.styl"
+@require "forms.styl"
 @require "room.styl"
 @import 'nib'
 
@@ -18,6 +21,9 @@ html
     padding-left:50px
     radial-gradient_( rgba(255,255,255,1), 0%, rgba(240,240,240,1), 100% )
     z-index: 0
+
+body
+    background none
 
 html:after
     content: '';
@@ -39,7 +45,7 @@ html:after
     top 0
     height 100%
     width 35px
-    
+
     background: rgb(27,27,27); /* Old browsers */
     background: -moz-linear-gradient(left,  rgba(27,27,27,1) 0%, rgba(56,56,56,1) 0%, rgba(10,10,10,1) 47%, rgba(1,1,1,1) 50%, rgba(13,13,13,1) 76%, rgba(13,13,13,1) 76%, rgba(63,63,63,1) 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(27,27,27,1)), color-stop(0%,rgba(56,56,56,1)), color-stop(47%,rgba(10,10,10,1)), color-stop(50%,rgba(1,1,1,1)), color-stop(76%,rgba(13,13,13,1)), color-stop(76%,rgba(13,13,13,1)), color-stop(100%,rgba(63,63,63,1))); /* Chrome,Safari4+ */
@@ -65,7 +71,7 @@ html:after
     left 0px
     height 100%
     width 20px
-    
+
 
 .icon-container
     display table-cell

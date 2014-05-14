@@ -120,3 +120,22 @@ app.directive "appVersion", [
     (scope, elem, attrs) ->
       elem.text version
 ]
+
+app.directive "centerVertical", [
+    "$window"
+    ($window) ->
+      link: (scope, elem, attrs) ->
+
+        centerVertical = (elem, attrs) ->
+          console.log $window.height()
+          return
+
+        scope.$watch attrs.adjustWidth, ->
+          window.setTimeout( (->
+            centerVertical(elem, attrs)
+          ), 1)
+
+        angular.element($window).bind "resize", ->
+          centerVertical(elem, attrs)
+          return
+]
