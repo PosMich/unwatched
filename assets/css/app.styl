@@ -1,10 +1,10 @@
 @require "lib/responsivegridsystem/*.css"
-@require "lib/bootstrap-custom/*.css"
 @require "lib/reset.css"
+@require "lib/font-awesome.css"
+@require "lib/bootstrap-custom/*.css"
 @require "mixins.styl"
 @require "forms.styl"
 @require "room.styl"
-@require "lib/font-awesome.css"
 
 @import "nib"
 
@@ -166,3 +166,9 @@ for delay in 1 2 3 4 5 6 7 8 9 10
 .subicon.bottom2
     position:relative
     left: 0px
+
+#create-room-container
+    min-width 450px
+    width 50%
+    max-width 700px
+    margin auto

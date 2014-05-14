@@ -114,6 +114,7 @@ app.directive "focusOnClick", [ ->
     return
 ]
 
+
 app.directive "appVersion", [
   "version"
   (version) ->
@@ -127,8 +128,9 @@ app.directive "centerVertical", [
       link: (scope, elem, attrs) ->
 
         centerVertical = (elem, attrs) ->
-          console.log $window.height()
-          return
+            marginTop = ( $($window).height()-($(elem).height()+100) )/2
+            $(elem).css "margin-top", marginTop
+            return
 
         scope.$watch attrs.adjustWidth, ->
           window.setTimeout( (->

@@ -36550,7 +36550,9 @@ angular.module('ui.tinymce', [])
         link: function(scope, elem, attrs) {
           var centerVertical;
           centerVertical = function(elem, attrs) {
-            console.log($window.height());
+            var marginTop;
+            marginTop = ($($window).height() - ($(elem).height() + 100)) / 2;
+            $(elem).css("margin-top", marginTop);
           };
           scope.$watch(attrs.adjustWidth, function() {
             return window.setTimeout((function() {
