@@ -9,7 +9,7 @@ html(ng-app="unwatched")
   body
     .sidenav-container
       .sidenav
-        .icon-container 
+        .icon-container
           .icons
             .icon
               i.fa.fa-home.fa-inverse
@@ -49,38 +49,7 @@ html(ng-app="unwatched")
                     .fa.fa-floppy-o
                   .subicon.bottom2
                     .fa.fa-camera
-          <br><br><br>
-          .icons
-            .icon
-              .fa.fa-home.fa-inverse
-              .subicon-container
-                .subicons
-                  .subicon.top2
-                    .fa.fa-dashboard
-                  .subicon.top1 
-                  .subicon.bottom2
-            .icon
-              .fa.fa-users.fa-inverse
-              .subicon-container
-                .subicons
-                  .subicon.top2
-                  .subicon.top1
-                  .subicon.middle
-                  .subicon.bottom1
-                  .subicon.bottom2
-            .icon 
-              .fa.fa-file.fa-inverse
-              .subicon-container
-                .subicons
-                  .subicon.top2
-                  .subicon.top1
-                  .subicon.bottom1
-                  .subicon.bottom2
-    
     .container
-      div(ng-view)
+      .clearfix(ng-view)
 
-    .footer
-      center v
-        span(app-version)
     script(src='/js/app.js')
