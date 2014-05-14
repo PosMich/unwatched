@@ -1,9 +1,9 @@
 
-/* line 162 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 213 : /home/ubuser/www/unwatched/assets/css/app.styl */
 
 /* line 2 : /home/ubuser/www/unwatched/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
 
-/* line 297 : /home/ubuser/www/unwatched/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
+/* line 216 : /home/ubuser/www/unwatched/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
 /* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
@@ -290,7 +290,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   padding-left: 5px;
 }
 
-/* line 176 : /home/ubuser/www/unwatched/assets/css/room.styl */
+/* line 216 : /home/ubuser/www/unwatched/assets/css/room.styl */
 /*!
  *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -299,8 +299,8 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../fonts/fontawesome-webfont.eot?v=4.0.3');
-  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
+  src: url('fonts/fontawesome-webfont.eot?v=4.0.3');
+  src: url('fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'), url('fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'), url('fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'), url('fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -1632,7 +1632,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /* line 176 : /home/ubuser/www/unwatched/assets/css/lib/font-awesome.css */
 
-/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
+/* line 216 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
 
 /* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
 
@@ -1652,7 +1652,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /* line 197 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
 
-/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+/* line 216 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
 
 /* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
 
@@ -1680,7 +1680,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /* line 79 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
 
-/* line 5 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+/* line 216 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
 
 /* line 5 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
 
@@ -1710,19 +1710,19 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 
 /* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/size.styl */
 
-/* line 8 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 22 : /home/ubuser/www/unwatched/assets/css/app.styl */
 
-/* line 11 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 25 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .no-padding {
   padding: 0;
 }
 
-/* line 14 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 28 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .no-margin {
   margin: 0;
 }
 
-/* line 18 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 32 : /home/ubuser/www/unwatched/assets/css/app.styl */
 html {
   margin: 0;
   padding: 0;
@@ -1766,7 +1766,7 @@ html {
   z-index: 0;
 }
 
-/* line 25 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 39 : /home/ubuser/www/unwatched/assets/css/app.styl */
 html:after {
   content: '';
   position: fixed;
@@ -1784,7 +1784,7 @@ html:after {
   z-index: -2;
 }
 
-/* line 39 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 53 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav-container {
   position: fixed;
   left: -20px;
@@ -1840,12 +1840,12 @@ html:after {
   box-shadow: 0px 0px 19px 0px rgba(50,50,50,0.75);
 }
 
-/* line 62 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 76 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav-container:hover {
   left: 0px;
 }
 
-/* line 65 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 79 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav {
   position: relative;
   display: table;
@@ -1854,73 +1854,126 @@ html:after {
   width: 20px;
 }
 
-/* line 73 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 87 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon-container {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 78 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 92 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icons {
   position: relative;
   left: -10px;
 }
 
-/* line 82 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 96 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
   overflow: hidden;
   margin: 20px;
   margin-right: 30px;
   width: 50px;
   height: 50px;
-  -webkit-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  -moz-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  -o-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  -ms-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  background: -webkit-linear-gradient(right, #c8c8c8, #646464);
-  background: -moz-linear-gradient(right, #c8c8c8, #646464);
-  background: -o-linear-gradient(right, #c8c8c8, #646464);
-  background: -ms-linear-gradient(right, #c8c8c8, #646464);
-  background: linear-gradient(to left, #c8c8c8, #646464);
-  border: 1px solid #969696;
-  -webkit-box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
-  -moz-box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
-  -webkit-box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
-  box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
+  -webkit-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  -moz-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  -o-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  -ms-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+/*border: 1px solid rgba(150,150,150,1)
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(250, 250, 250, 0.75);
+    -moz-box-shadow:    0px 0px 2px 0px rgba(250, 250, 250, 0.75);
+    box-shadow:         0px 0px 2px 0px rgba(250, 250, 250, 0.75);*/
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  background: -moz--webkit-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz--moz-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz--o-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz--ms-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz-linear-gradient(to bottom, #6b6b6b 0%, #454545);
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  border: 1px solid #000;
+  -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(255,255,255,0.3);
 }
 
-/* line 98 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 127 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover {
   overflow: visible;
-  width: 65px;
-  height: 65px;
+  width: 66px;
+  height: 66px;
+  -webkit-border-radius: 33px;
+  border-radius: 33px;
 }
 
-/* line 103 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 134 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon .fa {
+  font-size: 33px;
+  margin: 10px;
+  margin-top: 8px;
+  -webkit-transition: font-size 300ms ease-in-out;
+  -moz-transition: font-size 300ms ease-in-out;
+  -o-transition: font-size 300ms ease-in-out;
+  -ms-transition: font-size 300ms ease-in-out;
+  transition: font-size 300ms ease-in-out;
+}
+
+/* line 140 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon .fa.fa-users {
+  padding-top: 3px;
+  font-size: 30px;
+}
+
+/* line 144 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon .fa.fa-file {
+  padding-left: 4px;
+}
+
+/* line 147 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon:hover .fa {
+  font-size: 50px;
+}
+
+/* line 150 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon:hover .fa.fa-users {
+  font-size: 45px;
+}
+
+/* line 153 : /home/ubuser/www/unwatched/assets/css/app.styl */
 /*.icon:hover .subicon-container
     visibility visible
     opacity 1
 */
 
-/* line 107 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 157 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon-container {
   display: table;
   position: relative;
   left: 65px;
   height: 600px;
-  top: -270px;
+  top: -335px;
+  background-color: rgba(255,0,255,0.5);
 }
 
-/* line 115 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 165 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicons {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 120 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 170 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon {
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -1934,7 +1987,7 @@ html:after {
   margin: 20px;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(1) {
   -webkit-transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1943,7 +1996,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(2) {
   -webkit-transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1952,7 +2005,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(3) {
   -webkit-transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1961,7 +2014,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(4) {
   -webkit-transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1970,7 +2023,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(5) {
   -webkit-transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1979,7 +2032,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(6) {
   -webkit-transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1988,7 +2041,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(7) {
   -webkit-transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -1997,7 +2050,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(8) {
   -webkit-transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -2006,7 +2059,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(9) {
   -webkit-transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -2015,7 +2068,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 131 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 181 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(10) {
   -webkit-transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -2024,7 +2077,7 @@ html:after {
   transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 135 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 185 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover .subicon,
 .icon:hover .subicon:hover {
   visibility: visible;
@@ -2033,38 +2086,44 @@ html:after {
   filter: none;
 }
 
-/* line 139 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:hover {
   width: 65px;
   height: 65px;
 }
 
-/* line 145 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 195 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.top2 {
   position: relative;
   left: 0px;
 }
 
-/* line 148 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 198 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.top1 {
   position: relative;
   left: 10px;
 }
 
-/* line 152 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 202 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .middle {
   position: relative;
   left: 20px;
 }
 
-/* line 156 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 206 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.bottom1 {
   position: relative;
   left: 10px;
 }
 
-/* line 159 : /home/ubuser/www/unwatched/assets/css/app.styl */
+/* line 209 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.bottom2 {
   position: relative;
   left: 0px;
+}
+
+/* line 214 : /home/ubuser/www/unwatched/assets/css/app.styl */
+.icon,
+.subicon {
+  cursor: pointer;
 }
