@@ -12,33 +12,43 @@ html(ng-app="unwatched")
         .icon-container
           .icons
             .icon
-              .subicon-container
-                .subicons
-                  .subicon.top1
-                  .subicon.middle
-                  .subicon.bottom1
-            .icon
+              i.fa.fa-home.fa-inverse
               .subicon-container
                 .subicons
                   .subicon.top2
-                  .subicon.top1
-                  .subicon.middle
-                  .subicon.bottom1
+                    i.fa.fa-info 
                   .subicon.bottom2
+                    i.fa.fa-question
             .icon
+              i.fa.fa-users.fa-inverse
               .subicon-container
                 .subicons
                   .subicon.top2
+                    span.fa-stack.fa-lg
+                      i.fa.fa-user.fa-stack-2x
+                      i.fa.fa-gear.fa-stack-1x.fa-inverse
                   .subicon.top1
-                  .subicon.bottom1
-                  .subicon.bottom2
-            .icon
-              .subicon-container
-                .subicons
-                  .subicon.top1
-                  .subicon.middle
-                  .subicon.bottom1
+                    span.fa-stack.fa-lg
+                      i.fa.fa-user.fa-stack-2x
+                      i.fa.fa-plus-circle.fa-stack-1x.fa-inverse
+                  .history
+                    | dlkjhifhölkjnlksmfg<br>
+                    | lkjfbökjgölkgjlökjgö<br>
 
+            .icon 
+              .fa.fa-file.fa-inverse
+              .subicon-container
+                .subicons
+                  .subicon.top2
+                    .fa.fa-desktop
+                  .subicon.top1
+                    .fa.fa-file-text-o
+                  .subicon.middle
+                    .fa.fa-picture-o
+                  .subicon.bottom1
+                    .fa.fa-floppy-o
+                  .subicon.bottom2
+                    .fa.fa-camera
     .container
       .clearfix(ng-view)
 

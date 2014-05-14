@@ -1,9 +1,9 @@
 
-/* line 169 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 249 : /home/calvitium/www/unwatched/assets/css/app.styl */
 
 /* line 2 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
 
-/* line 20 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+/* line 297 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
 /*  MAKE LAYOUT RESPONSIVE at 1024px FOR SMALLER SCREENS ================================================================ */
 
 
@@ -1828,11 +1828,11 @@ p {
 -webkit-hyphenate-limit-before : 3;
 -moz-hyphens : auto; }
 
-/* line 20 : /home/calvitium/www/unwatched/assets/css/lib/responsivegridsystem/responsivegridsystem.css */
+/* line 297 : /home/calvitium/www/unwatched/assets/css/lib/responsivegridsystem/responsivegridsystem.css */
 /* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
-/* line 20 : /home/calvitium/www/unwatched/assets/css/lib/reset.css */
+/* line 297 : /home/calvitium/www/unwatched/assets/css/lib/reset.css */
 /*!
  *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -1841,8 +1841,8 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('../fonts/fontawesome-webfont.eot?v=4.0.3');
-  src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
+  src: url('fonts/fontawesome-webfont.eot?v=4.0.3');
+  src: url('fonts/fontawesome-webfont.eot?#iefix&v=4.0.3') format('embedded-opentype'), url('fonts/fontawesome-webfont.woff?v=4.0.3') format('woff'), url('fonts/fontawesome-webfont.ttf?v=4.0.3') format('truetype'), url('fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -3172,7 +3172,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
   content: "\f196";
 }
 
-/* line 20 : /home/calvitium/www/unwatched/assets/css/lib/font-awesome.css */
+/* line 297 : /home/calvitium/www/unwatched/assets/css/lib/font-awesome.css */
 /*!
  * Bootstrap v3.1.1 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -6607,7 +6607,7 @@ a.list-group-item-danger.active:focus {
 
 /* line 1 : /home/calvitium/www/unwatched/assets/css/mixins.styl */
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/mixins.styl */
+/* line 28 : /home/calvitium/www/unwatched/assets/css/mixins.styl */
 
 /* line 2 : /home/calvitium/www/unwatched/assets/css/forms.styl */
 
@@ -6638,9 +6638,9 @@ textarea:invalid {
   box-shadow: none;
 }
 
-/* line 9 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/size.styl */
+/* line 33 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/size.styl */
 
-/* line 9 : /home/calvitium/www/unwatched/assets/css/room.styl */
+/* line 33 : /home/calvitium/www/unwatched/assets/css/room.styl */
 
 /* line 1 : /home/calvitium/www/unwatched/assets/css/room.styl */
 
@@ -6930,7 +6930,7 @@ textarea:invalid {
   padding-left: 5px;
 }
 
-/* line 195 : /home/calvitium/www/unwatched/assets/css/room.styl */
+/* line 176 : /home/calvitium/www/unwatched/assets/css/room.styl */
 
 /* line 1 : /home/calvitium/www/unwatched/assets/css/fonts.styl */
 @font-face {
@@ -6940,23 +6940,23 @@ textarea:invalid {
   src: local('Bad Script Regular'), local('BadScript-Regular'), url("http://themes.googleusercontent.com/static/fonts/badscript/v3/rL_b2ND61EQmMOJ8CRr1fhsxEYwM7FgeyaSgU71cLG0.woff") format('woff');
 }
 
-/* line 176 : /home/calvitium/www/unwatched/assets/css/fonts.styl */
+/* line 17 : /home/calvitium/www/unwatched/assets/css/fonts.styl */
 
 /* line 2 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/index.styl */
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 27 : /home/calvitium/www/unwatched/assets/css/app.styl */
 
-/* line 16 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 30 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .no-padding {
   padding: 0;
 }
 
-/* line 19 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 33 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .no-margin {
   margin: 0;
 }
 
-/* line 23 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 37 : /home/calvitium/www/unwatched/assets/css/app.styl */
 html {
   margin: 0;
   padding: 0;
@@ -7000,12 +7000,12 @@ html {
   z-index: 0;
 }
 
-/* line 30 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 44 : /home/calvitium/www/unwatched/assets/css/app.styl */
 body {
   background: none;
 }
 
-/* line 33 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 47 : /home/calvitium/www/unwatched/assets/css/app.styl */
 html:after {
   content: '';
   position: fixed;
@@ -7023,7 +7023,7 @@ html:after {
   z-index: -2;
 }
 
-/* line 47 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 61 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .sidenav-container {
   position: fixed;
   left: -20px;
@@ -7079,12 +7079,12 @@ html:after {
   box-shadow: 0px 0px 19px 0px rgba(50,50,50,0.75);
 }
 
-/* line 70 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 84 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .sidenav-container:hover {
   left: 0px;
 }
 
-/* line 73 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 87 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .sidenav {
   position: relative;
   display: table;
@@ -7093,73 +7093,126 @@ html:after {
   width: 20px;
 }
 
-/* line 81 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 95 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .icon-container {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 86 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 100 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .icons {
   position: relative;
   left: -10px;
 }
 
-/* line 90 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 104 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .icon {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 25px;
+  border-radius: 25px;
   overflow: hidden;
   margin: 20px;
   margin-right: 30px;
   width: 50px;
   height: 50px;
-  -webkit-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  -moz-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  -o-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  -ms-transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  transition: width 300ms ease-in-out, height 300ms ease-in-out;
-  background: -webkit-linear-gradient(right, #c8c8c8, #646464);
-  background: -moz-linear-gradient(right, #c8c8c8, #646464);
-  background: -o-linear-gradient(right, #c8c8c8, #646464);
-  background: -ms-linear-gradient(right, #c8c8c8, #646464);
-  background: linear-gradient(to left, #c8c8c8, #646464);
-  border: 1px solid #969696;
-  -webkit-box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
-  -moz-box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
-  -webkit-box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
-  box-shadow: 0px 0px 2px 0px rgba(250,250,250,0.75);
+  -webkit-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  -moz-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  -o-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  -ms-transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+  transition: width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out;
+/*border: 1px solid rgba(150,150,150,1)
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(250, 250, 250, 0.75);
+    -moz-box-shadow:    0px 0px 2px 0px rgba(250, 250, 250, 0.75);
+    box-shadow:         0px 0px 2px 0px rgba(250, 250, 250, 0.75);*/
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  background: -moz--webkit-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz--moz-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz--o-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz--ms-linear-gradient(top, #6b6b6b 0%, #454545);
+  background: -moz-linear-gradient(to bottom, #6b6b6b 0%, #454545);
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  background: -webkit-gradient(linear, left top, left bottom, from(#6b6b6b), to(#454545));
+  -moz-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -webkit-border-radius: 30px;
+  border-radius: 30px;
+  border: 1px solid #000;
+  -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+  text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(255,255,255,0.3);
 }
 
-/* line 106 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 135 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .icon:hover {
   overflow: visible;
-  width: 65px;
-  height: 65px;
+  width: 66px;
+  height: 66px;
+  -webkit-border-radius: 33px;
+  border-radius: 33px;
 }
 
-/* line 111 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 142 : /home/calvitium/www/unwatched/assets/css/app.styl */
+.icon .fa {
+  font-size: 33px;
+  margin: 10px;
+  margin-top: 8px;
+  -webkit-transition: font-size 300ms ease-in-out;
+  -moz-transition: font-size 300ms ease-in-out;
+  -o-transition: font-size 300ms ease-in-out;
+  -ms-transition: font-size 300ms ease-in-out;
+  transition: font-size 300ms ease-in-out;
+}
+
+/* line 148 : /home/calvitium/www/unwatched/assets/css/app.styl */
+.icon .fa.fa-users {
+  padding-top: 3px;
+  font-size: 30px;
+}
+
+/* line 152 : /home/calvitium/www/unwatched/assets/css/app.styl */
+.icon .fa.fa-file {
+  padding-left: 4px;
+}
+
+/* line 155 : /home/calvitium/www/unwatched/assets/css/app.styl */
+.icon:hover .fa {
+  font-size: 50px;
+}
+
+/* line 158 : /home/calvitium/www/unwatched/assets/css/app.styl */
+.icon:hover .fa.fa-users {
+  font-size: 45px;
+}
+
+/* line 161 : /home/calvitium/www/unwatched/assets/css/app.styl */
 /*.icon:hover .subicon-container
     visibility visible
     opacity 1
 */
 
-/* line 115 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 165 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon-container {
   display: table;
   position: relative;
   left: 65px;
   height: 600px;
-  top: -270px;
+  top: -335px;
+  background-color: rgba(255,0,255,0.5);
 }
 
-/* line 123 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 173 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicons {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 128 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 178 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon {
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -7173,7 +7226,7 @@ html:after {
   margin: 20px;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(1) {
   -webkit-transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7182,7 +7235,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(2) {
   -webkit-transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7191,7 +7244,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(3) {
   -webkit-transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7200,7 +7253,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(4) {
   -webkit-transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7209,7 +7262,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(5) {
   -webkit-transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7218,7 +7271,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(6) {
   -webkit-transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7227,7 +7280,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(7) {
   -webkit-transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7236,7 +7289,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(8) {
   -webkit-transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7245,7 +7298,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(9) {
   -webkit-transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7254,7 +7307,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 139 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 189 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(10) {
   -webkit-transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7263,7 +7316,7 @@ html:after {
   transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 143 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 193 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .icon:hover .subicon,
 .icon:hover .subicon:hover {
   visibility: visible;
@@ -7272,43 +7325,49 @@ html:after {
   filter: none;
 }
 
-/* line 147 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 197 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon:hover {
   width: 65px;
   height: 65px;
 }
 
-/* line 153 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 203 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon.top2 {
   position: relative;
   left: 0px;
 }
 
-/* line 156 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 206 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon.top1 {
   position: relative;
   left: 10px;
 }
 
-/* line 160 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 210 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .middle {
   position: relative;
   left: 20px;
 }
 
-/* line 164 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 214 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon.bottom1 {
   position: relative;
   left: 10px;
 }
 
-/* line 167 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 217 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .subicon.bottom2 {
   position: relative;
   left: 0px;
 }
 
-/* line 171 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 221 : /home/calvitium/www/unwatched/assets/css/app.styl */
+.icon,
+.subicon {
+  cursor: pointer;
+}
+
+/* line 224 : /home/calvitium/www/unwatched/assets/css/app.styl */
 #create-room-container {
   min-width: 450px;
   width: 50%;
@@ -7317,7 +7376,7 @@ html:after {
   margin-left: 15%;
 }
 
-/* line 178 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 231 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .info-container {
   position: relative;
   font-size: 26px;
@@ -7327,7 +7386,7 @@ html:after {
   font-weight: 500;
 }
 
-/* line 186 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 239 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .info-container .info {
   border: 7px solid #c81e2b;
   -webkit-border-radius: 200px/110px;
@@ -7338,7 +7397,7 @@ html:after {
   position: relative;
 }
 
-/* line 194 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 247 : /home/calvitium/www/unwatched/assets/css/app.styl */
 .info-container .info:first-child {
   left: 130px;
 }
