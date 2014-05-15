@@ -39404,7 +39404,6 @@ angular.module('ui.tinymce', [])
             scope.$apply(function() {
               var v;
               v = elem.val() === $(originInput).val();
-              console.log("asdf");
               ctrl.$setValidity("inputMatch", v);
             });
           });
@@ -39463,18 +39462,6 @@ angular.module('ui.tinymce', [])
     }
   ]);
 
-  app.directive("delayDisplay", [
-    function() {
-      return {
-        link: function(scope, elem, attrs) {
-          return scope.$watch(attrs.delayDisplay, function() {
-            return $(elem).addClass("show");
-          });
-        }
-      };
-    }
-  ]);
-
   app.directive("focusOnClick", [
     function() {
       return {
@@ -39514,6 +39501,59 @@ angular.module('ui.tinymce', [])
           });
           return angular.element($window).bind("resize", function() {
             centerVertical(elem, attrs);
+          });
+        }
+      };
+    }
+  ]);
+
+  app.directive("absoluteFillRelativeFullHeight", [
+    "$window", function($window) {
+      return {
+        link: function(scope, elem, attrs) {
+          var fillHeight;
+          fillHeight = function(elem, attrs) {
+            var height, width;
+            height = $($window).height() - 30;
+            width = $(elem).parent().width();
+            $(elem).css("height", height);
+            $(elem).css("width", width);
+          };
+          scope.$watch(attrs.adjustWidth, function() {
+            return window.setTimeout((function() {
+              return fillHeight(elem, attrs);
+            }), 1);
+          });
+          return angular.element($window).bind("resize", function() {
+            fillHeight(elem, attrs);
+          });
+        }
+      };
+    }
+  ]);
+
+  app.directive("fitChatBodyHeight", [
+    "$window", function($window) {
+      return {
+        link: function(scope, elem, attrs) {
+          var fitHeight;
+          fitHeight = function(elem, attrs) {
+            var $footer, $heading, $parent, footer_padding, heading_padding, height;
+            $parent = $(elem).parent();
+            $heading = $parent.find(".panel-heading");
+            $footer = $parent.find(".panel-footer");
+            heading_padding = ($heading.css("padding-top").replace(/[^-\d\.]/g, '')) * 2;
+            footer_padding = ($footer.css("padding-top").replace(/[^-\d\.]/g, '')) * 2;
+            height = ($($window).height() - 30) - $heading.height() - $footer.height() - heading_padding - footer_padding;
+            $(elem).css("height", height);
+          };
+          scope.$watch(attrs.adjustWidth, function() {
+            return window.setTimeout((function() {
+              return fitHeight(elem, attrs);
+            }), 1);
+          });
+          return angular.element($window).bind("resize", function() {
+            fitHeight(elem, attrs);
           });
         }
       };

@@ -1,0 +1,52 @@
+.chat-container
+    fixed bottom
+    right 0.8%
+    width 48.2%
+
+    .panel-body
+        overflow-y: auto
+
+    .panel-footer
+        padding 0
+
+    .message-control
+        absolute bottom
+        width 100%
+
+
+        .control-input
+            width 90%
+            float left
+
+            input
+                padding 20px 12px
+
+        .control-button
+            width 10%
+            float left
+            padding-top 2px
+
+            .btn
+                width 85%
+
+                i
+                    font-size 1.5em
+
+    .message-container
+        .chat-message
+
+            &.ng-enter, &.ng-move
+                transition opacity .5s linear
+                opacity 0
+
+                &.ng-enter-active, &.ng-move-active
+                    opacity 1
+
+            .well
+                float left
+                width 45%
+                text-align left
+
+                &.own
+                    float right
+                    text-align right

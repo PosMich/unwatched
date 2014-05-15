@@ -17,7 +17,6 @@ app.directive "inputMatch", [ ->
     elem.add(originInput).on "input", ->
       scope.$apply ->
         v = elem.val() is $(originInput).val()
-        console.log "asdf"
         ctrl.$setValidity "inputMatch", v
         return
       return
@@ -91,18 +90,6 @@ app.directive "adjustWidth", [
 ]
 
 # ***
-# * <h3>delayDisplay</h3>
-# > Delays the display of a certain hidden element. Adds the "show" css-class,
-# > after the element has been added to the view.<br/>
-# > Frontend-usage: div(delay-display="modelOfDelayedElement")<br/>
-# > Additional note: Atm it just works with opacity: 0 elements.
-app.directive "delayDisplay", [ ->
-  link: (scope, elem, attrs) ->
-    scope.$watch attrs.delayDisplay, ->
-      $(elem).addClass "show"
-]
-
-# ***
 # * <h3>focusOnClick</h3>
 # > Sets the focus on a certain input field after a click event was fired.<br/>
 # > Frontend-usage: a(focus-on-click="fieldToBeFocusedId")
@@ -140,5 +127,59 @@ app.directive "centerVertical", [
 
         angular.element($window).bind "resize", ->
           centerVertical(elem, attrs)
+          return
+]
+
+app.directive "absoluteFillRelativeFullHeight", [
+    "$window"
+    ($window) ->
+      link: (scope, elem, attrs) ->
+
+        fillHeight = (elem, attrs) ->
+            height = $($window).height()-30
+            width = $(elem).parent().width()
+            $(elem).css "height", height
+            $(elem).css "width", width
+            return
+
+        scope.$watch attrs.adjustWidth, ->
+          window.setTimeout( (->
+            fillHeight(elem, attrs)
+          ), 1)
+
+        angular.element($window).bind "resize", ->
+          fillHeight(elem, attrs)
+          return
+]
+
+app.directive "fitChatBodyHeight", [
+    "$window"
+    ($window) ->
+      link: (scope, elem, attrs) ->
+
+        fitHeight = (elem, attrs) ->
+            $parent = $(elem).parent()
+            $heading = $parent.find(".panel-heading")
+            $footer = $parent.find(".panel-footer")
+
+            heading_padding = ($heading.css("padding-top")
+              .replace(/[^-\d\.]/g, ''))*2
+
+            footer_padding = ($footer.css("padding-top")
+              .replace(/[^-\d\.]/g, ''))*2
+
+            height = ($($window).height()-30) - $heading.height() - 
+              $footer.height() - heading_padding - footer_padding
+            
+            $(elem).css "height", height
+            return
+
+        scope.$watch attrs.adjustWidth, ->
+          window.setTimeout( (->
+            fitHeight(elem, attrs)
+          ), 1)
+
+        angular.element($window).bind "resize", ->
+          fitHeight(elem, attrs)
           return
 ]

@@ -120,7 +120,7 @@ app.controller "ChatCtrl", [
         sender: "Lorem Ipsum"
         content: $scope.chat.message
       $scope.chat.message = ""
-
+      
 ]
 
 # ***
