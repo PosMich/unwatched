@@ -113,14 +113,36 @@ app.controller "ChatCtrl", [
   "$scope"
   ($scope) ->
     $scope.chat = {}
-    $scope.chat.messages = []
+    $scope.chat.state = "expanded"
+    $scope.chat.state_history = ""
+    $scope.chat.messages = [
+      # dummy entries
+      { sender: "Lorem Ipsum", content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." }
+      { sender: "Lorem Ipsum", content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua." }
+      { sender: "Lorem Ipsum", content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum." }
+
+    ]
 
     $scope.submitChatMessage = ->
       $scope.chat.messages.push
         sender: "Lorem Ipsum"
         content: $scope.chat.message
       $scope.chat.message = ""
-      
+
+    $scope.chat.compress = ->
+      $scope.chat.state = "compressed"
+
+    $scope.chat.expand = ->
+      $scope.chat.state = "expanded"
+
+    $scope.chat.minimize = ->
+      $scope.chat.state_history = $scope.chat.state
+      $scope.chat.state = "minimized"
+
+    $scope.chat.maximize = ->
+      if $scope.chat.state is "minimized"
+        $scope.chat.state = $scope.chat.state_history
+
 ]
 
 # ***

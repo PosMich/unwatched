@@ -3,11 +3,11 @@
 
 /* line 2 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
 
-/* line 52 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+/* line 123 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
 /* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
-/* line 52 : /home/calvitium/www/unwatched/assets/css/lib/reset.css */
+/* line 123 : /home/calvitium/www/unwatched/assets/css/lib/reset.css */
 /*  MAKE LAYOUT RESPONSIVE at 1024px FOR SMALLER SCREENS ================================================================ */
 
 
@@ -1832,7 +1832,7 @@ p {
 -webkit-hyphenate-limit-before : 3;
 -moz-hyphens : auto; }
 
-/* line 52 : /home/calvitium/www/unwatched/assets/css/lib/responsivegridsystem/responsivegridsystem.css */
+/* line 123 : /home/calvitium/www/unwatched/assets/css/lib/responsivegridsystem/responsivegridsystem.css */
 /*!
  *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -3172,7 +3172,7 @@ p {
   content: "\f196";
 }
 
-/* line 52 : /home/calvitium/www/unwatched/assets/css/lib/font-awesome.css */
+/* line 123 : /home/calvitium/www/unwatched/assets/css/lib/font-awesome.css */
 /*!
  * Bootstrap v3.1.1 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -6872,13 +6872,19 @@ textarea:invalid {
 
 /* line 33 : /home/calvitium/www/unwatched/assets/css/room.styl */
 
-/* line 27 : /home/calvitium/www/unwatched/assets/css/room.styl */
+/* line 32 : /home/calvitium/www/unwatched/assets/css/room.styl */
 
 /* line 2 : /home/calvitium/www/unwatched/assets/css/members.styl */
 
 /* line 3 : /home/calvitium/www/unwatched/assets/css/members.styl */
+.member-container {
+  width: 90%;
+  margin: auto;
+}
+
+/* line 7 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member {
-  width: 33%;
+  width: 25%;
   float: left;
   opacity: 0;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -6891,16 +6897,16 @@ textarea:invalid {
   -webkit-border-radius: 25px;
   border-radius: 25px;
   text-align: center;
-  margin-top: 50px;
   cursor: pointer;
+  padding: 5%;
 }
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 17 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member img {
-  height: 130px;
-  width: 130px;
-  -webkit-border-radius: 65px;
-  border-radius: 65px;
+  height: 100%;
+  width: 100%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
   -webkit-box-shadow: 0 0 5px 5px #888;
   box-shadow: 0 0 5px 5px #888;
   opacity: 0.7;
@@ -6913,14 +6919,14 @@ textarea:invalid {
   transition: opacity 0.25s linear;
 }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member img:hover {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(1) {
   -webkit-animation-delay: 0.2s;
   -moz-animation-delay: 0.2s;
@@ -6929,7 +6935,7 @@ textarea:invalid {
   animation-delay: 0.2s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(2) {
   -webkit-animation-delay: 0.4s;
   -moz-animation-delay: 0.4s;
@@ -6938,7 +6944,7 @@ textarea:invalid {
   animation-delay: 0.4s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(3) {
   -webkit-animation-delay: 0.6s;
   -moz-animation-delay: 0.6s;
@@ -6947,7 +6953,7 @@ textarea:invalid {
   animation-delay: 0.6s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(4) {
   -webkit-animation-delay: 0.8s;
   -moz-animation-delay: 0.8s;
@@ -6956,7 +6962,7 @@ textarea:invalid {
   animation-delay: 0.8s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(5) {
   -webkit-animation-delay: 1s;
   -moz-animation-delay: 1s;
@@ -6965,7 +6971,7 @@ textarea:invalid {
   animation-delay: 1s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(6) {
   -webkit-animation-delay: 1.2s;
   -moz-animation-delay: 1.2s;
@@ -6974,7 +6980,7 @@ textarea:invalid {
   animation-delay: 1.2s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(7) {
   -webkit-animation-delay: 1.4s;
   -moz-animation-delay: 1.4s;
@@ -6983,7 +6989,7 @@ textarea:invalid {
   animation-delay: 1.4s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(8) {
   -webkit-animation-delay: 1.6s;
   -moz-animation-delay: 1.6s;
@@ -6992,7 +6998,7 @@ textarea:invalid {
   animation-delay: 1.6s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(9) {
   -webkit-animation-delay: 1.8s;
   -moz-animation-delay: 1.8s;
@@ -7001,7 +7007,7 @@ textarea:invalid {
   animation-delay: 1.8s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(10) {
   -webkit-animation-delay: 2s;
   -moz-animation-delay: 2s;
@@ -7010,7 +7016,7 @@ textarea:invalid {
   animation-delay: 2s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(11) {
   -webkit-animation-delay: 2.2s;
   -moz-animation-delay: 2.2s;
@@ -7019,7 +7025,7 @@ textarea:invalid {
   animation-delay: 2.2s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(12) {
   -webkit-animation-delay: 2.4s;
   -moz-animation-delay: 2.4s;
@@ -7028,7 +7034,7 @@ textarea:invalid {
   animation-delay: 2.4s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(13) {
   -webkit-animation-delay: 2.6s;
   -moz-animation-delay: 2.6s;
@@ -7037,7 +7043,7 @@ textarea:invalid {
   animation-delay: 2.6s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(14) {
   -webkit-animation-delay: 2.8s;
   -moz-animation-delay: 2.8s;
@@ -7046,7 +7052,7 @@ textarea:invalid {
   animation-delay: 2.8s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(15) {
   -webkit-animation-delay: 3s;
   -moz-animation-delay: 3s;
@@ -7055,7 +7061,7 @@ textarea:invalid {
   animation-delay: 3s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(16) {
   -webkit-animation-delay: 3.2s;
   -moz-animation-delay: 3.2s;
@@ -7064,7 +7070,7 @@ textarea:invalid {
   animation-delay: 3.2s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(17) {
   -webkit-animation-delay: 3.4s;
   -moz-animation-delay: 3.4s;
@@ -7073,7 +7079,7 @@ textarea:invalid {
   animation-delay: 3.4s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(18) {
   -webkit-animation-delay: 3.6s;
   -moz-animation-delay: 3.6s;
@@ -7082,7 +7088,7 @@ textarea:invalid {
   animation-delay: 3.6s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(19) {
   -webkit-animation-delay: 3.8s;
   -moz-animation-delay: 3.8s;
@@ -7091,7 +7097,7 @@ textarea:invalid {
   animation-delay: 3.8s;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
 .member:nth-child(20) {
   -webkit-animation-delay: 4s;
   -moz-animation-delay: 4s;
@@ -7100,70 +7106,138 @@ textarea:invalid {
   animation-delay: 4s;
 }
 
-/* line 52 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/size.styl */
+/* line 123 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/size.styl */
 
-/* line 52 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 123 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 
 /* line 1 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+
+/* line 2 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat .panel {
+  margin-bottom: 0px;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+/* line 9 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat .panel .panel-heading {
+  background-color: #000;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  border: 0;
+  background: rgba(27,27,27,0.8);
+  color: #fff;
+  font-weight: bold;
+}
+
+/* line 17 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 .chat-container {
   position: fixed;
   bottom: 0;
-  right: 0.8%;
-  width: 48.2%;
+  right: 0;
+  margin-bottom: 0px;
 }
 
-/* line 6 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 21 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 .chat-container .panel-body {
   overflow-y: auto;
 }
 
-/* line 9 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 24 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 .chat-container .panel-footer {
   padding: 0;
 }
 
-/* line 12 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 27 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .panel-heading {
+  text-align: left;
+}
+
+/* line 31 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+
+/* line 35 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .controls i {
+  padding: 0 2px 0 10px;
+  color: #fff;
+  opacity: 0.6;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+  filter: alpha(opacity=60);
+  -webkit-transition: opacity 0.25s linear;
+  -moz-transition: opacity 0.25s linear;
+  -o-transition: opacity 0.25s linear;
+  -ms-transition: opacity 0.25s linear;
+  transition: opacity 0.25s linear;
+  cursor: pointer;
+}
+
+/* line 42 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .controls i:hover {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+
+/* line 45 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control {
   position: absolute;
   bottom: 0;
   width: 100%;
 }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 50 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control .control-input {
   width: 90%;
   float: left;
 }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 54 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control .control-input input {
   padding: 20px 12px;
+  -webkit-border-radius: 0;
+  border-radius: 0;
 }
 
-/* line 24 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-control .control-button {
+/* line 58 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .message-control .control-input input:focus {
+  border-color: #a9a9a9;
+  outline: 0;
+}
+
+/* line 64 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .control-button {
   width: 10%;
   float: left;
-  padding-top: 2px;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-control .control-button .btn {
-  width: 85%;
+/* line 68 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .control-button .btn {
+  width: 100%;
+  -webkit-border-radius: 0;
+  border-radius: 0;
 }
 
-/* line 32 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-control .control-button .btn i {
-  font-size: 1.5em;
+/* line 72 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container .control-button .btn i {
+  font-size: 1.25em;
+  padding: 5px;
 }
 
-/* line 35 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 76 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 
-/* line 36 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 77 : /home/calvitium/www/unwatched/assets/css/chat.styl */
 
-/* line 38 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-container .chat-message.ng-enter,
-.chat-container .message-container .chat-message.ng-move {
+/* line 79 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.message-container .chat-message.ng-enter,
+.message-container .chat-message.ng-move {
   -webkit-transition: opacity 0.5s linear;
   -moz-transition: opacity 0.5s linear;
   -o-transition: opacity 0.5s linear;
@@ -7174,27 +7248,78 @@ textarea:invalid {
   filter: alpha(opacity=0);
 }
 
-/* line 42 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-container .chat-message.ng-enter.ng-enter-active,
-.chat-container .message-container .chat-message.ng-move.ng-enter-active,
-.chat-container .message-container .chat-message.ng-enter.ng-move-active,
-.chat-container .message-container .chat-message.ng-move.ng-move-active {
+/* line 83 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.message-container .chat-message.ng-enter.ng-enter-active,
+.message-container .chat-message.ng-move.ng-enter-active,
+.message-container .chat-message.ng-enter.ng-move-active,
+.message-container .chat-message.ng-move.ng-move-active {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
 
-/* line 45 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-container .chat-message .well {
+/* line 86 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.message-container .chat-message .well {
   float: left;
-  width: 45%;
+  max-width: 75%;
   text-align: left;
+  background: #d3d3d3;
 }
 
-/* line 50 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .message-container .chat-message .well.own {
+/* line 92 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.message-container .chat-message .well.own {
   float: right;
   text-align: right;
+}
+
+/* line 96 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+
+/* line 97 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.compressed .well {
+  max-width: 90%;
+  font-size: 0.9em;
+}
+
+/* line 101 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.compressed .control-input {
+  width: 85%;
+}
+
+/* line 104 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.compressed .control-input input {
+  padding: 10px 12px;
+  font-size: 0.9em;
+}
+
+/* line 108 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.compressed .control-button {
+  width: 15%;
+}
+
+/* line 111 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.compressed .control-button i {
+  font-size: 1em;
+  padding: 0;
+}
+
+/* line 115 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+
+/* line 117 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.minimized .panel-heading {
+  -webkit-border-radius: 10px 0 0 0;
+  border-radius: 10px 0 0 0;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+/* line 122 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.minimized .panel-body {
+  display: none;
+}
+
+/* line 124 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+.chat-container.minimized .panel-footer {
+  display: none;
 }
 
 /* line 26 : /home/calvitium/www/unwatched/assets/css/chat.styl */

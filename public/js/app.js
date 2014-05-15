@@ -39302,13 +39302,41 @@ angular.module('ui.tinymce', [])
   app.controller("ChatCtrl", [
     "$scope", function($scope) {
       $scope.chat = {};
-      $scope.chat.messages = [];
-      return $scope.submitChatMessage = function() {
+      $scope.chat.state = "expanded";
+      $scope.chat.state_history = "";
+      $scope.chat.messages = [
+        {
+          sender: "Lorem Ipsum",
+          content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+        }, {
+          sender: "Lorem Ipsum",
+          content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua."
+        }, {
+          sender: "Lorem Ipsum",
+          content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum."
+        }
+      ];
+      $scope.submitChatMessage = function() {
         $scope.chat.messages.push({
           sender: "Lorem Ipsum",
           content: $scope.chat.message
         });
         return $scope.chat.message = "";
+      };
+      $scope.chat.compress = function() {
+        return $scope.chat.state = "compressed";
+      };
+      $scope.chat.expand = function() {
+        return $scope.chat.state = "expanded";
+      };
+      $scope.chat.minimize = function() {
+        $scope.chat.state_history = $scope.chat.state;
+        return $scope.chat.state = "minimized";
+      };
+      return $scope.chat.maximize = function() {
+        if ($scope.chat.state === "minimized") {
+          return $scope.chat.state = $scope.chat.state_history;
+        }
       };
     }
   ]);
@@ -39421,42 +39449,29 @@ angular.module('ui.tinymce', [])
     }
   ]);
 
-  app.directive("updateScrollPosition", [
+  app.directive("chat", [
     function() {
       return {
-        link: function(scope, elem, attrs) {
-          return scope.$watch(attrs.updateScrollPosition, function() {
-            return window.setTimeout((function() {
-              return $(elem).parent().scrollTop($(elem).height());
-            }), 1);
-          });
-        }
+        templateUrl: "/partials/chat.jade"
       };
     }
   ]);
 
-  app.directive("adjustWidth", [
+  app.directive("updateScrollPosition", [
     "$window", function($window) {
       return {
         link: function(scope, elem, attrs) {
-          var adjustElementWidth;
-          adjustElementWidth = function(elem, attrs) {
-            var adjustedWidth, elems;
-            adjustedWidth = $(elem).find("ul").width();
-            elems = $(elem).find("ul li").length;
-            if (elems > 0) {
-              adjustedWidth = (adjustedWidth / elems) - 2;
-            }
-            $(elem).find("ul li a").css("width", adjustedWidth);
-          };
-          scope.$watch(attrs.adjustWidth, function() {
+          scope.$watch(attrs.updateScrollPosition, function() {
             return window.setTimeout((function() {
-              return adjustElementWidth(elem, attrs);
+              return $(elem).parent().scrollTop($(elem).height());
             }), 1);
           });
-          return angular.element($window).bind("resize", function() {
-            adjustElementWidth(elem, attrs);
+          angular.element($window).bind("resize", function() {
+            return $(elem).parent().scrollTop($(elem).height());
           });
+          return window.setTimeout((function() {
+            return $(elem).parent().scrollTop($(elem).height());
+          }), 1);
         }
       };
     }
@@ -39513,13 +39528,26 @@ angular.module('ui.tinymce', [])
         link: function(scope, elem, attrs) {
           var fillHeight;
           fillHeight = function(elem, attrs) {
-            var height, width;
-            height = $($window).height() - 30;
-            width = $(elem).parent().width();
+            var $heading, divider, height, width;
+            if (scope.chat.state === "minimized") {
+              $heading = $(elem).find(".panel-heading");
+              console.log($heading.css("padding-top").replace(/[^-\d\.]/g, ''));
+              console.log($heading.height());
+              height = $heading.height() + parseInt($heading.css("padding-top").replace(/[^-\d\.]/g, '')) * 2;
+              console.log(height);
+              width = $(elem).parent().width() / 2;
+            } else {
+              divider = 1;
+              if (scope.chat.state === "compressed") {
+                divider = 2;
+              }
+              height = $($window).height() / divider;
+              width = $(elem).parent().width() / divider;
+            }
             $(elem).css("height", height);
             $(elem).css("width", width);
           };
-          scope.$watch(attrs.adjustWidth, function() {
+          scope.$watch(attrs.absoluteFillRelativeFullHeight, function() {
             return window.setTimeout((function() {
               return fillHeight(elem, attrs);
             }), 1);
@@ -39538,19 +39566,26 @@ angular.module('ui.tinymce', [])
         link: function(scope, elem, attrs) {
           var fitHeight;
           fitHeight = function(elem, attrs) {
-            var $footer, $heading, $parent, footer_padding, heading_padding, height;
+            var $footer, $heading, $parent, divider, footer_padding, heading_padding, height;
+            divider = 1;
+            if (scope.chat.state === "compressed") {
+              divider = 2;
+            }
             $parent = $(elem).parent();
             $heading = $parent.find(".panel-heading");
             $footer = $parent.find(".panel-footer");
-            heading_padding = ($heading.css("padding-top").replace(/[^-\d\.]/g, '')) * 2;
-            footer_padding = ($footer.css("padding-top").replace(/[^-\d\.]/g, '')) * 2;
-            height = ($($window).height() - 30) - $heading.height() - $footer.height() - heading_padding - footer_padding;
+            heading_padding = $heading.css("padding-top").replace(/[^-\d\.]/g, '');
+            footer_padding = $heading.css("padding-top").replace(/[^-\d\.]/g, '');
+            height = ($($window).height() / divider) - 30 - $heading.height() - $footer.height();
             $(elem).css("height", height);
           };
-          scope.$watch(attrs.adjustWidth, function() {
+          scope.$watch(attrs.fitChatBodyHeight, function() {
             return window.setTimeout((function() {
-              return fitHeight(elem, attrs);
-            }), 1);
+              var $container;
+              fitHeight(elem, attrs);
+              $container = $(elem).find(".message-container");
+              return $(elem).scrollTop($container.height());
+            }), 10);
           });
           return angular.element($window).bind("resize", function() {
             fitHeight(elem, attrs);
