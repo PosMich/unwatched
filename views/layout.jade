@@ -9,48 +9,75 @@ html(ng-app="unwatched")
   body
     .sidenav-container
       .sidenav
-        .icon-container
-          .icons
-            .icon
-              a(href="/")
-                i.fa.fa-home.fa-inverse
+        .icon-align
+          .icon-container
+            a.menu-home.icon(href="/")
               .subicon-container
                 .subicons
-                  .subicon.top2
-                    i.fa.fa-info 
-                  .subicon.bottom2
-                    i.fa.fa-question
-            .icon
-              a(href="/members")
-                i.fa.fa-users.fa-inverse
+                  .subicon asdf
+                  .subicon asdf2
+                  .subicon asdf2
+          .icon-container
+            a.menu-chat.icon(href="/members")
               .subicon-container
-                .subicons
-                  .subicon.top2
-                    span.fa-stack.fa-lg
-                      i.fa.fa-user.fa-stack-2x
-                      i.fa.fa-gear.fa-stack-1x.fa-inverse
-                  .subicon.top1
-                    span.fa-stack.fa-lg
-                      i.fa.fa-user.fa-stack-2x
-                      i.fa.fa-plus-circle.fa-stack-1x.fa-inverse
-                  .history
-                    | dlkjhifhölkjnlksmfg<br>
-                    | lkjfbökjgölkgjlökjgö<br>
+                 .subicons
+                    .subicon asdf
+                    .subicon asdf3
+                    .subicon asdf
+                    .subicon asdf3
+          .icon-container
+            a.menu-share.icon(href="/share")
+              .subicon-container
+                 .subicons
+                    .subicon asdf
+                    .subicon asdf3
+                    .subicon asdf
+                    .subicon asdf3
+                    .subicon asdf
+                    .subicon asdf3
+              //
+                a(href="/")
+                  i.fa.fa-home.fa-inverse
+                .subicon-container
+                  .subicons
+                    .subicon.top2
+                      i.fa.fa-info 
+                    .subicon.bottom2
+                      i.fa.fa-question
+            //
+              .icon
+                a(href="/members")
+                  i.fa.fa-users.fa-inverse
+                .subicon-container
+                  .subicons
+                    .subicon.top2
+                      span.fa-stack.fa-lg
+                        i.fa.fa-user.fa-stack-2x
+                        i.fa.fa-gear.fa-stack-1x.fa-inverse
+                    .subicon.top1
+                      span.fa-stack.fa-lg
+                        i.fa.fa-user.fa-stack-2x
+                        i.fa.fa-plus-circle.fa-stack-1x.fa-inverse
+                    .history
+                      | dlkjhifhölkjnlksmfg<br>
+                      | lkjfbökjgölkgjlökjgö<br>
 
-            .icon 
-              .fa.fa-file.fa-inverse
-              .subicon-container
-                .subicons
-                  .subicon.top2
-                    .fa.fa-desktop
-                  .subicon.top1
-                    .fa.fa-file-text-o
-                  .subicon.middle
-                    .fa.fa-picture-o
-                  .subicon.bottom1
-                    .fa.fa-floppy-o
-                  .subicon.bottom2
-                    .fa.fa-camera
+              .icon 
+                .fa.fa-file.fa-inverse
+                .subicon-container
+                  .subicons
+                    .subicon.top2
+                      .fa.fa-desktop
+                    .subicon.top1
+                      .fa.fa-file-text-o
+                    .subicon.middle
+                      .fa.fa-picture-o
+                    .subicon.bottom1
+                      .fa.fa-floppy-o
+                    .subicon.bottom2
+                      .fa.fa-camera
+
+
     .view-container
       .clearfix.view-frame(ng-view)
 
