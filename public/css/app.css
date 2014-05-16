@@ -1,13 +1,13 @@
 
-/* line 266 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 267 : /home/ubuser/www/unwatched/assets/css/app.styl */
 
-/* line 2 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+/* line 2 : /home/ubuser/www/unwatched/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
 
-/* line 123 : /home/calvitium/www/unwatched/node_modules/stylus/lib/functions/index.styl */
+/* line 297 : /home/ubuser/www/unwatched/node_modules/grunt-contrib-stylus/node_modules/stylus/lib/functions/index.styl */
 /* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
-/* line 123 : /home/calvitium/www/unwatched/assets/css/lib/reset.css */
+/* line 297 : /home/ubuser/www/unwatched/assets/css/lib/reset.css */
 /*  MAKE LAYOUT RESPONSIVE at 1024px FOR SMALLER SCREENS ================================================================ */
 
 
@@ -1832,7 +1832,7 @@ p {
 -webkit-hyphenate-limit-before : 3;
 -moz-hyphens : auto; }
 
-/* line 123 : /home/calvitium/www/unwatched/assets/css/lib/responsivegridsystem/responsivegridsystem.css */
+/* line 297 : /home/ubuser/www/unwatched/assets/css/lib/responsivegridsystem/responsivegridsystem.css */
 /*!
  *  Font Awesome 4.0.3 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
@@ -3172,7 +3172,7 @@ p {
   content: "\f196";
 }
 
-/* line 123 : /home/calvitium/www/unwatched/assets/css/lib/font-awesome.css */
+/* line 297 : /home/ubuser/www/unwatched/assets/css/lib/font-awesome.css */
 /*!
  * Bootstrap v3.1.1 (http://getbootstrap.com)
  * Copyright 2011-2014 Twitter, Inc.
@@ -6603,235 +6603,321 @@ a.list-group-item-danger.active:focus {
   }
 }
 
-/* line 297 : /home/calvitium/www/unwatched/assets/css/lib/bootstrap-custom/bootstrap.css */
+/* line 297 : /home/ubuser/www/unwatched/assets/css/lib/bootstrap-custom/bootstrap.css */
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/mixins.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
 
-/* line 28 : /home/calvitium/www/unwatched/assets/css/mixins.styl */
+/* line 28 : /home/ubuser/www/unwatched/assets/css/mixins.styl */
 
-/* line undefined : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line undefined : /home/ubuser/www/unwatched/assets/css/animations.styl */
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-moz-keyframes fade-in-delayed {
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 2 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
   }
 
-/* line 5 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 5 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   50% {
     opacity: 0;
   }
 
-/* line 8 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 8 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-webkit-keyframes fade-in-delayed {
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 2 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
   }
 
-/* line 5 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 5 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   50% {
     opacity: 0;
   }
 
-/* line 8 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 8 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-o-keyframes fade-in-delayed {
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 2 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
   }
 
-/* line 5 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 5 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   50% {
     opacity: 0;
   }
 
-/* line 8 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 8 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/animations.styl */
+
+/* line 1 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @keyframes fade-in-delayed {
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 2 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
   }
 
-/* line 5 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 5 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   50% {
     opacity: 0;
   }
 
-/* line 8 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 8 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 12 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 12 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-moz-keyframes fade-member-in {
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 13 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
     margin-left: -5%;
   }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   60% {
     opacity: 0.6;
     margin-left: 0%;
   }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 21 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 12 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 12 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-webkit-keyframes fade-member-in {
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 13 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
     margin-left: -5%;
   }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   60% {
     opacity: 0.6;
     margin-left: 0%;
   }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 21 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 12 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 12 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-o-keyframes fade-member-in {
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 13 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
     margin-left: -5%;
   }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   60% {
     opacity: 0.6;
     margin-left: 0%;
   }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 21 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 12 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 12 : /home/ubuser/www/unwatched/assets/css/animations.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @keyframes fade-member-in {
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 13 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   0% {
     opacity: 0;
     margin-left: -5%;
   }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   60% {
     opacity: 0.6;
     margin-left: 0%;
   }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 21 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   100% {
     opacity: 1;
   }
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 25 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-moz-keyframes fade-out {
 
-/* line 26 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 26 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   from {
     opacity: 1;
   }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   to {
     opacity: 0;
   }
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 25 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-webkit-keyframes fade-out {
 
-/* line 26 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 26 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   from {
     opacity: 1;
   }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   to {
     opacity: 0;
   }
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 25 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @-o-keyframes fade-out {
 
-/* line 26 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 26 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   from {
     opacity: 1;
   }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   to {
     opacity: 0;
   }
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 25 : /home/ubuser/www/unwatched/assets/css/animations.styl */
+
+/* line 25 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 @keyframes fade-out {
 
-/* line 26 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 26 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   from {
     opacity: 1;
   }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/animations.styl */
   to {
     opacity: 0;
   }
 }
 
-/* line 32 : /home/calvitium/www/unwatched/assets/css/animations.styl */
+/* line 32 : /home/ubuser/www/unwatched/assets/css/animations.styl */
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 24 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 
-/* line 5 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 24 : /home/ubuser/www/unwatched/assets/css/forms.styl */
+
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
+
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/border.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/border.styl */
+
+/* line 3 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/clearfix.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/clearfix.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/color-image.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/color-image.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
+
+/* line 197 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/iconic.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/iconic.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/image.styl */
+
+/* line 27 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/image.styl */
+
+/* line 27 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/overflow.styl */
+
+/* line 23 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/overflow.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/positions.styl */
+
+/* line 73 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/positions.styl */
+
+/* line 15 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
+
+/* line 79 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
+
+/* line 5 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+
+/* line 5 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/aliases.styl */
+
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/aliases.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/ellipsis.styl */
+
+/* line 11 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/ellipsis.styl */
+
+/* line 11 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/hide-text.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/hide-text.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/replace-text.styl */
+
+/* line 10 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/replace-text.styl */
+
+/* line undefined : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/vendor.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/vendor.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/size.styl */
+
+/* line 5 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 .form-horizontal .control-label,
 .form-horizontal .radio,
 .form-horizontal .checkbox,
@@ -6840,20 +6926,20 @@ a.list-group-item-danger.active:focus {
   margin-top: 1%;
 }
 
-/* line 8 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 8 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 .form-horizontal legend {
   text-align: left;
   text-indent: 5%;
 }
 
-/* line 12 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 12 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 
-/* line 13 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 13 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 form .form-control {
   padding: 8px 12px;
 }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 form span.help-block {
   text-align: left;
   position: absolute;
@@ -6861,28 +6947,108 @@ form span.help-block {
   text-indent: 10px;
 }
 
-/* line 22 : /home/calvitium/www/unwatched/assets/css/forms.styl */
+/* line 22 : /home/ubuser/www/unwatched/assets/css/forms.styl */
 input:invalid,
 textarea:invalid {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
 
-/* line 33 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/size.styl */
+/* line 33 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/size.styl */
 
-/* line 33 : /home/calvitium/www/unwatched/assets/css/room.styl */
+/* line 33 : /home/ubuser/www/unwatched/assets/css/room.styl */
 
-/* line 32 : /home/calvitium/www/unwatched/assets/css/room.styl */
+/* line 179 : /home/ubuser/www/unwatched/assets/css/room.styl */
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 31 : /home/ubuser/www/unwatched/assets/css/members.styl */
 
-/* line 3 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 24 : /home/ubuser/www/unwatched/assets/css/members.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
+
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/border.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/border.styl */
+
+/* line 3 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/clearfix.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/clearfix.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/color-image.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/color-image.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
+
+/* line 197 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/iconic.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/iconic.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/image.styl */
+
+/* line 27 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/image.styl */
+
+/* line 27 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/overflow.styl */
+
+/* line 23 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/overflow.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/positions.styl */
+
+/* line 73 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/positions.styl */
+
+/* line 15 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
+
+/* line 79 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+
+/* line 5 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/aliases.styl */
+
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/aliases.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/ellipsis.styl */
+
+/* line 11 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/ellipsis.styl */
+
+/* line 11 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/hide-text.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/hide-text.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/replace-text.styl */
+
+/* line 10 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/replace-text.styl */
+
+/* line undefined : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/vendor.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/vendor.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/size.styl */
+
+/* line 3 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member-container {
   width: 90%;
   margin: auto;
 }
 
-/* line 7 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 7 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member {
   width: 25%;
   float: left;
@@ -6901,7 +7067,7 @@ textarea:invalid {
   padding: 5%;
 }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member img {
   height: 100%;
   width: 100%;
@@ -6919,14 +7085,14 @@ textarea:invalid {
   transition: opacity 0.25s linear;
 }
 
-/* line 25 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 25 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member img:hover {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(1) {
   -webkit-animation-delay: 0.2s;
   -moz-animation-delay: 0.2s;
@@ -6935,7 +7101,7 @@ textarea:invalid {
   animation-delay: 0.2s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(2) {
   -webkit-animation-delay: 0.4s;
   -moz-animation-delay: 0.4s;
@@ -6944,7 +7110,7 @@ textarea:invalid {
   animation-delay: 0.4s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(3) {
   -webkit-animation-delay: 0.6s;
   -moz-animation-delay: 0.6s;
@@ -6953,7 +7119,7 @@ textarea:invalid {
   animation-delay: 0.6s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(4) {
   -webkit-animation-delay: 0.8s;
   -moz-animation-delay: 0.8s;
@@ -6962,7 +7128,7 @@ textarea:invalid {
   animation-delay: 0.8s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(5) {
   -webkit-animation-delay: 1s;
   -moz-animation-delay: 1s;
@@ -6971,7 +7137,7 @@ textarea:invalid {
   animation-delay: 1s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(6) {
   -webkit-animation-delay: 1.2s;
   -moz-animation-delay: 1.2s;
@@ -6980,7 +7146,7 @@ textarea:invalid {
   animation-delay: 1.2s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(7) {
   -webkit-animation-delay: 1.4s;
   -moz-animation-delay: 1.4s;
@@ -6989,7 +7155,7 @@ textarea:invalid {
   animation-delay: 1.4s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(8) {
   -webkit-animation-delay: 1.6s;
   -moz-animation-delay: 1.6s;
@@ -6998,7 +7164,7 @@ textarea:invalid {
   animation-delay: 1.6s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(9) {
   -webkit-animation-delay: 1.8s;
   -moz-animation-delay: 1.8s;
@@ -7007,7 +7173,7 @@ textarea:invalid {
   animation-delay: 1.8s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(10) {
   -webkit-animation-delay: 2s;
   -moz-animation-delay: 2s;
@@ -7016,7 +7182,7 @@ textarea:invalid {
   animation-delay: 2s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(11) {
   -webkit-animation-delay: 2.2s;
   -moz-animation-delay: 2.2s;
@@ -7025,7 +7191,7 @@ textarea:invalid {
   animation-delay: 2.2s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(12) {
   -webkit-animation-delay: 2.4s;
   -moz-animation-delay: 2.4s;
@@ -7034,7 +7200,7 @@ textarea:invalid {
   animation-delay: 2.4s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(13) {
   -webkit-animation-delay: 2.6s;
   -moz-animation-delay: 2.6s;
@@ -7043,7 +7209,7 @@ textarea:invalid {
   animation-delay: 2.6s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(14) {
   -webkit-animation-delay: 2.8s;
   -moz-animation-delay: 2.8s;
@@ -7052,7 +7218,7 @@ textarea:invalid {
   animation-delay: 2.8s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(15) {
   -webkit-animation-delay: 3s;
   -moz-animation-delay: 3s;
@@ -7061,7 +7227,7 @@ textarea:invalid {
   animation-delay: 3s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(16) {
   -webkit-animation-delay: 3.2s;
   -moz-animation-delay: 3.2s;
@@ -7070,7 +7236,7 @@ textarea:invalid {
   animation-delay: 3.2s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(17) {
   -webkit-animation-delay: 3.4s;
   -moz-animation-delay: 3.4s;
@@ -7079,7 +7245,7 @@ textarea:invalid {
   animation-delay: 3.4s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(18) {
   -webkit-animation-delay: 3.6s;
   -moz-animation-delay: 3.6s;
@@ -7088,7 +7254,7 @@ textarea:invalid {
   animation-delay: 3.6s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(19) {
   -webkit-animation-delay: 3.8s;
   -moz-animation-delay: 3.8s;
@@ -7097,7 +7263,7 @@ textarea:invalid {
   animation-delay: 3.8s;
 }
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/members.styl */
+/* line 29 : /home/ubuser/www/unwatched/assets/css/members.styl */
 .member:nth-child(20) {
   -webkit-animation-delay: 4s;
   -moz-animation-delay: 4s;
@@ -7106,13 +7272,13 @@ textarea:invalid {
   animation-delay: 4s;
 }
 
-/* line 123 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/size.styl */
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/size.styl */
 
-/* line 123 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 31 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 2 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 2 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat .panel {
   margin-bottom: 0px;
   -webkit-border-radius: 0;
@@ -7122,7 +7288,7 @@ textarea:invalid {
   border-bottom: 0;
 }
 
-/* line 9 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 9 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat .panel .panel-heading {
   background-color: #000;
   -webkit-border-radius: 0;
@@ -7133,7 +7299,7 @@ textarea:invalid {
   font-weight: bold;
 }
 
-/* line 17 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 17 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container {
   position: fixed;
   bottom: 0;
@@ -7141,22 +7307,22 @@ textarea:invalid {
   margin-bottom: 0px;
 }
 
-/* line 21 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 21 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .panel-body {
   overflow-y: auto;
 }
 
-/* line 24 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 24 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .panel-footer {
   padding: 0;
 }
 
-/* line 27 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 27 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .panel-heading {
   text-align: left;
 }
 
-/* line 31 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 31 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .controls {
   position: absolute;
   top: 0;
@@ -7164,7 +7330,7 @@ textarea:invalid {
   padding: 10px;
 }
 
-/* line 35 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 35 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .controls i {
   padding: 0 2px 0 10px;
   color: #fff;
@@ -7179,65 +7345,65 @@ textarea:invalid {
   cursor: pointer;
 }
 
-/* line 42 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 42 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .controls i:hover {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
 
-/* line 45 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 45 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control {
   position: absolute;
   bottom: 0;
   width: 100%;
 }
 
-/* line 50 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 50 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control .control-input {
   width: 90%;
   float: left;
 }
 
-/* line 54 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 54 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control .control-input input {
   padding: 20px 12px;
   -webkit-border-radius: 0;
   border-radius: 0;
 }
 
-/* line 58 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 58 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container .message-control .control-input input:focus {
   border-color: #a9a9a9;
   outline: 0;
 }
 
-/* line 64 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .control-button {
+/* line 64 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-control .control-button {
   width: 10%;
   float: left;
 }
 
-/* line 68 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .control-button .btn {
+/* line 68 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-control .control-button .btn {
   width: 100%;
   -webkit-border-radius: 0;
   border-radius: 0;
 }
 
-/* line 72 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.chat-container .control-button .btn i {
+/* line 72 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-control .control-button .btn i {
   font-size: 1.25em;
   padding: 5px;
 }
 
-/* line 76 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 76 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 77 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 77 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 79 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.message-container .chat-message.ng-enter,
-.message-container .chat-message.ng-move {
+/* line 79 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-container .chat-message.ng-enter,
+.chat-container .message-container .chat-message.ng-move {
   -webkit-transition: opacity 0.5s linear;
   -moz-transition: opacity 0.5s linear;
   -o-transition: opacity 0.5s linear;
@@ -7248,63 +7414,63 @@ textarea:invalid {
   filter: alpha(opacity=0);
 }
 
-/* line 83 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.message-container .chat-message.ng-enter.ng-enter-active,
-.message-container .chat-message.ng-move.ng-enter-active,
-.message-container .chat-message.ng-enter.ng-move-active,
-.message-container .chat-message.ng-move.ng-move-active {
+/* line 83 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-container .chat-message.ng-enter.ng-enter-active,
+.chat-container .message-container .chat-message.ng-move.ng-enter-active,
+.chat-container .message-container .chat-message.ng-enter.ng-move-active,
+.chat-container .message-container .chat-message.ng-move.ng-move-active {
   opacity: 1;
   -ms-filter: none;
   filter: none;
 }
 
-/* line 86 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.message-container .chat-message .well {
+/* line 86 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-container .chat-message .well {
   float: left;
   max-width: 75%;
   text-align: left;
   background: #d3d3d3;
 }
 
-/* line 92 : /home/calvitium/www/unwatched/assets/css/chat.styl */
-.message-container .chat-message .well.own {
+/* line 92 : /home/ubuser/www/unwatched/assets/css/chat.styl */
+.chat-container .message-container .chat-message .well.own {
   float: right;
   text-align: right;
 }
 
-/* line 96 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 96 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 97 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 97 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.compressed .well {
   max-width: 90%;
   font-size: 0.9em;
 }
 
-/* line 101 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 101 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.compressed .control-input {
   width: 85%;
 }
 
-/* line 104 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 104 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.compressed .control-input input {
   padding: 10px 12px;
   font-size: 0.9em;
 }
 
-/* line 108 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 108 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.compressed .control-button {
   width: 15%;
 }
 
-/* line 111 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 111 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.compressed .control-button i {
   font-size: 1em;
   padding: 0;
 }
 
-/* line 115 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 115 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 117 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 117 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.minimized .panel-heading {
   -webkit-border-radius: 10px 0 0 0;
   border-radius: 10px 0 0 0;
@@ -7312,19 +7478,19 @@ textarea:invalid {
   cursor: pointer;
 }
 
-/* line 122 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 122 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.minimized .panel-body {
   display: none;
 }
 
-/* line 124 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 124 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 .chat-container.minimized .panel-footer {
   display: none;
 }
 
-/* line 26 : /home/calvitium/www/unwatched/assets/css/chat.styl */
+/* line 126 : /home/ubuser/www/unwatched/assets/css/chat.styl */
 
-/* line 1 : /home/calvitium/www/unwatched/assets/css/fonts.styl */
+/* line 1 : /home/ubuser/www/unwatched/assets/css/fonts.styl */
 @font-face {
   font-family: 'Indie Flower';
   font-style: normal;
@@ -7332,23 +7498,99 @@ textarea:invalid {
   src: local('Bad Script Regular'), local('BadScript-Regular'), url("http://themes.googleusercontent.com/static/fonts/badscript/v3/rL_b2ND61EQmMOJ8CRr1fhsxEYwM7FgeyaSgU71cLG0.woff") format('woff');
 }
 
-/* line 24 : /home/calvitium/www/unwatched/assets/css/fonts.styl */
+/* line 24 : /home/ubuser/www/unwatched/assets/css/fonts.styl */
 
-/* line 2 : /home/calvitium/www/unwatched/node_modules/nib/lib/nib/index.styl */
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
 
-/* line 29 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/index.styl */
 
-/* line 32 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/border.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/border.styl */
+
+/* line 3 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/clearfix.styl */
+
+/* line 31 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/clearfix.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/color-image.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/color-image.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
+
+/* line 197 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/flex.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/gradients.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 12 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/iconic.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/iconic.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/image.styl */
+
+/* line 27 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/image.styl */
+
+/* line 27 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/overflow.styl */
+
+/* line 23 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/overflow.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/positions.styl */
+
+/* line 73 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/positions.styl */
+
+/* line 15 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
+
+/* line 79 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/reset.styl */
+
+/* line 6 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+
+/* line 5 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/index.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/aliases.styl */
+
+/* line 14 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/aliases.styl */
+
+/* line 2 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/ellipsis.styl */
+
+/* line 11 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/ellipsis.styl */
+
+/* line 11 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/hide-text.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/hide-text.styl */
+
+/* line 9 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/replace-text.styl */
+
+/* line 10 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/text/replace-text.styl */
+
+/* line undefined : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/vendor.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/vendor.styl */
+
+/* line 94 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/config.styl */
+
+/* line 576 : /home/ubuser/www/unwatched/node_modules/nib/lib/nib/size.styl */
+
+/* line 29 : /home/ubuser/www/unwatched/assets/css/app.styl */
+
+/* line 32 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .no-padding {
   padding: 0;
 }
 
-/* line 35 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 35 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .no-margin {
   margin: 0;
 }
 
-/* line 39 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 39 : /home/ubuser/www/unwatched/assets/css/app.styl */
 html {
   margin: 0;
   padding: 0;
@@ -7392,12 +7634,12 @@ html {
   z-index: 0;
 }
 
-/* line 46 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 46 : /home/ubuser/www/unwatched/assets/css/app.styl */
 body {
   background: none;
 }
 
-/* line 49 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 49 : /home/ubuser/www/unwatched/assets/css/app.styl */
 html:after {
   content: '';
   position: fixed;
@@ -7415,7 +7657,7 @@ html:after {
   z-index: -2;
 }
 
-/* line 63 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 63 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav-container {
   position: fixed;
   left: -20px;
@@ -7471,12 +7713,12 @@ html:after {
   box-shadow: 0px 0px 19px 0px rgba(50,50,50,0.75);
 }
 
-/* line 86 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 86 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav-container:hover {
   left: 0px;
 }
 
-/* line 89 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 89 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .sidenav {
   position: relative;
   display: table;
@@ -7485,19 +7727,19 @@ html:after {
   width: 20px;
 }
 
-/* line 97 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 97 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon-container {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 102 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 102 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icons {
   position: relative;
   left: -10px;
 }
 
-/* line 106 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 106 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon {
   -webkit-border-radius: 25px;
   border-radius: 25px;
@@ -7540,7 +7782,7 @@ html:after {
   text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(255,255,255,0.3);
 }
 
-/* line 137 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 137 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover {
   overflow: visible;
   width: 66px;
@@ -7549,7 +7791,7 @@ html:after {
   border-radius: 33px;
 }
 
-/* line 144 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 144 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon .fa {
   font-size: 33px;
   margin: 10px;
@@ -7561,34 +7803,34 @@ html:after {
   transition: font-size 300ms ease-in-out;
 }
 
-/* line 150 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 150 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon .fa.fa-users {
   padding-top: 3px;
   font-size: 30px;
 }
 
-/* line 154 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 154 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon .fa.fa-file {
   padding-left: 4px;
 }
 
-/* line 157 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 157 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover .fa {
   font-size: 50px;
 }
 
-/* line 160 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 160 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover .fa.fa-users {
   font-size: 45px;
 }
 
-/* line 163 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 163 : /home/ubuser/www/unwatched/assets/css/app.styl */
 /*.icon:hover .subicon-container
     visibility visible
     opacity 1
 */
 
-/* line 167 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 167 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon-container {
   display: table;
   position: relative;
@@ -7598,13 +7840,13 @@ html:after {
   background-color: rgba(255,0,255,0.5);
 }
 
-/* line 175 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 175 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicons {
   display: table-cell;
   vertical-align: middle;
 }
 
-/* line 180 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 180 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon {
   -webkit-border-radius: 10px;
   border-radius: 10px;
@@ -7618,7 +7860,7 @@ html:after {
   margin: 20px;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(1) {
   -webkit-transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7627,7 +7869,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.1s, opacity 300ms ease-in-out 0.1s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(2) {
   -webkit-transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7636,7 +7878,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.2s, opacity 300ms ease-in-out 0.2s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(3) {
   -webkit-transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7645,7 +7887,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.3s, opacity 300ms ease-in-out 0.3s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(4) {
   -webkit-transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7654,7 +7896,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.4s, opacity 300ms ease-in-out 0.4s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(5) {
   -webkit-transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7663,7 +7905,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.5s, opacity 300ms ease-in-out 0.5s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(6) {
   -webkit-transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7672,7 +7914,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.6s, opacity 300ms ease-in-out 0.6s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(7) {
   -webkit-transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7681,7 +7923,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.7s, opacity 300ms ease-in-out 0.7s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(8) {
   -webkit-transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7690,7 +7932,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.8s, opacity 300ms ease-in-out 0.8s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(9) {
   -webkit-transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7699,7 +7941,7 @@ html:after {
   transition: visibility 300ms ease-in-out 0.9s, opacity 300ms ease-in-out 0.9s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 191 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 191 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:nth-child(10) {
   -webkit-transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
   -moz-transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
@@ -7708,7 +7950,7 @@ html:after {
   transition: visibility 300ms ease-in-out 1s, opacity 300ms ease-in-out 1s, width 300ms ease-in-out, height 300ms ease-in-out;
 }
 
-/* line 195 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 195 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon:hover .subicon,
 .icon:hover .subicon:hover {
   visibility: visible;
@@ -7717,49 +7959,49 @@ html:after {
   filter: none;
 }
 
-/* line 199 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 199 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon:hover {
   width: 65px;
   height: 65px;
 }
 
-/* line 205 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 205 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.top2 {
   position: relative;
   left: 0px;
 }
 
-/* line 208 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 208 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.top1 {
   position: relative;
   left: 10px;
 }
 
-/* line 212 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 212 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .middle {
   position: relative;
   left: 20px;
 }
 
-/* line 216 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 216 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.bottom1 {
   position: relative;
   left: 10px;
 }
 
-/* line 219 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 219 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .subicon.bottom2 {
   position: relative;
   left: 0px;
 }
 
-/* line 223 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 223 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .icon,
 .subicon {
   cursor: pointer;
 }
 
-/* line 226 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 226 : /home/ubuser/www/unwatched/assets/css/app.styl */
 #create-room-container {
   min-width: 450px;
   width: 50%;
@@ -7768,7 +8010,7 @@ html:after {
   margin-left: 15%;
 }
 
-/* line 233 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 233 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .info-container {
   position: relative;
   font-size: 26px;
@@ -7778,7 +8020,7 @@ html:after {
   font-weight: 500;
 }
 
-/* line 241 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 241 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .info-container .info {
   border: 7px solid #c81e2b;
   -webkit-border-radius: 200px/110px;
@@ -7789,22 +8031,22 @@ html:after {
   position: relative;
 }
 
-/* line 249 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 249 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .info-container .info:first-child {
   left: 130px;
 }
 
-/* line 252 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 252 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .view-container {
   width: 100%;
 }
 
-/* line 256 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 256 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .view-container .view-frame {
   width: 100%;
 }
 
-/* line 260 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 260 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .view-container .view-frame.ng-enter {
   -webkit-animation: 1.1s fade-in-delayed;
   -moz-animation: 1.1s fade-in-delayed;
@@ -7814,7 +8056,7 @@ html:after {
   z-index: 100;
 }
 
-/* line 264 : /home/calvitium/www/unwatched/assets/css/app.styl */
+/* line 264 : /home/ubuser/www/unwatched/assets/css/app.styl */
 .view-container .view-frame.ng-leave {
   -webkit-animation: 0.5s fade-out;
   -moz-animation: 0.5s fade-out;
