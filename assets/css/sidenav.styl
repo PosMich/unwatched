@@ -19,8 +19,7 @@
     //border-right: 2px solid rgb(0,0,255)
 
     &:hover
-        left 0px    
-
+        left 0px
 
     .sidenav
         position relative
@@ -32,12 +31,12 @@
         .icon-align
             display table-cell
             vertical-align middle
-            //background-color rgba(0,0,255,0.2)
+            width 100px
+            //background: rgba(0,255,255,0.5)
 
             .icon-container
                 position relative
                 left -10px
-                //background-color rgba(255,0,0,0.5)
                 padding 10px
                 padding-right 15px
                 margin 5px
@@ -48,7 +47,7 @@
                     height 50px
 
                     display table
-                    overflow hidden // <-- firefox problem
+                    overflow hidden // <-- ff problems
 
                     transition width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out
 
@@ -73,18 +72,17 @@
                     -mos-osx-font-smoothing antialised
 
                     &:hover
-                        overflow visible // <-- firefox problem
+                        overflow visible // <-- ff problems
                         width 66px
                         height 66px
                         border-radius 33px
                         text-decoration none
-                        .subicons 
-                            .subicon
-                                visibility visible
-                                opacity 1 
-                                &:hover
-                                    visibility visible 
-                                    opacity 1 
+                        .subicon-container
+                            display table
+                            .subicons 
+                                .subicon
+                                    visibility visible
+                                    opacity 1
 
                     &:before
                         display table-cell
@@ -123,42 +121,47 @@
                             font-size 40px
 
 
-                    .subicon-container
-                        display table
-                        position absolute
-                        height 600px
-                        width 100px
-                        left 55px
-                        top (-300+30)px
-                        background-color rgba(255,0,255,1)
+.subicon-container
+    display table
+    position absolute
+    height 600px
+    width 100px
+    left 55px
+    top (-300+30)px
+    &:hover
+        display table
+        .subicons 
+            .subicon
+                visibility visible
+                opacity 1
 
-                    .subicons
-                        display table-cell
-                        vertical-align middle
-                        background-color rgba(0,0,0,0.5)
+    .subicons
+        display table-cell
+        vertical-align middle
+        background-color rgba(0,0,0,0.5)
 
+        .subicon
+            border-radius(10px)
+            visibility hidden
+            opacity 0
+            height 50px
+            width 50px
+            background-color rgba(255,255,0,1)
+            margin 20px
 
-                        .subicon
-                            border-radius(10px)
-                            visibility hidden
-                            opacity 0
-                            height 50px
-                            width 50px
-                            background-color rgba(255,255,0,1)
-                            margin 20px
+            &:hover
+                width 65px
+                height 65px
 
-                            &:hover
-                                width 65px
-                                height 65px
-
-                            for delay in 1 2 3 4 5 6 7 8 9 10
-                                &:nth-child({delay})
-                                    transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out
-
+            for delay in 1 2 3 4 5 6 7 8 9 10
+                &:nth-child({delay})
+                    transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out
 
 
 
 
+.clearfix
+  clearfix()
 
 
 
