@@ -68,12 +68,16 @@ app.directive "updateScrollPosition", [
     ($window) ->
         link: (scope, elem, attrs) ->
             scope.$watch attrs.updateScrollPosition, ->
-                window.setTimeout( (-> $(elem).parent().scrollTop $(elem).height()), 1 )
+                window.setTimeout((->
+                  $(elem).parent().scrollTop $(elem).height()
+                ), 1)
 
             angular.element($window).bind "resize", ->
                 $(elem).parent().scrollTop $(elem).height()
 
-            window.setTimeout( (-> $(elem).parent().scrollTop $(elem).height()), 1 )
+            window.setTimeout((->
+              $(elem).parent().scrollTop $(elem).height()
+            ), 1)
 ]
 
 # ***
@@ -132,7 +136,7 @@ app.directive "centerVertical", [
       link: (scope, elem, attrs) ->
 
         centerVertical = (elem, attrs) ->
-            marginTop = ( $($window).height()-$(elem).height() )/2
+            marginTop = ( $($window).height() - $(elem).height() ) / 2
             $(elem).css "margin-top", marginTop
             return
 
@@ -154,22 +158,18 @@ app.directive "absoluteFillRelativeFullHeight", [
         fillHeight = (elem, attrs) ->
             if scope.chat.state is "minimized"
                 $heading = $(elem).find(".panel-heading")
-                console.log($heading.css("padding-top").replace(/[^-\d\.]/g, ''))
-                console.log($heading.height())
 
                 height = $heading.height() + parseInt($heading
-                    .css("padding-top").replace(/[^-\d\.]/g, ''))*2
+                    .css("padding-top").replace(/[^-\d\.]/g, '')) * 2
 
-                console.log height
-
-                width = $(elem).parent().width() / 2
+                width = $(elem).parent().width() / 4
             else
                 divider = 1
                 if scope.chat.state is "compressed"
                   divider = 2
 
                 height = $($window).height() / divider
-                width = $(elem).parent().width() / divider
+                width = $(elem).parent().width() / 2 / divider
 
             $(elem).css "height", height
             $(elem).css "width", width
@@ -199,10 +199,12 @@ app.directive "fitChatBodyHeight", [
             $heading = $parent.find(".panel-heading")
             $footer = $parent.find(".panel-footer")
 
-            heading_padding = $heading.css("padding-top").replace(/[^-\d\.]/g, '')
-            footer_padding = $heading.css("padding-top").replace(/[^-\d\.]/g, '')
+            heading_padding = $heading.css("padding-top")
+              .replace(/[^-\d\.]/g, '')
+            footer_padding = $heading.css("padding-top")
+              .replace(/[^-\d\.]/g, '')
 
-            height = ($($window).height()/divider)-30 - $heading.height() - 
+            height = ($($window).height() / divider) - 30 - $heading.height() -
               $footer.height()
             
             $(elem).css "height", height
@@ -218,4 +220,27 @@ app.directive "fitChatBodyHeight", [
         angular.element($window).bind "resize", ->
           fitHeight(elem, attrs)
           return
+]
+
+app.directive "rearangeContainer", [
+    "$window"
+    ($window) ->
+      link: (scope, elem, attrs) ->
+
+        rearange = (elem, attrs) ->
+          if scope.chat.state is "expanded"
+            $container = $(".span_2_of_2").first()
+            $container.removeClass("span_2_of_2")
+            $container.addClass("span_1_of_2")
+          else
+            $container = $(".span_1_of_2").first()
+            $container.removeClass("span_1_of_2")
+            $container.addClass("span_2_of_2")
+            
+
+        scope.$watch attrs.rearangeContainer, ->
+          rearange()
+
+        # rearange()
+
 ]

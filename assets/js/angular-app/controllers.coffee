@@ -91,12 +91,14 @@ app.controller "RoomCtrl", [
 ]
 
 # ***
-# * <h3>Membes Controller</h3>
+# * <h3>Member Controller</h3>
 # >
-app.controller "MemberCtrl", [
+app.controller "MembersCtrl", [
   "$scope"
   ($scope) ->
     $scope.members = []
+
+    $scope.chat_state = "expanded"
 
     membersAmount = Math.floor(Math.random() * 10 + 1) + 6
     while membersAmount -= 1
@@ -107,19 +109,51 @@ app.controller "MemberCtrl", [
 ]
 
 # ***
+# * <h3>Share Controller</h3>
+# >
+app.controller "ShareCtrl", [
+  "$scope"
+  ($scope) ->
+    $scope.shared_items = []
+
+    $scope.chat_state = "compressed"
+
+
+]
+
+# ***
 # * <h3>Chat Controller</h3>
 # >
 app.controller "ChatCtrl", [
   "$scope"
   ($scope) ->
+
     $scope.chat = {}
-    $scope.chat.state = "expanded"
+    $scope.chat.state = $scope.$parent.chat_state || "minimized"
     $scope.chat.state_history = ""
     $scope.chat.messages = [
       # dummy entries
-      { sender: "Lorem Ipsum", content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." }
-      { sender: "Lorem Ipsum", content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua." }
-      { sender: "Lorem Ipsum", content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum." }
+      {
+        sender: "Lorem Ipsum",
+        content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed"+
+        " diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquya"+
+        "m erat, sed diam voluptua. At vero eos et accusam et justo duo dolore"+
+        "s et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est"+
+        " Lorem ipsum dolor sit amet."
+      }
+      {
+        sender: "Lorem Ipsum",
+        content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed"+
+        " diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquya"+
+        "m erat, sed diam voluptua."
+      }
+      {
+        sender: "Lorem Ipsum",
+        content: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed"+
+        " diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquya"+
+        "m erat, sed diam voluptua. At vero eos et accusam et justo duo dolore"+
+        "s et ea rebum."
+      }
 
     ]
 

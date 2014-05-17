@@ -62,14 +62,24 @@ app.config [
       controller: "RoomCtrl"
 
     # ***
-    # * <h3>route `/mermbers`</h3>
+    # * <h3>route `/members`</h3>
     # > loads a list of all members of the current room and a maximized chat
     # > window.
     # >
     # > load RoomCtrl
     $routeProvider.when "/members",
       templateUrl: "partials/members.jade"
-      controller: "MemberCtrl"
+      controller: "MembersCtrl"
+
+    # ***
+    # * <h3>route `/share`</h3>
+    # > loads a list of shared items with interaction possibilities and a
+    # > compressed chat window.
+    # >
+    # > load RoomCtrl
+    $routeProvider.when "/share",
+      templateUrl: "partials/share.jade"
+      controller: "ShareCtrl"
 
     # ***
     # * <h3>route `/`</h3>

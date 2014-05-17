@@ -34,7 +34,7 @@ body
     background none
 
 html:after
-    content: '';
+    //content: ''; <-- da kann man im chrome nix mehr anklicken??
     position:fixed
     display: block;
     left: 0
@@ -65,3 +65,29 @@ html:after
     .view-frame.ng-leave
         animation 0.5s fade-out
         z-index 99
+
+#create-room-container
+    min-width 450px
+    width 50%
+    max-width 700px
+    float left
+    margin-left 15%
+
+.info-container
+    position relative
+    font-size 26px
+    float left
+    font-family 'Indie Flower'
+    font-style italic
+    font-weight 500
+
+    .info
+        border: 7px solid #c81e2b
+        border-radius 200px / 110px
+        padding 30px
+        margin-top 50px
+        left 90px
+        position relative
+
+        &:first-child
+            left 130px
