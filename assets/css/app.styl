@@ -5,9 +5,10 @@
 @require "mixins.styl"
 @require "animations.styl"
 @require "forms.styl"
-@require "room.styl"
 @require "members.styl"
 @require "chat.styl"
+@require "share.styl"
+@require "controls.styl"
 @require "fonts.styl"
 @require "sidenav.styl"
 
@@ -52,10 +53,9 @@ html:after
 
 .view-container
     width 100%
-    // position relative
+    padding-top 20px
 
     .view-frame
-        // absolute: top left
         width 100%
 
     .view-frame.ng-enter

@@ -1,0 +1,100 @@
+.items-container
+    .item
+        float left
+        position relative
+        font-family FontAwesome
+        cursor pointer
+
+        &:before
+            absolute top left
+            opacity 0.4
+            text-align center
+
+        &.note:before
+            content: '\f0f6'
+
+        &.screenshot:before
+            content: '\f1c5'
+
+        &.file:before
+            content: '\f016'
+
+        &.shared_screen:before
+            content: '\f1c8'
+
+        &.ng-move, &.ng-enter, &.ng-leave
+            transition opacity .3s linear
+
+        &.ng-leave.ng-leave-active, &.ng-move, &.ng-enter
+            opacity 0
+
+        &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
+          opacity 1
+
+        &:hover
+            p
+                opacity 1
+
+            &:before
+                opacity 0.7
+
+        p
+            font-family 'Helvetica Neue', Helvetica, Arial, sans-serif
+        
+
+
+.icons.items-container
+    .item
+        width 20%
+        padding 7%
+
+        &:before
+            width 100%
+            font-size 9.5em
+            text-align center
+
+        p
+            opacity 0
+            transition opacity .3s linear
+            width 100%
+            text-align center
+            font-size 1em
+            absolute bottom left
+            bottom -10px
+            padding 2.5%
+
+        &:hover
+            p
+                opacity 1
+
+.list.items-container
+    padding-top 40px
+
+    .item
+        width 23%
+        margin 1%
+        border-bottom 1px solid darkgrey
+        text-align left
+
+        p
+            text-indent 20px
+
+.span_1_of_2
+    
+    .icons.items-container
+        padding-top 50px
+        .item
+            width 25%
+            padding-top 10%
+
+            p
+                font-size 0.8em
+                bottom 0
+            
+            &:before
+                font-size 4.5em
+
+    .list.items-container
+        padding-top 7.5%
+        .item
+            width 48%

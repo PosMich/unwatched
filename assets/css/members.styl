@@ -8,11 +8,15 @@
     width 25%
     float left
     opacity 0
-    animation fade-member-in 1.5s forwards
+    animation fade-item-in 1.5s forwards
     border-radius 25px
     text-align center
     cursor pointer
     padding 5%
+
+    for i in (1..20)
+        &:nth-child({i})
+            animation-delay i*0.2s
 
     img
         height 100%
@@ -25,9 +29,6 @@
         &:hover
             opacity 1
 
-    for i in (1..20)
-        &:nth-child({i})
-            animation-delay i*0.2s
 
 .span_2_of_2
     .member

@@ -1,0 +1,36 @@
+.heading
+    absolute top left
+    width 100%
+    background rgba(27,27,27, 0.8)
+    height 39px
+
+    .controls
+        padding 2px
+
+        input#searchString
+            width 175px
+            float right
+            transition width .3s cubic-bezier(0.230, 1.000, 0.320, 1.000)
+            border-radius 0
+
+            &:focus
+                width 225px
+
+        .layout
+            width 75px
+            padding 5px
+            float right
+
+            i
+                color white
+                padding 5px
+                cursor pointer
+                opacity 0.6
+                transition opacity .2s linear
+
+                &:hover
+                    opacity 1
+            
+.span_1_of_2
+    .heading
+        width 51.8%
