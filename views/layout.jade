@@ -13,29 +13,41 @@ html(ng-app="unwatched")
           .icon-align
             .icon-container
               a.menu-home.icon(href="/")
-                .subicon-container
-                  .subicons
-                    .subicon asdf
-                    .subicon asdf2
-                    .subicon asdf2
+              .subicons-container
+                .subicons
+                  .subicon-container.top2
+                    a.menu-about.subicon(href="/about")
+                  .subicon-container.top1
+                    a.menu-tutorial.subicon(href="/tutorial")
+                  .subicon-container.bottom1
+                    a.menu-create-room.subicon(href="/createRoom")
+                  .subicon-container.bottom2
+                    a.menu-leave-room.subicon(href="/leaveRoom")
+              .clearfix
             .icon-container
-              a.menu-chat.icon(href="/members")
-                .subicon-container
-                  .subicons
-                    .subicon asdf
-                    .subicon asdf3
-                    .subicon asdf
-                    .subicon asdf3
+              a.menu-user.icon(href="/members")
+              .subicons-container
+                .subicons
+                  .subicon-container.top2
+                    a.menu-user-settings.subicon(href="/settings")
+                  .subicon-container.top1
+                    a.menu-user-add.subicon(href="/addUser")
+                  .subicon-container.bottom2
+                    a.menu-user-history.subicon(href="/history")
             .icon-container
               a.menu-share.icon(href="/share")
-                .subicon-container
-                  .subicons
-                    .subicon asdf
-                    .subicon asdf3
-                    .subicon asdf
-                    .subicon asdf3
-                    .subicon asdf
-                    .subicon asdf3
+              .subicons-container
+                .subicons
+                  .subicon-container.top2
+                    a.menu-share-screen.subicon(href="/share/screen")
+                  .subicon-container.top1
+                    a.menu-share-note.subicon(href="/share/note")
+                  .subicon-container.middle
+                    a.menu-share-image.subicon(href="/share/image")
+                  .subicon-container.bottom1
+                    a.menu-share-file.subicon(href="/share/files")
+                  .subicon-container.bottom2
+                    a.menu-share-webcam.subicon(href="/share/webcam")
               //
                 a(href="/")
                   i.fa.fa-home.fa-inverse

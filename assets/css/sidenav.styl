@@ -4,7 +4,7 @@
     top 0
     height 100%
     width 35px
-    z-index 1
+    z-index 200
 
     background linear-gradient(
         right, 
@@ -41,6 +41,28 @@
                 padding 10px
                 padding-right 15px
                 margin 5px
+                background-color rgba(120,0,0,0.5)
+
+                &:hover
+                    a.icon
+                        width 66px
+                        height 66px
+                        border-radius 33px
+                        text-decoration none
+                        + .subicons-container
+                            display table
+                            visibility visible
+                            opacity 1
+                            .subicons 
+                                .subicon
+                                    visibility visible
+                                    opacity 1
+                        &.menu-home:before
+                            font-size 40px
+                        &.menu-chat:before
+                            font-size 30px
+                        &.menu-share:before
+                            font-size 40px
 
                 a.icon
                     position relative
@@ -48,7 +70,7 @@
                     height 50px
 
                     display table
-                    overflow hidden // <-- ff problems
+                    ////////overflow hidden // <-- ff problems
 
                     transition width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out
 
@@ -73,17 +95,10 @@
                     -mos-osx-font-smoothing antialised
 
                     &:hover
-                        overflow visible // <-- ff problems
-                        width 66px
-                        height 66px
-                        border-radius 33px
-                        text-decoration none
-                        .subicon-container
-                            display table
-                            .subicons 
-                                .subicon
-                                    visibility visible
-                                    opacity 1
+                        /////overflow visible // <-- ff problems
+                        
+                    
+
 
                     &:before
                         display table-cell
@@ -102,7 +117,7 @@
                         &:hover:before
                             font-size 40px
 
-                    &.menu-chat
+                    &.menu-user
                         &:before
                             content "\f0c0"
                             padding-left 2px
@@ -122,44 +137,74 @@
                             font-size 40px
 
 
-.subicon-container
+.subicons-container
+    background-color rgba(255,0,0,0.3)
+    visibility hidden
+    opacity 0
     display table
     position absolute
-    height 600px
-    width 100px
-    left 55px
-    top (-300+30)px
-    &:hover
-        display table
-        .subicons 
-            .subicon
-                visibility visible
-                opacity 1
+    height 450px
+    left 80px
+    top -181px
 
+    &:hover
+        visibility visible
+        opacity 1
+        .subicons 
+            .subicon-container
+                .subicon
+                    visibility visible
+                    opacity 1
+    
     .subicons
         display table-cell
         vertical-align middle
-        background-color rgba(0,0,0,0.5)
-
-        .subicon
-            border-radius(10px)
-            visibility hidden
-            opacity 0
-            height 50px
-            width 50px
-            background-color rgba(255,255,0,1)
-            margin 20px
-
+        background-color rgba(0,0,200,0.5)
+        
+        .subicon-container
+            background-color rgba(120,0,0,0.5)
+            width 120px
+            padding 5px
             &:hover
-                width 65px
-                height 65px
+                .subicon
+                    visibility visible
+                    opacity 1
+
+
+            //&.top2
+            &.top1
+                padding-left 30px
+            &.middle
+                padding-left 40px
+            &.bottom1
+                padding-left 30px
+            //&.bottom2
+
+            a.subicon
+                display table-cell
+                border-radius(25px)
+                visibility hidden
+                opacity 0
+                height 50px
+                width 50px
+                background-color rgba(255,255,0,1)
+                margin 20px
+
+                &:hover
+                    width 65px
+                    height 65px
+                    border-radius(33px)
+
 
             for delay in 1 2 3 4 5 6 7 8 9 10
                 &:nth-child({delay})
-                    transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out
+                    .subicon
+                        transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out
+                        animation-iteration-count: 1;
 
 
-
+                
+    
 
 .clearfix
   clearfix()
