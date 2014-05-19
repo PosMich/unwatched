@@ -5,6 +5,16 @@
 
 app = angular.module "unwatched.controllers", []
 
+app.controller "AppCtrl", [
+  "$scope"
+  ($scope) ->
+
+    if !$scope.chat_state?
+      console.log "changing state"
+      $scope.chat_state = "expanded"
+
+]
+
 app.controller "IndexCtrl", [
   "$scope"
   ($scope) ->
@@ -71,34 +81,12 @@ app.controller "SignupCtrl", [
 ]
 
 # ***
-# * <h3>Room Controller</h3>
-# >
-app.controller "RoomCtrl", [
-  "$scope"
-  ($scope) ->
-    $scope.room =
-      name: "Untitled Room"
-      activePanel: "clients-chat"
-
-    $scope.setActivePanel = (panelId) ->
-      $scope.room.activePanel = panelId
-
-    $scope.getActivePanel = (panelId) ->
-      if $scope.room.activePanel is panelId
-        return "panel-primary"
-      else
-        return "panel-default"
-]
-
-# ***
 # * <h3>Member Controller</h3>
 # >
 app.controller "MembersCtrl", [
   "$scope"
   ($scope) ->
     $scope.members = []
-
-    $scope.chat_state = "expanded"
 
     membersAmount = Math.floor(Math.random() * 10 + 1) + 6
     while membersAmount -= 1
@@ -116,8 +104,47 @@ app.controller "ShareCtrl", [
   ($scope) ->
     $scope.shared_items = []
 
-    $scope.chat_state = "compressed"
+    $scope.controls = {}
+    $scope.controls.layout = "icons"
 
+    shared_items_amount = Math.floor(Math.random() * 20 + 1) + 50
+
+    file_names = [
+      'Lothar',
+      'Rafael',
+      'Angelika',
+      'Wolfram',
+      'Gisa',
+      'Sophie',
+      'David',
+      'Andrea',
+      'Hermine',
+      'Rudolf',
+      'Steffen',
+      'Johanna'
+    ]
+    
+    while shared_items_amount -= 1
+
+      rand = Math.round(Math.random() * 4)
+
+      file = {}
+      file.name = file_names[ Math.floor(Math.random() * 12) ]
+      file.size = Math.floor(Math.random() * 1024 + 1)
+      file.author = "Max Mustermann"
+
+      if rand is 0
+        file.category = "note"
+      else if rand is 1
+        file.category = "screenshot"
+      else if rand is 2
+        file.category = "file"
+      else
+        file.category = "shared_screen"
+        file.size = 0
+
+
+      $scope.shared_items.push file
 
 ]
 
@@ -129,7 +156,8 @@ app.controller "ChatCtrl", [
   ($scope) ->
 
     $scope.chat = {}
-    $scope.chat.state = $scope.$parent.chat_state || "minimized"
+    $scope.chat.state = $scope.$parent.$parent.chat_state || "minimized"
+    console.log $scope.chat.state
     $scope.chat.state_history = ""
     $scope.chat.messages = [
       # dummy entries
@@ -165,17 +193,21 @@ app.controller "ChatCtrl", [
 
     $scope.chat.compress = ->
       $scope.chat.state = "compressed"
+      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.expand = ->
       $scope.chat.state = "expanded"
+      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.minimize = ->
       $scope.chat.state_history = $scope.chat.state
       $scope.chat.state = "minimized"
+      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.maximize = ->
       if $scope.chat.state is "minimized"
         $scope.chat.state = $scope.chat.state_history
+        $scope.$parent.$parent.chat_state = $scope.chat.state
 
 ]
 

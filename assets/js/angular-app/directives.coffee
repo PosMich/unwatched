@@ -241,6 +241,31 @@ app.directive "rearangeContainer", [
         scope.$watch attrs.rearangeContainer, ->
           rearange()
 
-        # rearange()
+        rearange()
 
+]
+
+app.directive "fitItemHeight", [
+    "$window"
+    ($window) ->
+      link: (scope, elem, attrs) ->
+
+        fitHeight = (elem, attrs) ->
+
+          height = $(elem).width()
+          
+          $(elem).css "height", height
+          return
+
+        scope.$watch ->
+          $('.col').attr('class')
+        , (value) ->
+          window.setTimeout( (->
+            fitHeight(elem, attrs)
+          ), 10)
+          
+
+        angular.element($window).bind "resize", ->
+          fitHeight(elem, attrs)
+          return
 ]

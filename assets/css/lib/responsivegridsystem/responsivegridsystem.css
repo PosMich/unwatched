@@ -674,10 +674,7 @@ strong.code {
 
 }
 
-/*  NOTES  ============================================================================= */
-
-
-.note {
+/*.note {
 	position:relative;
 	padding:1em 1.5em;
 	margin: 0 0 1em 0;
@@ -698,7 +695,7 @@ strong.code {
 	-webkit-box-shadow:0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
 	-moz-box-shadow:0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
 	box-shadow:0 1px 1px rgba(0,0,0,0.3), -1px 1px 1px rgba(0,0,0,0.2);
-	display:block; width:0; /* Firefox 3.0 damage limitation */
+	display:block; width:0; /* Firefox 3.0 damage limitation
 }
 
 .note.rounded {
@@ -714,7 +711,7 @@ strong.code {
 	-webkit-border-bottom-left-radius:5px;
 	-moz-border-radius:0 0 0 5px;
 	border-radius:0 0 0 5px;
-}
+}*/
 
 /*  SCREENS  ============================================================================= */
 
@@ -770,6 +767,9 @@ strong.code {
 	-webkit-transition: all 0.3s ease;
 	-moz-transition: all 0.3s ease;
 	-o-transition: all 0.3s ease;
+/*  NOTES  ============================================================================= */
+
+
 	transition: all 0.3s ease;
 	font-size : 1.1em;
 

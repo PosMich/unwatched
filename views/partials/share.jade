@@ -1,5 +1,29 @@
 .section.group
     .col.span_1_of_2
+        .heading.clearfix
+            .controls
+                form(name="controlSearch", no-validate)
+                    .control-input
+                        input#searchString.form-control(type="text", 
+                            required, ng-model="controls.searchString",
+                            placeholder="Click to search")
+                .layout
+                    span(ng-click="controls.layout='list'")
+                        i.fa.fa-list-ul
+                    span(ng-click="controls.layout='icons'")
+                        i.fa.fa-th
+
+        ul.items-container.clearfix(ng-class="{'list':controls.layout=='list', 'icons':controls.layout=='icons'}",)
+            li.item(ng-class="item.category",
+                ng-repeat="item in shared_items | filter:controls.searchString")
+                p
+                    b {{item.name}}
+                //- p
+                //-     | Size: {{item.size}}
+                //- p
+                //-     | Author: {{item.author}}
+
+
 
     .chat(chat)
                 
