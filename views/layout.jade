@@ -44,7 +44,10 @@ html(ng-app="unwatched")
                       |  leave room room
             .clearfix
           .icon-container
-            a.menu-user.icon(href="/members")
+            a.menu-user.icon(href="/members").tooltip
+              span
+                i.fa.fa-long-arrow-left
+                |  show/invite members
             .subicons-container
               .subicons
                 .subicon-container.top2
@@ -73,7 +76,7 @@ html(ng-app="unwatched")
                     .history-align
                       .history-entry
                         img(src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png")
-                        span bla bla blaasd fadsad f....
+                        span bla bla blaasd a f....
                       .history-entry
                         img(src="https://cdn1.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
                         span bla bla bla....
@@ -84,7 +87,10 @@ html(ng-app="unwatched")
                         img(src="http://png-4.findicons.com/files/icons/175/halloween_avatar/256/jack_skellington.png")
                         span bla bla bla....
           .icon-container
-            a.menu-share.icon(href="/share")
+            a.menu-share.icon(href="/share").tooltip
+              span
+                i.fa.fa-long-arrow-left
+                |  share overview
             .subicons-container
               .subicons
                 .subicon-container.top2
