@@ -55,9 +55,10 @@
                             visibility visible
                             opacity 1
                             .subicons 
-                                .subicon
+                                .subicon, .history-entry
                                     visibility visible
                                     opacity 1
+
                         &.menu-home:before
                             font-size 40px
                         &.menu-user:before
@@ -162,7 +163,7 @@
         
         .subicon-container
             //background-color rgba(120,0,0,0.5)
-            width 120px
+            //width 120px
             padding 5px
             &:hover
                 .subicon
@@ -237,13 +238,194 @@
                     &:hover:before
                         font-size 40px
 
-            for delay in 1 2 3 4 5 6 7 8 9 10
+                &.menu-create-room
+                    display table 
+                    .stack-align
+                        display table-cell
+                        vertical-align middle
+                        span.fa-stack
+                            i
+                                transition font-size 300ms ease-in-out, top 300ms ease-in-out, left 300ms ease-in-out
+                            i.fa-building
+                                left -2px
+                                font-size 23px
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                            i.fa-plus
+                                color rgba(0,255,0,1)
+                                left 10px
+                                top 1px
+                                font-size 20px
+                                text-shadow 0px -1px 2px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                    &:hover
+                        .stack-align
+                            span.fa-stack
+                                i.fa-building
+                                    left -3px
+                                    font-size 31px
+                                i.fa-plus
+                                    //color rgba(0,255,0,1)
+                                    left 12px
+                                    //top 10px
+                                    font-size 29px
+
+                &.menu-leave-room
+                    display table 
+                    .stack-align
+                        display table-cell
+                        vertical-align middle
+                        span.fa-stack
+                            i
+                                transition font-size 300ms ease-in-out, top 300ms ease-in-out, left 300ms ease-in-out
+                            i.fa-building
+                                left -2px
+                                font-size 23px
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                            i.fa-arrow-right
+                                color rgba(255,0,0,1)
+                                left 10px
+                                top 1px
+                                font-size 20px
+                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(255,255,255,0.3)
+                    &:hover
+                        .stack-align
+                            span.fa-stack
+                                i.fa-building
+                                    left -3px
+                                    font-size 31px
+                                i.fa-arrow-right
+                                    //color rgba(0,255,0,1)
+                                    left 12px
+                                    //top 10px
+                                    font-size 29px
+
+
+                &.menu-user-settings
+                    display table 
+                    .stack-align
+                        display table-cell
+                        vertical-align middle
+                        span.fa-stack
+                            i
+                                transition font-size 300ms ease-in-out, top 300ms ease-in-out, left 300ms ease-in-out
+                            i.fa-user
+                                left -3px
+                                font-size 30px
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                            i.fa-gear
+                                color rgba(200,200,200,1)
+                                left 8px
+                                top 8px
+                                font-size 20px
+                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(255,255,255,0.3)
+                    &:hover
+                        .stack-align
+                            span.fa-stack
+                                i.fa-user
+                                    left -6px
+                                    font-size 40px
+                                i.fa-gear
+                                    //color rgba(0,255,0,1)
+                                    left 12px
+                                    top 12px
+                                    //top 10px
+                                    font-size 29px
+
+                &.menu-user-add
+                    display table 
+                    .stack-align
+                        display table-cell
+                        vertical-align middle
+                        span.fa-stack
+                            i
+                                transition font-size 300ms ease-in-out, top 300ms ease-in-out, left 300ms ease-in-out
+                            i.fa-user
+                                left -3px
+                                font-size 30px
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                            i.fa-plus
+                                color rgba(0,255,0,1)
+                                left 8px
+                                top 8px
+                                font-size 20px
+                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(255,255,255,0.3)
+                    &:hover
+                        .stack-align
+                            span.fa-stack
+                                i.fa-user
+                                    left -6px
+                                    font-size 40px
+                                i.fa-plus
+                                    //color rgba(0,255,0,1)
+                                    left 12px
+                                    top 12px
+                                    //top 10px
+                                    font-size 29px
+                
+            a.menu-user-history
+                .history-align
+                    //width 200px
+                    //border 1px solid rgba(0,0,0,0.4)
+                    //background linear-gradient(top, white, white), linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.1))
+                    //background linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("img/noise.png"), linear-gradient(top, white, white)  
+                    //border-radius 3px
+                    
+                    padding-top 5px
+                    padding-bottom 5px
+                    border-radius 10px
+                    .history-entry
+                        opacity 0
+                        visibility hidden
+                        width 200px
+                        border-radius 5px
+                        //border 1px solid rgba(0,0,0,0.4)
+                        padding 5px
+                        margin 5px
+                        //display table
+                        text-align left
+                        box-shadow 0px 0px 25px 0px rgba(50, 50, 50, 0.75)
+                        background linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.1))                            
+                        img
+                            float left
+                            min-width 30px
+                            max-width 30px
+                            min-height 30px
+                            max-height 30px
+                            width 30px
+                            height 30px
+                            margin-right 5px
+                        span
+                            transition color 300ms ease-in-out
+                            display block
+                            width 150px
+                            height 30px
+                            overflow hidden
+                            line-height 30px
+                            color white
+                            vertical-align middle
+                        
+                        /*&:hover
+                            background linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.6))
+                        */
+                    &:hover
+                        .history-entry
+                            box-shadow 0px 0px 10px 0px rgba(50, 50, 50, 0.75)
+                            span
+                                color black
+                            background linear-gradient(top, rgba(255,255,255,0.1), rgba(255,255,255,0.1)) 
+
+                &:hover
+                    text-decoration none
+
+                                
+            for delay in 1 2 3 4 5
                 &:nth-child({delay})
                     .subicon
                         transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
-                        animation-iteration-count: 1;
-
-
+                    .menu-user-history
+                        for delay2 in 1 2 3 4 
+                            .history-entry:nth-child({delay2})
+                                transition visibility 300ms ease-in-out (0.1s*delay)+0.05s*delay2, opacity 300ms ease-in-out (0.1s*delay)+0.05s*delay2, box-shadow 300ms ease-in-out
+                    
                 
     
 

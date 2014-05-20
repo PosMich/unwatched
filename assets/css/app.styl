@@ -25,28 +25,29 @@ body
 
 
 html
-    margin: 0
-    padding: 0
-    padding-left:50px
+    margin 0
+    padding 0
+    padding-left 50px
     radial-gradient_( rgba(255,255,255,1), 0%, rgba(240,240,240,1), 100% )
-    z-index: 0
+    z-index 0
 
 body
     background none
 
 html:after
     //content: ''; <-- da kann man im chrome nix mehr anklicken??
-    position:fixed
-    display: block;
-    left: 0
-    right: 0
-    top: 0
-    bottom: 0
-    height: 100%
-    width: 100%
-    opacity: 0.2;
+    position fixed
+    display block
+    left 0
+    right 0
+    top 0
+    bottom 0
+    height 100%
+    width 100%
+    opacity 0.2;
     background-image url("img/noise.png")
-    z-index: 0
+    z-index -1
+    content ''
 
 
 
@@ -82,7 +83,7 @@ html:after
     font-weight 500
 
     .info
-        border: 7px solid #c81e2b
+        border 7px solid #c81e2b
         border-radius 200px / 110px
         padding 30px
         margin-top 50px
