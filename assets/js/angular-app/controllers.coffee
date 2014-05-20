@@ -11,7 +11,7 @@ app.controller "AppCtrl", [
 
     if !$scope.chat_state?
       console.log "changing state"
-      $scope.chat_state = "expanded"
+      $scope.chat_state = "compressed"
 
 ]
 
@@ -171,6 +171,7 @@ app.controller "ShareCtrl", [
         file.thumbnail = "screenshot-webcam.jpg"
         file.size = 0
 
+      file.templateUrl = "/partials/items/" + file.category + ".jade"
 
       $scope.shared_items.push file
 

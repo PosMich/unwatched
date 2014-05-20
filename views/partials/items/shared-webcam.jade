@@ -1,0 +1,20 @@
+div
+    .item-thumbnail
+        img(src="images/{{item.thumbnail}}")
+    .item-infos
+        table
+            tr
+                td
+                    b Name
+                td {{item.name}}
+            tr
+                td
+                    b Published
+                td {{item.created}}
+        .item-controls.clearfix
+            span
+                i.fa.fa-trash-o
+            span
+                i.fa.fa-clipboard
+            span
+                i.fa.fa-eye

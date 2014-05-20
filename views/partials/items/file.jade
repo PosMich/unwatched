@@ -1,0 +1,43 @@
+div
+    .item-thumbnail
+        .infos
+            table
+                tr
+                    td
+                        b Name
+                    td {{item.name}}
+                tr
+                    td
+                        b Ext.
+                    td {{item.extension}}
+        i.fa.fa-file
+    .item-infos
+        table
+            tr
+                td
+                    b Name
+                td {{item.name}}
+                tr
+                    td
+                        b Extension
+                    td {{item.extension}}
+            tr
+                td
+                    b Size
+                td {{item.size}}
+            tr
+                td
+                    b Author
+                td {{item.author}}
+            tr
+                td
+                    b Created
+                td {{item.created}}
+
+        .item-controls.clearfix
+            span
+                i.fa.fa-trash-o
+            span
+                i.fa.fa-clipboard
+            span
+                i.fa.fa-download

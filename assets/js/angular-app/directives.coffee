@@ -54,6 +54,38 @@ app.directive "chat", [ ->
     templateUrl: "/partials/chat.jade"
 ]
 
+# ***
+# * <h3>Shared Item</h3>
+# > Loads the template for a chat window
+
+# app.directive "shareditem", [ ->
+#     restrict: 'E'
+#     link: (scope, elem, attr) ->
+#       scope.getTemplateUrl = ->
+#         '/partials/items/' + attr.category + '.jade'
+#     template: '<div ng-include="getTemplateUrl()"></div>'
+
+  
+# ]
+
+# ***
+# * <h3>Shared Note</h3>
+# > Loads the template for a shared note
+# app.directive "sharednote", [ ->
+    
+#     customDirective = {}
+
+#     customDirective.restrict = 'E'
+#     customDirective.templateUrl = '/partials/items/{{item.category}}.jade'
+
+#     customDirective.scope = {
+#       item: "="
+#     }
+
+#     return customDirective
+    
+# ]
+
 
 # ***
 # * <h3>UpdateScrollPosition</h3>
