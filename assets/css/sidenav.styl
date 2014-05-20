@@ -55,7 +55,10 @@
                         height 66px
                         border-radius 33px
                         text-decoration none
-                        box-shadow: 0px 0px 175px rgba(0,0,0,1), inset 0px 0px 1px rgba(0,0,0,0.7);
+                        box-shadow 0px 0px 175px rgba(0,0,0,1), inset 0px 0px 1px rgba(0,0,0,0.7)
+                        .notification
+                            font-size 20px
+                            left 51px
                         + .subicons-container
                             display table
                             visibility visible
@@ -510,12 +513,32 @@
                                 transition visibility 300ms ease-in-out (0.1s*delay)+0.05s*delay2, opacity 300ms ease-in-out (0.1s*delay)+0.05s*delay2, box-shadow 300ms ease-in-out
                     
                 
-    
+a   
+    .notification-inactive
+        position absolute
+        visibility hidden
+        opacity 0
+    .notification
+        position absolute
+        left 40px
+        top -3px
+        border-radius 2px
+        padding 1px
+        font-size 14px
+        display table
+        vertical-align middle
+        border 1px solid red
+        background red
+        font-weight bold
+        font-family sans-serif
+        box-shadow: 1px 1px 1px 0px black,-1px -1px 1px 0px white
+        transition left 300ms ease-in-out, font-size 300ms ease-in-out
+
 
 a.menu-user-history.tooltip
     & > span
         margin-top 75px
-        margin-left 120px
+        margin-left 100px
  
 a.icon.tooltip
     & > span
@@ -523,6 +546,12 @@ a.icon.tooltip
         font-size 22px
         margin-top 20px
         margin-left 10px
+
+a.tooltip-inactive
+    & > span
+        visibility hidden
+        opacity 0
+        position absolute 
 
 a.tooltip
     outline none
