@@ -18,18 +18,27 @@
 
         .layout
             width 75px
-            padding 5px
             float right
+            padding-top 5px
 
-            i
-                color white
+            span
                 padding 5px
-                cursor pointer
-                opacity 0.6
-                transition opacity .2s linear
+
+                &.active
+                    background rgba(27,27,27, 1)
+                    border-radius 5px
 
                 &:hover
-                    opacity 1
+                    i
+                        opacity 1
+
+                i
+                    color white
+                    padding 5px
+                    cursor pointer
+                    opacity 0.6
+                    transition opacity .2s linear
+                        
             
 .span_1_of_2
     .heading

@@ -123,24 +123,52 @@ app.controller "ShareCtrl", [
       'Steffen',
       'Johanna'
     ]
+
+    code_extensions = [
+      "html"
+      "css"
+      "js"
+      "py"
+      "java"
+      "rb"
+    ]
     
     while shared_items_amount -= 1
 
-      rand = Math.round(Math.random() * 4)
+      rand = Math.round(Math.random() * 6)
 
       file = {}
       file.name = file_names[ Math.floor(Math.random() * 12) ]
       file.size = Math.floor(Math.random() * 1024 + 1)
       file.author = "Max Mustermann"
+      file.created = "14.05.2014 - 15:10"
 
       if rand is 0
         file.category = "note"
+        file.thumbnail = 
+          title: "Lorem Ipsum"
+          content: "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, s"+
+            "ed diam nonumy eirmod.</p><p>tempor invidunt ut labore et dolore magna a"+
+            "liquyam erat, sed diam voluptua.</p>"
+        file.edited = "20.05.2014 - 20:25"
       else if rand is 1
         file.category = "screenshot"
+        file.thumbnail = "screenshot.png"
       else if rand is 2
         file.category = "file"
+        file.thumbnail = "icon"
+        file.extension = ".pdf"
+      else if rand is 3
+        file.category = "code"
+        file.thumbnail = "var dummy = function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log(\"Hello world\")<br/>}"
+        file.extension = code_extensions[ Math.floor(Math.random() * 6) ]
+      else if rand is 4
+        file.category = "shared-screen"
+        file.thumbnail = "screenshot-screen.png"
+        file.size = 0
       else
-        file.category = "shared_screen"
+        file.category = "shared-webcam"
+        file.thumbnail = "screenshot-webcam.jpg"
         file.size = 0
 
 
