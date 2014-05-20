@@ -512,12 +512,18 @@
                             .history-entry:nth-child({delay2})
                                 transition visibility 300ms ease-in-out (0.1s*delay)+0.05s*delay2, opacity 300ms ease-in-out (0.1s*delay)+0.05s*delay2, box-shadow 300ms ease-in-out
                     
-                
-a   
-    .notification-inactive
+.notification-inactive
+    .notification
         position absolute
         visibility hidden
         opacity 0
+        
+.tooltip-inactive
+    a.tooltip:hover > span
+        visibility hidden
+        opacity 0
+        position absolute              
+a   
     .notification
         position absolute
         left 40px
@@ -547,11 +553,6 @@ a.icon.tooltip
         margin-top 20px
         margin-left 10px
 
-a.tooltip-inactive
-    & > span
-        visibility hidden
-        opacity 0
-        position absolute 
 
 a.tooltip
     outline none
