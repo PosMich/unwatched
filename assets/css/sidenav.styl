@@ -41,7 +41,7 @@
                 padding 10px
                 padding-right 15px
                 margin 5px
-                background-color rgba(120,0,0,0.5)
+                //background-color rgba(120,0,0,0.5)
 
                 &:hover
                     a.icon
@@ -49,6 +49,7 @@
                         height 66px
                         border-radius 33px
                         text-decoration none
+                        box-shadow: 0px 0px 175px rgba(0,0,0,1), inset 0px 0px 1px rgba(255,255,255,0.7);
                         + .subicons-container
                             display table
                             visibility visible
@@ -59,7 +60,7 @@
                                     opacity 1
                         &.menu-home:before
                             font-size 40px
-                        &.menu-chat:before
+                        &.menu-user:before
                             font-size 30px
                         &.menu-share:before
                             font-size 40px
@@ -72,7 +73,7 @@
                     display table
                     ////////overflow hidden // <-- ff problems
 
-                    transition width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out
+                    transition width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
 
                     color #ffffff
 
@@ -84,7 +85,7 @@
                     border 1px solid #000000
                     border-radius 25px
 
-                    box-shadow: 0px 1px 3px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+                    box-shadow: 0px 1px 20px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
                     text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(255,255,255,0.3);
                     
                     font-family FontAwesome
@@ -96,8 +97,6 @@
 
                     &:hover
                         /////overflow visible // <-- ff problems
-                        
-                    
 
 
                     &:before
@@ -138,7 +137,7 @@
 
 
 .subicons-container
-    background-color rgba(255,0,0,0.3)
+    //background-color rgba(255,0,0,0.3)
     visibility hidden
     opacity 0
     display table
@@ -159,10 +158,10 @@
     .subicons
         display table-cell
         vertical-align middle
-        background-color rgba(0,0,200,0.5)
+        //background-color rgba(0,0,200,0.5)
         
         .subicon-container
-            background-color rgba(120,0,0,0.5)
+            //background-color rgba(120,0,0,0.5)
             width 120px
             padding 5px
             &:hover
@@ -181,25 +180,67 @@
             //&.bottom2
 
             a.subicon
-                display table-cell
+                display table
                 border-radius(25px)
                 visibility hidden
                 opacity 0
                 height 50px
                 width 50px
                 background-color rgba(255,255,0,1)
-                margin 20px
+                //margin 20px
+
+                box-shadow: 0px 1px 75px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
+                text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(255,255,255,0.3);
+                
+                color white
+
+                font-family FontAwesome
+                font-style normal
+                font-weight normal
+                line-height 1
+                -webkit-font-smoothing antialised
+                -mos-osx-font-smoothing antialised
+                    
+                text-decoration none
+
+                background linear-gradient(top, #42aaff, #003366)
+
+                &:before
+                    display table-cell
+                    vertical-align middle
+                    text-align center
+                    margin 0 auto
+                    padding 0
 
                 &:hover
                     width 65px
                     height 65px
                     border-radius(33px)
+                    box-shadow: 0px 0px 30px rgba(0,0,0,1), inset 0px 0px 1px rgba(255,255,255,0.7);
+                    
+                &.menu-about
+                    &:before
+                        content "\f128"
+                        //padding-left 0px
+                        //content "\f007"
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
 
+                &.menu-tutorial
+                    &:before
+                        content "\f19d"
+                        padding-left 1px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
 
             for delay in 1 2 3 4 5 6 7 8 9 10
                 &:nth-child({delay})
                     .subicon
-                        transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out
+                        transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
                         animation-iteration-count: 1;
 
 
