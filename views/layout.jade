@@ -15,40 +15,61 @@ html(ng-app="unwatched")
             .subicons-container
               .subicons
                 .subicon-container.top2
-                  a.menu-about.subicon(href="/about")
+                  a.menu-about.subicon(href="/about").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  about
                 .subicon-container.top1
-                  a.menu-tutorial.subicon(href="/tutorial")
+                  a.menu-tutorial.subicon(href="/tutorial").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  Tutorial
                 .subicon-container.bottom1
-                  a.menu-create-room.subicon(href="/createRoom")
+                  a.menu-create-room.subicon(href="/createRoom").tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-building.fa-stack-1x
                         i.fa.fa-plus.fa-stack-1x
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  create a room
                 .subicon-container.bottom2
-                  a.menu-leave-room.subicon(href="/leaveRoom")
+                  a.menu-leave-room.subicon(href="/leaveRoom").tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-building.fa-stack-1x
                         i.fa.fa-arrow-right.fa-stack-1x
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  create a room
             .clearfix
           .icon-container
             a.menu-user.icon(href="/members")
             .subicons-container
               .subicons
                 .subicon-container.top2
-                  a.menu-user-settings.subicon(href="/settings")
+                  a.menu-user-settings.subicon(href="/settings").tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-user.fa-stack-1x
                         i.fa.fa-gear.fa-stack-1x
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  settings
                 .subicon-container.top1
-                  a.menu-user-add.subicon(href="/addUser")
+                  a.menu-user-add.subicon(href="/addUser").tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-user.fa-stack-1x
                         i.fa.fa-plus.fa-stack-1x
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  invite a user
                 .subicon-container.bottom2
-                  a.menu-user-history(href="/history")
+                  a.menu-user-history(href="/history").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  latest chat messages
                     .history-align
                       .history-entry
                         img(src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png")
@@ -62,23 +83,40 @@ html(ng-app="unwatched")
                       .history-entry
                         img(src="http://png-4.findicons.com/files/icons/175/halloween_avatar/256/jack_skellington.png")
                         span bla bla bla....
-
           .icon-container
             a.menu-share.icon(href="/share")
             .subicons-container
               .subicons
                 .subicon-container.top2
-                  a.menu-share-screen.subicon(href="/share/screen")
+                  a.menu-share-screen.subicon(href="/share/screen").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  share your screen
                 .subicon-container.top1
-                  a.menu-share-note.subicon(href="/share/note")
+                  a.menu-share-note.subicon(href="/share/note").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  edit and share a textfile
                 .subicon-container.middle
-                  a.menu-share-code.subicon(href="/share/code")
+                  a.menu-share-code.subicon(href="/share/code").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  edit and share some code
                 .subicon-container.middle
-                  a.menu-share-image.subicon(href="/share/image")
+                  a.menu-share-image.subicon(href="/share/image").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  share a picture
                 .subicon-container.bottom1
-                  a.menu-share-file.subicon(href="/share/files")
+                  a.menu-share-file.subicon(href="/share/files").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  share a file
                 .subicon-container.bottom2
-                  a.menu-share-webcam.subicon(href="/share/webcam")
+                  a.menu-share-webcam.subicon(href="/share/webcam").tooltip
+                    span 
+                      i.fa.fa-long-arrow-left
+                      |  share your webcam
     
     //-          .icon 
                 .fa.fa-file.fa-inverse
