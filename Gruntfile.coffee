@@ -86,6 +86,7 @@ module.exports = (grunt) ->
             "angular.js"
             "angular-route.js"
             "angular-animate.js"
+            "angular-sanitize.js"
             "tinymce.full.min.js"
             "ui-bootstrap-tpls-0.10.0.js"
             "ng-FitText.js"

@@ -1,100 +1,212 @@
 .items-container
+    padding-top 30px
+
     .item
+        width 250px
         float left
+        height (250/4*3)px
+        margin 30px
+        opacity 0.7
+        transition opacity .3s linear
+        transition background .3s linear
         position relative
-        font-family FontAwesome
-        cursor pointer
+        display table
+        border-radius 10px
+        box-shadow 0 0 15px #000
 
-        &:before
+        > div
+            display table-cell
+            vertical-align middle
+            position relative
+            
+
+        &:hover
+            opacity 1
+
+            .item-thumbnail
+                opacity 0.5
+                
+            .item-infos
+                opacity 1
+
+        .item-thumbnail
+            z-index 0
+            padding 10px
+
+
+        .item-infos
+            padding 20px
+            font-size 0.9em
+            text-align left
+            opacity 0
+            transition opacity .3s linear
+            z-index 1
             absolute top left
-            opacity 0.4
-            text-align center
+            border-radius 10px
+            background rgba(27,27,27, 0.9)
+            width 250px
+            height (250/4*3)px
+            color white
 
-        &.note:before
-            content: '\f0f6'
+            .item-controls
+                text-align center
+                position relative
+                margin auto
+                width 175px
+                font-size 2em
+                padding-top 10px
 
-        &.screenshot:before
-            content: '\f1c5'
+                span
+                    float left
+                    padding 10px
+                    cursor pointer
+                    opacity 0.6
+                    transition opacity .3s linear
 
-        &.file:before
-            content: '\f016'
+                    &:hover
+                        opacity 1
 
-        &.shared_screen:before
-            content: '\f1c8'
+
+        &.note
+            .item-thumbnail
+                max-height 180px
+                overflow hidden
+
+                h3
+                    text-align left
+                    text-indent 5px
+                    margin-top 5px
+
+                .content
+                    text-align left
+                    font-size 0.8em
+
+            .item-controls
+                padding-top 0
+
+        &.file
+            .item-thumbnail
+                height 160px
+                .infos
+                    float left
+                    font-size 0.9em
+                    padding-top 20px
+
+                    table
+                        width (248/4*3/2)px
+                        text-align left
+
+                i
+                    color rgb(150, 150, 150)
+                    font-size 10em
+                    float right
+
+            .item-infos
+                .item-controls
+                    width 135px
+                    padding-top 0
+
+        &.code
+            
+            &:hover
+                .item-thumbnail
+                    opacity 1
+                .background
+                    color white
+                    opacity 1
+
+            .item-thumbnail
+                height 180px
+                overflow hidden
+
+                &:before
+                    content ''
+                    color rgb(150, 150, 150)
+                    opacity 0.4
+
+                .content
+                    absolute top left
+                    padding 10px
+                    width 248px
+                    text-align left
+
+                    h3
+                        text-align left
+                        text-indent 5px
+                        margin-top 5px
+                    p
+                        font-size 0.9em
+                        padding 10px
+
+                        code
+                            background transparent
+
+            .item-infos
+                
+                table:before
+                    content ''
+                    color white
+                    opacity 0.3
+                    padding 10px
+
+            .item-infos
+                .item-controls
+                    padding-top 0
+
+            .item-thumbnail, .item-infos table
+                &:before
+                    display block
+                    absolute top right
+                    font-size 10em
+                    z-index -1
+                    font-weight bold
+                    font-style italic
+                    width 100%
+                    text-align right
+                    padding-right 10px
+
+                &.rb:before
+                    content: 'rb'
+                &.java:before
+                    content: 'java'
+                    font-size 5em
+                    font-size 6em
+                    line-height 3.1em
+                &.js:before
+                    content: 'js'
+                &.py:before
+                    content: 'py'
+                &.html:before
+                    font-family FontAwesome
+                    content: '\f13b'
+                    font-weight normal
+                    font-style normal
+                &.css:before
+                    font-family FontAwesome
+                    content: '\f13c'
+                    font-weight normal
+                    font-style normal
+
+        &.shared-screen, &.shared-webcam
+            
+            .item-thumbnail
+                // max-height 170px
+
+                img
+                    max-height 160px
+            
+            .item-infos
+                
+                .item-controls
+                    padding-top 30px
+                    width 135px
 
         &.ng-move, &.ng-enter, &.ng-leave
             transition opacity .3s linear
 
         &.ng-leave.ng-leave-active, &.ng-move, &.ng-enter
             opacity 0
+      
 
         &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
-          opacity 1
-
-        &:hover
-            p
-                opacity 1
-
-            &:before
-                opacity 0.7
-
-        p
-            font-family 'Helvetica Neue', Helvetica, Arial, sans-serif
-        
-
-
-.icons.items-container
-    .item
-        width 20%
-        padding 7%
-
-        &:before
-            width 100%
-            font-size 9.5em
-            text-align center
-
-        p
-            opacity 0
-            transition opacity .3s linear
-            width 100%
-            text-align center
-            font-size 1em
-            absolute bottom left
-            bottom -10px
-            padding 2.5%
-
-        &:hover
-            p
-                opacity 1
-
-.list.items-container
-    padding-top 40px
-
-    .item
-        width 23%
-        margin 1%
-        border-bottom 1px solid darkgrey
-        text-align left
-
-        p
-            text-indent 20px
-
-.span_1_of_2
-    
-    .icons.items-container
-        padding-top 50px
-        .item
-            width 25%
-            padding-top 10%
-
-            p
-                font-size 0.8em
-                bottom 0
-            
-            &:before
-                font-size 4.5em
-
-    .list.items-container
-        padding-top 7.5%
-        .item
-            width 48%
+            opacity 1
