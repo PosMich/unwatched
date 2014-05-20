@@ -2,10 +2,12 @@
     z-index 10
     .panel
         margin-bottom 0px
-        border-radius 0
+        //border-radius 10px 0 0 0
         border-top 0
         border-right 0
         border-bottom 0
+        border-left 1px solid rgba(120,120,120,0.5)
+
 
         .panel-heading 
             border-radius 0
@@ -17,10 +19,12 @@
         input.form-control
             height 40px
 
+
+
 .chat-container
     fixed bottom right
     margin-bottom 0px
-
+    z-index 10000
     .panel-body
         overflow-y: auto
 
@@ -96,6 +100,10 @@
                     text-align right
 
 .chat-container.compressed
+    border none
+    border-radius 10px 0 0 0 
+    .panel-heading
+        border-radius 10px 0 0 0 
     .well
         max-width 90%
         font-size 0.9em
@@ -115,7 +123,10 @@
             padding 0
 
 .chat-container.minimized
-
+    border none
+    border-radius 10px 0 0 0 
+    .panel-heading
+        border-radius 10px 0 0 0 
     .panel-heading
         border-radius 10px 0 0 0
         font-size 0.9em
