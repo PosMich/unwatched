@@ -87,7 +87,7 @@
                     border-radius 25px
 
                     box-shadow: 0px 1px 20px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
-                    text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(255,255,255,0.3);
+                    text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(255,255,255,0.3);
                     
                     font-family FontAwesome
                     font-style normal
@@ -360,30 +360,95 @@
                                     top 12px
                                     //top 10px
                                     font-size 29px
+                &.menu-share-screen
+                    &:before
+                        content "\f108"
+                        padding-left 0px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
                 
+                &.menu-share-note
+                    &:before
+                        content "\f0f6"
+                        padding-left 1px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
+
+                &.menu-share-code
+                    &:before
+                        content "\f121"
+                        padding-left 1px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
+                    
+                &.menu-share-image
+                    &:before
+                        content "\f03e"
+                        padding-left 1px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
+                
+                &.menu-share-file
+                    &:before
+                        content "\f0c7"
+                        padding-left 1px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
+                
+                &.menu-share-webcam
+                    &:before
+                        content "\f03d"
+                        padding-left 1px
+                        font-size 30px
+                        transition font-size 300ms ease-in-out
+                    &:hover:before
+                        font-size 40px
+                    
+            /*.fa.fa-file.fa-inverse
+                .subicon-container
+                  .subicons
+                    .subicon.top2
+                      .fa.fa-desktop
+                    .subicon.top1
+                      .fa.fa-file-text-o
+                    .subicon.middle
+                      .fa.fa-picture-o
+                    .subicon.bottom1
+                      .fa.fa-floppy-o
+                    .subicon.bottom2
+                      .fa.fa-camera
+            */       
+
             a.menu-user-history
                 .history-align
-                    //width 200px
-                    //border 1px solid rgba(0,0,0,0.4)
-                    //background linear-gradient(top, white, white), linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.1))
-                    //background linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url("img/noise.png"), linear-gradient(top, white, white)  
-                    //border-radius 3px
-                    
                     padding-top 5px
                     padding-bottom 5px
                     border-radius 10px
+                    transition box-shadow 300ms ease-in-out, background-color 300ms ease-in-out
+
+                    &:hover
+                        box-shadow 0px 0px 15px 0px grey inset,0px 0px 20px 0px grey
+                        background-color rgba(175,175,175,0.7)
+
                     .history-entry
                         opacity 0
                         visibility hidden
                         width 200px
-                        border-radius 5px
-                        //border 1px solid rgba(0,0,0,0.4)
+                        
                         padding 5px
                         margin 5px
-                        //display table
-                        text-align left
-                        box-shadow 0px 0px 25px 0px rgba(50, 50, 50, 0.75)
-                        background linear-gradient(top, rgba(0,0,0,0.1), rgba(0,0,0,0.1))                            
+                        
+                        text-align left                       
                         img
                             float left
                             min-width 30px
@@ -392,8 +457,8 @@
                             max-height 30px
                             width 30px
                             height 30px
-                            margin-right 5px
                         span
+                            text-shadow: 0px 0px 15px rgba(0,0,0,1), 0px 0px 5px rgba(0,0,0,1)
                             transition color 300ms ease-in-out
                             display block
                             width 150px
@@ -402,22 +467,14 @@
                             line-height 30px
                             color white
                             vertical-align middle
+                            padding-left 5px
                         
-                        /*&:hover
-                            background linear-gradient(top, rgba(0,0,0,0.5), rgba(0,0,0,0.6))
-                        */
-                    &:hover
-                        .history-entry
-                            box-shadow 0px 0px 10px 0px rgba(50, 50, 50, 0.75)
-                            span
-                                color black
-                            background linear-gradient(top, rgba(255,255,255,0.1), rgba(255,255,255,0.1)) 
-
                 &:hover
                     text-decoration none
+                    box-shadow 0px 0px 20px 0px black
 
                                 
-            for delay in 1 2 3 4 5
+            for delay in 1 2 3 4 5 6
                 &:nth-child({delay})
                     .subicon
                         transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
