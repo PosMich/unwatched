@@ -11,24 +11,24 @@ html(ng-app="unwatched")
       .sidenav
         .icon-align
           .icon-container
-            a.menu-home.icon(href="/").tooltip
+            a.menu-home.side-icon(href="/").side-tooltip
               .popover
                 .arrow
                 .content home
             .subicons-container
               .subicons
                 .subicon-container.top2
-                  a.menu-about.subicon(href="/about").tooltip
+                  a.menu-about.subicon(href="/about").side-tooltip
                     .popover
                       .arrow
                       .content about
                 .subicon-container.top1
-                  a.menu-tutorial.subicon(href="/tutorial").tooltip
+                  a.menu-tutorial.subicon(href="/tutorial").side-tooltip
                     .popover
                       .arrow
                       .content Tutorial
                 .subicon-container.bottom1
-                  a.menu-create-room.subicon(href="/createRoom").tooltip
+                  a.menu-create-room.subicon(href="/createRoom").side-tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-building.fa-stack-1x
@@ -37,7 +37,7 @@ html(ng-app="unwatched")
                       .arrow
                       .content create a room
                 .subicon-container.bottom2
-                  a.menu-leave-room.subicon(href="/leaveRoom").tooltip
+                  a.menu-leave-room.subicon(href="/leaveRoom").side-tooltip
                     .stack-align.clearfix
                       span.fa-stack
                         i.fa.fa-building.fa-stack-1x
@@ -47,7 +47,7 @@ html(ng-app="unwatched")
                       .content leave room
             .clearfix
           .icon-container
-            a.menu-user.icon(href="/members").tooltip
+            a.menu-user.side-icon(href="/members").side-tooltip
               .notification 10
               .popover
                 .arrow
@@ -55,7 +55,7 @@ html(ng-app="unwatched")
             .subicons-container
               .subicons
                 .subicon-container.top2
-                  a.menu-user-settings.subicon(href="/settings").tooltip
+                  a.menu-user-settings.subicon(href="/settings").side-tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-user.fa-stack-1x
@@ -64,7 +64,7 @@ html(ng-app="unwatched")
                       .arrow
                       .content settings
                 .subicon-container.top1
-                  a.menu-user-add.subicon(href="/addUser").tooltip
+                  a.menu-user-add.subicon(href="/addUser").side-tooltip
                     .stack-align
                       span.fa-stack
                         i.fa.fa-user.fa-stack-1x
@@ -73,7 +73,7 @@ html(ng-app="unwatched")
                       .arrow
                       .content add a user
                 .subicon-container.bottom2
-                  a.menu-user-history(href="/history").tooltip
+                  a.menu-user-history(href="/history").side-tooltip
                     .popover
                       .arrow
                       .content chat history
@@ -91,7 +91,7 @@ html(ng-app="unwatched")
                         img(src="http://png-4.findicons.com/files/icons/175/halloween_avatar/256/jack_skellington.png")
                         span bla bla bla....
           .icon-container
-            a.menu-share.icon(href="/share").tooltip
+            a.menu-share.side-icon(href="/share").side-tooltip
               .notification 5
               .popover
                 .arrow
@@ -99,32 +99,32 @@ html(ng-app="unwatched")
             .subicons-container
               .subicons
                 .subicon-container.top2
-                  a.menu-share-screen.subicon(href="/share/screen").tooltip
+                  a.menu-share-screen.subicon(href="/share/screen").side-tooltip
                     .popover
                       .arrow
                       .content share your screen
                 .subicon-container.top1
-                  a.menu-share-note.subicon(href="/share/note").tooltip
+                  a.menu-share-note.subicon(href="/share/note").side-tooltip
                     .popover
                       .arrow
                       .content edit and share a textfile
                 .subicon-container.middle
-                  a.menu-share-code.subicon(href="/share/code").tooltip
+                  a.menu-share-code.subicon(href="/share/code").side-tooltip
                     .popover
                       .arrow
                       .content edit and share some code
                 .subicon-container.middle
-                  a.menu-share-image.subicon(href="/share/image").tooltip
+                  a.menu-share-image.subicon(href="/share/image").side-tooltip
                     .popover
                       .arrow
                       .content share a picture
                 .subicon-container.bottom1
-                  a.menu-share-file.subicon(href="/share/files").tooltip
+                  a.menu-share-file.subicon(href="/share/files").side-tooltip
                     .popover
                       .arrow
                       .content share a file
                 .subicon-container.bottom2
-                  a.menu-share-webcam.subicon(href="/share/webcam").tooltip
+                  a.menu-share-webcam.subicon(href="/share/webcam").side-tooltip
                     .popover
                       .arrow
                       .content  share your webcam
@@ -146,7 +146,7 @@ html(ng-app="unwatched")
 
 
     .view-container(ng-controller="AppCtrl")
-      .clearfix.view-frame(ng-view)
+      .clearfix.view-frame.container-fluid(ng-view)
 
     .chat(chat, ng-if="showChat")
 

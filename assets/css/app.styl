@@ -1,7 +1,8 @@
 @require "lib/reset.css"
-@require "lib/responsivegridsystem/*.css"
+// @require "lib/responsivegridsystem/*.css"
 @require "lib/font-awesome.css"
-@require "lib/bootstrap-custom/*.css"
+@require "lib/bootstrap.css"
+@require "lib/bootstrap-theme.css"
 @require "mixins.styl"
 @require "animations.styl"
 @require "forms.styl"
@@ -50,10 +51,13 @@ body:after
 
 .view-container
     width 100%
-    //padding-top 20px
 
     .view-frame
         width 100%
+
+        &.chat-expanded
+            width 50%
+            margin-left 0
 
     .view-frame.ng-enter
         animation 1.1s fade-in-delayed

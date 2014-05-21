@@ -4,73 +4,70 @@
     background rgba(27,27,27, 0.8)
     height 40px
     z-index 10000
+    padding 3px        
 
-    .controls
-        padding 3spx
+    input#searchString
+        width 200px
+        transition width .3s cubic-bezier(0.230, 1.000, 0.320, 1.000)
+        border-radius 0
+        float right
+        padding-right 10px
 
-        input#searchString
-            width 175px
+        &:focus
+            width 275px
+
+    .layout
+
+        span
+            padding 3px 5px
             float right
-            transition width .3s cubic-bezier(0.230, 1.000, 0.320, 1.000)
-            border-radius 0
+            margin 2px
 
-            &:focus
-                width 225px
+            &.active
+                background rgba(27,27,27, 1)
+                border-radius 5px
 
-        .layout
-            width 75px
-            float right
-            padding-top 5px
-
-            span
-                padding 5px
-
-                &.active
-                    background rgba(27,27,27, 1)
-                    border-radius 5px
-
-                &:hover
-                    i
-                        opacity 1
-
+            &:hover
                 i
-                    color white
-                    padding 5px
-                    cursor pointer
-                    opacity 0.6
-                    transition opacity .2s linear
+                    opacity 1
 
-        .sorting
-            float left
-            padding-left 20px
-            padding-top 1px
-            color white
-            font-size 0.9em
-
-            div, span
-                padding 7px
-                float left
-                margin 0 2px
-
-            div
+            i
+                color white
+                padding 5px
                 cursor pointer
-                position relative
-                transition background .3s ease-in-out
+                opacity 0.6
+                transition opacity .2s linear
 
-                &.active, &:hover
-                    background rgba(27,27,27, 1)
-                    border-radius 5px
+    .sorting
+        color white
+        font-size 0.9em
+        padding-top 1px
 
-                &.active:after
-                    font-family FontAwesome
-                    content: '\f0dd'
-                    padding-left 7px
+        div, span
+            padding 7px 10px
+            float left
+            margin 0 2px
 
-            &.ascending
-                .active:after
-                    content: '\f0de'
+        div
+            cursor pointer
+            position relative
+            transition background .3s ease-in-out
 
-            
-.span_1_of_2
+            &.active, &:hover
+                background rgba(27,27,27, 1)
+                border-radius 5px
+
+            &.active:after
+                font-family FontAwesome
+                content: '\f0dd'
+                padding-left 7px
+
+        &.ascending
+            .active:after
+                content: '\f0de'
+
+.chat-expanded
     .heading
         width 50%
+    .sorting
+        font-size 0.8em

@@ -1,6 +1,5 @@
-div
-    .item-thumbnail
-        img(src="images/{{item.thumbnail}}")
+.item(class="{{item.category}}")
+    .item-thumbnail(style="background-image: url(images/{{item.thumbnail}})")
     .item-infos
         table
             tr
@@ -20,11 +19,7 @@ div
                     b Created
                 td {{item.created}}
         .item-controls.clearfix
-            span
-                i.fa.fa-trash-o
-            span
-                i.fa.fa-clipboard
-            span
-                i.fa.fa-download
-            span
-                i.fa.fa-eye
+            i.fa.fa-trash-o
+            i.fa.fa-clipboard
+            i.fa.fa-download
+            i.fa.fa-eye

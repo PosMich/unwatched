@@ -1,4 +1,4 @@
-div
+.item(class="{{item.category}}")
     .item-thumbnail(ng-class="item.extension")
         .content
             h3 {{item.name}}.{{item.extension}}
@@ -28,11 +28,7 @@ div
                 td {{item.created}}
 
         .item-controls.clearfix
-            span
-                i.fa.fa-trash-o
-            span
-                i.fa.fa-clipboard
-            span
-                i.fa.fa-download
-            span
-                i.fa.fa-pencil
+            i.fa.fa-trash-o
+            i.fa.fa-clipboard
+            i.fa.fa-download
+            i.fa.fa-pencil

@@ -1,55 +1,71 @@
-.section.group
-    .col.span_1_of_2
-        .heading.clearfix
-            .controls.clearfix
-                form(name="controlSearch", no-validate)
-                    .control-input
-                        input#searchString.form-control(type="text", 
-                            required, ng-model="controls.searchString",
-                            placeholder="Type to search...")
-                .layout
-                    span(ng-click="controls.layout='layout-list'",
-                        ng-class="{'active':controls.layout=='layout-list'}")
-                        i.fa.fa-list-ul
-                    span(ng-click="controls.layout='layout-icons'",
-                        ng-class="{'active':controls.layout=='layout-icons'}")
-                        i.fa.fa-th
+.heading.clearfix.controls
+    .row
+        .sorting.clearfix.col-xs-6(ng-class="{'ascending':controls.sorting.ascending}")
+            span Sort by:
+            div(ng-class="{'active':controls.sorting.state=='name'}", 
+                ng-click="setSortingState('name')") Name
+            div(ng-class="{'active':controls.sorting.state=='category'}", 
+                ng-click="setSortingState('category')") Category
+            div(ng-class="{'active':controls.sorting.state=='author'}", 
+                ng-click="setSortingState('author')") Author
+            div(ng-class="{'active':controls.sorting.state=='created'}", 
+                ng-click="setSortingState('created')") Date
+            div(ng-class="{'active':controls.sorting.state=='size'}", 
+                ng-click="setSortingState('size')") Filesize
 
-                .sorting.clearfix(ng-class="{'ascending':controls.sorting.ascending}")
-                    span Sort by:
-                    div(ng-class="{'active':controls.sorting.state=='name'}", 
-                        ng-click="setSortingState('name')") Name
-                    div(ng-class="{'active':controls.sorting.state=='category'}", 
-                        ng-click="setSortingState('category')") Category
-                    div(ng-class="{'active':controls.sorting.state=='author'}", 
-                        ng-click="setSortingState('author')") Author
-                    div(ng-class="{'active':controls.sorting.state=='created'}", 
-                        ng-click="setSortingState('created')") Date
-                    div(ng-class="{'active':controls.sorting.state=='size'}", 
-                        ng-click="setSortingState('size')") Filesize
+        .layout.col-xs-6
+            form(name="controlSearch", no-validate)
+                .control-input
+                    input#searchString.form-control(type="text", 
+                        required, ng-model="controls.searchString",
+                        placeholder="Type to search...")
+            span(ng-click="controls.layout='layout-icons'",
+                ng-class="{'active':controls.layout=='layout-icons'}")
+                i.fa.fa-th
+            span(ng-click="controls.layout='layout-list'",
+                ng-class="{'active':controls.layout=='layout-list'}")
+                i.fa.fa-list-ul
 
 
-        ul.items-container.clearfix(
-            ng-class="{'layout-list':controls.layout=='layout-list', 'layout-icons':controls.layout=='layout-icons'}",)
-            li.item(ng-class="item.category",
-                ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending")
 
-                ng-include(src="item.templateUrl", ng-if="controls.layout=='layout-icons'")
+ul.items-container.clearfix.row(class="{{controls.layout}}")
+    
+    //- .col-xs-1
+    //- .col-xs-2 Name
+    //- div(ng-class="{'col-xs-4':chat_state=='expanded', 'col-xs-2':chat_state!='expanded'}")
+    //-     | Author
+    //- div(ng-class="{'col-xs-2':chat_state=='expanded', 'col-xs-1':chat_state!='expanded'}")
+    //-     | Filesize
+    //- div.col-xs-2(ng-show="chat_state!='expanded'")
+    //-     | Created
+    //- div(ng-class="{'col-xs-3':chat_state=='expanded', 'col-xs-offset-2 col-xs-2':chat_state!='expanded'}")
+    //-     | Actions
 
-                .clearfix(ng-if="controls.layout=='layout-list'", class="{item.category}")
-                    .category-icon(class="{{item.category}}")
-                    .name <b>Name:</b> {{item.name}}
-                    .author <b>Author:</b> {{item.author}}
-                    .size <b>Size:</b> {{item.size}}
-                    .created <b>Created:</b> {{item.created}}
+    li(ng-class="{'col-xs-12 item-container':controls.layout=='layout-list', 'col-xl-2 col-md-3 col-sm-6':controls.layout=='layout-icons'&&chat_state!='expanded', 'col-xl-4 col-md-6 col-sm-12':controls.layout=='layout-icons'&&chat_state=='expanded'}",
+        ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending",)
 
-                    .item-controls.clearfix
-                        i.fa.fa-trash-o
-                        i.fa.fa-clipboard
-                        i.fa.fa-download(
-                            ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot'")
-                        i.fa.fa-pencil(
-                            ng-show="item.category=='note' || item.category=='code'")
-                        i.fa.fa-eye(
-                            ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
-                
+        .item-container(ng-if="controls.layout=='layout-icons'", fit-item-height)
+            ng-include(src="item.templateUrl")
+
+
+        .row(ng-if="controls.layout=='layout-list'", class="{{item.category}}")
+            .col-xs-1.category-icon(class="{{item.category}}")
+            .name(ng-class="{'col-xs-3':chat_state=='expanded', 'col-xs-2':chat_state!='expanded'}")
+                | {{item.name}}
+            .author(ng-class="{'col-xs-4':chat_state=='expanded', 'col-xs-2':chat_state!='expanded'}")
+                | {{item.author}}
+            .size.col-xs-1
+                | {{item.size}}
+            .created.col-xs-2(ng-show="chat_state!='expanded'")
+                | {{item.created}}
+
+            .item-controls.col-xs-3.clearfix(
+                ng-class="{'col-xs-offset-1':chat_state!='expanded'}")
+                i.fa.fa-trash-o
+                i.fa.fa-clipboard
+                i.fa.fa-download(
+                    ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot'")
+                i.fa.fa-pencil(
+                    ng-show="item.category=='note' || item.category=='code'")
+                i.fa.fa-eye(
+                    ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
