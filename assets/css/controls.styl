@@ -39,7 +39,37 @@
                     cursor pointer
                     opacity 0.6
                     transition opacity .2s linear
-                        
+
+        .sorting
+            float left
+            padding-left 20px
+            padding-top 1px
+            color white
+            font-size 0.9em
+
+            div, span
+                padding 7px
+                float left
+                margin 0 2px
+
+            div
+                cursor pointer
+                position relative
+                transition background .3s ease-in-out
+
+                &.active, &:hover
+                    background rgba(27,27,27, 1)
+                    border-radius 5px
+
+                &.active:after
+                    font-family FontAwesome
+                    content: '\f0dd'
+                    padding-left 7px
+
+            &.ascending
+                .active:after
+                    content: '\f0de'
+
             
 .span_1_of_2
     .heading

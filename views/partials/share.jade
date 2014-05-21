@@ -1,12 +1,12 @@
 .section.group
     .col.span_1_of_2
         .heading.clearfix
-            .controls
+            .controls.clearfix
                 form(name="controlSearch", no-validate)
                     .control-input
                         input#searchString.form-control(type="text", 
                             required, ng-model="controls.searchString",
-                            placeholder="Click to search")
+                            placeholder="Type to search...")
                 .layout
                     span(ng-click="controls.layout='layout-list'",
                         ng-class="{'active':controls.layout=='layout-list'}")
@@ -15,199 +15,41 @@
                         ng-class="{'active':controls.layout=='layout-icons'}")
                         i.fa.fa-th
 
-        ul.items-container.clearfix(ng-class="{'list':controls.layout=='layout-list', 'icons':controls.layout=='layout-icons'}",)
+                .sorting.clearfix(ng-class="{'ascending':controls.sorting.ascending}")
+                    span Sort by:
+                    div(ng-class="{'active':controls.sorting.state=='name'}", 
+                        ng-click="setSortingState('name')") Name
+                    div(ng-class="{'active':controls.sorting.state=='category'}", 
+                        ng-click="setSortingState('category')") Category
+                    div(ng-class="{'active':controls.sorting.state=='author'}", 
+                        ng-click="setSortingState('author')") Author
+                    div(ng-class="{'active':controls.sorting.state=='created'}", 
+                        ng-click="setSortingState('created')") Date
+                    div(ng-class="{'active':controls.sorting.state=='size'}", 
+                        ng-click="setSortingState('size')") Filesize
+
+
+        ul.items-container.clearfix(
+            ng-class="{'layout-list':controls.layout=='layout-list', 'layout-icons':controls.layout=='layout-icons'}",)
             li.item(ng-class="item.category",
-                ng-repeat="item in shared_items | filter:controls.searchString")
-                div(ng-if="item.category=='screenshot'")
-                    .item-thumbnail
-                        img(src="images/{{item.thumbnail}}")
-                    .item-infos
-                        table
-                            tr
-                                td
-                                    b Name
-                                td {{item.name}}
-                            tr
-                                td
-                                    b Size
-                                td {{item.size}}
-                            tr
-                                td
-                                    b Author
-                                td {{item.author}}
-                            tr
-                                td
-                                    b Created
-                                td {{item.created}}
-                        .item-controls.clearfix
-                            span
-                                i.fa.fa-trash-o
-                            span
-                                i.fa.fa-clipboard
-                            span
-                                i.fa.fa-download
-                            span
-                                i.fa.fa-eye
-                div(ng-if="item.category=='note'")
-                    .item-thumbnail
-                        h3 {{item.thumbnail.title}}
-                        .content(ng-bind-html="item.thumbnail.content")
-                    .item-infos
-                        table
-                            tr
-                                td
-                                    b Name
-                                td {{item.name}}
-                            tr
-                                td
-                                    b Size
-                                td {{item.size}}
-                            tr
-                                td
-                                    b Author
-                                td {{item.author}}
-                            tr
-                                td
-                                    b Created
-                                td {{item.created}}
-                            tr
-                                td
-                                    b Edited
-                                td {{item.edited}}
-                        .item-controls.clearfix
-                            span
-                                i.fa.fa-trash-o
-                            span
-                                i.fa.fa-clipboard
-                            span
-                                i.fa.fa-download
-                            span
-                                i.fa.fa-pencil
-                div(ng-if="item.category=='file'")
-                    .item-thumbnail
-                        .infos
-                            table
-                                tr
-                                    td
-                                        b Name
-                                    td {{item.name}}
-                                tr
-                                    td
-                                        b Ext.
-                                    td {{item.extension}}
-                        i.fa.fa-file
-                    .item-infos
-                        table
-                            tr
-                                td
-                                    b Name
-                                td {{item.name}}
-                                tr
-                                    td
-                                        b Extension
-                                    td {{item.extension}}
-                            tr
-                                td
-                                    b Size
-                                td {{item.size}}
-                            tr
-                                td
-                                    b Author
-                                td {{item.author}}
-                            tr
-                                td
-                                    b Created
-                                td {{item.created}}
+                ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending")
 
-                        .item-controls.clearfix
-                            span
-                                i.fa.fa-trash-o
-                            span
-                                i.fa.fa-clipboard
-                            span
-                                i.fa.fa-download
+                ng-include(src="item.templateUrl", ng-if="controls.layout=='layout-icons'")
 
-                div(ng-if="item.category=='code'")
-                    .item-thumbnail(ng-class="item.extension")
-                        .content
-                            h3 {{item.name}}.{{item.extension}}
-                            p
-                                code(ng-bind-html="item.thumbnail")
-                    .item-infos(ng-class="item.extension")
-                        table
-                            tr
-                                td
-                                    b Name
-                                td {{item.name}}
-                                tr
-                                    td
-                                        b Extension
-                                    td {{item.extension}}
-                            tr
-                                td
-                                    b Size
-                                td {{item.size}}
-                            tr
-                                td
-                                    b Author
-                                td {{item.author}}
-                            tr
-                                td
-                                    b Created
-                                td {{item.created}}
+                .clearfix(ng-if="controls.layout=='layout-list'", class="{item.category}")
+                    .category-icon(class="{{item.category}}")
+                    .name <b>Name:</b> {{item.name}}
+                    .author <b>Author:</b> {{item.author}}
+                    .size <b>Size:</b> {{item.size}}
+                    .created <b>Created:</b> {{item.created}}
 
-                        .item-controls.clearfix
-                            span
-                                i.fa.fa-trash-o
-                            span
-                                i.fa.fa-clipboard
-                            span
-                                i.fa.fa-download
-                            span
-                                i.fa.fa-pencil
-
-                div(ng-if="item.category=='shared-screen'")
-                    .item-thumbnail
-                        img(src="images/{{item.thumbnail}}")
-                    .item-infos
-                        table
-                            tr
-                                td
-                                    b Name
-                                td {{item.name}}
-                            tr
-                                td
-                                    b Published
-                                td {{item.created}}
-                        .item-controls.clearfix
-                            span
-                                i.fa.fa-trash-o
-                            span
-                                i.fa.fa-clipboard
-                            span
-                                i.fa.fa-eye
-
-                div(ng-if="item.category=='shared-webcam'")
-                    .item-thumbnail
-                        img(src="images/{{item.thumbnail}}")
-                    .item-infos
-                        table
-                            tr
-                                td
-                                    b Name
-                                td {{item.name}}
-                            tr
-                                td
-                                    b Published
-                                td {{item.created}}
-                        .item-controls.clearfix
-                            span
-                                i.fa.fa-trash-o
-                            span
-                                i.fa.fa-clipboard
-                            span
-                                i.fa.fa-eye
-            
-
-    .chat(chat)
+                    .item-controls.clearfix
+                        i.fa.fa-trash-o
+                        i.fa.fa-clipboard
+                        i.fa.fa-download(
+                            ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot'")
+                        i.fa.fa-pencil(
+                            ng-show="item.category=='note' || item.category=='code'")
+                        i.fa.fa-eye(
+                            ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
                 

@@ -9,9 +9,10 @@ app.controller "AppCtrl", [
   "$scope"
   ($scope) ->
 
-    if !$scope.chat_state?
-      console.log "changing state"
-      $scope.chat_state = "expanded"
+    # if !$scope.chat_state?
+    #   $scope.chat_state = "compressed"
+    # if !$scope.chat_state_history?
+    #   $scope.chat_state_history = ""
 
 ]
 
@@ -106,9 +107,12 @@ app.controller "ShareCtrl", [
     $scope.shared_items = []
 
     $scope.controls = {}
-    $scope.controls.layout = "icons"
+    $scope.controls.layout = "layout-list"
+    $scope.controls.sorting = {}
+    $scope.controls.sorting.state = "name"
+    $scope.controls.sorting.ascending = false
 
-    shared_items_amount = Math.floor(Math.random() * 20 + 1) + 50
+    shared_items_amount = Math.floor(Math.random() * 20 + 1) + 10
 
     file_names = [
       'Lothar',
@@ -172,8 +176,16 @@ app.controller "ShareCtrl", [
         file.thumbnail = "screenshot-webcam.jpg"
         file.size = 0
 
+      file.templateUrl = "/partials/items/" + file.category + ".jade"
 
       $scope.shared_items.push file
+
+    $scope.setSortingState = (state) ->
+      if $scope.controls.sorting.state is state
+        $scope.controls.sorting.ascending = !$scope.controls.sorting.ascending
+      else
+        $scope.controls.sorting.ascending = false
+        $scope.controls.sorting.state = state
 
 ]
 
@@ -185,8 +197,7 @@ app.controller "ChatCtrl", [
   ($scope) ->
 
     $scope.chat = {}
-    $scope.chat.state = $scope.$parent.$parent.chat_state || "minimized"
-    console.log $scope.chat.state
+    $scope.chat.state = "compressed"
     $scope.chat.state_history = ""
     $scope.chat.messages = [
       # dummy entries
@@ -222,21 +233,17 @@ app.controller "ChatCtrl", [
 
     $scope.chat.compress = ->
       $scope.chat.state = "compressed"
-      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.expand = ->
       $scope.chat.state = "expanded"
-      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.minimize = ->
       $scope.chat.state_history = $scope.chat.state
       $scope.chat.state = "minimized"
-      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.maximize = ->
       if $scope.chat.state is "minimized"
         $scope.chat.state = $scope.chat.state_history
-        $scope.$parent.$parent.chat_state = $scope.chat.state
 
 ]
 
