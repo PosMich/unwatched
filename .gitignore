@@ -26,6 +26,7 @@ node_modules
 builtAssets/
 tmp/
 
+cert/
 
 userconfig.coffee
 userconfig*
