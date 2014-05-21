@@ -7,7 +7,7 @@ html(ng-app="unwatched")
     meta(name="fragment" content="!")
     link(type='text/css', rel='stylesheet', href='/css/app.css')
   body
-    .sidenav-container
+    .sidenav-container(onmousedown="return false")
       .sidenav
         .icon-align
           .icon-container
@@ -45,6 +45,7 @@ html(ng-app="unwatched")
             .clearfix
           .icon-container
             a.menu-user.icon(href="/members").tooltip
+              .notification 10
               span
                 i.fa.fa-long-arrow-left
                 |  show/invite members
@@ -76,18 +77,19 @@ html(ng-app="unwatched")
                     .history-align
                       .history-entry
                         img(src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png")
-                        span bla bla blaasd a f....
+                        span bla bla blaasd aaaa f....
                       .history-entry
                         img(src="https://cdn1.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
-                        span bla bla bla....
+                        span bla blaasd aaaa f....
                       .history-entry
                         img(src="http://icons.iconarchive.com/icons/hopstarter/superhero-avatar/256/Avengers-Black-Widow-icon.png")
-                        span bla bla bla....
+                        span bla bla blaasd aaaa f....
                       .history-entry
                         img(src="http://png-4.findicons.com/files/icons/175/halloween_avatar/256/jack_skellington.png")
                         span bla bla bla....
           .icon-container
             a.menu-share.icon(href="/share").tooltip
+              .notification 5
               span
                 i.fa.fa-long-arrow-left
                 |  share overview
