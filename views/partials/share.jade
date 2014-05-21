@@ -1,7 +1,7 @@
 .section.group
     .col.span_1_of_2
         .heading.clearfix
-            .controls
+            .controls.clearfix
                 form(name="controlSearch", no-validate)
                     .control-input
                         input#searchString.form-control(type="text", 
@@ -15,33 +15,35 @@
                         ng-class="{'active':controls.layout=='layout-icons'}")
                         i.fa.fa-th
 
+                .sorting.clearfix(ng-class="{'ascending':controls.sorting.ascending}")
+                    span Sort by:
+                    div(ng-class="{'active':controls.sorting.state=='name'}", 
+                        ng-click="setSortingState('name')") Name
+                    div(ng-class="{'active':controls.sorting.state=='category'}", 
+                        ng-click="setSortingState('category')") Category
+                    div(ng-class="{'active':controls.sorting.state=='author'}", 
+                        ng-click="setSortingState('author')") Author
+                    div(ng-class="{'active':controls.sorting.state=='created'}", 
+                        ng-click="setSortingState('created')") Date
+                    div(ng-class="{'active':controls.sorting.state=='size'}", 
+                        ng-click="setSortingState('size')") Filesize
+
+
         ul.items-container.clearfix(
             ng-class="{'layout-list':controls.layout=='layout-list', 'layout-icons':controls.layout=='layout-icons'}",)
             li.item(ng-class="item.category",
-                ng-repeat="item in shared_items | filter:controls.searchString")
+                ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending")
 
                 ng-include(src="item.templateUrl", ng-if="controls.layout=='layout-icons'")
 
                 .clearfix(ng-if="controls.layout=='layout-list'", class="{item.category}")
                     .category-icon(class="{{item.category}}")
-                    .name
-                        b
-                            | Name: 
-                        | {{item.name}}
-                    .author
-                        b
-                            | Author: 
-                        | {{item.author}}
-                    .size
-                        b
-                            | Size: 
-                        | {{item.size}}
-                    .created
-                        b
-                            | Created: 
-                        | {{item.created}}
+                    .name <b>Name:</b> {{item.name}}
+                    .author <b>Author:</b> {{item.author}}
+                    .size <b>Size:</b> {{item.size}}
+                    .created <b>Created:</b> {{item.created}}
 
-                    .item-controls
+                    .item-controls.clearfix
                         i.fa.fa-trash-o
                         i.fa.fa-clipboard
                         i.fa.fa-download(

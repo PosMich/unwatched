@@ -107,8 +107,11 @@ app.controller "ShareCtrl", [
 
     $scope.controls = {}
     $scope.controls.layout = "layout-list"
+    $scope.controls.sorting = {}
+    $scope.controls.sorting.state = "name"
+    $scope.controls.sorting.ascending = false
 
-    shared_items_amount = Math.floor(Math.random() * 20 + 1) + 50
+    shared_items_amount = Math.floor(Math.random() * 20 + 1) + 10
 
     file_names = [
       'Lothar',
@@ -175,6 +178,13 @@ app.controller "ShareCtrl", [
       file.templateUrl = "/partials/items/" + file.category + ".jade"
 
       $scope.shared_items.push file
+
+    $scope.setSortingState = (state) ->
+      if $scope.controls.sorting.state is state
+        $scope.controls.sorting.ascending = !$scope.controls.sorting.ascending
+      else
+        $scope.controls.sorting.ascending = false
+        $scope.controls.sorting.state = state
 
 ]
 

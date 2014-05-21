@@ -270,7 +270,6 @@
                         width 195px
 
                 .item-controls
-                    float right
 
                     i
                         padding-left 10px
@@ -279,6 +278,7 @@
                         opacity 0.7
                         cursor pointer
                         transition opacity .3s linear, width 300ms ease-in-out, height 300ms ease-in-out, font-size 300ms ease-in-out
+                        float right
 
                         &:hover
                             opacity 1
@@ -291,7 +291,7 @@
 
     .item
         &.ng-move, &.ng-enter, &.ng-leave
-            transition opacity .3s linear
+            transition opacity .75s ease-in-out
 
         &.ng-leave.ng-leave-active, &.ng-move, &.ng-enter
             opacity 0
