@@ -1,6 +1,6 @@
 request = require "request"
+https   = require "https"
 config  = require "../../modules/config"
-
 
 
 describe "server", ->
@@ -8,14 +8,30 @@ describe "server", ->
   response = undefined
   body = undefined
   # could take a while
-  it "should respond on port "+config.port, (done) ->
-    request "http://localhost:"+config.port, (_error, _response, _body) ->
-      error = _error
-      response = _response
-      body = _body
+  it "should respond on port "+(config.port+1), (done) ->
+    console.log "//////////////////////////////////////////////"
+    req = https.request 
+      host: "localhost"
+      port: (config.port+1)
+      path: '/'
+      method: 'GET'
+      rejectUnauthorized: false
+      requestCert: true
+      agent: false
+    , (res) ->
+      console.log res
+      console.log "************************************************"
+      #error = _error
+      response = res
 
-      expect(error).toBeNull()
+      #body = _body
+      
+
+      #expect(error).toBeNull()
       done()
+    req.on "error", (error) ->
+      console.log error
+    req.end()
   , 10000
 
   it "should return statusCode 200", (done) ->

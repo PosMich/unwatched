@@ -26,7 +26,8 @@
     "uglify-js": "^2.4.13",
     "walk": "latest",
     "which": "latest",
-    "wrench": "latest"
+    "wrench": "latest",
+    "ws": "^0.4.31"
   },
   "devDependencies": {
     "coffee-script": "~1.6.3",
@@ -47,6 +48,7 @@
     "grunt-karma": "^0.8.3",
     "grunt-node-inspector": "^0.1.5",
     "grunt-nodemon": "^0.2.1",
+    "http-https": "^1.0.0",
     "jasmine-node": "latest",
     "karma": "latest",
     "karma-coffee-preprocessor": "^0.2.1",
