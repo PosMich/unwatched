@@ -102,12 +102,20 @@ app.controller "MembersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-  "$scope"
-  ($scope) ->
+  "$scope", "ChatStateService"
+  ($scope, ChatStateService) ->
     $scope.shared_items = []
 
+    # $scope.chat_state = ChatStateService.getChatState()
+
+    $scope.$watch (->
+      return ChatStateService.chat_state
+    ), ((new_state, old_state) ->
+      $scope.chat_state = new_state
+    ), true
+
     $scope.controls = {}
-    $scope.controls.layout = "layout-list"
+    $scope.controls.layout = "layout-icons"
     $scope.controls.sorting = {}
     $scope.controls.sorting.state = "name"
     $scope.controls.sorting.ascending = false
@@ -193,12 +201,12 @@ app.controller "ShareCtrl", [
 # * <h3>Chat Controller</h3>
 # >
 app.controller "ChatCtrl", [
-  "$scope"
-  ($scope) ->
+  "$scope", "ChatStateService"
+  ($scope, ChatStateService) ->
 
     $scope.chat = {}
-    $scope.chat.state = "compressed"
-    $scope.chat.state_history = ""
+    $scope.chat.state = ChatStateService.chat_state
+    $scope.chat.state_history = ChatStateService.chat_state_history
     $scope.chat.messages = [
       # dummy entries
       {
@@ -233,17 +241,22 @@ app.controller "ChatCtrl", [
 
     $scope.chat.compress = ->
       $scope.chat.state = "compressed"
+      ChatStateService.setChatState($scope.chat.state)
 
     $scope.chat.expand = ->
       $scope.chat.state = "expanded"
+      ChatStateService.setChatState($scope.chat.state)
 
     $scope.chat.minimize = ->
       $scope.chat.state_history = $scope.chat.state
+      ChatStateService.setChatStateHistory($scope.chat.state_history)
       $scope.chat.state = "minimized"
+      ChatStateService.setChatState($scope.chat.state)
 
     $scope.chat.maximize = ->
       if $scope.chat.state is "minimized"
         $scope.chat.state = $scope.chat.state_history
+        ChatStateService.setChatState($scope.chat.state_history)
 
 ]
 

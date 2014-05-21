@@ -194,14 +194,14 @@ app.directive "absoluteFillRelativeFullHeight", [
                 height = $heading.height() + parseInt($heading
                     .css("padding-top").replace(/[^-\d\.]/g, '')) * 2
 
-                width = $(elem).parent().width() / 4
+                width = $($window).width() / 3
             else
                 divider = 1
                 if scope.chat.state is "compressed"
-                  divider = 2
+                  divider = 1.5
 
                 height = $($window).height() / divider
-                width = $(elem).parent().width() / 2 / divider
+                width = $($window).width() / 2 / divider
 
             $(elem).css "height", height
             $(elem).css "width", width
@@ -225,7 +225,7 @@ app.directive "fitChatBodyHeight", [
         fitHeight = (elem, attrs) ->
             divider = 1
             if scope.chat.state is "compressed"
-              divider = 2
+              divider = 1.5
 
             $parent = $(elem).parent()
             $heading = $parent.find(".panel-heading")
@@ -260,14 +260,14 @@ app.directive "rearangeContainer", [
       link: (scope, elem, attrs) ->
 
         rearange = (elem, attrs) ->
+          $container = $(".view-frame")
+          
           if scope.chat.state is "expanded"
-            $container = $(".span_2_of_2").first()
-            $container.removeClass("span_2_of_2")
-            $container.addClass("span_1_of_2")
+            $container.addClass("chat-expanded")
+            $container.removeClass("chat-compressed")
           else
-            $container = $(".span_1_of_2").first()
-            $container.removeClass("span_1_of_2")
-            $container.addClass("span_2_of_2")
+            $container.addClass("chat-compressed")
+            $container.removeClass("chat-expanded")
             
 
         scope.$watch attrs.rearangeContainer, ->
@@ -277,7 +277,7 @@ app.directive "rearangeContainer", [
         scope.$watch('$location.path()', ->
           window.setTimeout((->
             rearange()
-          ), 100)
+          ), 500)
         )
 
         rearange()
@@ -285,26 +285,24 @@ app.directive "rearangeContainer", [
 ]
 
 app.directive "fitItemHeight", [
-    "$window"
-    ($window) ->
+    "$window", "ChatStateService"
+    ($window, ChatStateService) ->
       link: (scope, elem, attrs) ->
-
         fitHeight = (elem, attrs) ->
-
-          height = $(elem).width()
-          
+          height = $(elem).width() / 4 * 3
           $(elem).css "height", height
           return
 
         scope.$watch ->
-          $('.col').attr('class')
+          ChatStateService.chat_state
         , (value) ->
           window.setTimeout( (->
             fitHeight(elem, attrs)
-          ), 10)
+          ), 100)
           
 
         angular.element($window).bind "resize", ->
           fitHeight(elem, attrs)
           return
+
 ]
