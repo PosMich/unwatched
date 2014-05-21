@@ -23,7 +23,6 @@
     box-shadow 0px 0px 19px 0px rgba(50, 50, 50, 0.75)
     
     transition left 300ms ease-in-out
-    //border-right: 2px solid rgb(0,0,255)
 
     &:hover
         left 0px
@@ -39,7 +38,6 @@
             display table-cell
             vertical-align middle
             width 100px
-            //background: rgba(0,255,255,0.5)
 
             .icon-container
                 position relative
@@ -47,7 +45,6 @@
                 padding 10px
                 padding-right 15px
                 margin 5px
-                //background-color rgba(120,0,0,0.5)
 
                 &:hover
                     a.icon
@@ -125,7 +122,6 @@
                         &:before
                             content "\f0c0"
                             padding-left 2px
-                            //content "\f007"
                             font-size 20px
                             transition font-size 300ms ease-in-out
                         &:hover:before
@@ -133,7 +129,6 @@
 
                     &.menu-share
                         &:before
-                            //content "\f15b"
                             content "\f1e0"
                             padding-left 0px
                             font-size 28px
@@ -143,7 +138,6 @@
 
 
 .subicons-container
-    //background-color rgba(255,0,0,0.3)
     visibility hidden
     opacity 0
     display table
@@ -164,11 +158,8 @@
     .subicons
         display table-cell
         vertical-align middle
-        //background-color rgba(0,0,200,0.5)
         
         .subicon-container
-            //background-color rgba(120,0,0,0.5)
-            //width 120px
             padding 5px
             &:hover
                 .subicon
@@ -194,7 +185,6 @@
                 height 50px
                 width 50px
                 background-color rgba(255,255,0,1)
-                //margin 20px
 
                 box-shadow: 0px 1px 75px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(0,0,0,0.7);
                 text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(0,0,0,0.3);
@@ -228,8 +218,6 @@
                 &.menu-about
                     &:before
                         content "\f128"
-                        //padding-left 0px
-                        //content "\f007"
                         font-size 30px
                         transition font-size 300ms ease-in-out
                     &:hover:before
@@ -269,9 +257,7 @@
                                     left -3px
                                     font-size 31px
                                 i.fa-plus
-                                    //color rgba(0,255,0,1)
                                     left 12px
-                                    //top 10px
                                     font-size 29px
 
                 &.menu-leave-room
@@ -299,9 +285,7 @@
                                     left -3px
                                     font-size 31px
                                 i.fa-arrow-right
-                                    //color rgba(0,255,0,1)
                                     left 12px
-                                    //top 10px
                                     font-size 29px
 
 
@@ -330,10 +314,8 @@
                                     left -6px
                                     font-size 40px
                                 i.fa-gear
-                                    //color rgba(0,255,0,1)
                                     left 12px
                                     top 12px
-                                    //top 10px
                                     font-size 29px
 
                 &.menu-user-add
@@ -361,10 +343,8 @@
                                     left -6px
                                     font-size 40px
                                 i.fa-plus
-                                    //color rgba(0,255,0,1)
                                     left 12px
                                     top 12px
-                                    //top 10px
                                     font-size 29px
                 &.menu-share-screen
                     &:before
@@ -419,21 +399,7 @@
                         transition font-size 300ms ease-in-out
                     &:hover:before
                         font-size 40px
-                    
-            /*.fa.fa-file.fa-inverse
-                .subicon-container
-                  .subicons
-                    .subicon.top2
-                      .fa.fa-desktop
-                    .subicon.top1
-                      .fa.fa-file-text-o
-                    .subicon.middle
-                      .fa.fa-picture-o
-                    .subicon.bottom1
-                      .fa.fa-floppy-o
-                    .subicon.bottom2
-                      .fa.fa-camera
-            */       
+                         
 
             a.menu-user-history
                 position relative
@@ -446,12 +412,6 @@
 
                     transition box-shadow 300ms ease-in-out, background-color 300ms ease-in-out
 
-                    /*
-                    &:hover
-                        box-shadow 0px 0px 15px 0px rgba(175,175,175,0.5) inset,0px 0px 20px 0px rgba(175,175,175,0.5)
-                        background-color rgba(175,175,175,0.5)
-                        border 1px solid black
-                    */
                     &:hover
                         .history-entry
                             img 
@@ -545,73 +505,6 @@ a
         box-shadow 1px 1px 1px 0px black,-1px -1px 1px 0px white
         transition left 300ms ease-in-out, font-size 300ms ease-in-out
 
-/*
-a.menu-user-history.tooltip
-    & > span
-        margin-top 75px
-        margin-left 100px
- 
-a.icon.tooltip
-    & > span
-        color rgb(255,255,255)
-        font-size 22px
-        margin-top 20px
-        margin-left 10px
-
-
-a.tooltip
-    outline none
-    text-decoration none
-    
-    & > span
-        text-align left
-        width 300px
-        padding 0
-        margin-top 25px
-        margin-left 10px
-        opacity 0
-        visibility hidden
-        z-index 10
-        position absolute
-        font-family Arial
-        font-size 18px
-        font-style normal
-        
-        
-        transition-property opacity, margin-top, visibility, margin-left
-        transition-duration 0.4s, 0.3s, 0.4s, 0.3s
-        transition-timing-function ease-in-out, ease-in-out, ease-in-out, ease-in-out
-        transition-delay 0s, 0s, 0s, 0s
-        //color #000
-        //text-shadow 0px 0px 15px rgba(0,0,0,1), 0px 0px 5px rgba(0,0,0,1),0px 0px 25px rgba(0,0,0,1)       
-        
-        color #fff
-        //text-shadow: 0px 0px 15px rgba(0,0,0,1), 0px 0px 5px rgba(0,0,0,1), 0px 0px 25px rgba(0,0,0,1)
-        text-shadow: 
-            0px 0px 5px rgba(0,0,0,1),
-            0px 0px 10px rgba(0,0,0,1),
-            0px 0px 15px rgba(0,0,0,1),
-            0px 0px 20px rgba(0,0,0,1),
-            0px 0px 25px rgba(0,0,0,1),
-            0px 0px 30px rgba(0,0,0,1),
-            0px 0px 40px rgba(0,0,0,1),
-            0px 0px 50px rgba(0,0,0,1),
-            0px 0px 75px rgba(0,0,0,1)
-
-    &:hover
-        & > span
-            opacity 1
-            text-decoration none
-            visibility visible
-            overflow visible
-            display inline
-
-            transition-property opacity, visibility
-            transition-duration 0.4s, 0.4s
-            transition-timing-function ease-in-out, ease-in-out
-            transition-delay 0.5s, 0.5s
-            z-index 200000
-*/
 
 a.tooltip
     .popover
@@ -690,87 +583,3 @@ a.tooltip
             transition-delay 0.5s, 0.5s
             z-index 200000
             
-
-/*
-.icon .fa
-    font-size:33px
-    margin: 10px
-    margin-top: 8px
-    transition font-size 300ms ease-in-out
-
-.icon .fa.fa-users
-    padding-top 3px
-    font-size:30px
-
-.icon .fa.fa-file
-    padding-left 4px
-
-.icon:hover .fa
-    font-size:50px
-
-.icon:hover .fa.fa-users
-    font-size:45px
-
-/*.icon:hover .subicon-container
-    visibility visible
-    opacity 1
-******/
-
-
-
-
-
-/*
-.subicon:hover
-    width 65px
-    height 65px
-
-
-
-.subicon.top2
-    position:relative
-    left: 0px
-.subicon.top1
-    position:relative
-    left: 10px
-
-.middle
-    position relative
-    left: 20px
-
-.subicon.bottom1
-    position:relative
-    left: 10px
-.subicon.bottom2
-    position:relative
-    left: 0px
-
-.icon, .subicon
-    cursor: pointer
-
-#create-room-container
-    min-width 450px
-    width 50%
-    max-width 700px
-    float left
-    margin-left 15%
-
-.info-container
-    position relative
-    font-size 26px
-    float left
-    font-family 'Indie Flower'
-    font-style italic
-    font-weight 500
-
-    .info
-        border: 7px solid #c81e2b
-        border-radius 200px / 110px
-        padding 30px
-        margin-top 50px
-        left 90px
-        position relative
-
-        &:first-child
-            left 130px
-*/
