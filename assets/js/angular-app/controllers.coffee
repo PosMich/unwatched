@@ -16,8 +16,9 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-  "$scope"
-  ($scope) ->
+  "$scope", "RTC"
+  ($scope, RTCProvider) ->
+    console.log RTCProvider
     console.log "index ctrl here"
 
     $scope.submitCreateRoom = ->
@@ -37,7 +38,7 @@ app.controller "SpacelabCtrl", ->
 app.controller "NavCtrl", [
   "$scope"
   "$modal"
-  # "RTC"
+  "RTC"
   ($scope, $modal) ->
     # console.log RTCProvider
     # RTCProvider.logName()
@@ -114,8 +115,8 @@ app.controller "ShareCtrl", [
       'Rafael',
       'Angelika',
       'Wolfram',
-      'Gisa',
-      'Sophie',
+      'Lisa',
+      'Sophia',
       'David',
       'Andrea',
       'Hermine',
