@@ -113,18 +113,24 @@ server.start = ->
 module.exports = server
 ###
 
+express = require "express"
+assets  = require "connect-assets"
+http    = require "http"
+https   = require "https"
+fs      = require "fs"
+
+config     = require "./config"
+debug      = require "./debug"
+routes     = require "./routes"
+routesAPI  = require "./routes.api"
+signalling = require "./signaling"
+
+
 process.on "uncaughtException", (err) ->
     debug.error "OMG :-S"
     debug.error "caught 'uncaught' exception: " + err
     console.log err.stack
 
-express = require "express"
-assets  = require "connect-assets"
-
-config    = require "./config"
-debug     = require "./debug"
-routes    = require "./routes"
-routesAPI = require "./routes.api"
 
 app = express()
 
@@ -159,8 +165,22 @@ routes.route app
 routesAPI.route app
 
 
+http = express()
+
+http.get "*", (req, res) ->
+  res.redirect "https://localhost:"+(app.port+1)
+  return
+
+http.listen app.port
+
+
 app.start = ->
-    app.listen app.port, ->
-        console.log "Listening on " + app.port + "\nPress CTRL-C to stop server."
+    https.createServer(
+        key: fs.readFileSync "cert/server.key"
+        cert: fs.readFileSync "cert/server.crt"
+    , app).listen app.port+1
+    ##app.listen app.port, ->
+    #    console.log "Listening on " + app.port + "\nPress CTRL-C to stop server."
+
 
 module.exports = app
