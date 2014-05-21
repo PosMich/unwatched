@@ -6,7 +6,7 @@
                     .control-input
                         input#searchString.form-control(type="text", 
                             required, ng-model="controls.searchString",
-                            placeholder="Click to search")
+                            placeholder="Type to search...")
                 .layout
                     span(ng-click="controls.layout='layout-list'",
                         ng-class="{'active':controls.layout=='layout-list'}")
@@ -52,8 +52,4 @@
                             ng-show="item.category=='note' || item.category=='code'")
                         i.fa.fa-eye(
                             ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
-
-
-
-    .chat(chat)
                 

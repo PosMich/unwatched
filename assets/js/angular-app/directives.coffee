@@ -255,8 +255,8 @@ app.directive "fitChatBodyHeight", [
 ]
 
 app.directive "rearangeContainer", [
-    "$window"
-    ($window) ->
+    "$window", "$location"
+    ($window, $location) ->
       link: (scope, elem, attrs) ->
 
         rearange = (elem, attrs) ->
@@ -272,6 +272,13 @@ app.directive "rearangeContainer", [
 
         scope.$watch attrs.rearangeContainer, ->
           rearange()
+
+        scope.$location = $location
+        scope.$watch('$location.path()', ->
+          window.setTimeout((->
+            rearange()
+          ), 100)
+        )
 
         rearange()
 

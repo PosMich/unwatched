@@ -9,10 +9,10 @@ app.controller "AppCtrl", [
   "$scope"
   ($scope) ->
 
-    if !$scope.chat_state?
-      $scope.chat_state = "compressed"
-    if !$scope.chat_state_history?
-      $scope.chat_state_history = ""
+    # if !$scope.chat_state?
+    #   $scope.chat_state = "compressed"
+    # if !$scope.chat_state_history?
+    #   $scope.chat_state_history = ""
 
 ]
 
@@ -196,8 +196,8 @@ app.controller "ChatCtrl", [
   ($scope) ->
 
     $scope.chat = {}
-    $scope.chat.state = $scope.$parent.$parent.chat_state || "minimized"
-    $scope.chat.state_history = $scope.$parent.$parent.chat_state_history || ""
+    $scope.chat.state = "compressed"
+    $scope.chat.state_history = ""
     $scope.chat.messages = [
       # dummy entries
       {
@@ -232,22 +232,17 @@ app.controller "ChatCtrl", [
 
     $scope.chat.compress = ->
       $scope.chat.state = "compressed"
-      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.expand = ->
       $scope.chat.state = "expanded"
-      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.minimize = ->
       $scope.chat.state_history = $scope.chat.state
-      $scope.$parent.$parent.chat_state_history = $scope.chat.state
       $scope.chat.state = "minimized"
-      $scope.$parent.$parent.chat_state = $scope.chat.state
 
     $scope.chat.maximize = ->
       if $scope.chat.state is "minimized"
         $scope.chat.state = $scope.chat.state_history
-        $scope.$parent.$parent.chat_state = $scope.chat.state
 
 ]
 

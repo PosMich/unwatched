@@ -89,3 +89,11 @@ app.config [
     # > redirect to `/`
     $routeProvider.otherwise redirectTo: "/"
 ]
+
+app.run ($rootScope, $location) ->
+
+  $rootScope.$on "$routeChangeSuccess", ->
+    $rootScope.showChat = $location.path() isnt "/"
+    return
+
+  return

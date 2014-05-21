@@ -145,4 +145,6 @@ html(ng-app="unwatched")
     .view-container(ng-controller="AppCtrl")
       .clearfix.view-frame(ng-view)
 
+    .chat(chat, ng-if="showChat")
+
     script(src='/js/app.js')
