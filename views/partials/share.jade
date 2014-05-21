@@ -15,11 +15,43 @@
                         ng-class="{'active':controls.layout=='layout-icons'}")
                         i.fa.fa-th
 
-        ul.items-container.clearfix(ng-class="{'list':controls.layout=='layout-list', 'icons':controls.layout=='layout-icons'}",)
+        ul.items-container.clearfix(
+            ng-class="{'layout-list':controls.layout=='layout-list', 'layout-icons':controls.layout=='layout-icons'}",)
             li.item(ng-class="item.category",
                 ng-repeat="item in shared_items | filter:controls.searchString")
-                ng-include(src="item.templateUrl")
-            
+
+                ng-include(src="item.templateUrl", ng-if="controls.layout=='layout-icons'")
+
+                .clearfix(ng-if="controls.layout=='layout-list'", class="{item.category}")
+                    .category-icon(class="{{item.category}}")
+                    .name
+                        b
+                            | Name: 
+                        | {{item.name}}
+                    .author
+                        b
+                            | Author: 
+                        | {{item.author}}
+                    .size
+                        b
+                            | Size: 
+                        | {{item.size}}
+                    .created
+                        b
+                            | Created: 
+                        | {{item.created}}
+
+                    .item-controls
+                        i.fa.fa-trash-o
+                        i.fa.fa-clipboard
+                        i.fa.fa-download(
+                            ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot'")
+                        i.fa.fa-pencil(
+                            ng-show="item.category=='note' || item.category=='code'")
+                        i.fa.fa-eye(
+                            ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
+
+
 
     .chat(chat)
                 

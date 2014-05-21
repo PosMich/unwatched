@@ -4,7 +4,7 @@
     top 0
     height 100%
     width 35px
-    z-index 200
+    z-index 2000000
 
     background linear-gradient(
         right, 
@@ -49,7 +49,7 @@
                         height 66px
                         border-radius 33px
                         text-decoration none
-                        box-shadow: 0px 0px 175px rgba(0,0,0,1), inset 0px 0px 1px rgba(255,255,255,0.7);
+                        box-shadow: 0px 0px 175px rgba(0,0,0,1), inset 0px 0px 1px rgba(0,0,0,0.7);
                         + .subicons-container
                             display table
                             visibility visible
@@ -72,8 +72,7 @@
                     height 50px
 
                     display table
-                    ////////overflow hidden // <-- ff problems
-
+                    
                     transition width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
 
                     color #ffffff
@@ -83,11 +82,10 @@
                         #6b6b6b 0%,
                         #454545)
                     
-                    border 1px solid #000000
                     border-radius 25px
 
-                    box-shadow: 0px 1px 20px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
-                    text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(255,255,255,0.3);
+                    box-shadow: 0px 1px 20px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(0,0,0,0.7);
+                    text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(0,0,0,0.3);
                     
                     font-family FontAwesome
                     font-style normal
@@ -95,9 +93,6 @@
                     line-height 1
                     -webkit-font-smoothing antialised
                     -mos-osx-font-smoothing antialised
-
-                    &:hover
-                        /////overflow visible // <-- ff problems
 
 
                     &:before
@@ -111,7 +106,7 @@
                     &.menu-home
                         &:before
                             content "\f015"
-                            padding-left 2px
+                            padding-left 0px
                             font-size 28px
                             transition font-size 300ms ease-in-out
                         &:hover:before
@@ -129,8 +124,9 @@
 
                     &.menu-share
                         &:before
-                            content "\f15b"
-                            padding-left 2px
+                            //content "\f15b"
+                            content "\f1e0"
+                            padding-left 0px
                             font-size 28px
                             transition font-size 300ms ease-in-out
                         &:hover:before
@@ -190,8 +186,8 @@
                 background-color rgba(255,255,0,1)
                 //margin 20px
 
-                box-shadow: 0px 1px 75px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(255,255,255,0.7);
-                text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(255,255,255,0.3);
+                box-shadow: 0px 1px 75px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(0,0,0,0.7);
+                text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(0,0,0,0.3);
                 
                 color white
 
@@ -217,7 +213,7 @@
                     width 65px
                     height 65px
                     border-radius(33px)
-                    box-shadow: 0px 0px 30px rgba(0,0,0,1), inset 0px 0px 1px rgba(255,255,255,0.7);
+                    box-shadow: 0px 0px 30px rgba(0,0,0,1), inset 0px 0px 1px rgba(0,0,0,0.7);
                     
                 &.menu-about
                     &:before
@@ -249,13 +245,13 @@
                             i.fa-building
                                 left -2px
                                 font-size 23px
-                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(0,0,0,0.3)
                             i.fa-plus
                                 color rgba(0,255,0,1)
                                 left 10px
                                 top 1px
                                 font-size 20px
-                                text-shadow 0px -1px 2px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 2px rgba(0,0,0,1), 0px 1px 0px rgba(0,0,0,0.3)
                     &:hover
                         .stack-align
                             span.fa-stack
@@ -279,13 +275,13 @@
                             i.fa-building
                                 left -2px
                                 font-size 23px
-                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(0,0,0,0.3)
                             i.fa-arrow-right
                                 color rgba(255,0,0,1)
                                 left 10px
                                 top 1px
                                 font-size 20px
-                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(0,0,0,0.3)
                     &:hover
                         .stack-align
                             span.fa-stack
@@ -310,13 +306,13 @@
                             i.fa-user
                                 left -3px
                                 font-size 30px
-                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(0,0,0,0.3)
                             i.fa-gear
                                 color rgba(200,200,200,1)
                                 left 8px
                                 top 8px
                                 font-size 20px
-                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(0,0,0,0.3)
                     &:hover
                         .stack-align
                             span.fa-stack
@@ -341,13 +337,13 @@
                             i.fa-user
                                 left -3px
                                 font-size 30px
-                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 0px rgba(0,0,0,1), 0px 1px 0px rgba(0,0,0,0.3)
                             i.fa-plus
                                 color rgba(0,255,0,1)
                                 left 8px
                                 top 8px
                                 font-size 20px
-                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(255,255,255,0.3)
+                                text-shadow 0px -1px 2px rgba(0,0,0,0.8), 0px 1px 0px rgba(0,0,0,0.3)
                     &:hover
                         .stack-align
                             span.fa-stack
@@ -434,12 +430,31 @@
                     padding-top 5px
                     padding-bottom 5px
                     border-radius 10px
+
                     transition box-shadow 300ms ease-in-out, background-color 300ms ease-in-out
 
+                    /*
                     &:hover
-                        box-shadow 0px 0px 15px 0px grey inset,0px 0px 20px 0px grey
-                        background-color rgba(175,175,175,0.7)
-
+                        box-shadow 0px 0px 15px 0px rgba(175,175,175,0.5) inset,0px 0px 20px 0px rgba(175,175,175,0.5)
+                        background-color rgba(175,175,175,0.5)
+                        border 1px solid black
+                    */
+                    &:hover
+                        .history-entry
+                            img 
+                                background rgba(0,0,0,0.2)
+                                box-shadow: 
+                                    0px 0px 5px rgba(0,0,0,1),
+                                    0px 0px 10px rgba(0,0,0,1)
+                            span
+                                text-shadow: 
+                                    0px 0px 5px rgba(0,0,0,1),
+                                    0px 0px 10px rgba(0,0,0,1),
+                                    0px 0px 15px rgba(0,0,0,1),
+                                    0px 0px 20px rgba(0,0,0,1),
+                                    0px 0px 25px rgba(0,0,0,1),
+                                    0px 0px 30px rgba(0,0,0,1)
+                            
                     .history-entry
                         opacity 0
                         visibility hidden
@@ -457,13 +472,17 @@
                             max-height 30px
                             width 30px
                             height 30px
+                            margin-right 2px
+                            transition box-shadow 300ms ease-in-out
                         span
-                            text-shadow: 0px 0px 15px rgba(0,0,0,1), 0px 0px 5px rgba(0,0,0,1)
-                            transition color 300ms ease-in-out
-                            display block
+                            text-shadow:  
+                                0px 0px 5px rgba(0,0,0,1),
+                                0px 0px 10px rgba(0,0,0,1),
+                                0px 0px 15px rgba(0,0,0,1)
+                            transition color 300ms ease-in-out, text-shadow 300ms ease-in-out
                             width 150px
                             height 30px
-                            overflow hidden
+                            overflow visible
                             line-height 30px
                             color white
                             vertical-align middle
@@ -472,6 +491,7 @@
                 &:hover
                     text-decoration none
                     box-shadow 0px 0px 20px 0px black
+
 
                                 
             for delay in 1 2 3 4 5 6
@@ -486,8 +506,70 @@
                 
     
 
-.clearfix
-  clearfix()
+a.menu-user-history.tooltip
+    & > span
+        margin-top 75px
+        margin-left 120px
+ 
+a.icon.tooltip
+    & > span
+        color rgb(255,255,255)
+        font-size 22px
+        margin-top 20px
+        margin-left 10px
+
+a.tooltip
+    outline none
+    text-decoration none
+    
+    & > span
+        text-align left
+        width 300px
+        padding 0
+        margin-top 25px
+        margin-left 10px
+        opacity 0
+        visibility hidden
+        z-index 10
+        position absolute
+        font-family Arial
+        font-size 18px
+        font-style normal
+        
+        
+        transition-property opacity, margin-top, visibility, margin-left
+        transition-duration 0.4s, 0.3s, 0.4s, 0.3s
+        transition-timing-function ease-in-out, ease-in-out, ease-in-out, ease-in-out
+        transition-delay 0s, 0s, 0s, 0s
+        //color #000
+        //text-shadow 0px 0px 15px rgba(0,0,0,1), 0px 0px 5px rgba(0,0,0,1),0px 0px 25px rgba(0,0,0,1)       
+        
+        color #fff
+        //text-shadow: 0px 0px 15px rgba(0,0,0,1), 0px 0px 5px rgba(0,0,0,1), 0px 0px 25px rgba(0,0,0,1)
+        text-shadow: 
+            0px 0px 5px rgba(0,0,0,1),
+            0px 0px 10px rgba(0,0,0,1),
+            0px 0px 15px rgba(0,0,0,1),
+            0px 0px 20px rgba(0,0,0,1),
+            0px 0px 25px rgba(0,0,0,1),
+            0px 0px 30px rgba(0,0,0,1),
+            0px 0px 40px rgba(0,0,0,1),
+            0px 0px 50px rgba(0,0,0,1),
+            0px 0px 75px rgba(0,0,0,1)
+
+    &:hover
+        & > span
+            opacity 1
+            text-decoration none
+            visibility visible
+            overflow visible
+            display inline
+
+            transition-property opacity, visibility
+            transition-duration 0.4s, 0.4s
+            transition-timing-function ease-in-out, ease-in-out
+            transition-delay 0.5s, 0.5s
+            z-index 200000
 
 
 

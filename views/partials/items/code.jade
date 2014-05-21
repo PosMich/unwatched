@@ -4,8 +4,8 @@ div
             h3 {{item.name}}.{{item.extension}}
             p
                 code(ng-bind-html="item.thumbnail")
-    .item-infos
-        table(ng-class="item.extension")
+    .item-infos(ng-class="item.extension")
+        table
             tr
                 td
                     b Name

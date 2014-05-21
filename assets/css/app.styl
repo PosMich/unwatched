@@ -24,17 +24,13 @@ body
     margin 0
 
 
-html
-    margin 0
-    padding 0
-    padding-left 50px
-    radial-gradient_( rgba(255,255,255,1), 0%, rgba(240,240,240,1), 100% )
-    z-index 0
-
 body
     background none
+    margin 0
+    padding 0
+    radial-gradient_( rgba(255,255,255,1), 0%, rgba(240,240,240,1), 100% )
 
-html:after
+body:after
     //content: ''; <-- da kann man im chrome nix mehr anklicken??
     position fixed
     display block
@@ -46,7 +42,7 @@ html:after
     width 100%
     opacity 0.2;
     background-image url("img/noise.png")
-    z-index -1
+    z-index -2
     content ''
 
 
@@ -54,7 +50,7 @@ html:after
 
 .view-container
     width 100%
-    padding-top 20px
+    //padding-top 20px
 
     .view-frame
         width 100%
@@ -73,6 +69,9 @@ html:after
     max-width 700px
     float left
     margin-left 15%
+    background white
+    border 1px solid rgba(0,0,0,0.3)
+    box-shadow 0px 0px 25px rgba(0,0,0,0.2)
 
 .info-container
     position relative

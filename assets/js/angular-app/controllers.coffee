@@ -10,8 +10,9 @@ app.controller "AppCtrl", [
   ($scope) ->
 
     if !$scope.chat_state?
-      console.log "changing state"
       $scope.chat_state = "compressed"
+    if !$scope.chat_state_history?
+      $scope.chat_state_history = ""
 
 ]
 
@@ -105,7 +106,7 @@ app.controller "ShareCtrl", [
     $scope.shared_items = []
 
     $scope.controls = {}
-    $scope.controls.layout = "icons"
+    $scope.controls.layout = "layout-list"
 
     shared_items_amount = Math.floor(Math.random() * 20 + 1) + 50
 
@@ -186,8 +187,7 @@ app.controller "ChatCtrl", [
 
     $scope.chat = {}
     $scope.chat.state = $scope.$parent.$parent.chat_state || "minimized"
-    console.log $scope.chat.state
-    $scope.chat.state_history = ""
+    $scope.chat.state_history = $scope.$parent.$parent.chat_state_history || ""
     $scope.chat.messages = [
       # dummy entries
       {
@@ -230,6 +230,7 @@ app.controller "ChatCtrl", [
 
     $scope.chat.minimize = ->
       $scope.chat.state_history = $scope.chat.state
+      $scope.$parent.$parent.chat_state_history = $scope.chat.state
       $scope.chat.state = "minimized"
       $scope.$parent.$parent.chat_state = $scope.chat.state
 
