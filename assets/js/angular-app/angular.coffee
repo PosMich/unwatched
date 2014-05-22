@@ -32,6 +32,7 @@ app.config [
         RTCProvider.setName "Alibert"
         RTCProvider.setSignalServer "wss://localhost"
     
+    
 
         $locationProvider.html5Mode true
         $locationProvider.hashPrefix "!"

@@ -17,7 +17,6 @@ app.controller "IndexCtrl", [
     ($scope, RTCProvider) ->
         # console.log RTCProvider
         # console.log "index ctrl here"
-
         # $scope.submitCreateRoom = ->
 ]
 
@@ -32,6 +31,7 @@ app.controller "SpacelabCtrl", ->
 # > see
 # > [angular docs](http://docs.angularjs.org/guide/dev_guide.services.$location)
 # > for $locationProvider details
+
 
 # ***
 # * <h3>Member Controller</h3>
