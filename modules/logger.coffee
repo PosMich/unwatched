@@ -13,24 +13,28 @@ logger = new (winston.Logger)(transports: [
         name: "errors"
         label: "errors"
         level: "error"
+        json: true
     )
     new (winston.transports.File)(
         filename: config.log.dir+config.log.files.warning
         name: "warnings"
         label: "warnings"
         level: "warn"
+        json: true
     )
     new (winston.transports.File)(
         filename: config.log.dir+config.log.files.info
         name: "infos"
         label: "infos"
         level: "info"
+        json: true
     )
     new (winston.transports.File)(
         filename: config.log.dir+config.log.files.silly
         name: "silly"
         label: "silly"
         level: "silly"
+        json: true
     )
     new (winston.transports.Logio)(
         port: config.logio.port

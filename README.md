@@ -15,34 +15,60 @@
  
 ### coffee-script, grunt
 
-    npm install -g coffee-script
-    npm install -g grunt-cli
+```zsh
+npm install -g coffee-script
+npm install -g grunt-cli
+```
 
 ### Pygments
 needed to generate documentation
 
-    pip install Pygments
+```zsh
+pip install Pygments
+```
 
 ## Install
 
-    git clone xxxxx <name>
-    cd <name>
-    npm install
+```zsh
+git clone xxxxx <name>
+cd <name>
+npm install
+```
 
 ## Userconfig
 A <b>*`userconfig.coffe`*</b> file must be created in the `modules` directory, because sensible data is stored here, it isn't checked in into the version control system.
 
-    module.exports =
-        port:    3000
-        appName: "AppName"
-        sessionSecret: "Seeecreet 64 chars long"
-
-
+```coffee
+module.exports =
+    port:
+        http:   1234
+        https:  1235
+        livereload: 35729
+    appName: "Unwatched"
+    sessionSecret: ""
+    ssl:
+        key:    "cert/server.key"
+        cert:   "cert/server.crt"
+    log:
+        dir: "logs/"
+        level: "silly"
+        files:
+            exception: "exceptions.log"
+            warning:   "warnings.log"
+            error:     "errors.log"
+            info:      "infos.log"
+            silly:     "silly.log"
+    logio:
+        host:   "localhost"
+        port:   28777
+        node_name: "unwatched"
+```
 
 ## Take a look at the Gruntfile!
 
-    grunt --help
-
+```zsh
+grunt --help
+```
 
 
 ## Docs
@@ -58,21 +84,22 @@ Edit `~/.log.io/harvester.conf`
 
 example config:
 
-    exports.config = {
-        nodeName: "Unwatched Logfiles",
-            logStreams: {
-                exceptions: [ "/var/www/unwatched/logs/exceptions.log" ],
-                errors: [ "/var/www/unwatched/logs/errors.log" ],
-                warnings: [ "/var/www/unwatched/logs/warnings.log" ], 
-                infos: [ "/var/www/unwatched/logs/infos.log" ],
-                silly: [ "/var/www/unwatched/logs/silly.log" ]
-            },
-        server: {
-            host: '0.0.0.0',
-            port: 28777
-        }
+```coffee
+exports.config = {
+    nodeName: "Unwatched Logfiles",
+        logStreams: {
+            exceptions: [ "/var/www/unwatched/logs/exceptions.log" ],
+            errors: [ "/var/www/unwatched/logs/errors.log" ],
+            warnings: [ "/var/www/unwatched/logs/warnings.log" ], 
+            infos: [ "/var/www/unwatched/logs/infos.log" ],
+            silly: [ "/var/www/unwatched/logs/silly.log" ]
+        },
+    server: {
+        host: '0.0.0.0',
+        port: 28777
     }
-
+}
+```
 
 
 ## TODO
