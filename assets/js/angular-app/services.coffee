@@ -31,11 +31,36 @@ class RTCProvider
     @::name       = ""
     @::clients    = []
     @::moderators = []
-    @::signalServer = "wss://localhost" 
+    @::signalServer = "wss://localhost:3001" 
+    
+    @::wss          = null
+    @::room         = null
     # exposed to .config
     constructor: ->
+
     setSignalServer: (@signalServer)->
         console.log "set Signal Server: "+signalServer
+    connect: ->
+        wss = new WebSocket @signalServer
+        wss.onopen = ->
+            console.log "wss open"
+        
+        wss.onerror = (error) ->
+            console.log "wss error"
+            console.log error
+        wss.onmessage = (msg) ->
+            console.log "wss msg received"
+            console.log JSON.parse(msg)
+        wss.onclose = ->
+        
+    newRoom: (name) ->
+
+    onConnection: ->
+
+    connectToRoom: ->
+
+    connectToSingleRoom: ->
+    
     setName: (@name) ->
         console.log "inner set Name: "+name
     addClients: (name, eMail) ->
@@ -75,7 +100,9 @@ class RTCProvider
 
 
 app = angular.module "unwatched.services", []
+
 app.provider "RTC", RTCProvider
+
 app.value "version", "0.1"
 
 app.service "ChatStateService", ->

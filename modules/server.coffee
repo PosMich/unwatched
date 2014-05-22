@@ -43,6 +43,7 @@ routes.route app
 routesAPI.route app
 
 app.start = ->
+    
     logger.info "server started"
     # create dummy server, should be replaced with a reverse proxy or similar
     http = http.createServer( (req, res) ->

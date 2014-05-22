@@ -26,12 +26,12 @@ app = angular.module "unwatched", [
 app.config [
   "$routeProvider"
   "$locationProvider"
-   "RTCProvider"
+  "RTCProvider"
   ($routeProvider, $locationProvider, RTCProvider) ->
     
     RTCProvider.setName "Alibert"
-    RTCProvider.setSignalServer "wss://localhost"
-    
+    RTCProvider.setSignalServer "wss://localhost:3001"
+    RTCProvider.connect()
 
     $locationProvider.html5Mode true
     $locationProvider.hashPrefix "!"

@@ -312,8 +312,8 @@ module.exports = (grunt) ->
                 options:
                     nodeArgs: ["--debug"]
                     callback: (nodemon) ->
-                        nodemon.on "log", (event) ->
-                            console.log event.colour
+                        #nodemon.on "log", (event) ->
+                        #    console.log event.colour
                         
                         nodemon.on "config:update", ->
                             setTimeout ->
@@ -321,12 +321,16 @@ module.exports = (grunt) ->
                                 open("http://localhost:#{config.port.http}")
                                 open("http://localhost:8080/debug?port=5858")
                             , 1000
+                            return
 
                         nodemon.on "restart", ->
                             setTimeout ->
                                 require("fs").writeFileSync( ".rebooted", "rebooted" )      
                             , 1000
+                            return
             dev:
+                options:
+                    watch: [".app/*"]
                 script: "app.js"
             production:
                 options:
