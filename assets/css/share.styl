@@ -17,14 +17,15 @@
         .item-container
             width 89%
             margin 20px auto
-            transition opacity .3s ease-in-out
-            transition background .3s ease-in-out
+            transition opacity .2s ease-in-out, background .2s ease-in-out, box-shadow 0.2s ease-in-out
             border-radius 10px
-            box-shadow 0 0 35px #333
+            //box-shadow 0 0 35px #333
+            box-shadow 0 0 15px rgba(53,53,53,0.2)
             background white
             overflow hidden
 
             &:hover
+                box-shadow 0 0 15px rgba(53,53,53,1)
                 .item
                     .item-thumbnail
                         opacity 0.5
