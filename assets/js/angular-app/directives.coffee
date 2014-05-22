@@ -290,7 +290,6 @@ app.directive "fitItemHeight", [
       link: (scope, elem, attrs) ->
         fitHeight = (elem, attrs) ->
           if attrs.fitItemHeight is "layout-icons"
-
             $items = $(elem).find(".item-container")
             width = $items.first().width()
 
@@ -299,7 +298,14 @@ app.directive "fitItemHeight", [
                 width = $(item).width()
 
             $items.css "height", width / 4 * 3
-            return          
+            return
+
+        scope.$watch ->
+          scope.controls.layout
+        , (value) ->
+          window.setTimeout((->
+            fitHeight(elem, attrs)
+          ), 0)
 
         angular.element($window).bind "resize", ->
           fitHeight(elem, attrs)
