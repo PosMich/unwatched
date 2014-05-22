@@ -30,11 +30,9 @@
                 popover-trigger="mouseenter")
                 i.fa.fa-list-ul
 
-
-
 ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{controls.layout}}")
 
-    li(ng-class="{'col-xs-12 item-container':controls.layout=='layout-list', 'col-lg-2 col-md-3 col-sm-6':controls.layout=='layout-icons'&&chat_state!='expanded', 'col-lg-4 col-md-6 col-sm-12':controls.layout=='layout-icons'&&chat_state=='expanded'}",
+    li(ng-class="{'col-xs-12 item-container':controls.layout=='layout-list', 'col-lg-2 col-md-3 col-sm-6':controls.layout=='layout-icons'&&chat_state!='expanded', 'col-lg-3 col-md-6 col-sm-12':controls.layout=='layout-icons'&&chat_state=='expanded'}",
         ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending")
 
 

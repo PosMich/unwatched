@@ -52,7 +52,7 @@ app.controller "NavCtrl", [
     # RTCProvider.listClients()
     $scope.open = ->
       modalInstance = $modal.open(
-        templateUrl: "/partials/loginForm.jade"
+        templateUrl: "/partials/loginForm.html"
         controller: "SignupCtrl"
       )
 
@@ -187,8 +187,9 @@ app.controller "ShareCtrl", [
         file.category = "shared-webcam"
         file.thumbnail = "screenshot-webcam.jpg"
         file.size = 0
+        
 
-      file.templateUrl = "/partials/items/" + file.category + ".jade"
+      file.templateUrl = "/partials/items/" + file.category + ".html"
 
       $scope.shared_items.push file
 

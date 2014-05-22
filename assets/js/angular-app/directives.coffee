@@ -25,12 +25,12 @@ app.directive "inputMatch", [ ->
 
 # ***
 # * <h3>member</h3>
-# > Loads the template for a single member (/partials/member.jade)
+# > Loads the template for a single member (/partials/member.html)
 # > and adds a watcher to keep the dimensions 1:1 <br/>
 # > Frontend-usage: div(member)
 
 app.directive "member", [ ->
-    templateUrl: "/partials/member.jade"
+    templateUrl: "/partials/member.html"
 ]
 
 # ***
@@ -38,7 +38,7 @@ app.directive "member", [ ->
 # > Loads the template for a chat window
 
 app.directive "chat", [ ->
-    templateUrl: "/partials/chat.jade"
+    templateUrl: "/partials/chat.html"
 ]
 
 # ***
