@@ -50,6 +50,9 @@ A <b>*`userconfig.coffe`*</b> file must be created in the `modules` directory, b
 
 The files are moved to the <b>*`public`*</b> dir, you can access them via **`http://servername/docs`**.
 
+## Logs
+
+[Install Log.io](http://logio.org/)
 
 ## TODO
 *XSS!!!* node-validator

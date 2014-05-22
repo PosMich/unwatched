@@ -7,7 +7,7 @@
     "url": "asdf"
   },
   "scripts": {
-    "install": "node node_modules/ build",
+    "install": "node -e 'require(\"grunt\").tasks([\"build\"]);'",
     "start": "node app.js"
   },
   "dependencies": {
@@ -26,6 +26,8 @@
     "uglify-js": "^2.4.13",
     "walk": "latest",
     "which": "latest",
+    "winston": "^0.7.3",
+    "winston-logio": "^0.2.0",
     "wrench": "latest",
     "ws": "^0.4.31"
   },

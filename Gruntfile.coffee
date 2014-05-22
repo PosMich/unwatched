@@ -119,7 +119,7 @@ module.exports = (grunt) ->
             fileArray.push( files.libDir + "/" + lib ) for lib  in files.libs
             fileArray.push files.angularJsOutput
             return fileArray
-        serverFiles: [ "modules/*.coffee" ]
+        serverFiles: [ "modules/*.coffee", "userconfig.coffee" ]
 
 
     grunt.initConfig
