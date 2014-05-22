@@ -50,23 +50,30 @@ app.directive "chat", [ ->
 # > we need to wait 1ms until the view is up-to-date - this is just a workaround
 # > and needs optimization
 app.directive "updateScrollPosition", [
-    "$window"
-    ($window) ->
+    "$window", "ChatStateService"
+    ($window, ChatStateService) ->
         link: (scope, elem, attrs) ->
+
             scope.$watch attrs.updateScrollPosition, ->
                 window.setTimeout((->
-                  console.log "scrolling to: " + $(elem).find("> div").height()
                   $(elem).scrollTop $(elem).find("> div").height()
-                ), 1)
+                ), 0)
 
             angular.element($window).bind "resize", ->
-                console.log "scrolling to: " + $(elem).find("> div").height()
-                $(elem).scrollTop $(elem).find("> div").height()
+                window.setTimeout((->
+                    $(elem).scrollTop $(elem).find("> div").height()
+                ), 0)
+
+            scope.$watch ->
+                ChatStateService.chat_state
+            , () ->
+                window.setTimeout((->
+                     $(elem).scrollTop $(elem).find("> div").height()
+                ), 0)
 
             window.setTimeout((->
-              console.log "scrolling to: " + $(elem).find("> div").height()
               $(elem).scrollTop $(elem).find("> div").height()
-            ), 1)
+            ), 0)
 ]
 
 # ***
@@ -81,6 +88,27 @@ app.directive "focusOnClick", [ ->
       return
     return
 ]
+
+app.directive "centerVertical", [
+    "$window"
+    ($window) ->
+      link: (scope, elem, attrs) ->
+
+        centerVertical = (elem, attrs) ->
+            marginTop = ( $($window).height() - $(elem).height() ) / 2
+            $(elem).css "margin-top", marginTop
+            return
+
+        scope.$watch attrs.adjustWidth, ->
+          window.setTimeout( (->
+            centerVertical(elem, attrs)
+          ), 1)
+
+        angular.element($window).bind "resize", ->
+          centerVertical(elem, attrs)
+          return
+]
+
 
 
 app.directive "appVersion", [
@@ -121,8 +149,8 @@ app.directive "rearangeContainer", [
 ]
 
 app.directive "fitItemHeight", [
-    "$window", "$timeout", "ChatStateService"
-    ($window, $timeout, ChatStateService) ->
+    "$window", "$timeout"
+    ($window, $timeout) ->
       link: (scope, elem, attrs) ->
         fitHeight = (elem, attrs) ->
           if attrs.fitItemHeight is "layout-icons"
