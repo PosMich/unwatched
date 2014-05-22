@@ -57,19 +57,20 @@ The files are moved to the <b>*`public`*</b> dir, you can access them via **`htt
 Edit `~/.log.io/harvester.conf`
 
 example config:
+
     exports.config = {
-      nodeName: "Unwatched Logfiles",
-      logStreams: {
-        exceptions: [ "/var/www/unwatched/logs/exceptions.log" ],
-        errors: [ "/var/www/unwatched/logs/errors.log" ],
-        warnings: [ "/var/www/unwatched/logs/warnings.log" ], 
-        infos: [ "/var/www/unwatched/logs/infos.log" ],
-        silly: [ "/var/www/unwatched/logs/silly.log" ]
-      },
-      server: {
-        host: '0.0.0.0',
-        port: 28777
-      }
+        nodeName: "Unwatched Logfiles",
+            logStreams: {
+                exceptions: [ "/var/www/unwatched/logs/exceptions.log" ],
+                errors: [ "/var/www/unwatched/logs/errors.log" ],
+                warnings: [ "/var/www/unwatched/logs/warnings.log" ], 
+                infos: [ "/var/www/unwatched/logs/infos.log" ],
+                silly: [ "/var/www/unwatched/logs/silly.log" ]
+            },
+        server: {
+            host: '0.0.0.0',
+            port: 28777
+        }
     }
 
 
