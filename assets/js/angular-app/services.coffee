@@ -12,13 +12,23 @@ class Client
 
 
 class RTConnection
-    servers:
+    @pcConfig =
         iceServers: [
             url: "stun:stun.l.google.com:19302"
         ]
-        connectionServer: "localhost"
+    @pcConstraints = 
+        optional: [
+            { DtlsSrtpKeyAgreement: true }
+            { RtpDataChannels: true }
+        ]
+    @sdpConstraints = 
+        mandatory:
+            OfferToReceiveAudio: true
+            OfferToReceiveVideo: true
+
     constructor: ->
     createOffer: ->
+
     createAnswer: ->
     onIce: ->
     addReliableChannel: ->
@@ -40,6 +50,21 @@ class RTCProvider
 
     setSignalServer: (@signalServer)->
         console.log "set Signal Server: "+signalServer
+        console.log "RTCPeerConnection:"
+        console.log window.RTCPeerConnection
+        console.log "getUserMedia:" 
+        console.log window.getUserMedia
+        console.log "attachMediaStraem:" 
+        console.log window.attachMediaStream
+        console.log "reattachMediaStream" 
+        console.log window.reattachMediaStream
+        console.log "webrtcDetectedBrowser" 
+        console.log window.webrtcDetectedBrowser
+        console.log "webrtcDetectedVersion" 
+        console.log window.webrtcDetectedVersion
+        console.log "isWebrtcAble" 
+        console.log window.isWebrtcAble
+        return
     connect: ->
         wss = new WebSocket @signalServer
         wss.onopen = ->
@@ -51,15 +76,15 @@ class RTCProvider
         wss.onmessage = (msg) ->
             console.log "wss msg received"
             console.log JSON.parse(msg)
+
         wss.onclose = ->
         
     newRoom: (name) ->
-
-    onConnection: ->
+    newShare: (type) ->
 
     connectToRoom: ->
 
-    connectToSingleRoom: ->
+    connectToShare: ->
     
     setName: (@name) ->
         console.log "inner set Name: " + name
