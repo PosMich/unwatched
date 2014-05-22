@@ -58,7 +58,7 @@ app.start = ->
 
     http.listen config.port.http
     https.listen config.port.https
-    ###
+    
     signaling.connect app
-    ###
+    
 module.exports = app

@@ -9,14 +9,14 @@ describe "server", ->
     body = undefined
 
     # could take a while
-    it "should respond on port "+(config.port+1), (done) ->
+    it "should respond on port "+(config.port.https), (done) ->
         error = null
         body = ""
         response = null
 
         req = https.request 
             host: "localhost"
-            port: (config.port+1)
+            port: (config.port.https)
             path: '/'
             method: 'GET'
             rejectUnauthorized: false
@@ -43,7 +43,7 @@ describe "server", ->
         done()
 
     it "should have a body defined", (done) ->
-        expect(body).toBeDefined()
+        expect(body).not.toBe ""
         done()
 
     it "should contain a doctype at the beginning of the page", (done) ->
@@ -63,7 +63,7 @@ describe "server", ->
 
 describe "websocket", ->
     it "should be able to connect to the ws server", (done) ->
-        ws = new WebSocket("wss://localhost:3001/",
+        ws = new WebSocket("wss://localhost:#{config.port.http}/",
             rejectUnauthorized: false
             requestCert: true
         )

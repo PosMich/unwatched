@@ -1,25 +1,23 @@
 WebSocketServer = require("ws").Server
-
+logger = require "./logger"
 ###
     WebSocket stuff
 ###
 
 exports.connect = (server) ->
-    #console.log server
-    wss = new WebSocketServer(server: server)
+    logger.error "should work"
+    wss = new WebSocketServer( server: server )
     wss.on "connection", (ws) ->
-        console.log "new ws connection"
+        logger.error "new ws connection"
         ws.on "message", (msg) ->
-            console.log 'ws received: '
-            console.log msg
+            logger.info 'ws received: ', msg
 
             try
                 msg = JSON.parse msg
 
-                
             catch e
-                debug.error e
-                ws.close()
+                logger.error e
+                #ws.close()
 
         ws.on "close", ->
-            console.log "ws connection closed: "
+            logger.info "ws connection closed"
