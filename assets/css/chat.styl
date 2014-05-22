@@ -25,11 +25,17 @@
     fixed bottom right
     margin-bottom 0px
     z-index 10000
+    width 50%
+    height 100%
+
     .panel-body
-        overflow-y: auto
+        padding 0
+        padding-bottom 90px
+        height 100%
 
     .panel-footer
         padding 0
+        height 46px
 
     .panel-heading
         text-align left
@@ -81,6 +87,11 @@
                     padding 7px
 
     .message-container
+        
+        overflow-y auto
+        height 100%
+        padding 10px
+
         .chat-message
 
             &.ng-enter, &.ng-move
@@ -102,6 +113,8 @@
 
 .chat-container.compressed     
     border none
+    width 33%
+    height 50%
  
     .message-container .chat-message .well
         max-width 90%
@@ -128,6 +141,8 @@
 .chat-container.minimized
     border none
     border-radius 10px 0 0 0 
+    width 33%
+    height 38px
     .panel-heading
         border-radius 10px 0 0 0 
     .panel-heading

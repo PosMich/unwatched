@@ -29,17 +29,6 @@
 
 
 ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{controls.layout}}")
-    
-    //- .col-xs-1
-    //- .col-xs-2 Name
-    //- div(ng-class="{'col-xs-4':chat_state=='expanded', 'col-xs-2':chat_state!='expanded'}")
-    //-     | Author
-    //- div(ng-class="{'col-xs-2':chat_state=='expanded', 'col-xs-1':chat_state!='expanded'}")
-    //-     | Filesize
-    //- div.col-xs-2(ng-show="chat_state!='expanded'")
-    //-     | Created
-    //- div(ng-class="{'col-xs-3':chat_state=='expanded', 'col-xs-offset-2 col-xs-2':chat_state!='expanded'}")
-    //-     | Actions
 
     li(ng-class="{'col-xs-12 item-container':controls.layout=='layout-list', 'col-xl-2 col-md-3 col-sm-6':controls.layout=='layout-icons'&&chat_state!='expanded', 'col-xl-4 col-md-6 col-sm-12':controls.layout=='layout-icons'&&chat_state=='expanded'}",
         ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending")
