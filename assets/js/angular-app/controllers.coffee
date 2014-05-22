@@ -86,9 +86,15 @@ app.controller "SignupCtrl", [
 # * <h3>Member Controller</h3>
 # >
 app.controller "MembersCtrl", [
-  "$scope"
-  ($scope) ->
+  "$scope", "ChatStateService"
+  ($scope, ChatStateService) ->
     $scope.members = []
+
+    $scope.$watch (->
+      return ChatStateService.chat_state
+    ), ((new_state, old_state) ->
+      $scope.chat_state = new_state
+    ), true
 
     membersAmount = Math.floor(Math.random() * 10 + 1) + 6
     while membersAmount -= 1
@@ -105,8 +111,6 @@ app.controller "ShareCtrl", [
   "$scope", "ChatStateService"
   ($scope, ChatStateService) ->
     $scope.shared_items = []
-
-    # $scope.chat_state = ChatStateService.getChatState()
 
     $scope.$watch (->
       return ChatStateService.chat_state

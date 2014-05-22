@@ -154,7 +154,7 @@
                         &:before
                             display block
                             absolute top right
-                            font-size 9.5em
+                            font-size 8em
                             z-index 1
                             font-weight bold
                             font-style italic
@@ -183,6 +183,17 @@
                             content: '\f13c'
                             font-weight normal
                             font-style normal
+
+        li
+            &.ng-move, &.ng-enter, &.ng-leave
+                transition opacity .75s ease-in-out
+
+            &.ng-leave.ng-leave-active, &.ng-move, &.ng-enter
+                opacity 0
+          
+
+            &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
+                opacity 1
 
     &.layout-list
         
@@ -238,13 +249,13 @@
                 color white
 
 
-    .item-container
-        &.ng-move, &.ng-enter, &.ng-leave
-            transition opacity .75s ease-in-out
+        &.item-container
+            &.ng-move, &.ng-enter, &.ng-leave
+                transition opacity .75s ease-in-out
 
-        &.ng-leave.ng-leave-active, &.ng-move, &.ng-enter
-            opacity 0
-      
+            &.ng-leave.ng-leave-active, &.ng-move, &.ng-enter
+                opacity 0
+          
 
-        &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
-            opacity 1
+            &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
+                opacity 1

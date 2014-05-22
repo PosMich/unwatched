@@ -165,12 +165,19 @@ app.directive "fitItemHeight", [
             return
 
         scope.$watch ->
-          scope.controls.layout
+            scope.controls.layout
         , (value) ->
-          window.setTimeout((->
-            fitHeight(elem, attrs)
-          ), 0)
+            window.setTimeout((->
+                fitHeight(elem, attrs)
+            ), 0)
 
+        scope.$watch ->
+            scope.controls.searchString
+        , () ->
+            window.setTimeout((->
+                fitHeight(elem, attrs)
+            ), 0)
+          
         angular.element($window).bind "resize", ->
           fitHeight(elem, attrs)
 
