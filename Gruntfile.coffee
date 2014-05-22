@@ -112,7 +112,7 @@ module.exports = (grunt) ->
         getAngularAppCoffeeFiles: ->
             path = files.angularAppCoffeeFilesDir
             _files = files.angularAppCoffeeFiles
-            fileArray = []
+            fileArray = ["assets/js/adapter.coffee"]
             fileArray.push( path + "/" + file ) for file in _files
             return fileArray
         getAppFiles: ->
