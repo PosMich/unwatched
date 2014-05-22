@@ -9,7 +9,7 @@
             transition opacity .3s ease-in-out
             transition background .3s ease-in-out
             border-radius 10px
-            box-shadow 0 0 35px #000
+            box-shadow 0 0 35px #333
             background white
             overflow hidden
 
@@ -42,7 +42,7 @@
                         width 100%
 
                 .item-infos
-                    padding 20px
+                    padding 10px
                     font-size 1em
                     text-align left
                     opacity 0
@@ -58,11 +58,12 @@
 
                     table
                         td
-                            padding 3px 10px
+                            padding 1px 5px
+                            font-size 0.8em
 
                 .item-controls
                     text-align center
-                    absolute bottom 10px left 0
+                    absolute bottom 5px left 0
                     width 100%
                     font-size 2em
                     z-index 10
@@ -86,7 +87,7 @@
 
                         .content
                             text-align left
-                            font-size 0.9em
+                            font-size 0.8em
                             font-style italic
 
                 &.file
@@ -99,9 +100,10 @@
 
                         i
                             color rgb(150, 150, 150)
-                            font-size 13em
-                            float right
-                            padding-top 10px
+                            font-size 9em
+                            padding-bottom 10px
+                            absolute bottom right 10px
+                            opacity 0.4
 
                 &.code
                     
@@ -121,16 +123,16 @@
 
                         .content
                             absolute top left
-                            padding 10px
-                            width 248px
+                            padding 5px
                             text-align left
+                            oveflow hidden
 
                             h3
                                 text-align left
                                 text-indent 5px
                                 margin-top 5px
                             p
-                                font-size 0.9em
+                                font-size 0.8em
                                 padding 10px
 
                                 code
@@ -152,7 +154,7 @@
                         &:before
                             display block
                             absolute top right
-                            font-size 12em
+                            font-size 9.5em
                             z-index 1
                             font-weight bold
                             font-style italic
@@ -165,8 +167,7 @@
                             content: 'rb'
                         &.java:before
                             content: 'java'
-                            font-size 5em
-                            font-size 6em
+                            font-size 4.5em
                             line-height 3.1em
                         &.js:before
                             content: 'js'
@@ -182,50 +183,6 @@
                             content: '\f13c'
                             font-weight normal
                             font-style normal
-
-
-        //     > div
-        //         display table-cell
-        //         vertical-align middle
-        //         position relative
-        //      &:hover
-        //          opacity 1
-
-                    
-        //         .item-infos
-        //             opacity 1
-
-        //     .item-thumbnail
-        //         z-index 0
-        //         padding 10px
-
-
-        //     .item-infos
-
-
-        //         table
-        //             font-size 0.9em
-                
-
-
-
-
-
-
-
-        //     &.shared-screen, &.shared-webcam
-                
-        //         .item-thumbnail
-        //             // max-height 170px
-
-        //             img
-        //                 max-height 160px
-                
-        //         .item-infos
-                    
-        //             .item-controls
-        //                 padding-top 30px
-
 
     &.layout-list
         
