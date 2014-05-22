@@ -239,7 +239,7 @@ module.exports = (grunt) ->
                 tasks: ["stylus"]
             jade:
                 files: "views/**/*.*"
-                tasks: ["jade", "ngtemplates", "concat"]
+                tasks: ["jade", "ngtemplates", "coffee:app", "concat"]
             jsApp:
                 files: "assets/js/**/*.*"
                 tasks: ["coffeelint:app", "coffee:app", "concat"]

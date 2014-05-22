@@ -1,0 +1,35 @@
+.item(class="{{item.category}}")
+    .item-thumbnail
+        h3 {{item.thumbnail.title}}
+        .content(ng-bind-html="item.thumbnail.content")
+    .item-infos
+        table
+            tr
+                td
+                    b Name
+                td {{item.name}}
+            tr
+                td
+                    b Size
+                td {{item.size | humanReadableFileSize}}
+            tr
+                td
+                    b Author
+                td {{item.author}}
+            tr
+                td
+                    b Created
+                td {{item.created}}
+            tr
+                td
+                    b Edited
+                td {{item.edited}}
+        .item-controls.clearfix
+            a(ng-click="delete(item.id)")
+                i.fa.fa-trash-o
+            a(ng-click="copyClipboard(item.id)")
+                i.fa.fa-clipboard
+            a(href="/path/to/future/filedownload")
+                i.fa.fa-download
+            a(href="/share/note/{{item.id}}")
+                i.fa.fa-pencil

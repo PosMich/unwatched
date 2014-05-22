@@ -1,25 +1,2 @@
-.item(class="{{item.category}}")
-    .item-thumbnail(style="background-image: url(images/{{item.thumbnail}})")
-    .item-infos
-        table
-            tr
-                td
-                    b Name
-                td {{item.name}}
-            tr
-                td
-                    b Size
-                td {{item.size | humanReadableFileSize}}
-            tr
-                td
-                    b Author
-                td {{item.author}}
-            tr
-                td
-                    b Created
-                td {{item.created}}
-        .item-controls.clearfix
-            i.fa.fa-trash-o
-            i.fa.fa-clipboard
-            i.fa.fa-download
-            i.fa.fa-eye(ng-click="openView('screenshot')")
+.row
+    h1 Screenshot {{id}}
