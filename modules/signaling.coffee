@@ -1,3 +1,4 @@
+crypto = require "crypto"
 WebSocketServer = require("ws").Server
 logger = require "./logger"
 ###
@@ -24,6 +25,7 @@ exports.connect = (server) ->
     
     wss.on "connection", (ws) ->
         logger.info "new ws connection"
+        ws.peer = null
         ws.on "message", (msg) ->
             logger.info 'ws received: ', msg
 
@@ -32,6 +34,7 @@ exports.connect = (server) ->
             console.log "----"+msg
 
             try
+                originalMsg = msg
                 msg = JSON.parse msg
                 
                 console.log "----"
@@ -42,17 +45,32 @@ exports.connect = (server) ->
                 logger.info "msg", msg
 
                 switch msg.type
-                    when "newRoom"
-                        logger.info "ws: got newRoom msg"
-                    when "newSingleRoom"
-                        logger.info "ws: got newSingleRoom msg"
+                    when "new"
+                        logger.info "ws: got new msg"
+                        id = crypto.randomBytes(20).toString "hex"
+                        roomList.push 
+                            id: id
+                            ws: ws
+                        ws.send JSON.stringify( 
+                            type: "id"
+                            value: id
+                        )
                     when "connect"
+                        for room in roomList
+                            if msg.id is room.id 
+                                room.ws.peer = ws
                         logger.info "ws: got connect msg"
                     when "offer"
+                        if !ws.peer
+                            ws.peer.send originalMsg
                         logger.info "ws: got offer msg"
                     when "answer"
+                        if !ws.peer
+                            ws.peer.send originalMsg
                         logger.info "ws: got answer msg"
-                    when "canditate"
+                    when "candidate"
+                        if !ws.peer
+                            ws.peer.send originalMsg
                         logger.info "ws: got answer msg"
                     else 
                         console.log "asdfasfd"

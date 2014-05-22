@@ -6,12 +6,24 @@
 class Client
     name: null
     eMail: null
-    hash: null
+    id: null
     connections: []
     constructor: (@name, @email) ->
+    get: ->
+
+class Signaler 
+    @channel = null
+    constructor: (@channel) ->
+    createNew: (type) ->
+        type: "new"
+        newType: "share"
+        id: ""
 
 
 class RTConnection
+    @id = null
+    @isInitiator = false
+    @isStarted = false
     @pcConfig =
         iceServers: [
             url: "stun:stun.l.google.com:19302"
@@ -25,16 +37,125 @@ class RTConnection
         mandatory:
             OfferToReceiveAudio: true
             OfferToReceiveVideo: true
+    @dataChannelOptions = 
+        ordered: false
+        maxRetransmitTime: 3000
+        #maxRetransmits: 
+        #protocol:
+        #negotiated:
+        #id:
+    @peerConnection = null
+    @dataChannel = null
+    @signalChannel = null
+    constructor: (@signalChannel, @id = null, @type = "share") -> 
+        console.log "id: "+@id
+        console.log "type: "+@type
+        @signalChannel.onmessage = @handleSignalChannelMessage
+        if !@id 
+            console.log "id is undefined"
+            @delayedSignalChannelSend()
+        console.log "RTConnection constructor"
+    delayedSignalChannelSend: =>
+        console.log "deeelaayyyyeeed"
+        console.log @signalChannel
+        if @signalChannel.readyState is 1
 
-    constructor: ->
-    createOffer: ->
+            @signalChannel.send JSON.stringify( 
+                type: "new"
+                newType: "share"
+            )
+        else
+            setTimeout @delayedSignalChannelSend, 100
+    startConnection: ->
+        console.log "RTConnection startConnection"
+        try 
+            @peerConnection = new window.RTCPeerConnection(@pcConfig, @pcConstraints)
+            @peerConnection.onicecandidate = @handleIceCandidate
+        catch error
+            console.log "error creating peerConnection"
+            console.log error.message
 
-    createAnswer: ->
-    onIce: ->
-    addReliableChannel: ->
-    addUnreliableChannel: ->
+        @peerConnection.onaddstream = @remoteStreamAdded
+        @peerConnection.onremovestream = @remoteStreamRemoved
+        
+        if @isInitiator
+            @addDataChannel
+        else
+            @peerConnection.ondatachannel = @gotDataChannel
 
+        @isStarted = true
+        return
+    addDataChannel: ->
+        console.log "RTConnection addDataChannel"
+        try
+            @dataChannel = @peerConnection.createDataChannel("testLabel", @dataChannelOptions)
+            @dataChannel.onmessage = @DChandleMessage
+            @dataChannel.onerror   = @DChandleError
+            @dataChannel.onopen    = @DChandleOpen
+            @dataChannel.onclose   = @DChandleClose
+        catch error
+            console.log "error creating Data Channel"
+            console.log error.message
+    gotDataChannel: (event) ->
+        console.log "RTConnection gotDataChannel"
+        @dataChannel = event.channel
+        @dataChannel.onmessage = @handleMessage
+        @dataChannel.onerror   = @handleError
+        @dataChannel.onopen    = @handleOpen
+        @dataChannel.onclose   = @handleClose
+    DChandleMessage: (msg)->
+        console.log "DataChannel message"
+        console.log JSON.parse(msg)
+    DCHandleError: (error)->
+        console.log "DataChannel Error"
+        console.log error
+    DChandleOpen: ->
+        console.log "DataChannel opened"
+    DChandleClose: ->
+        console.log "DataChannel closed"
+    handleIceCandidate: (event) ->
+        console.log "RTConnection handleIceCandidate"
+        if event.candidate
+            @signalChannel.send
+                type: "candidate"
+                label: event.candidate.sdpMLineIndex
+                id: event.candidate.sdpMid
+                candidate: event.candidate.candidate
+        else
+            console.log "end of candidates"
+    doOffer: ->
+        console.log "RTConnection startCall"
+        @peerConnection.createOffer @setLocalSdpSend, null, @sdpConstraints
+    doAnswer: ->
+        console.log "RTConnection doAnswer"
+        @peerConnection.createAnswer setLocalAndSendMessage, null, @sdpConstraints
+    setLocalSdpSendBack: (sessionDescription)->
+        console.log "RTConnection setLocalSdpSendBack"
+        @peerConnection.setLocalDescription sessionDescription
+        @signalChannel.send sessionDescription
+    handleSignalChannelMessage: (message)->
+        console.log "RTConnection handleSignalChannelMessage"
+        console.log "Received message:", message
+        
+        if message.type is "offer"
+            @startConnection() if not @isInitiator and not @isStarted
+            @peerConnection.setRemoteDescription new RTCSessionDescription(message)
+            @doAnswer()
+        else if message.type is "answer" and @isStarted
+            @peerConnection.setRemoteDescription new RTCSessionDescription(message)
+        else if message.type is "candidate" and @isStarted
+            candidate = new RTCIceCandidate(
+                sdpMLineIndex: message.label
+                candidate: message.candidate
+            )
+            @peerConnection.addIceCandidate candidate
+        #else handleRemoteHangup()  if message is "bye" and @isStarted
+        else 
+            console.log "got unknown msg"
+            console.log message
 
+window.RTConnection = RTConnection
+#(new WebSocket("wss://localhost:3001"))
 
 class RTCProvider
     @::isMaster   = true
