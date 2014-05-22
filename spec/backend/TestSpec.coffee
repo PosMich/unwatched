@@ -1,7 +1,7 @@
-request = require "request"
-https   = require "https"
-config  = require "../../modules/config"
+https     = require "https"
+WebSocket = require "ws"
 
+config  = require "../../userconfig"
 
 describe "server", ->
     error = undefined
@@ -59,3 +59,24 @@ describe "server", ->
         expect(body).toMatch /<title>(.)+<\/title>/i
         expect(body).toMatch /<body>([\s\S])+<\/body>/i
         done()
+
+
+describe "websocket", ->
+    it "should be able to connect to the ws server", (done) ->
+        ws = new WebSocket("wss://localhost:3001/",
+            rejectUnauthorized: false
+            requestCert: true
+        )
+        ws.on "open", ->
+            done()
+            #ws.send Date.now().toString(),
+                #mask: true
+
+        ws.on "message", (data, flags) ->
+            console.log "Roundtrip time: " + (Date.now() - parseInt(data)) + "ms", flags
+            #setTimeout (->
+                #ws.send Date.now().toString(),
+                #    mask: true
+
+            # ), 500
+          
