@@ -1,7 +1,7 @@
 .panel.panel-default.chat-container(ng-controller="ChatCtrl",
-    absolute-fill-relative-full-height="chat.state",
     ng-class="chat.state",
     rearange-container="chat.state")
+
     .panel-heading(ng-click="chat.maximize()")
         | Roomname - Chat
     .controls.pull-right
@@ -12,12 +12,13 @@
         i.fa.fa-minus(ng-hide="chat.state == 'minimized'", 
             ng-click="chat.minimize()")
 
-    .panel-body(fit-chat-body-height="chat.state")
+    .panel-body 
         .message-container(update-scroll-position="chat.messages.length")
-            .clearfix.chat-message(
-                ng-repeat="message in chat.messages")
-                span.well.well-sm(ng-class-even="'own'")
-                    | <b>{{message.sender}}:</b> {{message.content}}
+            div
+                .clearfix.chat-message(
+                    ng-repeat="message in chat.messages")
+                    span.well.well-sm(ng-class-even="'own'")
+                        | <b>{{message.sender}}:</b> {{message.content}}
     .panel-footer.message-control.clearfix
         form(name="chatMessage", no-validate, 
             ng-submit="submitChatMessage()")

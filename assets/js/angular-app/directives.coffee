@@ -29,21 +29,8 @@ app.directive "inputMatch", [ ->
 # > and adds a watcher to keep the dimensions 1:1 <br/>
 # > Frontend-usage: div(member)
 
-app.directive "member", [
-  "$window"
-  ($window) ->
+app.directive "member", [ ->
     templateUrl: "/partials/member.jade"
-    link: (scope, elem) ->
-      # w = angular.element($window)
-      # elem.height elem.width()
-      # $(elem).find(".member-options span i").css("line-height",
-        # (elem.width() / 2) + "px")
-      # w.bind "resize", ->
-      #   elem.height elem.width()
-      #   $(elem).find(".member-options span i").css("line-height",
-      #     (elem.width() / 2) + "px")
-      #   return
-      # return
 ]
 
 # ***
@@ -55,39 +42,6 @@ app.directive "chat", [ ->
 ]
 
 # ***
-# * <h3>Shared Item</h3>
-# > Loads the template for a chat window
-
-# app.directive "shareditem", [ ->
-#     restrict: 'E'
-#     link: (scope, elem, attr) ->
-#       scope.getTemplateUrl = ->
-#         '/partials/items/' + attr.category + '.jade'
-#     template: '<div ng-include="getTemplateUrl()"></div>'
-
-  
-# ]
-
-# ***
-# * <h3>Shared Note</h3>
-# > Loads the template for a shared note
-# app.directive "sharednote", [ ->
-    
-#     customDirective = {}
-
-#     customDirective.restrict = 'E'
-#     customDirective.templateUrl = '/partials/items/{{item.category}}.jade'
-
-#     customDirective.scope = {
-#       item: "="
-#     }
-
-#     return customDirective
-    
-# ]
-
-
-# ***
 # * <h3>UpdateScrollPosition</h3>
 # > Scrolls the container view to the bottom if new child-elements appear<br/>
 # > Frontend-usage: div(update-scroll-position="containerElementId")<br/>
@@ -96,50 +50,31 @@ app.directive "chat", [ ->
 # > we need to wait 1ms until the view is up-to-date - this is just a workaround
 # > and needs optimization
 app.directive "updateScrollPosition", [
-    "$window"
-    ($window) ->
+    "$window", "ChatStateService"
+    ($window, ChatStateService) ->
         link: (scope, elem, attrs) ->
+
             scope.$watch attrs.updateScrollPosition, ->
                 window.setTimeout((->
-                  $(elem).parent().scrollTop $(elem).height()
-                ), 1)
+                  $(elem).scrollTop $(elem).find("> div").height()
+                ), 0)
 
             angular.element($window).bind "resize", ->
-                $(elem).parent().scrollTop $(elem).height()
+                window.setTimeout((->
+                    $(elem).scrollTop $(elem).find("> div").height()
+                ), 0)
+
+            scope.$watch ->
+                ChatStateService.chat_state
+            , () ->
+                window.setTimeout((->
+                     $(elem).scrollTop $(elem).find("> div").height()
+                ), 0)
 
             window.setTimeout((->
-              $(elem).parent().scrollTop $(elem).height()
-            ), 1)
+              $(elem).scrollTop $(elem).find("> div").height()
+            ), 0)
 ]
-
-# ***
-# * <h3>adjustWidth</h3>
-# > Is used on the tab-directive. Similar to the attribute "justified", but
-# > sets a definite width on each tab. (value = containerWidth / n)<br/>
-# > Adjusts width on init, on change of the given attr and on window resize<br/>
-# > Frontend-usage: tabset(adjust-width="attr")<br/>
-# > Additional note: window.setTimeout-Workaround, as mentioned above
-# app.directive "adjustWidth", [
-#     "$window"
-#     ($window) ->
-#     link: (scope, elem, attrs) ->
-
-#       adjustElementWidth = (elem, attrs) ->
-#         adjustedWidth = $(elem).find("ul").width()
-#         elems = $(elem).find( "ul li" ).length
-#         adjustedWidth = ((adjustedWidth / elems) - 2)  if elems > 0
-#         $(elem).find("ul li a").css( "width",  adjustedWidth)
-#         return
-
-#       scope.$watch attrs.adjustWidth, ->
-#         window.setTimeout( (->
-#           adjustElementWidth(elem, attrs)
-#         ), 1)
-
-#       angular.element($window).bind "resize", ->
-#         adjustElementWidth(elem, attrs)
-#         return
-# ]
 
 # ***
 # * <h3>focusOnClick</h3>
@@ -152,14 +87,6 @@ app.directive "focusOnClick", [ ->
       $(focusField).focus()
       return
     return
-]
-
-
-app.directive "appVersion", [
-  "version"
-  (version) ->
-    (scope, elem, attrs) ->
-      elem.text version
 ]
 
 app.directive "centerVertical", [
@@ -182,76 +109,13 @@ app.directive "centerVertical", [
           return
 ]
 
-app.directive "absoluteFillRelativeFullHeight", [
-    "$window"
-    ($window) ->
-      link: (scope, elem, attrs) ->
 
-        fillHeight = (elem, attrs) ->
-            if scope.chat.state is "minimized"
-                $heading = $(elem).find(".panel-heading")
 
-                height = $heading.height() + parseInt($heading
-                    .css("padding-top").replace(/[^-\d\.]/g, '')) * 2
-
-                width = $($window).width() / 3
-            else
-                divider = 1
-                if scope.chat.state is "compressed"
-                  divider = 1.5
-
-                height = $($window).height() / divider
-                width = $($window).width() / 2 / divider
-
-            $(elem).css "height", height
-            $(elem).css "width", width
-            return
-
-        scope.$watch attrs.absoluteFillRelativeFullHeight, ->
-          window.setTimeout( (->
-            fillHeight(elem, attrs)
-          ), 1)
-
-        angular.element($window).bind "resize", ->
-          fillHeight(elem, attrs)
-          return
-]
-
-app.directive "fitChatBodyHeight", [
-    "$window"
-    ($window) ->
-      link: (scope, elem, attrs) ->
-
-        fitHeight = (elem, attrs) ->
-            divider = 1
-            if scope.chat.state is "compressed"
-              divider = 1.5
-
-            $parent = $(elem).parent()
-            $heading = $parent.find(".panel-heading")
-            $footer = $parent.find(".panel-footer")
-
-            heading_padding = $heading.css("padding-top")
-              .replace(/[^-\d\.]/g, '')
-            footer_padding = $heading.css("padding-top")
-              .replace(/[^-\d\.]/g, '')
-
-            height = ($($window).height() / divider) - 30 - $heading.height() -
-              $footer.height()
-            
-            $(elem).css "height", height
-            return
-
-        scope.$watch attrs.fitChatBodyHeight, ->
-          window.setTimeout( (->
-            fitHeight(elem, attrs)
-            $container = $(elem).find(".message-container")
-            $(elem).scrollTop $container.height()
-          ), 10)
-
-        angular.element($window).bind "resize", ->
-          fitHeight(elem, attrs)
-          return
+app.directive "appVersion", [
+  "version"
+  (version) ->
+    (scope, elem, attrs) ->
+      elem.text version
 ]
 
 app.directive "rearangeContainer", [
@@ -285,24 +149,33 @@ app.directive "rearangeContainer", [
 ]
 
 app.directive "fitItemHeight", [
-    "$window", "ChatStateService"
-    ($window, ChatStateService) ->
+    "$window", "$timeout"
+    ($window, $timeout) ->
       link: (scope, elem, attrs) ->
         fitHeight = (elem, attrs) ->
-          height = $(elem).width() / 4 * 3
-          $(elem).css "height", height
-          return
+          if attrs.fitItemHeight is "layout-icons"
+            $items = $(elem).find(".item-container")
+            width = $items.first().width()
+
+            for item in $items
+              if $(item).width() < width
+                width = $(item).width()
+
+            $items.css "height", width / 4 * 3
+            return
 
         scope.$watch ->
-          ChatStateService.chat_state
+          scope.controls.layout
         , (value) ->
-          window.setTimeout( (->
+          window.setTimeout((->
             fitHeight(elem, attrs)
-          ), 100)
-          
+          ), 0)
 
         angular.element($window).bind "resize", ->
           fitHeight(elem, attrs)
-          return
+
+        window.setTimeout((->
+          fitHeight(elem, attrs)
+        ), 0)
 
 ]
