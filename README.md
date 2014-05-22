@@ -16,23 +16,23 @@
 ### coffee-script, grunt
 
 ```zsh
-    npm install -g coffee-script
-    npm install -g grunt-cli
+npm install -g coffee-script
+npm install -g grunt-cli
 ```
 
 ### Pygments
 needed to generate documentation
 
 ```zsh
-    pip install Pygments
+pip install Pygments
 ```
 
 ## Install
 
 ```zsh
-    git clone xxxxx <name>
-    cd <name>
-    npm install
+git clone xxxxx <name>
+cd <name>
+npm install
 ```
 
 ## Userconfig
@@ -67,7 +67,7 @@ module.exports =
 ## Take a look at the Gruntfile!
 
 ```zsh
-    grunt --help
+grunt --help
 ```
 
 
