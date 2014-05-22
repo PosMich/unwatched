@@ -16,7 +16,7 @@
 
 <h3 id="coffee-script-grunt">coffee-script, grunt</h3>
 
-<pre><code>npm install -g coffee-script
+<pre><code class="zsh">npm install -g coffee-script
 npm install -g grunt-cli
 </code></pre>
 
@@ -24,12 +24,12 @@ npm install -g grunt-cli
 
 <p>needed to generate documentation</p>
 
-<pre><code>pip install Pygments
+<pre><code class="zsh">pip install Pygments
 </code></pre>
 
 <h2 id="install">Install</h2>
 
-<pre><code>git clone xxxxx &lt;name&gt;
+<pre><code class="zsh">git clone xxxxx &lt;name&gt;
 cd &lt;name&gt;
 npm install
 </code></pre>
@@ -38,15 +38,34 @@ npm install
 
 <p>A <b><em><code>userconfig.coffe</code></em></b> file must be created in the <code>modules</code> directory, because sensible data is stored here, it isn't checked in into the version control system.</p>
 
-<pre><code>module.exports =
-    port:    3000
-    appName: "AppName"
-    sessionSecret: "Seeecreet 64 chars long"
+<pre><code class="coffee">module.exports =
+    port:
+        http:   1234
+        https:  1235
+        livereload: 35729
+    appName: "Unwatched"
+    sessionSecret: ""
+    ssl:
+        key:    "cert/server.key"
+        cert:   "cert/server.crt"
+    log:
+        dir: "logs/"
+        level: "silly"
+        files:
+            exception: "exceptions.log"
+            warning:   "warnings.log"
+            error:     "errors.log"
+            info:      "infos.log"
+            silly:     "silly.log"
+    logio:
+        host:   "localhost"
+        port:   28777
+        node_name: "unwatched"
 </code></pre>
 
 <h2 id="take-a-look-at-the-gruntfile">Take a look at the Gruntfile!</h2>
 
-<pre><code>grunt --help
+<pre><code class="zsh">grunt --help
 </code></pre>
 
 <h2 id="docs">Docs</h2>
@@ -54,6 +73,30 @@ npm install
 <p><a href="https://github.com/nevir/groc/">groc</a> is used for generating the documentation.</p>
 
 <p>The files are moved to the <b><em><code>public</code></em></b> dir, you can access them via <strong><code>http://servername/docs</code></strong>.</p>
+
+<h2 id="logs">Logs</h2>
+
+<p><a href="http://logio.org/">Install Log.io</a></p>
+
+<p>Edit <code>~/.log.io/harvester.conf</code></p>
+
+<p>example config:</p>
+
+<pre><code class="coffee">exports.config = {
+    nodeName: "Unwatched Logfiles",
+        logStreams: {
+            exceptions: [ "/var/www/unwatched/logs/exceptions.log" ],
+            errors: [ "/var/www/unwatched/logs/errors.log" ],
+            warnings: [ "/var/www/unwatched/logs/warnings.log" ], 
+            infos: [ "/var/www/unwatched/logs/infos.log" ],
+            silly: [ "/var/www/unwatched/logs/silly.log" ]
+        },
+    server: {
+        host: '0.0.0.0',
+        port: 28777
+    }
+}
+</code></pre>
 
 <h2 id="todo">TODO</h2>
 

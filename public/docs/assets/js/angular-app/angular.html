@@ -2,6 +2,8 @@
 
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;ngRoute&quot;</span>
+  <span class="s">&quot;ngAnimate&quot;</span>
+  <span class="s">&quot;ngSanitize&quot;</span>
   <span class="s">&quot;unwatched.services&quot;</span>
   <span class="s">&quot;unwatched.directives&quot;</span>
   <span class="s">&quot;unwatched.filters&quot;</span>
@@ -21,7 +23,15 @@
   for $locationProvider details</p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">config</span> <span class="p">[</span>
   <span class="s">&quot;$routeProvider&quot;</span>
-  <span class="s">&quot;$locationProvider&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>"RTCProvider"</p></div></div><div class="code"><div class="wrapper">  <span class="nf">($routeProvider, $locationProvider) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.setName "Alibert"</p></div></div><div class="code"><div class="wrapper">    <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span> <span class="kc">true</span>
+  <span class="s">&quot;$locationProvider&quot;</span>
+   <span class="s">&quot;RTCProvider&quot;</span>
+  <span class="nf">($routeProvider, $locationProvider, RTCProvider) -&gt;</span>
+    
+    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">setName</span> <span class="s">&quot;Alibert&quot;</span>
+    <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">setSignalServer</span> <span class="s">&quot;wss://localhost&quot;</span>
+    
+
+    <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span> <span class="kc">true</span>
     <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">hashPrefix</span> <span class="s">&quot;!&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="routes">Routes</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -33,7 +43,7 @@
   <p>load IndexCtrl</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/&quot;</span><span class="p">,</span>
-      <span class="nv">templateUrl: </span><span class="s">&quot;partials/index.jade&quot;</span>
+      <span class="nv">templateUrl: </span><span class="s">&quot;/partials/index.html&quot;</span>
       <span class="nv">controller: </span><span class="s">&quot;IndexCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -45,7 +55,7 @@
   <p>load CyborgCtrl</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/spacelab&quot;</span><span class="p">,</span>
-      <span class="nv">templateUrl: </span><span class="s">&quot;partials/spacelab.jade&quot;</span>
+      <span class="nv">templateUrl: </span><span class="s">&quot;/partials/spacelab.html&quot;</span>
       <span class="nv">controller: </span><span class="s">&quot;SpacelabCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -57,8 +67,34 @@
   <p>load RoomCtrl</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/room&quot;</span><span class="p">,</span>
-      <span class="nv">templateUrl: </span><span class="s">&quot;partials/room.jade&quot;</span>
+      <span class="nv">templateUrl: </span><span class="s">&quot;/partials/room.html&quot;</span>
       <span class="nv">controller: </span><span class="s">&quot;RoomCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/members</code></h3></p>
+
+<blockquote>
+  <p>loads a list of all members of the current room and a maximized chat
+  window.</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/members&quot;</span><span class="p">,</span>
+      <span class="nv">templateUrl: </span><span class="s">&quot;/partials/members.html&quot;</span>
+      <span class="nv">controller: </span><span class="s">&quot;MembersCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/share</code></h3></p>
+
+<blockquote>
+  <p>loads a list of shared items with interaction possibilities and a
+  compressed chat window.</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share&quot;</span><span class="p">,</span>
+      <span class="nv">templateUrl: </span><span class="s">&quot;/partials/share.html&quot;</span>
+      <span class="nv">controller: </span><span class="s">&quot;ShareCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
 <li><h3>route <code>/</code></h3></p>
@@ -69,4 +105,12 @@
   <p>redirect to <code>/</code></li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper">    <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">otherwise</span> <span class="nv">redirectTo: </span><span class="s">&quot;/&quot;</span>
-<span class="p">]</span></div></div></div></div></body></html>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">run</span> <span class="nf">($rootScope, $location) -&gt;</span>
+
+  <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$on</span> <span class="s">&quot;$routeChangeSuccess&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nv">$rootScope.showChat = </span><span class="nx">$location</span><span class="p">.</span><span class="nx">path</span><span class="p">()</span> <span class="o">isnt</span> <span class="s">&quot;/&quot;</span>
+    <span class="k">return</span>
+
+  <span class="k">return</span></div></div></div></div></body></html>

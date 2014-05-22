@@ -1,59 +1,85 @@
-<!DOCTYPE html><html lang="en"><head><title>assets/js/angular-app/services</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="assets/js/angular-app/services"><meta name="groc-project-path" content="assets/js/angular-app/services.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">assets/js/angular-app/services.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="unwatched-angular-services">Unwatched - Angular Services</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="s">&quot;use strict&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>class Client
-  @name:  ""
-  @eMail: ""
-  hash:  ""
-  connections: []
-  constructor: (@name, @email) -></p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>class RTConnection
-  servers:
-    iceServers: [
-      url: "stun:stun.l.google.com:19302"
-    ]
-  configs:
-  constructor: ->
-  createOffer: ->
-  createAnswer: ->
-  onIce: ->
-  addReliableChannel: ->
-  addUnreliableChannel: -></p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>class RTCProvider
-  @::isMaster   = true
-  @::name       = ""
-  @::clients    = []
-  @::moderators = []
-  # exposed to .config
-  constructor: ->
-  setName: (@name) ->
-  addClients: (name, eMail) ->
-    console.log "+++ addClients"
-    console.log @clients
-    console.log @name
-    @clients.push new Client(name, eMail)
-    console.log "--- addClients"
-  getClients: ->
-    console.log "+++ getClients"
-    console.log @clients
-    console.log "--- getClients"
-  # exposed to everyone
-  $get: ->
-    logName: ->
-      console.log "+++ logName"
-      console.log "Hello " + @name
-      console.log "--- logName"
-    createHash: ->
-      return "HAAASh"
-    setName: (@name) ->
-    addClient: (name, eMail) =>
-      console.log "+++ addClient"
-      @addClients name, eMail
-      console.log "--- addClient"
-    listClients: ->
-      console.log "+++ listClients"
-      console.log @
-      console.log @name
-      console.log @clients
-      console.log "--- listClients"</p></div></div><div class="code"><div class="wrapper">      <span class="c1">#@getClients()</span>
-      <span class="c1">#console.log @asdf</span>
-      <span class="c1">#console.log &quot;bluuuuuu&quot;</span>
-      <span class="c1">#console.log @clients</span>
+<!DOCTYPE html><html lang="en"><head><title>assets/js/angular-app/services</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="assets/js/angular-app/services"><meta name="groc-project-path" content="assets/js/angular-app/services.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">assets/js/angular-app/services.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="unwatched-angular-services">Unwatched - Angular Services</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="s">&quot;use strict&quot;</span>
+
+<span class="k">class</span> <span class="nx">Client</span>
+    <span class="nv">name: </span> <span class="kc">null</span>
+    <span class="nv">eMail: </span><span class="kc">null</span>
+    <span class="nv">hash: </span> <span class="kc">null</span>
+    <span class="nv">connections: </span><span class="p">[]</span>
+    <span class="nv">constructor: </span><span class="nf">(@name, @email) -&gt;</span>
 
 
-<span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.services&quot;</span><span class="p">,</span> <span class="p">[]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>app.provider "RTC", RTCProvider</p></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">value</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;0.1&quot;</span></div></div></div></div></body></html>
+<span class="k">class</span> <span class="nx">RTConnection</span>
+    <span class="nv">servers:</span>
+        <span class="nv">iceServers: </span><span class="p">[</span>
+            <span class="nv">url: </span><span class="s">&quot;stun:stun.l.google.com:19302&quot;</span>
+        <span class="p">]</span>
+        <span class="nv">connectionServer: </span><span class="s">&quot;localhost&quot;</span>
+    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
+    <span class="nv">createOffer: </span><span class="nf">-&gt;</span>
+    <span class="nv">createAnswer: </span><span class="nf">-&gt;</span>
+    <span class="nv">onIce: </span><span class="nf">-&gt;</span>
+    <span class="nv">addReliableChannel: </span><span class="nf">-&gt;</span>
+    <span class="nv">addUnreliableChannel: </span><span class="nf">-&gt;</span>
+
+
+
+<span class="k">class</span> <span class="nx">RTCProvider</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">isMaster   = </span><span class="kc">true</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">name       = </span><span class="s">&quot;&quot;</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">clients    = </span><span class="p">[]</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">moderators = </span><span class="p">[]</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">signalServer = </span><span class="s">&quot;wss://localhost&quot;</span> </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exposed to .config</p></div></div><div class="code"><div class="wrapper">    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
+    <span class="nv">setSignalServer: </span><span class="nf">(@signalServer)-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set Signal Server: &quot;</span><span class="o">+</span><span class="nx">signalServer</span>
+    <span class="nv">setName: </span><span class="nf">(@name) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;inner set Name: &quot;</span><span class="o">+</span><span class="nx">name</span>
+    <span class="nv">addClients: </span><span class="nf">(name, eMail) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ addClients&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@clients</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@name</span>
+        <span class="nx">@clients</span><span class="p">.</span><span class="nx">push</span> <span class="k">new</span> <span class="nx">Client</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">eMail</span><span class="p">)</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;--- addClients&quot;</span>
+    <span class="nv">getClients: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ getClients&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@clients</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;--- getClients&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exposed to everyone</p></div></div><div class="code"><div class="wrapper">    <span class="nv">$get: </span><span class="nf">-&gt;</span>
+        <span class="nv">logName: </span><span class="nf">-&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ logName&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Hello &quot;</span> <span class="o">+</span> <span class="nx">@name</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;--- logName&quot;</span>
+        <span class="nv">createHash: </span><span class="nf">-&gt;</span>
+            <span class="k">return</span> <span class="s">&quot;HAAASh&quot;</span>
+        <span class="nv">setName: </span><span class="nf">(@name) -&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set name to: &quot;</span><span class="o">+</span><span class="nx">name</span>
+        <span class="nv">addClient: </span><span class="nf">(name, eMail) =&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ addClient&quot;</span>
+            <span class="nx">@addClients</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">eMail</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;--- addClient&quot;</span>
+        <span class="nv">listClients: </span><span class="nf">-&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ listClients&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@name</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@clients</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;--- listClients&quot;</span>
+            <span class="c1">#@getClients()</span>
+            <span class="c1">#console.log @asdf</span>
+            <span class="c1">#console.log &quot;bluuuuuu&quot;</span>
+            <span class="c1">#console.log @clients</span>
+
+
+<span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.services&quot;</span><span class="p">,</span> <span class="p">[]</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">provider</span> <span class="s">&quot;RTC&quot;</span><span class="p">,</span> <span class="nx">RTCProvider</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">value</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">service</span> <span class="s">&quot;ChatStateService&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+
+    <span class="vi">@chat_state = </span><span class="s">&quot;compressed&quot;</span>
+    <span class="vi">@chat_state_history = </span><span class="s">&quot;&quot;</span>
+
+    <span class="vi">@setChatState = </span><span class="nf">(chat_state) -&gt;</span>
+        <span class="vi">@chat_state = </span><span class="nx">chat_state</span>
+
+    <span class="vi">@setChatStateHistory = </span><span class="nf">(chat_state_history) -&gt;</span>
+        <span class="vi">@chat_state_history = </span><span class="nx">chat_state_history</span>
+
+    <span class="k">return</span></div></div></div></div></body></html>

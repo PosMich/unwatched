@@ -63,7 +63,7 @@ describe "server", ->
 
 describe "websocket", ->
     it "should be able to connect to the ws server", (done) ->
-        ws = new WebSocket("wss://localhost:#{config.port.http}/",
+        ws = new WebSocket("wss://localhost:#{config.port.https}/",
             rejectUnauthorized: false
             requestCert: true
         )

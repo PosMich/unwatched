@@ -7,7 +7,7 @@
 
 <blockquote>
   <p>Directive to validate wheter two inputs are equal <br/>
-  Frontend-usage: input(ng-input-match="origin-input-field-id")</li>
+  Frontend-usage: input(input-match="origin-input-field-id")</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;inputMatch&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
   <span class="nv">require: </span><span class="s">&quot;ngModel&quot;</span>
@@ -23,28 +23,25 @@
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
-<li><h3>client</h3></p>
+<li><h3>member</h3></p>
 
 <blockquote>
-  <p>Loads the template for a single client (/partials/client.jade)
+  <p>Loads the template for a single member (/partials/member.html)
   and adds a watcher to keep the dimensions 1:1 <br/>
-  Frontend-usage: div(client)</li>
+  Frontend-usage: div(member)</li>
   </ul></p>
-</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;client&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$window&quot;</span>
-  <span class="nf">($window) -&gt;</span>
-    <span class="nv">templateUrl: </span><span class="s">&quot;/partials/client.jade&quot;</span>
-    <span class="nv">link: </span><span class="nf">(scope, elem) -&gt;</span>
-      <span class="nv">w = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">)</span>
-      <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
-      <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.client-options span i&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;line-height&quot;</span><span class="p">,</span>
-        <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;px&quot;</span><span class="p">)</span>
-      <span class="nx">w</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-        <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
-        <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.client-options span i&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s">&quot;line-height&quot;</span><span class="p">,</span>
-          <span class="p">(</span><span class="nx">elem</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;px&quot;</span><span class="p">)</span>
-        <span class="k">return</span>
-      <span class="k">return</span>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;member&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
+    <span class="nv">templateUrl: </span><span class="s">&quot;/partials/member.html&quot;</span>
+<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>chat</h3></p>
+
+<blockquote>
+  <p>Loads the template for a chat window</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;chat&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
+    <span class="nv">templateUrl: </span><span class="s">&quot;/partials/chat.html&quot;</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -58,57 +55,31 @@
   we need to wait 1ms until the view is up-to-date - this is just a workaround
   and needs optimization</li>
   </ul></p>
-</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;updateScrollPosition&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
-  <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
-    <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">updateScrollPosition</span><span class="p">,</span> <span class="nf">-&gt;</span>
-      <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span> <span class="p">(</span><span class="nf">-&gt;</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">parent</span><span class="p">().</span><span class="nx">scrollTop</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">height</span><span class="p">()),</span> <span class="mi">1</span> <span class="p">)</span>
-<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;updateScrollPosition&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$window&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
+    <span class="nf">($window, ChatStateService) -&gt;</span>
+        <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
 
-<p><ul>
-<li><h3>adjustWidth</h3></p>
+            <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">updateScrollPosition</span><span class="p">,</span> <span class="nf">-&gt;</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+                  <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">scrollTop</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;&gt; div&quot;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span>
+                <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 
-<blockquote>
-  <p>Is used on the tab-directive. Similar to the attribute "justified", but
-  sets a definite width on each tab. (value = containerWidth / n)<br/>
-  Adjusts width on init, on change of the given attr and on window resize<br/>
-  Frontend-usage: tabset(adjust-width="attr")<br/>
-  Additional note: window.setTimeout-Workaround, as mentioned above</li>
-  </ul></p>
-</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;adjustWidth&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$window&quot;</span>
-  <span class="nf">($window) -&gt;</span>
-    <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+            <span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+                    <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">scrollTop</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;&gt; div&quot;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span>
+                <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 
-      <span class="nv">adjustElementWidth = </span><span class="nf">(elem, attrs) -&gt;</span>
-        <span class="nv">adjustedWidth = </span><span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;ul&quot;</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span>
-        <span class="nv">elems = </span><span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span> <span class="s">&quot;ul li&quot;</span> <span class="p">).</span><span class="nx">length</span>
-        <span class="nv">adjustedWidth = </span><span class="p">((</span><span class="nx">adjustedWidth</span> <span class="o">/</span> <span class="nx">elems</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>  <span class="k">if</span> <span class="nx">elems</span> <span class="o">&gt;</span> <span class="mi">0</span>
-        <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;ul li a&quot;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span> <span class="s">&quot;width&quot;</span><span class="p">,</span>  <span class="nx">adjustedWidth</span><span class="p">)</span>
-        <span class="k">return</span>
+            <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nf">-&gt;</span>
+                <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
+            <span class="p">,</span> <span class="p">()</span> <span class="nf">-&gt;</span>
+                <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+                     <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">scrollTop</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;&gt; div&quot;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span>
+                <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 
-      <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">adjustWidth</span><span class="p">,</span> <span class="nf">-&gt;</span>
-        <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span> <span class="p">(</span><span class="nf">-&gt;</span>
-          <span class="nx">adjustElementWidth</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
-        <span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
-
-      <span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-        <span class="nx">adjustElementWidth</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
-        <span class="k">return</span>
-<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
-
-<p><ul>
-<li><h3>delayDisplay</h3></p>
-
-<blockquote>
-  <p>Delays the display of a certain hidden element. Adds the "show" css-class,
-  after the element has been added to the view.<br/>
-  Frontend-usage: div(delay-display="modelOfDelayedElement")<br/>
-  Additional note: Atm it just works with opacity: 0 elements.</li>
-  </ul></p>
-</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;delayDisplay&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
-  <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
-    <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">delayDisplay</span><span class="p">,</span> <span class="nf">-&gt;</span>
-      <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">addClass</span> <span class="s">&quot;show&quot;</span>
+            <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+              <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">scrollTop</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;&gt; div&quot;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span>
+            <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -127,9 +98,100 @@
     <span class="k">return</span>
 <span class="p">]</span>
 
+<span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;centerVertical&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$window&quot;</span>
+    <span class="nf">($window) -&gt;</span>
+      <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+
+        <span class="nv">centerVertical = </span><span class="nf">(elem, attrs) -&gt;</span>
+            <span class="nv">marginTop = </span><span class="p">(</span> <span class="nx">$</span><span class="p">(</span><span class="nx">$window</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span> <span class="o">-</span> <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span> <span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">css</span> <span class="s">&quot;margin-top&quot;</span><span class="p">,</span> <span class="nx">marginTop</span>
+            <span class="k">return</span>
+
+        <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">adjustWidth</span><span class="p">,</span> <span class="nf">-&gt;</span>
+          <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span> <span class="p">(</span><span class="nf">-&gt;</span>
+            <span class="nx">centerVertical</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
+          <span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+          <span class="nx">centerVertical</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
+          <span class="k">return</span>
+<span class="p">]</span>
+
+
+
 <span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;appVersion&quot;</span><span class="p">,</span> <span class="p">[</span>
   <span class="s">&quot;version&quot;</span>
   <span class="nf">(version) -&gt;</span>
     <span class="nf">(scope, elem, attrs) -&gt;</span>
       <span class="nx">elem</span><span class="p">.</span><span class="nx">text</span> <span class="nx">version</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;rearangeContainer&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$window&quot;</span><span class="p">,</span> <span class="s">&quot;$location&quot;</span>
+    <span class="nf">($window, $location) -&gt;</span>
+      <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+
+        <span class="nv">rearange = </span><span class="nf">(elem, attrs) -&gt;</span>
+          <span class="nv">$container = </span><span class="nx">$</span><span class="p">(</span><span class="s">&quot;.view-frame&quot;</span><span class="p">)</span>
+          
+          <span class="k">if</span> <span class="nx">scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="s">&quot;expanded&quot;</span>
+            <span class="nx">$container</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&quot;chat-expanded&quot;</span><span class="p">)</span>
+            <span class="nx">$container</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&quot;chat-compressed&quot;</span><span class="p">)</span>
+          <span class="k">else</span>
+            <span class="nx">$container</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s">&quot;chat-compressed&quot;</span><span class="p">)</span>
+            <span class="nx">$container</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s">&quot;chat-expanded&quot;</span><span class="p">)</span>
+            
+
+        <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">rearangeContainer</span><span class="p">,</span> <span class="nf">-&gt;</span>
+          <span class="nx">rearange</span><span class="p">()</span>
+
+        <span class="nv">scope.$location = </span><span class="nx">$location</span>
+        <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span><span class="p">(</span><span class="s">&#39;$location.path()&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+          <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+            <span class="nx">rearange</span><span class="p">()</span>
+          <span class="p">),</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="nx">rearange</span><span class="p">()</span>
+
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">directive</span> <span class="s">&quot;fitItemHeight&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$window&quot;</span><span class="p">,</span> <span class="s">&quot;$timeout&quot;</span>
+    <span class="nf">($window, $timeout) -&gt;</span>
+      <span class="nv">link: </span><span class="nf">(scope, elem, attrs) -&gt;</span>
+        <span class="nv">fitHeight = </span><span class="nf">(elem, attrs) -&gt;</span>
+          <span class="k">if</span> <span class="nx">attrs</span><span class="p">.</span><span class="nx">fitItemHeight</span> <span class="o">is</span> <span class="s">&quot;layout-icons&quot;</span>
+            <span class="nv">$items = </span><span class="nx">$</span><span class="p">(</span><span class="nx">elem</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;.item-container&quot;</span><span class="p">)</span>
+            <span class="nv">width = </span><span class="nx">$items</span><span class="p">.</span><span class="nx">first</span><span class="p">().</span><span class="nx">width</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="nx">item</span> <span class="k">in</span> <span class="nx">$items</span>
+              <span class="k">if</span> <span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">width</span>
+                <span class="nv">width = </span><span class="nx">$</span><span class="p">(</span><span class="nx">item</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span>
+
+            <span class="nx">$items</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="nx">width</span> <span class="o">/</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">3</span>
+            <span class="k">return</span>
+
+        <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nf">-&gt;</span>
+            <span class="nx">scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">layout</span>
+        <span class="p">,</span> <span class="nf">(value) -&gt;</span>
+            <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+                <span class="nx">fitHeight</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
+            <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="nx">scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="nf">-&gt;</span>
+            <span class="nx">scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">searchString</span>
+        <span class="p">,</span> <span class="p">()</span> <span class="nf">-&gt;</span>
+            <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+                <span class="nx">fitHeight</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
+            <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+          
+        <span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="nx">$window</span><span class="p">).</span><span class="nx">bind</span> <span class="s">&quot;resize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+          <span class="nx">fitHeight</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
+
+        <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">((</span><span class="nf">-&gt;</span>
+          <span class="nx">fitHeight</span><span class="p">(</span><span class="nx">elem</span><span class="p">,</span> <span class="nx">attrs</span><span class="p">)</span>
+        <span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
+
 <span class="p">]</span></div></div></div></div></body></html>

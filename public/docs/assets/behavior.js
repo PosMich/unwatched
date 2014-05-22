@@ -117,6 +117,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "type": "heading",
               "data": {
                 "level": 2,
+                "title": "Logs",
+                "slug": "logs"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
                 "title": "TODO",
                 "slug": "todo"
               },
@@ -223,6 +231,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "level": 2,
             "title": "Docs",
             "slug": "docs"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
+            "title": "Logs",
+            "slug": "logs"
           },
           "depth": 2
         }, {
@@ -557,81 +573,53 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/config.coffee",
-            "projectPath": "modules/config.coffee",
-            "targetPath": "modules/config",
-            "pageTitle": "modules/config",
-            "title": "config"
-          },
-          "depth": 2,
-          "outline": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "User Config",
-                "slug": "user-config"
-              },
-              "depth": 3
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "Config file",
-                "slug": "config-file"
-              },
-              "depth": 3
-            }
-          ]
-        }, {
-          "type": "file",
-          "data": {
-            "language": {
-              "nameMatchers": [".coffee", "Cakefile"],
-              "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-              "strictMultiLineEnd": false,
-              "singleLineComment": ["#"],
-              "ignorePrefix": "}",
-              "foldPrefix": "^",
-              "name": "CoffeeScript"
-            },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/debug.coffee",
-            "projectPath": "modules/debug.coffee",
-            "targetPath": "modules/debug",
-            "pageTitle": "modules/debug",
-            "title": "debug"
-          },
-          "depth": 2,
-          "outline": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "Debug Outputs",
-                "slug": "debug-outputs"
-              },
-              "depth": 3
-            }
-          ]
-        }, {
-          "type": "file",
-          "data": {
-            "language": {
-              "nameMatchers": [".coffee", "Cakefile"],
-              "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-              "strictMultiLineEnd": false,
-              "singleLineComment": ["#"],
-              "ignorePrefix": "}",
-              "foldPrefix": "^",
-              "name": "CoffeeScript"
-            },
             "sourcePath": "/home/ubuser/www/unwatched/modules/index.coffee",
             "projectPath": "modules/index.coffee",
             "targetPath": "modules/index",
             "pageTitle": "modules/index",
             "title": "index"
+          },
+          "depth": 2,
+          "outline": []
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".coffee", "Cakefile"],
+              "pygmentsLexer": "coffee-script",
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+              "strictMultiLineEnd": false,
+              "singleLineComment": ["#"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "CoffeeScript"
+            },
+            "sourcePath": "/home/ubuser/www/unwatched/modules/logger.coffee",
+            "projectPath": "modules/logger.coffee",
+            "targetPath": "modules/logger",
+            "pageTitle": "modules/logger",
+            "title": "logger"
+          },
+          "depth": 2,
+          "outline": []
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".coffee", "Cakefile"],
+              "pygmentsLexer": "coffee-script",
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+              "strictMultiLineEnd": false,
+              "singleLineComment": ["#"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "CoffeeScript"
+            },
+            "sourcePath": "/home/ubuser/www/unwatched/modules/room.coffee",
+            "projectPath": "modules/room.coffee",
+            "targetPath": "modules/room",
+            "pageTitle": "modules/room",
+            "title": "room"
           },
           "depth": 2,
           "outline": []
@@ -764,77 +752,10 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "type": "heading",
               "data": {
                 "level": 2,
-                "title": "Dependencies",
-                "slug": "dependencies"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "# packages",
-                "slug": "-packages"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "# own modules",
-                "slug": "-own-modules"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Basic application initialization",
-                "slug": "basic-application-initialization"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
                 "title": "View initialization",
                 "slug": "view-initialization"
               },
               "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 1,
-                "title": "server.use express.bodyParser &lt;-- causing a problem!!!",
-                "slug": "serveruse-expressbodyparser-lt-causing-a-problem"
-              },
-              "depth": 1,
-              "children": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Add routes",
-                    "slug": "add-routes"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Server start",
-                    "slug": "server-start"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "View initialization",
-                    "slug": "view-initialization"
-                  },
-                  "depth": 2
-                }
-              ]
             }
           ]
         }, {
@@ -850,11 +771,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/userconfig.coffee",
-            "projectPath": "modules/userconfig.coffee",
-            "targetPath": "modules/userconfig",
-            "pageTitle": "modules/userconfig",
-            "title": "userconfig"
+            "sourcePath": "/home/ubuser/www/unwatched/modules/signaling.coffee",
+            "projectPath": "modules/signaling.coffee",
+            "targetPath": "modules/signaling",
+            "pageTitle": "modules/signaling",
+            "title": "signaling"
           },
           "depth": 2,
           "outline": []

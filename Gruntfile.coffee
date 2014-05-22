@@ -169,6 +169,8 @@ module.exports = (grunt) ->
                 mangle: true
                 drop_console: true
             production:
+                options:
+                    mangle: false
                 files:
                     "public/js/app.js": ["public/js/app.js"]
             debug:
@@ -291,7 +293,7 @@ module.exports = (grunt) ->
 
         nodemon:
             options:
-                watch: ["modules"]
+                watch: ["modules/*"]
                 callback:  (nodemon) ->
                     nodemon.on "log", (event) ->
                         console.log event.colour
