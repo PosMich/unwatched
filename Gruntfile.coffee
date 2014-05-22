@@ -1,5 +1,5 @@
 path = require "path"
-LIVERELOAD_PORT = 35729
+
 
 
 # # ANSI Terminal Colors/Styles
@@ -77,6 +77,11 @@ module.exports = (grunt) ->
 
     require( "load-grunt-tasks" )(grunt)
     require( "time-grunt" )(grunt)
+
+    LIVERELOAD =
+        port: 35729
+        key: grunt.file.read "cert/server.key"
+        cert: grunt.file.read "cert/server.crt"
 
     files = 
         libDir: "assets/js/lib"
@@ -218,7 +223,7 @@ module.exports = (grunt) ->
         watch: 
             options:
                 spawn: false
-                livereload: LIVERELOAD_PORT
+                livereload: LIVERELOAD
             css:
                 files: "assets/css/**/*.*"
                 tasks: ["stylus"]
