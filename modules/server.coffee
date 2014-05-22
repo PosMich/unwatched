@@ -12,9 +12,9 @@ config    = require "./userconfig"
 
 
 process.on "uncaughtException", (err) ->
-    console.log "OMG :-S"
-    console.log "caught 'uncaught' exception: " + err
-    console.log err.stack
+    logger.error "OMG :-S"
+    logger.error "caught 'uncaught' exception: " + err
+    logger.error err.stack
 
 
 app = express()
@@ -43,20 +43,21 @@ routes.route app
 routesAPI.route app
 
 app.start = ->
+    logger.info "server started"
     # create dummy server, should be replaced with a reverse proxy or similar
     http = http.createServer( (req, res) ->
         res.writeHead 301,
-            location: "https://#{req.headers["host"].split(":")[0]}:3001#{req.url}"
+            location: "https://#{req.headers["host"].split(":")[0]}:#{config.port.https}#{req.url}"
         res.end()
     )
 
     https = https.createServer(    
-        key: fs.readFileSync "cert/server.key"
-        cert: fs.readFileSync "cert/server.crt"
+        key: fs.readFileSync config.ssl.key
+        cert: fs.readFileSync config.ssl.cert
     , app)
 
-    http.listen 3000
-    https.listen 3001
+    http.listen config.port.http
+    https.listen config.port.https
     ###
     signaling.connect app
     ###

@@ -1,5 +1,5 @@
 path = require "path"
-
+config = require "./userconfig"
 
 
 # # ANSI Terminal Colors/Styles
@@ -78,10 +78,11 @@ module.exports = (grunt) ->
     require( "load-grunt-tasks" )(grunt)
     require( "time-grunt" )(grunt)
 
+
     LIVERELOAD =
-        port: 35729
-        key: grunt.file.read "cert/server.key"
-        cert: grunt.file.read "cert/server.crt"
+        port: config.port.livereload
+        key: grunt.file.read config.ssl.key
+        cert: grunt.file.read config.ssl.cert
 
     files = 
         libDir: "assets/js/lib"
@@ -290,7 +291,7 @@ module.exports = (grunt) ->
 
                     nodemon.on "config:update", ->
                         setTimeout -> 
-                            require("open")("http://localhost:3000")
+                            require("open")("http://localhost:#{config.port.http}")
                         , 2000
 
                     nodemon.on "restart", ->
@@ -307,7 +308,7 @@ module.exports = (grunt) ->
                         nodemon.on "config:update", ->
                             setTimeout ->
                                 open = require("open") 
-                                open("http://localhost:3000")
+                                open("http://localhost:#{config.port.http}")
                                 open("http://localhost:8080/debug?port=5858")
                             , 1000
 
