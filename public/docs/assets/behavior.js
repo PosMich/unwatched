@@ -615,6 +615,27 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
+            "sourcePath": "/home/calvitium/www/unwatched/modules/room.coffee",
+            "projectPath": "modules/room.coffee",
+            "targetPath": "modules/room",
+            "pageTitle": "modules/room",
+            "title": "room"
+          },
+          "depth": 2,
+          "outline": []
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".coffee", "Cakefile"],
+              "pygmentsLexer": "coffee-script",
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+              "strictMultiLineEnd": false,
+              "singleLineComment": ["#"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "CoffeeScript"
+            },
             "sourcePath": "/home/calvitium/www/unwatched/modules/routes.coffee",
             "projectPath": "modules/routes.coffee",
             "targetPath": "modules/routes",
