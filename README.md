@@ -77,6 +77,7 @@ Edit `~/.log.io/harvester.conf`
 
 example config:
 
+```coffee
     exports.config = {
         nodeName: "Unwatched Logfiles",
             logStreams: {
@@ -91,7 +92,7 @@ example config:
             port: 28777
         }
     }
-
+```
 
 
 ## TODO
