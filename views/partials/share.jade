@@ -52,11 +52,16 @@ ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{
 
             .item-controls.col-xs-3.clearfix(
                 ng-class="{'col-xs-offset-1':chat_state!='expanded'}")
-                i.fa.fa-trash-o
-                i.fa.fa-clipboard
-                i.fa.fa-download(
+                a(ng-click="delete(item.id)")
+                    i.fa.fa-trash-o
+                a(ng-click="copyClipboard(item.id)")
+                    i.fa.fa-clipboard
+                a(ng-href="/path/to/future/download",
                     ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot'")
-                i.fa.fa-pencil(
+                    i.fa.fa-download
+                a(ng-href="/share/{{item.category}}/{{item.id}}",
                     ng-show="item.category=='note' || item.category=='code'")
-                i.fa.fa-eye(
+                    i.fa.fa-pencil
+                a(ng-href="/share/{{item.category}}/{{item.id}}",
                     ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
+                    i.fa.fa-eye

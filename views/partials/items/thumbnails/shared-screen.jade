@@ -1,0 +1,19 @@
+.item(class="{{item.category}}")
+    .item-thumbnail(style="background-image: url(images/{{item.thumbnail}})")
+    .item-infos
+        table
+            tr
+                td
+                    b Name
+                td {{item.name}}
+            tr
+                td
+                    b Published
+                td {{item.created}}
+        .item-controls.clearfix
+            a(ng-click="delete(item.id)")
+                i.fa.fa-trash-o
+            a(ng-click="copyClipboard(item.id)")
+                i.fa.fa-clipboard
+            a(href="/share/shared-screen/{{item.id}}")
+                i.fa.fa-eye

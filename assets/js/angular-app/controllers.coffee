@@ -56,23 +56,12 @@ app.controller "MembersCtrl", [
                     else "/images/avatar_inverted.png"
 ]
 
-app.controller "ViewInstanceCtrl", [
-    "$scope"
-    ($scope, viewInstance) ->
-        
-        $scope.ok = ->
-            viewInstance.close()
-
-        $scope.cancel = ->
-            viewInstance.dismiss()
-]
-
 # ***
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "$modal", "ChatStateService"
-    ($scope, $modal, ChatStateService) ->
+    "$scope", "ChatStateService"
+    ($scope, ChatStateService) ->
         $scope.shared_items = []
 
         $scope.$watch (->
@@ -87,83 +76,7 @@ app.controller "ShareCtrl", [
         $scope.controls.sorting.state = "name"
         $scope.controls.sorting.ascending = false
 
-        $scope.openView = (item_category) ->
-            viewInstance = $modal.open(
-                templateUrl: "/partials/items/" + item_category + ".html"
-                controller: "ViewInstanceCtrl"
-                size: "lg"
-            )
-
-        shared_items_amount = Math.floor(Math.random() * 20 + 1) + 10
-
-        file_names = [
-            'Lothar',
-            'Rafael',
-            'Angelika',
-            'Wolfram',
-            'Lisa',
-            'Sophia',
-            'David',
-            'Andrea',
-            'Hermine',
-            'Rudolf',
-            'Steffen',
-            'Johanna'
-        ]
-
-        code_extensions = [
-            "html"
-            "css"
-            "js"
-            "py"
-            "java"
-            "rb"
-        ]
-    
-        while shared_items_amount -= 1
-
-            rand = Math.round(Math.random() * 6)
-
-            file = {}
-            file.name = file_names[ Math.floor(Math.random() * 12) ]
-            file.size = Math.floor(Math.random() * 1024 * 1024) + 100
-            file.author = "Max Mustermann"
-            file.created = "14.05.2014 - 15:10"
-
-            if rand is 0
-                file.category = "note"
-                file.thumbnail =
-                    title: "Lorem Ipsum"
-                    content: "<p>Lorem ipsum dolor sit amet, consetetur sadips"+
-                        "cing elitr, sed diam nonumy eirmod.</p><p>tempor invi"+
-                        "dunt ut labore et dolore magna aliquyam erat, sed dia"+
-                        "m voluptua.</p>"
-                file.edited = "20.05.2014 - 20:25"
-            else if rand is 1
-                file.category = "screenshot"
-                file.thumbnail = "screenshot.png"
-            else if rand is 2
-                file.category = "file"
-                file.thumbnail = "icon"
-                file.extension = ".pdf"
-            else if rand is 3
-                file.category = "code"
-                file.thumbnail = "var dummy = function() {<br/>&nbsp&nbsp&nbsp"+
-                    "&nbspconsole.log(\"Hello world\")<br/>}"
-                file.extension = code_extensions[Math.floor(Math.random() * 6)]
-            else if rand is 4
-                file.category = "shared-screen"
-                file.thumbnail = "screenshot-screen.png"
-                file.size = 0
-            else
-                file.category = "shared-webcam"
-                file.thumbnail = "screenshot-webcam.jpg"
-                file.size = 0
-
-
-            file.templateUrl = "/partials/items/" + file.category + ".html"
-
-            $scope.shared_items.push file
+        $scope.shared_items = dummy_items
 
         $scope.setSortingState = (state) ->
             if $scope.controls.sorting.state is state
@@ -173,6 +86,71 @@ app.controller "ShareCtrl", [
                 $scope.controls.sorting.ascending = false
                 $scope.controls.sorting.state = state
 
+        $scope.delete = (index) ->
+            i = 0
+            item = {}
+            while i < $scope.shared_items.length
+                item = $scope.shared_items[i]
+                if item.id is index
+                    $scope.shared_items.splice i, 1 
+                    break
+                i++
+
+]
+
+app.controller "ScreenshotCtrl", [
+    "$scope", "$routeParams"
+    ($scope, $routeParams) ->
+        console.log $routeParams
+        if $routeParams.id
+            $scope.id = $routeParams.id
+
+        else
+            $scope.id = "No ID :("
+]
+
+app.controller "NoteCtrl", [
+    "$scope", "$routeParams"
+    ($scope, $routeParams) ->
+        console.log $routeParams
+        if $routeParams.id
+            $scope.id = $routeParams.id
+
+        else
+            $scope.id = "No ID :("
+]
+
+app.controller "CodeCtrl", [
+    "$scope", "$routeParams"
+    ($scope, $routeParams) ->
+        console.log $routeParams
+        if $routeParams.id
+            $scope.id = $routeParams.id
+
+        else
+            $scope.id = "No ID :("
+]
+
+app.controller "SharedScreenCtrl", [
+    "$scope", "$routeParams"
+    ($scope, $routeParams) ->
+        console.log $routeParams
+        if $routeParams.id
+            $scope.id = $routeParams.id
+
+        else
+            $scope.id = "No ID :("
+]
+
+app.controller "SharedWebcamCtrl", [
+    "$scope", "$routeParams"
+    ($scope, $routeParams) ->
+        console.log $routeParams
+        if $routeParams.id
+            $scope.id = $routeParams.id
+
+        else
+            $scope.id = "No ID :("
 ]
 
 # ***
@@ -259,5 +237,138 @@ app.controller "NotesCtrl", [
 
         $scope.removeNote = (index) ->
             $scope.room.notes.splice index, 1
+
+]
+
+
+dummy_items = [
+    {
+        id: 1
+        category: "screenshot"
+        name: "Sophia"
+        size: 1036463
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        thumbnail: "screenshot.png"
+        templateUrl: "/partials/items/thumbnails/screenshot.html"
+    }
+    {
+        id: 2,
+        name: "Steffen"
+        size: 43696
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "file"
+        thumbnail: "icon"
+        extension: ".pdf"
+        templateUrl: "/partials/items/thumbnails/file.html"
+    }
+    {
+        id: 3,
+        name: "style"
+        size: 876432
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "code"
+        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
+            "(\"Helloworld\")<br/>}"
+        extension: "css"
+        templateUrl: "/partials/items/thumbnails/code.html"
+    }
+    {
+        id: 4,
+        name: "index"
+        size: 346432
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "code"
+        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
+            "(\"Helloworld\")<br/>}"
+        extension: "html"
+        templateUrl: "/partials/items/thumbnails/code.html"
+    }
+    {
+        id: 5,
+        name: "main"
+        size: 832
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "code"
+        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
+            "(\"Helloworld\")<br/>}"
+        extension: "js"
+        templateUrl: "/partials/items/thumbnails/code.html"
+    }
+    {
+        id: 6,
+        name: "HelloWorld"
+        size: 876432
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "code"
+        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
+            "(\"Helloworld\")<br/>}"
+        extension: "java"
+        templateUrl: "/partials/items/thumbnails/code.html"
+    }
+    {
+        id: 7,
+        name: "script"
+        size: 1024
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "code"
+        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
+            "(\"Helloworld\")<br/>}"
+        extension: "py"
+        templateUrl: "/partials/items/thumbnails/code.html"
+    }
+    {
+        id: 8,
+        name: "spec"
+        size: 90123
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "code"
+        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
+            "(\"Helloworld\")<br/>}"
+        extension: "rb"
+        templateUrl: "/partials/items/thumbnails/code.html"
+    }
+    {
+        id: 9,
+        name: "Untitled"
+        size: 90123
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "note"
+        thumbnail:
+            title: "Protocol",
+            content: "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "+
+                "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "+
+                "agnaaliquy amerat, seddiamvoluptua.</p>"
+        edited: "20.05.2014-20:25"
+        templateUrl: "/partials/items/thumbnails/note.html"
+    }
+    {
+        id: 10,
+        name: "How to photoshop"
+        size: 0
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "shared-screen"
+        thumbnail: "screenshot-screen.png"
+        templateUrl: "/partials/items/thumbnails/shared-screen.html"
+    }
+    {
+        id: 11,
+        name: "See me cooking"
+        size: 0
+        author: "Max Mustermann"
+        created: "14.05.2014-15:10"
+        category: "shared-webcam"
+        thumbnail: "screenshot-webcam.jpg"
+        templateUrl: "/partials/items/thumbnails/shared-webcam.html"
+    }
 
 ]

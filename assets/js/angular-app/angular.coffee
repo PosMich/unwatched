@@ -87,6 +87,51 @@ app.config [
             controller: "ShareCtrl"
 
         # ***
+        # * <h3>route `/share/screenshot/:id`</h3>
+        # > loads a specific shared screenshot by the given id
+        # >
+        # > load RoomCtrl
+        $routeProvider.when "/share/screenshot/:id",
+            templateUrl: "/partials/items/screenshot.html"
+            controller: "ScreenshotCtrl"
+
+        # ***
+        # * <h3>route `/share/note/:id`</h3>
+        # > loads a specific shared note by the given id
+        # >
+        # > load RoomCtrl
+        $routeProvider.when "/share/note/:id",
+            templateUrl: "/partials/items/note.html"
+            controller: "NoteCtrl"
+
+        # ***
+        # * <h3>route `/share/code/:id`</h3>
+        # > loads a specific shared code by the given id
+        # >
+        # > load RoomCtrl
+        $routeProvider.when "/share/code/:id",
+            templateUrl: "/partials/items/code.html"
+            controller: "CodeCtrl"
+
+        # ***
+        # * <h3>route `/share/shared-screen/:id`</h3>
+        # > loads a specific shared screen by the given id
+        # >
+        # > load RoomCtrl
+        $routeProvider.when "/share/shared-screen/:id",
+            templateUrl: "/partials/items/shared-screen.html"
+            controller: "SharedScreenCtrl"
+
+        # ***
+        # * <h3>route `/share/shared-webcam/:id`</h3>
+        # > loads a specific shared webcam by the given id
+        # >
+        # > load RoomCtrl
+        $routeProvider.when "/share/shared-webcam/:id",
+            templateUrl: "/partials/items/shared-webcam.html"
+            controller: "SharedWebcamCtrl"
+
+        # ***
         # * <h3>route `/`</h3>
         # > not found - route
         # >
