@@ -166,7 +166,7 @@ module.exports = (grunt) ->
 
         uglify:
             options:
-                mangle: true
+                mangle: false
                 drop_console: true
             production:
                 files:

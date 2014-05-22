@@ -10,13 +10,27 @@
   Frontend-usage: {{confition | iif : "it's true" : "it's false"}}</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">filter</span> <span class="s">&quot;iif&quot;</span><span class="p">,</span> <span class="p">[</span> <span class="nf">-&gt;</span>
-  <span class="nf">(input, trueValue, falseValue) -&gt;</span>
-    <span class="p">(</span><span class="k">if</span> <span class="nx">input</span> <span class="k">then</span> <span class="nx">trueValue</span> <span class="k">else</span> <span class="nx">falseValue</span><span class="p">)</span>
+    <span class="nf">(input, trueValue, falseValue) -&gt;</span>
+        <span class="p">(</span><span class="k">if</span> <span class="nx">input</span> <span class="k">then</span> <span class="nx">trueValue</span> <span class="k">else</span> <span class="nx">falseValue</span><span class="p">)</span>
 <span class="p">]</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">filter</span> <span class="s">&quot;interpolate&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;version&quot;</span>
-  <span class="nf">(version) -&gt;</span>
-    <span class="nf">(text) -&gt;</span>
-      <span class="nb">String</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">replace</span> <span class="sr">/\%VERSION\%/g</span><span class="p">,</span> <span class="nx">version</span>
-<span class="p">]</span></div></div></div></div></body></html>
+    <span class="s">&quot;version&quot;</span>
+    <span class="nf">(version) -&gt;</span>
+        <span class="nf">(text) -&gt;</span>
+            <span class="nb">String</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">replace</span> <span class="sr">/\%VERSION\%/g</span><span class="p">,</span> <span class="nx">version</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">filter</span> <span class="s">&quot;humanReadableFileSize&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+    <span class="nf">(bytes) -&gt;</span>
+        <span class="k">return</span> <span class="mi">0</span>  <span class="k">if</span> <span class="nx">bytes</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+        <span class="nv">s = </span><span class="p">[</span>
+            <span class="s">&quot;bytes&quot;</span>
+            <span class="s">&quot;kB&quot;</span>
+            <span class="s">&quot;MB&quot;</span>
+            <span class="s">&quot;GB&quot;</span>
+            <span class="s">&quot;TB&quot;</span>
+            <span class="s">&quot;PB&quot;</span>
+        <span class="p">]</span>
+        <span class="nv">e = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">bytes</span><span class="p">)</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
+        <span class="p">(</span><span class="nx">bytes</span> <span class="o">/</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">e</span><span class="p">))).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; &quot;</span> <span class="o">+</span> <span class="nx">s</span><span class="p">[</span><span class="nx">e</span><span class="p">]</span></div></div></div></div></body></html>

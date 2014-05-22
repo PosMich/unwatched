@@ -13,7 +13,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "commentsOnly": true,
           "name": "Markdown"
         },
-        "sourcePath": "/home/ubuser/www/unwatched/README.md",
+        "sourcePath": "/home/calvitium/www/unwatched/README.md",
         "projectPath": "README.md",
         "targetPath": "index",
         "pageTitle": "index",
@@ -111,6 +111,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                 "level": 2,
                 "title": "Docs",
                 "slug": "docs"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Logs",
+                "slug": "logs"
               },
               "depth": 2
             }, {
@@ -229,6 +237,14 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "type": "heading",
           "data": {
             "level": 2,
+            "title": "Logs",
+            "slug": "logs"
+          },
+          "depth": 2
+        }, {
+          "type": "heading",
+          "data": {
+            "level": 2,
             "title": "TODO",
             "slug": "todo"
           },
@@ -283,7 +299,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/angular.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/angular.coffee",
                     "projectPath": "assets/js/angular-app/angular.coffee",
                     "targetPath": "assets/js/angular-app/angular",
                     "pageTitle": "assets/js/angular-app/angular",
@@ -357,7 +373,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/controllers.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/controllers.coffee",
                     "projectPath": "assets/js/angular-app/controllers.coffee",
                     "targetPath": "assets/js/angular-app/controllers",
                     "pageTitle": "assets/js/angular-app/controllers",
@@ -409,7 +425,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/directives.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/directives.coffee",
                     "projectPath": "assets/js/angular-app/directives.coffee",
                     "targetPath": "assets/js/angular-app/directives",
                     "pageTitle": "assets/js/angular-app/directives",
@@ -440,7 +456,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/filters.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/filters.coffee",
                     "projectPath": "assets/js/angular-app/filters.coffee",
                     "targetPath": "assets/js/angular-app/filters",
                     "pageTitle": "assets/js/angular-app/filters",
@@ -471,7 +487,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/services.coffee",
+                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/services.coffee",
                     "projectPath": "assets/js/angular-app/services.coffee",
                     "targetPath": "assets/js/angular-app/services",
                     "pageTitle": "assets/js/angular-app/services",
@@ -504,7 +520,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "foldPrefix": "^",
                   "name": "CoffeeScript"
                 },
-                "sourcePath": "/home/ubuser/www/unwatched/assets/js/app.coffee",
+                "sourcePath": "/home/calvitium/www/unwatched/assets/js/app.coffee",
                 "projectPath": "assets/js/app.coffee",
                 "targetPath": "assets/js/app",
                 "pageTitle": "assets/js/app",
@@ -557,77 +573,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/config.coffee",
-            "projectPath": "modules/config.coffee",
-            "targetPath": "modules/config",
-            "pageTitle": "modules/config",
-            "title": "config"
-          },
-          "depth": 2,
-          "outline": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "User Config",
-                "slug": "user-config"
-              },
-              "depth": 3
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "Config file",
-                "slug": "config-file"
-              },
-              "depth": 3
-            }
-          ]
-        }, {
-          "type": "file",
-          "data": {
-            "language": {
-              "nameMatchers": [".coffee", "Cakefile"],
-              "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-              "strictMultiLineEnd": false,
-              "singleLineComment": ["#"],
-              "ignorePrefix": "}",
-              "foldPrefix": "^",
-              "name": "CoffeeScript"
-            },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/debug.coffee",
-            "projectPath": "modules/debug.coffee",
-            "targetPath": "modules/debug",
-            "pageTitle": "modules/debug",
-            "title": "debug"
-          },
-          "depth": 2,
-          "outline": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "Debug Outputs",
-                "slug": "debug-outputs"
-              },
-              "depth": 3
-            }
-          ]
-        }, {
-          "type": "file",
-          "data": {
-            "language": {
-              "nameMatchers": [".coffee", "Cakefile"],
-              "pygmentsLexer": "coffee-script",
-              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
-              "strictMultiLineEnd": false,
-              "singleLineComment": ["#"],
-              "ignorePrefix": "}",
-              "foldPrefix": "^",
-              "name": "CoffeeScript"
-            },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/index.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/index.coffee",
             "projectPath": "modules/index.coffee",
             "targetPath": "modules/index",
             "pageTitle": "modules/index",
@@ -648,7 +594,28 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/logger.coffee",
+            "projectPath": "modules/logger.coffee",
+            "targetPath": "modules/logger",
+            "pageTitle": "modules/logger",
+            "title": "logger"
+          },
+          "depth": 2,
+          "outline": []
+        }, {
+          "type": "file",
+          "data": {
+            "language": {
+              "nameMatchers": [".coffee", "Cakefile"],
+              "pygmentsLexer": "coffee-script",
+              "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+              "strictMultiLineEnd": false,
+              "singleLineComment": ["#"],
+              "ignorePrefix": "}",
+              "foldPrefix": "^",
+              "name": "CoffeeScript"
+            },
+            "sourcePath": "/home/calvitium/www/unwatched/modules/routes.coffee",
             "projectPath": "modules/routes.coffee",
             "targetPath": "modules/routes",
             "pageTitle": "modules/routes",
@@ -700,7 +667,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.api.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/routes.api.coffee",
             "projectPath": "modules/routes.api.coffee",
             "targetPath": "modules/routes.api",
             "pageTitle": "modules/routes.api",
@@ -752,7 +719,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/server.coffee",
+            "sourcePath": "/home/calvitium/www/unwatched/modules/server.coffee",
             "projectPath": "modules/server.coffee",
             "targetPath": "modules/server",
             "pageTitle": "modules/server",
@@ -764,77 +731,10 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "type": "heading",
               "data": {
                 "level": 2,
-                "title": "Dependencies",
-                "slug": "dependencies"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "# packages",
-                "slug": "-packages"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "# own modules",
-                "slug": "-own-modules"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
-                "title": "Basic application initialization",
-                "slug": "basic-application-initialization"
-              },
-              "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 2,
                 "title": "View initialization",
                 "slug": "view-initialization"
               },
               "depth": 2
-            }, {
-              "type": "heading",
-              "data": {
-                "level": 1,
-                "title": "server.use express.bodyParser &lt;-- causing a problem!!!",
-                "slug": "serveruse-expressbodyparser-lt-causing-a-problem"
-              },
-              "depth": 1,
-              "children": [
-                {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Add routes",
-                    "slug": "add-routes"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "Server start",
-                    "slug": "server-start"
-                  },
-                  "depth": 2
-                }, {
-                  "type": "heading",
-                  "data": {
-                    "level": 2,
-                    "title": "View initialization",
-                    "slug": "view-initialization"
-                  },
-                  "depth": 2
-                }
-              ]
             }
           ]
         }, {
@@ -850,11 +750,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/ubuser/www/unwatched/modules/userconfig.coffee",
-            "projectPath": "modules/userconfig.coffee",
-            "targetPath": "modules/userconfig",
-            "pageTitle": "modules/userconfig",
-            "title": "userconfig"
+            "sourcePath": "/home/calvitium/www/unwatched/modules/signaling.coffee",
+            "projectPath": "modules/signaling.coffee",
+            "targetPath": "modules/signaling",
+            "pageTitle": "modules/signaling",
+            "title": "signaling"
           },
           "depth": 2,
           "outline": []

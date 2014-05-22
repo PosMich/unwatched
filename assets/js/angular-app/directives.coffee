@@ -66,7 +66,7 @@ app.directive "updateScrollPosition", [
 
             scope.$watch ->
                 ChatStateService.chat_state
-            , () ->
+            , ->
                 window.setTimeout((->
                      $(elem).scrollTop $(elem).find("> div").height()
                 ), 0)
@@ -173,7 +173,7 @@ app.directive "fitItemHeight", [
 
         scope.$watch ->
             scope.controls.searchString
-        , () ->
+        , ->
             window.setTimeout((->
                 fitHeight(elem, attrs)
             ), 0)

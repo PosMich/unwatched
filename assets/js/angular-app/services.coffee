@@ -4,9 +4,9 @@
 "use strict"
 
 class Client
-    name:  null
+    name: null
     eMail: null
-    hash:  null
+    hash: null
     connections: []
     constructor: (@name, @email) ->
 
@@ -31,13 +31,13 @@ class RTCProvider
     @::name       = ""
     @::clients    = []
     @::moderators = []
-    @::signalServer = "wss://localhost" 
+    @::signalServer = "wss://localhost"
     # exposed to .config
     constructor: ->
-    setSignalServer: (@signalServer)->
-        console.log "set Signal Server: "+signalServer
+    setSignalServer: (@signalServer) ->
+        console.log "set Signal Server: " + signalServer
     setName: (@name) ->
-        console.log "inner set Name: "+name
+        console.log "inner set Name: " + name
     addClients: (name, eMail) ->
         console.log "+++ addClients"
         console.log @clients
@@ -57,7 +57,7 @@ class RTCProvider
         createHash: ->
             return "HAAASh"
         setName: (@name) ->
-            console.log "set name to: "+name
+            console.log "set name to: " + name
         addClient: (name, eMail) =>
             console.log "+++ addClient"
             @addClients name, eMail
