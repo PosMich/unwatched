@@ -119,6 +119,7 @@ module.exports = (grunt) ->
             fileArray = []
             fileArray.push( files.libDir + "/" + lib ) for lib  in files.libs
             fileArray.push files.angularJsOutput
+            fileArray.push( ".app/views/templates.js" )
             return fileArray
         serverFiles: [ "modules/*.coffee", "userconfig.coffee" ]
 
@@ -179,6 +180,8 @@ module.exports = (grunt) ->
         build:
             production:
                 taskList: [
+                    "jade"
+                    "ngtemplates"
                     "coffeelint"
                     "coffee"
                     "stylus"
@@ -188,6 +191,8 @@ module.exports = (grunt) ->
                 ]
             dev:
                 taskList: [
+                    "jade"
+                    "ngtemplates"
                     "coffeelint"
                     "coffee"
                     "stylus"
@@ -195,6 +200,8 @@ module.exports = (grunt) ->
                 ]
             debug:          
                 taskList: [
+                    "jade"
+                    "ngtemplates"
                     "coffeelint"
                     "coffee"
                     "stylus"
@@ -230,6 +237,7 @@ module.exports = (grunt) ->
                 tasks: ["stylus"]
             jade:
                 files: "views/**/*.*"
+                tasks: ["jade", "ngtemplates", "concat"]
             jsApp:
                 files: "assets/js/**/*.*"
                 tasks: ["coffeelint:app", "coffee:app", "concat"]
@@ -363,7 +371,25 @@ module.exports = (grunt) ->
             frontend_dev:
                 ["karma:unit_dev"]
 
-    grunt.registerTask "timeout", "create a timeout for :duration (default: 15000)", (duration = 1500)->
+        ngtemplates:
+            unwatched:
+                options:
+                    prefix: "/"
+                cwd: ".app/views"
+                src: "**/*.html"
+                dest: ".app/views/templates.js"
+
+        jade:
+            app:
+                files: [
+                    expand: true
+                    flatten: false
+                    src: "views/**/*.jade"
+                    dest: ".app/"
+                    ext: ".html"
+                ]
+
+    grunt.registerTask "timeout", "create a timeout for :duration (default: 1500)", (duration = 1500)->
         done = this.async()
 
         setTimeout ->

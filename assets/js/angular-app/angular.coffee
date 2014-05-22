@@ -44,7 +44,7 @@ app.config [
     # >
     # > load IndexCtrl
     $routeProvider.when "/",
-      templateUrl: "partials/index.jade"
+      templateUrl: "/partials/index.html"
       controller: "IndexCtrl"
 
     # ***
@@ -53,7 +53,7 @@ app.config [
     # >
     # > load CyborgCtrl
     $routeProvider.when "/spacelab",
-      templateUrl: "partials/spacelab.jade"
+      templateUrl: "/partials/spacelab.html"
       controller: "SpacelabCtrl"
 
     # ***
@@ -62,7 +62,7 @@ app.config [
     # >
     # > load RoomCtrl
     $routeProvider.when "/room",
-      templateUrl: "partials/room.jade"
+      templateUrl: "/partials/room.html"
       controller: "RoomCtrl"
 
     # ***
@@ -72,7 +72,7 @@ app.config [
     # >
     # > load RoomCtrl
     $routeProvider.when "/members",
-      templateUrl: "partials/members.jade"
+      templateUrl: "/partials/members.html"
       controller: "MembersCtrl"
 
     # ***
@@ -82,7 +82,7 @@ app.config [
     # >
     # > load RoomCtrl
     $routeProvider.when "/share",
-      templateUrl: "partials/share.jade"
+      templateUrl: "/partials/share.html"
       controller: "ShareCtrl"
 
     # ***
