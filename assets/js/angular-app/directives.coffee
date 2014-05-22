@@ -285,24 +285,27 @@ app.directive "rearangeContainer", [
 ]
 
 app.directive "fitItemHeight", [
-    "$window", "ChatStateService"
-    ($window, ChatStateService) ->
+    "$window", "$timeout", "ChatStateService"
+    ($window, $timeout, ChatStateService) ->
       link: (scope, elem, attrs) ->
         fitHeight = (elem, attrs) ->
-          height = $(elem).width() / 4 * 3
-          $(elem).css "height", height
-          return
+          if attrs.fitItemHeight is "layout-icons"
 
-        scope.$watch ->
-          ChatStateService.chat_state
-        , (value) ->
-          window.setTimeout( (->
-            fitHeight(elem, attrs)
-          ), 100)
-          
+            $items = $(elem).find(".item-container")
+            width = $items.first().width()
+
+            for item in $items
+              if $(item).width() < width
+                width = $(item).width()
+
+            $items.css "height", width / 4 * 3
+            return          
 
         angular.element($window).bind "resize", ->
           fitHeight(elem, attrs)
-          return
+
+        window.setTimeout((->
+          fitHeight(elem, attrs)
+        ), 0)
 
 ]
