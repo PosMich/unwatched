@@ -1,9 +1,9 @@
 <!DOCTYPE html><html lang="en"><head><title>assets/js/angular-app/services</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../../"><meta name="groc-document-path" content="assets/js/angular-app/services"><meta name="groc-project-path" content="assets/js/angular-app/services.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../../assets/style.css"><script type="text/javascript" src="../../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">assets/js/angular-app/services.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="unwatched-angular-services">Unwatched - Angular Services</h1></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="s">&quot;use strict&quot;</span>
 
 <span class="k">class</span> <span class="nx">Client</span>
-    <span class="nv">name: </span> <span class="kc">null</span>
+    <span class="nv">name: </span><span class="kc">null</span>
     <span class="nv">eMail: </span><span class="kc">null</span>
-    <span class="nv">hash: </span> <span class="kc">null</span>
+    <span class="nv">hash: </span><span class="kc">null</span>
     <span class="nv">connections: </span><span class="p">[]</span>
     <span class="nv">constructor: </span><span class="nf">(@name, @email) -&gt;</span>
 
@@ -28,11 +28,11 @@
     <span class="nx">@</span><span class="o">::</span><span class="nv">name       = </span><span class="s">&quot;&quot;</span>
     <span class="nx">@</span><span class="o">::</span><span class="nv">clients    = </span><span class="p">[]</span>
     <span class="nx">@</span><span class="o">::</span><span class="nv">moderators = </span><span class="p">[]</span>
-    <span class="nx">@</span><span class="o">::</span><span class="nv">signalServer = </span><span class="s">&quot;wss://localhost&quot;</span> </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exposed to .config</p></div></div><div class="code"><div class="wrapper">    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
-    <span class="nv">setSignalServer: </span><span class="nf">(@signalServer)-&gt;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set Signal Server: &quot;</span><span class="o">+</span><span class="nx">signalServer</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">signalServer = </span><span class="s">&quot;wss://localhost&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exposed to .config</p></div></div><div class="code"><div class="wrapper">    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
+    <span class="nv">setSignalServer: </span><span class="nf">(@signalServer) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set Signal Server: &quot;</span> <span class="o">+</span> <span class="nx">signalServer</span>
     <span class="nv">setName: </span><span class="nf">(@name) -&gt;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;inner set Name: &quot;</span><span class="o">+</span><span class="nx">name</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;inner set Name: &quot;</span> <span class="o">+</span> <span class="nx">name</span>
     <span class="nv">addClients: </span><span class="nf">(name, eMail) -&gt;</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ addClients&quot;</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">@clients</span>
@@ -50,7 +50,7 @@
         <span class="nv">createHash: </span><span class="nf">-&gt;</span>
             <span class="k">return</span> <span class="s">&quot;HAAASh&quot;</span>
         <span class="nv">setName: </span><span class="nf">(@name) -&gt;</span>
-            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set name to: &quot;</span><span class="o">+</span><span class="nx">name</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set name to: &quot;</span> <span class="o">+</span> <span class="nx">name</span>
         <span class="nv">addClient: </span><span class="nf">(name, eMail) =&gt;</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;+++ addClient&quot;</span>
             <span class="nx">@addClients</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">eMail</span>

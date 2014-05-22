@@ -39,7 +39,6 @@ ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{
         .item-container(ng-if="controls.layout=='layout-icons'")
             ng-include(src="item.templateUrl")
 
-
         .row(ng-if="controls.layout=='layout-list'", class="{{item.category}}")
             .col-xs-1.category-icon(class="{{item.category}}")
             .name(ng-class="{'col-xs-3':chat_state=='expanded', 'col-xs-2':chat_state!='expanded'}")
@@ -47,7 +46,7 @@ ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{
             .author(ng-class="{'col-xs-4':chat_state=='expanded', 'col-xs-2':chat_state!='expanded'}")
                 | {{item.author}}
             .size.col-xs-1
-                | {{item.size}}
+                span(ng-if="item.size!=0") {{item.size | humanReadableFileSize}}
             .created.col-xs-2(ng-show="chat_state!='expanded'")
                 | {{item.created}}
 

@@ -3,23 +3,19 @@
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.controllers&quot;</span><span class="p">,</span> <span class="p">[]</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;AppCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span>
-  <span class="nf">($scope) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if !$scope.chat<em>state?
-  $scope.chat</em>state = "compressed"
-if !$scope.chat<em>state</em>history?
-  $scope.chat<em>state</em>history = ""</p></div></div><div class="code"><div class="wrapper"><span class="p">]</span>
+    <span class="s">&quot;$scope&quot;</span>
+    <span class="nf">($scope) -&gt;</span>
 
-<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;IndexCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;RTC&quot;</span>
-  <span class="nf">($scope, RTCProvider) -&gt;</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">RTCProvider</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;index ctrl here&quot;</span>
 
-    <span class="nv">$scope.submitCreateRoom = </span><span class="nf">-&gt;</span>
 <span class="p">]</span>
 
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;IndexCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;RTC&quot;</span>
+    <span class="nf">($scope, RTCProvider) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log RTCProvider
+console.log "index ctrl here"</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>$scope.submitCreateRoom = -></p></div></div><div class="code"><div class="wrapper"><span class="p">]</span>
+
 <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SpacelabCtrl&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;spacelab ctrl here&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;spacelab ctrl here&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <h2 id="config">Config</h2>
 
@@ -29,45 +25,7 @@ if !$scope.chat<em>state</em>history?
   <p>see
   <a href="http://docs.angularjs.org/guide/dev_guide.services.$location">angular docs</a>
   for $locationProvider details</p>
-</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NavCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span>
-  <span class="s">&quot;$modal&quot;</span>
-  <span class="s">&quot;RTC&quot;</span>
-  <span class="nf">($scope, $modal) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log RTCProvider
-RTCProvider.logName()
-console.log RTCProvider.createHash()</p></div></div><div class="code"><div class="wrapper">    <span class="c1">#RTCProvider.setName &quot;Friedrich&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.logName()</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.addClient "Herbert", "herbert@herbert.com"
-RTCProvider.addClient "Franz", "franz@franz.fr"
-RTCProvider.listClients()</p></div></div><div class="code"><div class="wrapper">    <span class="nv">$scope.open = </span><span class="nf">-&gt;</span>
-      <span class="nv">modalInstance = </span><span class="nx">$modal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
-        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/loginForm.html&quot;</span>
-        <span class="nv">controller: </span><span class="s">&quot;SignupCtrl&quot;</span>
-      <span class="p">)</span>
-
-<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
-
-<p><ul>
-<li><h3>Signup Controller</h3></p>
-
-<blockquote>
-  <p></li>
-  </ul></p>
-</blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SignupCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span>
-  <span class="s">&quot;$modalInstance&quot;</span>
-  <span class="c1">#&quot;RTC&quot;</span>
-  <span class="nf">($scope, $modalInstance) -&gt;</span>
-    <span class="nv">$scope.user = </span><span class="p">{}</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>RTCProvider.logName()</p></div></div><div class="code"><div class="wrapper">    <span class="nv">$scope.hideSignUp = </span><span class="kc">true</span>
-
-    <span class="nv">$scope.submit = </span><span class="nf">-&gt;</span>
-      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">user</span>
-
-    <span class="nv">$scope.isCollapsed = </span><span class="kc">true</span>
-    <span class="nv">$scope.ok = </span><span class="nf">-&gt;</span>
-      <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">close</span>
-
-    <span class="nv">$scope.cancel = </span><span class="nf">-&gt;</span>
-      <span class="nx">$modalInstance</span><span class="p">.</span><span class="nx">dismiss</span> <span class="s">&quot;cancel&quot;</span>
-<span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+</blockquote></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
 <li><h3>Member Controller</h3></p>
@@ -76,22 +34,34 @@ RTCProvider.listClients()</p></div></div><div class="code"><div class="wrapper">
   <p></li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;MembersCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
-  <span class="nf">($scope, ChatStateService) -&gt;</span>
-    <span class="nv">$scope.members = </span><span class="p">[]</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
+    <span class="nf">($scope, ChatStateService) -&gt;</span>
+        <span class="nv">$scope.members = </span><span class="p">[]</span>
 
-    <span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="p">(</span><span class="nf">-&gt;</span>
-      <span class="k">return</span> <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
-    <span class="p">),</span> <span class="p">(</span><span class="nf">(new_state, old_state) -&gt;</span>
-      <span class="nv">$scope.chat_state = </span><span class="nx">new_state</span>
-    <span class="p">),</span> <span class="kc">true</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="p">(</span><span class="nf">-&gt;</span>
+            <span class="k">return</span> <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
+        <span class="p">),</span> <span class="p">(</span><span class="nf">(new_state, old_state) -&gt;</span>
+            <span class="nv">$scope.chat_state = </span><span class="nx">new_state</span>
+        <span class="p">),</span> <span class="kc">true</span>
 
-    <span class="nv">membersAmount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span>
-    <span class="k">while</span> <span class="nx">membersAmount</span> <span class="o">-=</span> <span class="mi">1</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">members</span><span class="p">.</span><span class="nx">push</span>
-        <span class="nv">name: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
-        <span class="nv">avatar: </span><span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="s">&quot;/images/avatar.png&quot;</span>
-        <span class="k">else</span> <span class="s">&quot;/images/avatar_inverted.png&quot;</span>
+        <span class="nv">membersAmount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span>
+        <span class="k">while</span> <span class="nx">membersAmount</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">members</span><span class="p">.</span><span class="nx">push</span>
+                <span class="nv">name: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
+                <span class="nv">avatar:</span>
+                    <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="s">&quot;/images/avatar.png&quot;</span>
+                    <span class="k">else</span> <span class="s">&quot;/images/avatar_inverted.png&quot;</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ViewInstanceCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span>
+    <span class="nf">($scope, viewInstance) -&gt;</span>
+        
+        <span class="nv">$scope.ok = </span><span class="nf">-&gt;</span>
+            <span class="nx">viewInstance</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span>
+
+        <span class="nv">$scope.cancel = </span><span class="nf">-&gt;</span>
+            <span class="nx">viewInstance</span><span class="p">.</span><span class="nx">dismiss</span><span class="p">()</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -101,97 +71,107 @@ RTCProvider.listClients()</p></div></div><div class="code"><div class="wrapper">
   <p></li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ShareCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
-  <span class="nf">($scope, ChatStateService) -&gt;</span>
-    <span class="nv">$scope.shared_items = </span><span class="p">[]</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$modal&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
+    <span class="nf">($scope, $modal, ChatStateService) -&gt;</span>
+        <span class="nv">$scope.shared_items = </span><span class="p">[]</span>
 
-    <span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="p">(</span><span class="nf">-&gt;</span>
-      <span class="k">return</span> <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
-    <span class="p">),</span> <span class="p">(</span><span class="nf">(new_state, old_state) -&gt;</span>
-      <span class="nv">$scope.chat_state = </span><span class="nx">new_state</span>
-    <span class="p">),</span> <span class="kc">true</span>
+        <span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="p">(</span><span class="nf">-&gt;</span>
+            <span class="k">return</span> <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
+        <span class="p">),</span> <span class="p">(</span><span class="nf">(new_state, old_state) -&gt;</span>
+            <span class="nv">$scope.chat_state = </span><span class="nx">new_state</span>
+        <span class="p">),</span> <span class="kc">true</span>
 
-    <span class="nv">$scope.controls = </span><span class="p">{}</span>
-    <span class="nv">$scope.controls.layout = </span><span class="s">&quot;layout-icons&quot;</span>
-    <span class="nv">$scope.controls.sorting = </span><span class="p">{}</span>
-    <span class="nv">$scope.controls.sorting.state = </span><span class="s">&quot;name&quot;</span>
-    <span class="nv">$scope.controls.sorting.ascending = </span><span class="kc">false</span>
-
-    <span class="nv">shared_items_amount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>
-
-    <span class="nv">file_names = </span><span class="p">[</span>
-      <span class="s">&#39;Lothar&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Rafael&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Angelika&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Wolfram&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Lisa&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Sophia&#39;</span><span class="p">,</span>
-      <span class="s">&#39;David&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Andrea&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Hermine&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Rudolf&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Steffen&#39;</span><span class="p">,</span>
-      <span class="s">&#39;Johanna&#39;</span>
-    <span class="p">]</span>
-
-    <span class="nv">code_extensions = </span><span class="p">[</span>
-      <span class="s">&quot;html&quot;</span>
-      <span class="s">&quot;css&quot;</span>
-      <span class="s">&quot;js&quot;</span>
-      <span class="s">&quot;py&quot;</span>
-      <span class="s">&quot;java&quot;</span>
-      <span class="s">&quot;rb&quot;</span>
-    <span class="p">]</span>
-    
-    <span class="k">while</span> <span class="nx">shared_items_amount</span> <span class="o">-=</span> <span class="mi">1</span>
-
-      <span class="nv">rand = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)</span>
-
-      <span class="nv">file = </span><span class="p">{}</span>
-      <span class="nv">file.name = </span><span class="nx">file_names</span><span class="p">[</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="p">]</span>
-      <span class="nv">file.size = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-      <span class="nv">file.author = </span><span class="s">&quot;Max Mustermann&quot;</span>
-      <span class="nv">file.created = </span><span class="s">&quot;14.05.2014 - 15:10&quot;</span>
-
-      <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">0</span>
-        <span class="nv">file.category = </span><span class="s">&quot;note&quot;</span>
-        <span class="nv">file.thumbnail = </span>
-          <span class="nv">title: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
-          <span class="nv">content: </span><span class="s">&quot;&lt;p&gt;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, s&quot;</span><span class="o">+</span>
-            <span class="s">&quot;ed diam nonumy eirmod.&lt;/p&gt;&lt;p&gt;tempor invidunt ut labore et dolore magna a&quot;</span><span class="o">+</span>
-            <span class="s">&quot;liquyam erat, sed diam voluptua.&lt;/p&gt;&quot;</span>
-        <span class="nv">file.edited = </span><span class="s">&quot;20.05.2014 - 20:25&quot;</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">1</span>
-        <span class="nv">file.category = </span><span class="s">&quot;screenshot&quot;</span>
-        <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot.png&quot;</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">2</span>
-        <span class="nv">file.category = </span><span class="s">&quot;file&quot;</span>
-        <span class="nv">file.thumbnail = </span><span class="s">&quot;icon&quot;</span>
-        <span class="nv">file.extension = </span><span class="s">&quot;.pdf&quot;</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">3</span>
-        <span class="nv">file.category = </span><span class="s">&quot;code&quot;</span>
-        <span class="nv">file.thumbnail = </span><span class="s">&quot;var dummy = function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log(\&quot;Hello world\&quot;)&lt;br/&gt;}&quot;</span>
-        <span class="nv">file.extension = </span><span class="nx">code_extensions</span><span class="p">[</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)</span> <span class="p">]</span>
-      <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">4</span>
-        <span class="nv">file.category = </span><span class="s">&quot;shared-screen&quot;</span>
-        <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot-screen.png&quot;</span>
-        <span class="nv">file.size = </span><span class="mi">0</span>
-      <span class="k">else</span>
-        <span class="nv">file.category = </span><span class="s">&quot;shared-webcam&quot;</span>
-        <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot-webcam.jpg&quot;</span>
-        <span class="nv">file.size = </span><span class="mi">0</span>
-        
-
-      <span class="nv">file.templateUrl = </span><span class="s">&quot;/partials/items/&quot;</span> <span class="o">+</span> <span class="nx">file</span><span class="p">.</span><span class="nx">category</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
-
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">shared_items</span><span class="p">.</span><span class="nx">push</span> <span class="nx">file</span>
-
-    <span class="nv">$scope.setSortingState = </span><span class="nf">(state) -&gt;</span>
-      <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">sorting</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="nx">state</span>
-        <span class="nv">$scope.controls.sorting.ascending = </span><span class="o">!</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">sorting</span><span class="p">.</span><span class="nx">ascending</span>
-      <span class="k">else</span>
+        <span class="nv">$scope.controls = </span><span class="p">{}</span>
+        <span class="nv">$scope.controls.layout = </span><span class="s">&quot;layout-icons&quot;</span>
+        <span class="nv">$scope.controls.sorting = </span><span class="p">{}</span>
+        <span class="nv">$scope.controls.sorting.state = </span><span class="s">&quot;name&quot;</span>
         <span class="nv">$scope.controls.sorting.ascending = </span><span class="kc">false</span>
-        <span class="nv">$scope.controls.sorting.state = </span><span class="nx">state</span>
+
+        <span class="nv">$scope.openView = </span><span class="nf">(item_category) -&gt;</span>
+            <span class="nv">viewInstance = </span><span class="nx">$modal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
+                <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/&quot;</span> <span class="o">+</span> <span class="nx">item_category</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
+                <span class="nv">controller: </span><span class="s">&quot;ViewInstanceCtrl&quot;</span>
+                <span class="nv">size: </span><span class="s">&quot;lg&quot;</span>
+            <span class="p">)</span>
+
+        <span class="nv">shared_items_amount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>
+
+        <span class="nv">file_names = </span><span class="p">[</span>
+            <span class="s">&#39;Lothar&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Rafael&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Angelika&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Wolfram&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Lisa&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Sophia&#39;</span><span class="p">,</span>
+            <span class="s">&#39;David&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Andrea&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Hermine&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Rudolf&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Steffen&#39;</span><span class="p">,</span>
+            <span class="s">&#39;Johanna&#39;</span>
+        <span class="p">]</span>
+
+        <span class="nv">code_extensions = </span><span class="p">[</span>
+            <span class="s">&quot;html&quot;</span>
+            <span class="s">&quot;css&quot;</span>
+            <span class="s">&quot;js&quot;</span>
+            <span class="s">&quot;py&quot;</span>
+            <span class="s">&quot;java&quot;</span>
+            <span class="s">&quot;rb&quot;</span>
+        <span class="p">]</span>
+    
+        <span class="k">while</span> <span class="nx">shared_items_amount</span> <span class="o">-=</span> <span class="mi">1</span>
+
+            <span class="nv">rand = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)</span>
+
+            <span class="nv">file = </span><span class="p">{}</span>
+            <span class="nv">file.name = </span><span class="nx">file_names</span><span class="p">[</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="p">]</span>
+            <span class="nv">file.size = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
+            <span class="nv">file.author = </span><span class="s">&quot;Max Mustermann&quot;</span>
+            <span class="nv">file.created = </span><span class="s">&quot;14.05.2014 - 15:10&quot;</span>
+
+            <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">0</span>
+                <span class="nv">file.category = </span><span class="s">&quot;note&quot;</span>
+                <span class="nv">file.thumbnail =</span>
+                    <span class="nv">title: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
+                    <span class="nv">content: </span><span class="s">&quot;&lt;p&gt;Lorem ipsum dolor sit amet, consetetur sadips&quot;</span><span class="o">+</span>
+                        <span class="s">&quot;cing elitr, sed diam nonumy eirmod.&lt;/p&gt;&lt;p&gt;tempor invi&quot;</span><span class="o">+</span>
+                        <span class="s">&quot;dunt ut labore et dolore magna aliquyam erat, sed dia&quot;</span><span class="o">+</span>
+                        <span class="s">&quot;m voluptua.&lt;/p&gt;&quot;</span>
+                <span class="nv">file.edited = </span><span class="s">&quot;20.05.2014 - 20:25&quot;</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">1</span>
+                <span class="nv">file.category = </span><span class="s">&quot;screenshot&quot;</span>
+                <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot.png&quot;</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">2</span>
+                <span class="nv">file.category = </span><span class="s">&quot;file&quot;</span>
+                <span class="nv">file.thumbnail = </span><span class="s">&quot;icon&quot;</span>
+                <span class="nv">file.extension = </span><span class="s">&quot;.pdf&quot;</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">3</span>
+                <span class="nv">file.category = </span><span class="s">&quot;code&quot;</span>
+                <span class="nv">file.thumbnail = </span><span class="s">&quot;var dummy = function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&quot;</span><span class="o">+</span>
+                    <span class="s">&quot;&amp;nbspconsole.log(\&quot;Hello world\&quot;)&lt;br/&gt;}&quot;</span>
+                <span class="nv">file.extension = </span><span class="nx">code_extensions</span><span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)]</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">4</span>
+                <span class="nv">file.category = </span><span class="s">&quot;shared-screen&quot;</span>
+                <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot-screen.png&quot;</span>
+                <span class="nv">file.size = </span><span class="mi">0</span>
+            <span class="k">else</span>
+                <span class="nv">file.category = </span><span class="s">&quot;shared-webcam&quot;</span>
+                <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot-webcam.jpg&quot;</span>
+                <span class="nv">file.size = </span><span class="mi">0</span>
+
+
+            <span class="nv">file.templateUrl = </span><span class="s">&quot;/partials/items/&quot;</span> <span class="o">+</span> <span class="nx">file</span><span class="p">.</span><span class="nx">category</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
+
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">shared_items</span><span class="p">.</span><span class="nx">push</span> <span class="nx">file</span>
+
+        <span class="nv">$scope.setSortingState = </span><span class="nf">(state) -&gt;</span>
+            <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">sorting</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="nx">state</span>
+                <span class="nv">scope.controls.sorting.ascending =</span>
+                    <span class="o">!</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">sorting</span><span class="p">.</span><span class="nx">ascending</span>
+            <span class="k">else</span>
+                <span class="nv">$scope.controls.sorting.ascending = </span><span class="kc">false</span>
+                <span class="nv">$scope.controls.sorting.state = </span><span class="nx">state</span>
 
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
@@ -202,60 +182,60 @@ RTCProvider.listClients()</p></div></div><div class="code"><div class="wrapper">
   <p></li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ChatCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
-  <span class="nf">($scope, ChatStateService) -&gt;</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
+    <span class="nf">($scope, ChatStateService) -&gt;</span>
 
-    <span class="nv">$scope.chat = </span><span class="p">{}</span>
-    <span class="nv">$scope.chat.state = </span><span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
-    <span class="nv">$scope.chat.state_history = </span><span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state_history</span>
-    <span class="nv">$scope.chat.messages = </span><span class="p">[</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>dummy entries</p></div></div><div class="code"><div class="wrapper">      <span class="p">{</span>
-        <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span><span class="p">,</span>
-        <span class="nv">content: </span><span class="s">&quot;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed&quot;</span><span class="o">+</span>
-        <span class="s">&quot; diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquya&quot;</span><span class="o">+</span>
-        <span class="s">&quot;m erat, sed diam voluptua. At vero eos et accusam et justo duo dolore&quot;</span><span class="o">+</span>
-        <span class="s">&quot;s et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est&quot;</span><span class="o">+</span>
-        <span class="s">&quot; Lorem ipsum dolor sit amet.&quot;</span>
-      <span class="p">}</span>
-      <span class="p">{</span>
-        <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span><span class="p">,</span>
-        <span class="nv">content: </span><span class="s">&quot;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed&quot;</span><span class="o">+</span>
-        <span class="s">&quot; diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquya&quot;</span><span class="o">+</span>
-        <span class="s">&quot;m erat, sed diam voluptua.&quot;</span>
-      <span class="p">}</span>
-      <span class="p">{</span>
-        <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span><span class="p">,</span>
-        <span class="nv">content: </span><span class="s">&quot;Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed&quot;</span><span class="o">+</span>
-        <span class="s">&quot; diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquya&quot;</span><span class="o">+</span>
-        <span class="s">&quot;m erat, sed diam voluptua. At vero eos et accusam et justo duo dolore&quot;</span><span class="o">+</span>
-        <span class="s">&quot;s et ea rebum.&quot;</span>
-      <span class="p">}</span>
+        <span class="nv">$scope.chat = </span><span class="p">{}</span>
+        <span class="nv">$scope.chat.state = </span><span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state</span>
+        <span class="nv">$scope.chat.state_history = </span><span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">chat_state_history</span>
+        <span class="nv">$scope.chat.messages = </span><span class="p">[</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>dummy entries</p></div></div><div class="code"><div class="wrapper">            <span class="p">{</span>
+                <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span><span class="p">,</span>
+                <span class="nv">content: </span><span class="s">&quot;Lorem ipsum dolor sit amet, consetetur sadipscing el&quot;</span><span class="o">+</span>
+                <span class="s">&quot;itr, sed diam nonumy eirmod tempor invidunt ut labore et dolo&quot;</span><span class="o">+</span>
+                <span class="s">&quot;re magna aliquyam erat, sed diam voluptua. At vero eos et acc&quot;</span><span class="o">+</span>
+                <span class="s">&quot;usam et justo duo dolores et ea rebum. Stet clita kasd guberg&quot;</span><span class="o">+</span>
+                <span class="s">&quot;ren, no sea takimata sanctus est Lorem ipsum dolor sit amet.&quot;</span>
+            <span class="p">}</span>
+            <span class="p">{</span>
+                <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span><span class="p">,</span>
+                <span class="nv">content: </span><span class="s">&quot;Lorem ipsum dolor sit amet, consetetur sadipscing el&quot;</span><span class="o">+</span>
+                <span class="s">&quot;itr, sed diam nonumy eirmod tempor invidunt ut labore et dolo&quot;</span><span class="o">+</span>
+                <span class="s">&quot;re magna aliquyam erat, sed diam voluptua.&quot;</span>
+            <span class="p">}</span>
+            <span class="p">{</span>
+                <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span><span class="p">,</span>
+                <span class="nv">content: </span><span class="s">&quot;Lorem ipsum dolor sit amet, consetetur sadipscing el&quot;</span><span class="o">+</span>
+                <span class="s">&quot;itr, sed diam nonumy eirmod tempor invidunt ut labore et dolo&quot;</span><span class="o">+</span>
+                <span class="s">&quot;re magna aliquyam erat, sed diam voluptua. At vero eos et acc&quot;</span><span class="o">+</span>
+                <span class="s">&quot;usam et justo duo dolores et ea rebum.&quot;</span>
+            <span class="p">}</span>
 
-    <span class="p">]</span>
+        <span class="p">]</span>
 
-    <span class="nv">$scope.submitChatMessage = </span><span class="nf">-&gt;</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">push</span>
-        <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
-        <span class="nv">content: </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">message</span>
-      <span class="nv">$scope.chat.message = </span><span class="s">&quot;&quot;</span>
+        <span class="nv">$scope.submitChatMessage = </span><span class="nf">-&gt;</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">push</span>
+                <span class="nv">sender: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
+                <span class="nv">content: </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">message</span>
+            <span class="nv">$scope.chat.message = </span><span class="s">&quot;&quot;</span>
 
-    <span class="nv">$scope.chat.compress = </span><span class="nf">-&gt;</span>
-      <span class="nv">$scope.chat.state = </span><span class="s">&quot;compressed&quot;</span>
-      <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span>
+        <span class="nv">$scope.chat.compress = </span><span class="nf">-&gt;</span>
+            <span class="nv">$scope.chat.state = </span><span class="s">&quot;compressed&quot;</span>
+            <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span>
 
-    <span class="nv">$scope.chat.expand = </span><span class="nf">-&gt;</span>
-      <span class="nv">$scope.chat.state = </span><span class="s">&quot;expanded&quot;</span>
-      <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span>
+        <span class="nv">$scope.chat.expand = </span><span class="nf">-&gt;</span>
+            <span class="nv">$scope.chat.state = </span><span class="s">&quot;expanded&quot;</span>
+            <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span>
 
-    <span class="nv">$scope.chat.minimize = </span><span class="nf">-&gt;</span>
-      <span class="nv">$scope.chat.state_history = </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span>
-      <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatStateHistory</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state_history</span><span class="p">)</span>
-      <span class="nv">$scope.chat.state = </span><span class="s">&quot;minimized&quot;</span>
-      <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span>
+        <span class="nv">$scope.chat.minimize = </span><span class="nf">-&gt;</span>
+            <span class="nv">$scope.chat.state_history = </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span>
+            <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatStateHistory</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state_history</span><span class="p">)</span>
+            <span class="nv">$scope.chat.state = </span><span class="s">&quot;minimized&quot;</span>
+            <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span><span class="p">)</span>
 
-    <span class="nv">$scope.chat.maximize = </span><span class="nf">-&gt;</span>
-      <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="s">&quot;minimized&quot;</span>
-        <span class="nv">$scope.chat.state = </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state_history</span>
-        <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state_history</span><span class="p">)</span>
+        <span class="nv">$scope.chat.maximize = </span><span class="nf">-&gt;</span>
+            <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="s">&quot;minimized&quot;</span>
+                <span class="nv">$scope.chat.state = </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state_history</span>
+                <span class="nx">ChatStateService</span><span class="p">.</span><span class="nx">setChatState</span><span class="p">(</span><span class="nx">$scope</span><span class="p">.</span><span class="nx">chat</span><span class="p">.</span><span class="nx">state_history</span><span class="p">)</span>
 
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
@@ -267,21 +247,21 @@ RTCProvider.listClients()</p></div></div><div class="code"><div class="wrapper">
   of the note-model-object - the path to the note is the corresponding value.</li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NotesCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-  <span class="s">&quot;$scope&quot;</span>
-  <span class="nf">($scope) -&gt;</span>
-    <span class="nv">$scope.room.notes = </span><span class="p">[]</span>
+    <span class="s">&quot;$scope&quot;</span>
+    <span class="nf">($scope) -&gt;</span>
+        <span class="nv">$scope.room.notes = </span><span class="p">[]</span>
 
-    <span class="nv">$scope.tinymceOptions =</span>
-      <span class="nv">menubar: </span><span class="kc">false</span>
+        <span class="nv">$scope.tinymceOptions =</span>
+            <span class="nv">menubar: </span><span class="kc">false</span>
 
-    <span class="nv">$scope.addNote = </span><span class="nf">-&gt;</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">push</span>
-        <span class="s">&quot;title&quot;</span><span class="o">:</span> <span class="s">&quot;Untitled Document&quot;</span>
-        <span class="s">&quot;content&quot;</span><span class="o">:</span> <span class="s">&quot;Click to edit&quot;</span>
-        <span class="s">&quot;path&quot;</span><span class="o">:</span> <span class="s">&quot;future/path/to/note&quot;</span>
-        
+        <span class="nv">$scope.addNote = </span><span class="nf">-&gt;</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">push</span>
+                <span class="s">&quot;title&quot;</span><span class="o">:</span> <span class="s">&quot;Untitled Document&quot;</span>
+                <span class="s">&quot;content&quot;</span><span class="o">:</span> <span class="s">&quot;Click to edit&quot;</span>
+                <span class="s">&quot;path&quot;</span><span class="o">:</span> <span class="s">&quot;future/path/to/note&quot;</span>
+            
 
-    <span class="nv">$scope.removeNote = </span><span class="nf">(index) -&gt;</span>
-      <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>
+        <span class="nv">$scope.removeNote = </span><span class="nf">(index) -&gt;</span>
+            <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>
 
 <span class="p">]</span></div></div></div></div></body></html>
