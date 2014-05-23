@@ -253,8 +253,8 @@ app.value "version", "0.1"
 
 app.service "ChatStateService", ->
 
-    @chat_state = "compressed"
-    @chat_state_history = ""
+    @chat_state = "minimized"
+    @chat_state_history = "compressed"
 
     @setChatState = (chat_state) ->
         @chat_state = chat_state
@@ -263,3 +263,29 @@ app.service "ChatStateService", ->
         @chat_state_history = chat_state_history
 
     return
+
+app.service "SharedItemsService", ->
+
+    @items = []
+
+    getItemIndex = (id) =>
+        item = {}
+        for i of @items
+            item = @items[i]
+            if item.id is parseInt(id)
+                return i
+
+    @initItems = (items_arr) ->
+        @items = items_arr
+
+    @getItems = ->
+        @items
+
+    @getItem = (id) -> 
+        @items[ getItemIndex(id) ]
+
+    @deleteItem = (id) ->
+        @items.splice( getItemIndex(id), 1 )
+
+    return
+

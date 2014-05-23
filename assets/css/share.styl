@@ -279,3 +279,91 @@
 
             &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
                 opacity 1
+
+.detail-view
+    
+    .heading
+        .controls
+            padding-left 70px
+
+            div
+                float left
+                padding 7px 12px
+                color white
+                transition background .3s ease-in-out
+                border-radius 5px
+                margin 0 5px
+
+                i
+                    padding 0 10px 0 0
+
+                span
+                    width 0
+
+                &:hover
+                    background rgba(27,27,27, 0.9)
+    
+    .jumbotron
+        margin-bottom 0
+        padding 50px
+
+        h1
+            border-bottom 1px solid darkgrey
+
+        .image-container
+            box-shadow 0 0 15px rgba(53,53,53,1)
+            width 100%
+            margin-top 20px
+
+            img
+                width 100%
+
+        .settings-container
+            
+            .form-group
+                margin-right 15px                
+
+                select
+                    height 36px
+
+        .code-container
+            width 60%
+            margin-top 20px
+            height 300px
+            position relative
+
+            #editor
+                position absolute
+                top 0
+                right 0
+                bottom 0
+                left 0
+                font-size 15px
+        
+        .infos-container
+            margin-top 20px
+            
+            .info
+                background rgba(27,27,27, 0.9)
+                padding 5px 15px
+                border-radius 10px
+                color white
+                margin 5px 5px
+                display inline-block
+                opacity 0.8
+                transition opacity .3s ease-in-out
+                font-size 0.9em
+
+                &:hover
+                    opacity 1
+                    box-shadow 0 0 15px rgba(53,53,53,1)
+
+.chat-expanded
+    .detail-view
+        .heading
+            .controls
+                div
+                    span
+                        display none
+                    i
+                        padding-right 0

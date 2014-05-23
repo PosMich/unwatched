@@ -11,16 +11,16 @@ app = angular.module "unwatched.directives", []
 # > Frontend-usage: input(input-match="origin-input-field-id")
 
 app.directive "inputMatch", [ ->
-  require: "ngModel"
-  link: (scope, elem, attrs, ctrl) ->
-    originInput = "#" + attrs.inputMatch
-    elem.add(originInput).on "input", ->
-      scope.$apply ->
-        v = elem.val() is $(originInput).val()
-        ctrl.$setValidity "inputMatch", v
+    require: "ngModel"
+    link: (scope, elem, attrs, ctrl) ->
+        originInput = "#" + attrs.inputMatch
+        elem.add(originInput).on "input", ->
+            scope.$apply ->
+                v = elem.val() is $(originInput).val()
+                ctrl.$setValidity "inputMatch", v
+                return
+            return
         return
-      return
-    return
 ]
 
 # ***
@@ -56,7 +56,7 @@ app.directive "updateScrollPosition", [
 
             scope.$watch attrs.updateScrollPosition, ->
                 window.setTimeout((->
-                  $(elem).scrollTop $(elem).find("> div").height()
+                    $(elem).scrollTop $(elem).find("> div").height()
                 ), 0)
 
             angular.element($window).bind "resize", ->
@@ -68,11 +68,11 @@ app.directive "updateScrollPosition", [
                 ChatStateService.chat_state
             , ->
                 window.setTimeout((->
-                     $(elem).scrollTop $(elem).find("> div").height()
+                    $(elem).scrollTop $(elem).find("> div").height()
                 ), 0)
 
             window.setTimeout((->
-              $(elem).scrollTop $(elem).find("> div").height()
+                $(elem).scrollTop $(elem).find("> div").height()
             ), 0)
 ]
 
@@ -81,108 +81,154 @@ app.directive "updateScrollPosition", [
 # > Sets the focus on a certain input field after a click event was fired.<br/>
 # > Frontend-usage: a(focus-on-click="fieldToBeFocusedId")
 app.directive "focusOnClick", [ ->
-  link: (scope, elem, attrs) ->
-    focusField = "#" + attrs.focusOnClick
-    elem.on "click", ->
-      $(focusField).focus()
-      return
-    return
+    link: (scope, elem, attrs) ->
+        focusField = "#" + attrs.focusOnClick
+        elem.on "click", ->
+            $(focusField).focus()
+            return
+        return
 ]
 
 app.directive "centerVertical", [
     "$window"
     ($window) ->
-      link: (scope, elem, attrs) ->
+        link: (scope, elem, attrs) ->
 
-        centerVertical = (elem, attrs) ->
-            marginTop = ( $($window).height() - $(elem).height() ) / 2
-            $(elem).css "margin-top", marginTop
-            return
+            centerVertical = (elem, attrs) ->
+                marginTop = ( $($window).height() - $(elem).height() ) / 2
+                $(elem).css "margin-top", marginTop
+                return
 
-        scope.$watch attrs.adjustWidth, ->
-          window.setTimeout( (->
-            centerVertical(elem, attrs)
-          ), 1)
+            scope.$watch attrs.adjustWidth, ->
+                window.setTimeout( (->
+                    centerVertical(elem, attrs)
+                ), 1)
 
-        angular.element($window).bind "resize", ->
-          centerVertical(elem, attrs)
-          return
+            angular.element($window).bind "resize", ->
+                centerVertical(elem, attrs)
+                return
 ]
 
 
 
 app.directive "appVersion", [
-  "version"
-  (version) ->
-    (scope, elem, attrs) ->
-      elem.text version
+    "version"
+    (version) ->
+        (scope, elem, attrs) ->
+            elem.text version
 ]
 
 app.directive "rearangeContainer", [
     "$window", "$location"
     ($window, $location) ->
-      link: (scope, elem, attrs) ->
+        link: (scope, elem, attrs) ->
 
-        rearange = (elem, attrs) ->
-          $container = $(".view-frame")
+            rearange = (elem, attrs) ->
+                $container = $(".view-frame")
           
-          if scope.chat.state is "expanded"
-            $container.addClass("chat-expanded")
-            $container.removeClass("chat-compressed")
-          else
-            $container.addClass("chat-compressed")
-            $container.removeClass("chat-expanded")
+                if scope.chat.state is "expanded"
+                    $container.addClass("chat-expanded")
+                    $container.removeClass("chat-compressed")
+                else
+                    $container.addClass("chat-compressed")
+                    $container.removeClass("chat-expanded")
             
 
-        scope.$watch attrs.rearangeContainer, ->
-          rearange()
+            scope.$watch attrs.rearangeContainer, ->
+                rearange()
 
-        scope.$location = $location
-        scope.$watch('$location.path()', ->
-          window.setTimeout((->
+            scope.$location = $location
+            scope.$watch "$location.path()", ->
+                window.setTimeout((->
+                    rearange()
+                ), 500)
+
             rearange()
-          ), 500)
-        )
-
-        rearange()
 
 ]
 
 app.directive "fitItemHeight", [
-    "$window", "$timeout"
-    ($window, $timeout) ->
-      link: (scope, elem, attrs) ->
-        fitHeight = (elem, attrs) ->
-          if attrs.fitItemHeight is "layout-icons"
-            $items = $(elem).find(".item-container")
-            width = $items.first().width()
+    "$window", "$timeout", "$location"
+    ($window, $timeout, $location) ->
+        link: (scope, elem, attrs) ->
+            fitHeight = (elem, attrs) ->
+                if attrs.fitItemHeight is "layout-icons"
+                    $items = $(elem).find(".item-container")
+                    width = $items.first().width()
 
-            for item in $items
-              if $(item).width() < width
-                width = $(item).width()
+                    for item in $items
+                        if $(item).width() < width
+                            width = $(item).width()
 
-            $items.css "height", width / 4 * 3
-            return
+                    $items.css "height", width / 4 * 3
+                    return
 
-        scope.$watch ->
-            scope.controls.layout
-        , (value) ->
-            window.setTimeout((->
-                fitHeight(elem, attrs)
-            ), 0)
+            scope.$watch ->
+                scope.controls.layout
+            , (value) ->
+                window.setTimeout((->
+                    fitHeight(elem, attrs)
+                ), 0)
 
-        scope.$watch ->
-            scope.controls.searchString
-        , ->
-            window.setTimeout((->
-                fitHeight(elem, attrs)
-            ), 0)
+            scope.$watch ->
+                scope.controls.searchString
+            , ->
+                window.setTimeout((->
+                    fitHeight(elem, attrs)
+                ), 0)
+
+            scope.$watch ->
+                scope.chat_state
+            , (value) ->
+                window.setTimeout((->
+                    fitHeight(elem, attrs)
+                ), 0)
           
-        angular.element($window).bind "resize", ->
-          fitHeight(elem, attrs)
+            angular.element($window).bind "resize", ->
+                fitHeight(elem, attrs)
 
-        window.setTimeout((->
-          fitHeight(elem, attrs)
-        ), 0)
+            scope.$location = $location
+            scope.$watch "$location.path()", ->
+                if $location.path() is "/share"
+                    window.setTimeout((->
+                        fitHeight(elem, attrs)
+                    ), 500)
+
+            window.setTimeout((->
+                fitHeight(elem, attrs)
+            ), 0)
 
 ]
+
+app.directive "resizable", [
+    "ChatStateService"
+    (ChatStateService) ->
+        restrict: "A"
+        scope:
+            callback: "&onResize"
+
+        link: (scope, elem, attrs) ->
+
+            resizeConfig = {
+                maxHeight: 600
+                minHeight: 200
+                maxWidth: elem.parent().width()
+                minWidth: 200
+            }
+
+            elem.resizable resizeConfig
+            elem.on "resizestop", (evt, ui) ->
+                scope.callback()  if scope.callback
+
+            scope.$watch ->
+                ChatStateService.chat_state
+            , ->
+                window.setTimeout(( ->
+                    width = elem.parent().width()
+                    if elem.width() > width
+                        elem.width width
+                    elem.resizable('option', 'maxWidth', width)
+                ), 0)
+
+]
+

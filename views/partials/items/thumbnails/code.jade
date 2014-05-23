@@ -32,7 +32,7 @@
                 i.fa.fa-trash-o
             a(ng-click="copyClipboard(item.id)")
                 i.fa.fa-clipboard
-            a(href="/path/to/future/filedownload")
+            a(ng-href="{{item.path}}")
                 i.fa.fa-download
-            a(href="/share/code/{{item.id}}")
+            a(ng-href="/share/code/{{item.id}}")
                 i.fa.fa-pencil

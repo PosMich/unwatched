@@ -97,6 +97,7 @@ module.exports = (grunt) ->
             "ui-bootstrap-tpls-0.10.0.js"
             "ng-FitText.js"
             "ui-tinymce.js"
+            "jquery-ui-1.10.4.custom.js"
         ]
 
         angularAppCoffeeFilesDir: "assets/js/angular-app"
@@ -120,6 +121,7 @@ module.exports = (grunt) ->
             fileArray.push( files.libDir + "/" + lib ) for lib  in files.libs
             fileArray.push files.angularJsOutput
             fileArray.push( ".app/views/templates.js" )
+            fileArray.push( files.libDir + "/ace/*.js" )
             return fileArray
         serverFiles: [ "modules/*.coffee", "userconfig.coffee" ]
 

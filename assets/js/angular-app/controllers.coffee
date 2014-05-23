@@ -6,9 +6,11 @@
 app = angular.module "unwatched.controllers", []
 
 app.controller "AppCtrl", [
-    "$scope"
-    ($scope) ->
+    "$scope", "SharedItemsService"
+    ($scope, SharedItemsService) ->
 
+
+        SharedItemsService.initItems( dummy_items )
 
 ]
 
@@ -60,10 +62,9 @@ app.controller "MembersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "ChatStateService"
-    ($scope, ChatStateService) ->
+    "$scope", "ChatStateService", "SharedItemsService"
+    ($scope, ChatStateService, SharedItemsService) ->
         $scope.shared_items = []
-
         $scope.$watch (->
             return ChatStateService.chat_state
         ), ((new_state, old_state) ->
@@ -76,7 +77,7 @@ app.controller "ShareCtrl", [
         $scope.controls.sorting.state = "name"
         $scope.controls.sorting.ascending = false
 
-        $scope.shared_items = dummy_items
+        $scope.shared_items = SharedItemsService.getItems()
 
         $scope.setSortingState = (state) ->
             if $scope.controls.sorting.state is state
@@ -86,55 +87,113 @@ app.controller "ShareCtrl", [
                 $scope.controls.sorting.ascending = false
                 $scope.controls.sorting.state = state
 
-        $scope.delete = (index) ->
-            i = 0
-            item = {}
-            while i < $scope.shared_items.length
-                item = $scope.shared_items[i]
-                if item.id is index
-                    $scope.shared_items.splice i, 1 
-                    break
-                i++
+        $scope.delete = (item_id) ->
+            SharedItemsService.deleteItem(item_id)
 
 ]
 
 app.controller "ScreenshotCtrl", [
-    "$scope", "$routeParams"
-    ($scope, $routeParams) ->
-        console.log $routeParams
-        if $routeParams.id
-            $scope.id = $routeParams.id
+    "$scope", "$routeParams", "SharedItemsService"
+    ($scope, $routeParams, SharedItemsService) ->
+        
+        $scope.item = {}
 
+        if $routeParams.id
+            $scope.item = SharedItemsService.getItem($routeParams.id)
         else
-            $scope.id = "No ID :("
+            $scope.error = "No such item is shared in your current room."
 ]
 
 app.controller "NoteCtrl", [
     "$scope", "$routeParams"
     ($scope, $routeParams) ->
-        console.log $routeParams
-        if $routeParams.id
-            $scope.id = $routeParams.id
-
+        if typeof $routeParams.id is "undefined"
+            $scope.item_error = "No such item is shared in your current room."
         else
-            $scope.id = "No ID :("
+            $scope.item = dummy_items[$routeParams.id]
 ]
 
 app.controller "CodeCtrl", [
-    "$scope", "$routeParams"
-    ($scope, $routeParams) ->
-        console.log $routeParams
-        if $routeParams.id
-            $scope.id = $routeParams.id
+    "$scope", "$routeParams", "SharedItemsService", "ChatStateService"
+    ($scope, $routeParams, SharedItemsService, ChatStateService) ->
 
+        if $routeParams.id
+
+            $scope.containerResize = ->
+                $scope.editor.resize()
+
+            $scope.setEditorExtension = (value) ->
+                ace_ext = value
+                ace_ext = "javascript" if value is "js"
+                ace_ext = "ruby" if value is "rb"
+                ace_ext = "python" if value is "py"
+                $scope.editor.getSession().setMode("ace/mode/" + ace_ext)
+
+            $scope.setEditorFontSize = (value) ->
+                $scope.editor.setFontSize(value)
+                return
+
+            getExtensionId = (value) ->
+                extension = {}
+                for i of $scope.settings.available_extensions
+                    extension = $scope.settings.available_extensions[i]
+                    if value is extension.value
+                        return i
+
+            $scope.settings = {}
+
+            $scope.settings.available_extensions = [
+                { value: "", name: "Choose language" }
+                { value: "html", name: "HTML" }
+                { value: "css", name: "CSS" }
+                { value: "js", name: "JavaScript" }
+                { value: "java", name: "Java" }
+                { value: "rb", name: "Ruby" }
+                { value: "py", name: "Python" }
+            ]
+
+            $scope.settings.available_font_sizes = [
+                { value: 12, name: "12px"}
+                { value: 14, name: "14px"}
+                { value: 16, name: "16px"}
+                { value: 18, name: "18px"}
+                { value: 20, name: "20px"}
+            ]
+
+            $scope.item = SharedItemsService.getItem($routeParams.id)
+
+            $scope.editor = ace.edit("editor")
+            $scope.editor.getSession().setUseWorker(false)
+            $scope.editor.setTheme("ace/theme/monokai")
+            $scope.editor.setValue($scope.item.content)
+
+            extension_id = getExtensionId( $scope.item.extension )
+            $scope.settings.extension = 
+                $scope.settings.available_extensions[extension_id]
+            $scope.settings.font_size = $scope.settings.available_font_sizes[0]
+
+            $scope.setEditorExtension( $scope.settings.extension.value )
+            $scope.setEditorFontSize( $scope.settings.font_size.value )
+
+            $scope.$watch "settings.extension", (option, old_option) ->
+                if option.value is ""
+                    $scope.settings.extension = old_option
+                    return
+                $scope.setEditorExtension( option.value )    
+
+
+            $scope.$watch "settings.font_size", (option) ->
+                $scope.setEditorFontSize(option.value)
+                
         else
             $scope.id = "No ID :("
+
+
 ]
 
 app.controller "SharedScreenCtrl", [
     "$scope", "$routeParams"
     ($scope, $routeParams) ->
-        console.log $routeParams
         if $routeParams.id
             $scope.id = $routeParams.id
 
@@ -145,7 +204,6 @@ app.controller "SharedScreenCtrl", [
 app.controller "SharedWebcamCtrl", [
     "$scope", "$routeParams"
     ($scope, $routeParams) ->
-        console.log $routeParams
         if $routeParams.id
             $scope.id = $routeParams.id
 
@@ -250,6 +308,7 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         thumbnail: "screenshot.png"
+        path: "/images/screenshot.png"
         templateUrl: "/partials/items/thumbnails/screenshot.html"
     }
     {
@@ -260,6 +319,7 @@ dummy_items = [
         created: "14.05.2014-15:10"
         category: "file"
         thumbnail: "icon"
+        path: "/future/path/to/file"
         extension: ".pdf"
         templateUrl: "/partials/items/thumbnails/file.html"
     }
@@ -272,19 +332,21 @@ dummy_items = [
         category: "code"
         thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
             "(\"Helloworld\")<br/>}"
+        path: "/future/path/to/file"
         extension: "css"
         templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
         id: 4,
-        name: "index"
+        name: "HelloWorld"
         size: 346432
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
         thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
             "(\"Helloworld\")<br/>}"
-        extension: "html"
+        path: "/future/path/to/file"
+        extension: "java"
         templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
@@ -296,19 +358,37 @@ dummy_items = [
         category: "code"
         thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
             "(\"Helloworld\")<br/>}"
+        path: "/future/path/to/file"
         extension: "js"
         templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
         id: 6,
-        name: "HelloWorld"
+        name: "index"
         size: 876432
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
-            "(\"Helloworld\")<br/>}"
-        extension: "java"
+        thumbnail: "var dummy = function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.l"+
+            "og(\"Helloworld\")<br/>}"
+        content: 
+            '<!doctype html>\n' +
+                '<html lang="en">\n' +
+                    '\t<head>\n' +
+                        '\t\t<meta charset="utf-8">\n' +
+                        '\t\t<title>The HTML5 Herald</title>\n' +
+                        '\t\t<meta name="description" content="The HTML5 Heral'+
+                            'd">\n' +
+                        '\t\t<meta name="author" content="SitePoint">\n' +
+                        '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0'+
+                            '">\n' +
+                    '\t</head>\n' +
+                    '\t<body>\n' +
+                        '\t\t<script src="js/scripts.js"></script>\n' +
+                    '\t</body>\n' +
+                '</html>\n'
+        path: "/future/path/to/file"
+        extension: "html"
         templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
@@ -320,6 +400,7 @@ dummy_items = [
         category: "code"
         thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
             "(\"Helloworld\")<br/>}"
+        path: "/future/path/to/file"
         extension: "py"
         templateUrl: "/partials/items/thumbnails/code.html"
     }
@@ -332,6 +413,7 @@ dummy_items = [
         category: "code"
         thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
             "(\"Helloworld\")<br/>}"
+        path: "/future/path/to/file"
         extension: "rb"
         templateUrl: "/partials/items/thumbnails/code.html"
     }
@@ -347,6 +429,7 @@ dummy_items = [
             content: "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "+
                 "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "+
                 "agnaaliquy amerat, seddiamvoluptua.</p>"
+        path: "/future/path/to/file"
         edited: "20.05.2014-20:25"
         templateUrl: "/partials/items/thumbnails/note.html"
     }

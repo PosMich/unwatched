@@ -1,2 +1,53 @@
-.row
-    h1 Code {{id}}
+.detail-view.shared-screenshot-container
+    .heading.clearfix.controls
+        .row
+            .col-xs-12.controls
+                a(href="/share")
+                    .back
+                        i.fa.fa-arrow-left
+                        span Overview
+                a(ng-href="{{item.path}}")
+                    .download
+                        i.fa.fa-download
+                        span Download
+                a(ng-href="#", ng-click="save()")
+                    .copy-clipboard
+                        i.fa.fa-clipboard
+                        span Copy infos to clipboard
+                a(ng-href="#", ng-click="delete()")
+                    .copy-clipboard
+                        i.fa.fa-trash-o
+                        span Remove
+
+    .jumbotron
+        h1 {{item.name}}.{{item.extension}}
+        .infos-container
+            .info
+                b Size: 
+                | {{item.size | humanReadableFileSize}}
+            .info
+                b Author: 
+                | {{item.author}}
+            .info
+                b Created: 
+                | {{item.created}}
+            .info
+                b Path: 
+                | {{item.path}}
+            .info
+                b Category: 
+                | {{item.category}}
+
+        .settings-container
+            h4 Settings
+            form.form-inline(role="form")
+                .form-group
+                    select.form-control(ng-model="settings.extension",
+                        ng-options="extension.name for extension in settings.available_extensions")
+                .form-group
+                    select.form-control(ng-model="settings.font_size",
+                        ng-options="font_size.name for font_size in settings.available_font_sizes")
+
+
+        .code-container(resizable, on-resize="containerResize()")
+            #editor
