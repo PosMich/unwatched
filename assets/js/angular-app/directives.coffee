@@ -245,6 +245,7 @@ app.directive "inlineEdit", ->
                 scope.item.name = scope.item_name
             scope.disabled = true
             scope.$apply()
+
         element.bind "dblclick", ->
             scope.disabled = false
             scope.$apply()

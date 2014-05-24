@@ -13,7 +13,6 @@ app = angular.module "unwatched", [
     "unwatched.controllers"
     "ui.tinymce"
     "ui.bootstrap"
-    "ngFitText"
 ]
 
 # ***
@@ -139,6 +138,15 @@ app.config [
         $routeProvider.when "/share/shared-webcam/:id",
             templateUrl: "/partials/items/shared-webcam.html"
             controller: "SharedWebcamCtrl"
+
+        # ***
+        # * <h3>route `/share/image/:id`</h3>
+        # > loads a specific shared image by the given id
+        # >
+        # > load ImageCtrl
+        $routeProvider.when "/share/image/:id",
+            templateUrl: "/partials/items/image.html"
+            controller: "ImageCtrl"
 
         # ***
         # * <h3>route `/`</h3>

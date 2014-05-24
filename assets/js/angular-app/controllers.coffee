@@ -105,7 +105,7 @@ app.controller "ShareCtrl", [
 
 ]
 
-app.controller "ScreenshotCtrl", [
+app.controller "ImageCtrl", [
     "$scope", "$routeParams", "SharedItemsService"
     ($scope, $routeParams, SharedItemsService) ->
         
@@ -113,8 +113,15 @@ app.controller "ScreenshotCtrl", [
 
         if $routeParams.id
             $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+
         else
-            $scope.error = "No such item is shared in your current room."
+            console.log "upload new image"
+
+        # for inline editing
+        $scope.disabled = true
+
+        $scope.item_name = $scope.item.name
 ]
 
 app.controller "NoteCtrl", [
@@ -230,6 +237,10 @@ app.controller "CodeCtrl", [
         # TODO: implement change emitter to other viewers
         $scope.editor.on 'change', (e) ->
             $scope.item.content = $scope.editor.getSession().getValue()
+            
+            console.log e
+            console.log $scope.editor.getValue()
+
             if e.data.range.start.row <= 5 || e.data.range.end.row <= 5
                 $scope.item.thumbnail = $scope.getThumbnail()
 
@@ -263,6 +274,20 @@ app.controller "CodeCtrl", [
         ), ((theme) ->
             $scope.settings.theme = theme
         ), true
+
+]
+
+app.controller "ScreenshotCtrl", [
+    "$scope", "$routeParams", "SharedItemsService"
+    ($scope, $routeParams, SharedItemsService) ->
+        
+        $scope.item = {}
+
+        if $routeParams.id
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+        else
+            console.log "take new screenshot"
 
 ]
 
@@ -578,6 +603,17 @@ dummy_items = [
         category: "shared-webcam"
         thumbnail: "screenshot-webcam.jpg"
         templateUrl: "/partials/items/thumbnails/shared-webcam.html"
+    }
+    {
+        id: 12,
+        name: "Cute Cat Picture"
+        size: 190123
+        author: "Hermine"
+        thumbnail: "image.jpg"
+        created: "14.05.2014-15:10"
+        category: "image"
+        path: "/images/image.jpg"
+        templateUrl: "/partials/items/thumbnails/image.html"
     }
 
 ]

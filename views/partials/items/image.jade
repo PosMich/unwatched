@@ -1,4 +1,4 @@
-.detail-view.shared-screenshot-container
+.detail-view.shared-image-container
     .heading.clearfix.controls
         .row
             .col-xs-12.controls
@@ -20,7 +20,16 @@
                         span Remove
 
     .jumbotron
-        h1 {{item.name}}
+        .detail-heading(inline-edit="h1")
+            form(name="imageForm", ng-hide="disabled")
+                .input-container(ng-class="{'has-error': imageForm.iName.$invalid}")
+                    input#imageName.form-control(type='text', name="iName"
+                        ng-model="item_name", required, ng-disabled="disabled"
+                        ng-class="{'input-disabled':disabled}")
+                    span.help-block(ng-show="imageForm.iName.$error.required")
+                        | *Required field. Name won't be saved.
+            h1(ng-hide="!disabled")
+                | {{item.name}} 
         .infos-container
             .info
                 b Size: 

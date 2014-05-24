@@ -57,11 +57,11 @@ ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{
                 a(ng-click="copyClipboard(item.id)")
                     i.fa.fa-clipboard
                 a(ng-href="{{item.path}}",
-                    ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot'")
+                    ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot' || item.category=='image'")
                     i.fa.fa-download
                 a(ng-href="/share/{{item.category}}/{{item.id}}",
                     ng-show="item.category=='note' || item.category=='code'")
                     i.fa.fa-pencil
                 a(ng-href="/share/{{item.category}}/{{item.id}}",
-                    ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot'")
+                    ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot' || item.category=='image'")
                     i.fa.fa-eye
