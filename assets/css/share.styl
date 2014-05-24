@@ -160,6 +160,8 @@
 
                                 code
                                     background transparent
+                                    padding 0
+                                    white-space pre
 
 
                     .item-infos
@@ -239,6 +241,8 @@
                             content: '\f03d'
                         &.shared-screen:before
                             content: '\f030'
+                        &.image:before
+                            content: '\f03e'
 
                 .item-controls
                     padding-top 8px
@@ -279,3 +283,138 @@
 
             &.ng-leave, &.ng-move.ng-move-active, &.ng-enter.ng-enter-active
                 opacity 1
+
+.detail-view
+    
+    .heading
+        .controls
+            padding-left 70px
+
+            div
+                float left
+                padding 7px 12px
+                color white
+                transition background .3s ease-in-out
+                border-radius 5px
+                margin 0 5px
+
+                i
+                    padding 0 10px 0 0
+
+                span
+                    width 0
+
+                &:hover
+                    background rgba(27,27,27, 0.9)
+    
+    .jumbotron
+        margin-bottom 0
+        padding 50px
+
+        .detail-heading
+            input, h1
+                border-radius 0
+                border none
+                font-size 60px
+                font-weight bold
+                color inherit
+                margin-top 20px
+                padding-bottom 10px
+                font-weight 500
+                line-height 1.1
+                height auto
+                transition background .5s ease-in-out
+
+            h1
+                border-bottom 1px solid darkgrey
+
+        .image-container
+            box-shadow 0 0 15px rgba(53,53,53,1)
+            width 100%
+            margin-top 20px
+
+            img
+                width 100%
+
+            .drop-box
+                display block
+                width 100%
+                height 300px
+                font-size 50px
+                line-height 300px
+                text-align center
+                font-style italic
+
+                &.drag-over-class
+                    transition opacity .5 ease-in-out
+                    background rgba(27,27,27, 0.7)
+
+            img, .drop-box
+                &.ng-hide-add, &.ng-hide-remove
+                    display block !important
+
+                &.ng-hide-add.ng-hide-add-active,
+                &.ng-hide-remove.ng-hide-remove-active
+                    transition opacity .5s ease-in-out
+
+                &.ng-hide
+                    line-height 0
+                    opacity 0
+                    padding 0 10px
+                
+        .settings-container
+            
+            .form-group
+                margin-right 15px                
+
+                select
+                    height 36px
+
+            &.image
+                input
+                    padding 5px 8px
+
+                .form-group
+                    padding-bottom 10px
+
+        .code-container
+            width 60%
+            margin-top 20px
+            height 300px
+            position relative
+
+            #editor
+                position absolute
+                top 0
+                right 0
+                bottom 0
+                left 0
+                font-size 15px
+        
+        .infos-container
+            margin-top 20px
+            
+            .info
+                background rgba(27,27,27, 0.9)
+                padding 5px 15px
+                border-radius 10px
+                color white
+                margin 5px 5px
+                display inline-block
+                opacity 0.8
+                transition opacity .3s ease-in-out
+                font-size 0.9em
+
+                &:hover
+                    opacity 1
+                    box-shadow 0 0 15px rgba(53,53,53,1)
+
+.chat-expanded
+    .detail-view
+        .heading
+            .controls
+                div
+                    span
+                        display none
+                    i
+                        padding-right 0
