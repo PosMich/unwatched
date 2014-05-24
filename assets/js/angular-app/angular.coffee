@@ -13,6 +13,7 @@ app = angular.module "unwatched", [
     "unwatched.controllers"
     "ui.tinymce"
     "ui.bootstrap"
+    "angularFileUpload"
 ]
 
 # ***
@@ -138,6 +139,15 @@ app.config [
         $routeProvider.when "/share/shared-webcam/:id",
             templateUrl: "/partials/items/shared-webcam.html"
             controller: "SharedWebcamCtrl"
+
+        # ***
+        # * <h3>route `/share/image/:id`</h3>
+        # > loads an empty code item to edit and share it
+        # >
+        # > load ImageCtrl
+        $routeProvider.when "/share/image",
+            templateUrl: "/partials/items/image.html"
+            controller: "ImageCtrl"
 
         # ***
         # * <h3>route `/share/image/:id`</h3>

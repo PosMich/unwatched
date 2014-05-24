@@ -106,17 +106,74 @@ app.controller "ShareCtrl", [
 ]
 
 app.controller "ImageCtrl", [
-    "$scope", "$routeParams", "SharedItemsService"
-    ($scope, $routeParams, SharedItemsService) ->
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter"
+    ($scope, $routeParams, SharedItemsService, $location, $filter) ->
         
         $scope.item = {}
 
-        if $routeParams.id
-            $scope.item = SharedItemsService.get($routeParams.id)
-            $location.path "/404" if !$scope.item?
+        if !$routeParams.id?
+            # create new image item
+            $scope.item = SharedItemsService.create("image")
+            $scope.image_error = ""
+            $scope.item.mime_type = ""
+
+            # thumbnail processing
+            img = document.createElement("img")
+            canvas = document.createElement("canvas")
+
+            $scope.onFileSelect = ($files) ->
+                file = $files[0]
+
+                if !(/image\/(gif|jpeg|png)$/i).test(file.type.toString())
+                    $scope.image_error = "The file you have coosen has a wrong" +
+                        " MIME-Type (it has: " + file.type.toString() + 
+                        "). Please try it again with an image."
+                    return
+                $scope.image_error = ""
+
+                $scope.item.size = file.size
+                $scope.item.created = $filter("date")(file.lastModifiedDate, 
+                    "dd.MM.yyyy H:mm")
+                $scope.item.uploaded = $filter("date")(new Date(), 
+                    "dd.MM.yyyy H:mm")
+                $scope.item.name = file.name
+                $scope.item_name = file.name
+                $scope.item.mime_type = file.type
+
+                # read file
+                reader = new FileReader()
+
+                reader.onload = (e) ->
+                    $scope.item.path = e.target.result
+                    img.src = e.target.result
+
+                    img.onload = ->                        
+                        
+                        max_width = 300
+                        width = img.width
+                        height = img.height
+
+                        if width > max_width
+                            height *= max_width / width
+                            width = max_width
+
+                        canvas.width = width
+                        canvas.height = height
+
+                        ctx = canvas.getContext "2d"
+                        ctx.drawImage( img, 0, 0, width, height )
+
+                        $scope.item.thumbnail = canvas.toDataURL( $scope.item.mime_type )
+
+                    $scope.$apply()
+
+                reader.readAsDataURL file
+
+
 
         else
-            console.log "upload new image"
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
 
         # for inline editing
         $scope.disabled = true
@@ -237,9 +294,6 @@ app.controller "CodeCtrl", [
         # TODO: implement change emitter to other viewers
         $scope.editor.on 'change', (e) ->
             $scope.item.content = $scope.editor.getSession().getValue()
-            
-            console.log e
-            console.log $scope.editor.getValue()
 
             if e.data.range.start.row <= 5 || e.data.range.end.row <= 5
                 $scope.item.thumbnail = $scope.getThumbnail()
@@ -283,7 +337,7 @@ app.controller "ScreenshotCtrl", [
         
         $scope.item = {}
 
-        if $routeParams.id
+        if $routeParams.id?
             $scope.item = SharedItemsService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
         else
@@ -407,7 +461,7 @@ dummy_items = [
         size: 1036463
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
-        thumbnail: "screenshot.png"
+        thumbnail: "images/screenshot.png"
         path: "/images/screenshot.png"
         templateUrl: "/partials/items/thumbnails/screenshot.html"
     }
@@ -417,6 +471,7 @@ dummy_items = [
         size: 43696
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
+        uploaded: "14.05.2014-15:10"
         category: "file"
         thumbnail: "icon"
         path: "/future/path/to/file"
@@ -609,8 +664,9 @@ dummy_items = [
         name: "Cute Cat Picture"
         size: 190123
         author: "Hermine"
-        thumbnail: "image.jpg"
+        thumbnail: "images/image.jpg"
         created: "14.05.2014-15:10"
+        uploaded: "14.05.2014-15:15"
         category: "image"
         path: "/images/image.jpg"
         templateUrl: "/partials/items/thumbnails/image.html"

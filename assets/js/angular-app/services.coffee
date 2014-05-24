@@ -291,8 +291,8 @@ app.service "AceSettingsService", [
 ]
 
 app.service "SharedItemsService", [
-    "item_template_code", "dummy_authors", "$filter"
-    (item_template_code, dummy_authors, $filter) ->
+    "item_template", "dummy_authors", "$filter"
+    (item_template, dummy_authors, $filter) ->
 
         @items = []
 
@@ -328,19 +328,25 @@ app.service "SharedItemsService", [
             @items.splice( getItemIndex(id), 1 )
 
 
-        @create = ->
-            item = item_template_code
+        @create = (category) ->
+            item = {}
+            angular.copy item_template, item
+            # item = new 
             item.id = getFirstFreeId()
+            console.log "item_id: " + item.id
 
-            name_id = Math.floor(Math.random() * dummy_code_names.length)
-            item.name = "Untitled Code Document"
+            item.name = "Untitled " + category + " item"
 
             author_id = Math.floor(Math.random() * dummy_authors.length)
             item.author = dummy_authors[author_id]
 
-            item.created = $filter("date")(new Date(), "dd.MM.yyyy hh:mm")
+            item.created = $filter("date")(new Date(), "dd.MM.yyyy H:mm")
+            item.category = category
+            item.templateUrl = "/partials/items/thumbnails/" + category + ".html"
 
             @items.push item
+
+            console.log @items
 
             return item
 
@@ -387,16 +393,16 @@ app.constant "dummy_authors", [
     "Brandy Glover"
 ]
 
-app.constant "item_template_code", {
+app.constant "item_template", {
     id: 0
     name: ""
-    size: Math.floor((Math.random()*1024*1024)+400)
+    size: 0
     author: ""
     created: ""
-    category: "code"
+    category: ""
     thumbnail: ""
     content: ""
     path: ""
     extension: ""
-    templateUrl: "/partials/items/thumbnails/code.html"
+    templateUrl: ""
 }

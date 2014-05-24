@@ -89,10 +89,12 @@ module.exports = (grunt) ->
         libs: [
             "jquery-1.11.1.js"
             "bootstrap.js"
+            "angular-file-upload-html5-shim.js"
             "angular.js"
             "angular-route.js"
             "angular-animate.js"
             "angular-sanitize.js"
+            "angular-file-upload.js"
             "tinymce.full.min.js"
             "ui-bootstrap-tpls-0.10.0.js"
             "ng-FitText.js"

@@ -41,11 +41,26 @@
                 b Created: 
                 | {{item.created}}
             .info
-                b Path: 
-                | {{item.path}}
+                b Uploaded: 
+                | {{item.uploaded}}
+            .info(ng-show="item.mime_type!=''")
+                b MIME-Type: 
+                | {{item.mime_type}}
             .info
                 b Category: 
                 | {{item.category}}
 
+        .settings-container.image
+            h4 Choose an image from you drive
+            form.form-inline(role="form")
+                .form-group(ng-class="{'has-error':image_error!=''}")
+                    input.form-control(type="file", 
+                        ng-file-select="onFileSelect($files)")
+                    span.help-block(ng-show="image_error")
+                        | {{image_error}}
+
         .image-container
-            img(ng-src="{{item.path}}")
+            .drop-box(ng-file-drop="onFileSelect($files)", ng-hide="item.path!=''", 
+                ng-file-drag-over-class="drag-over-class")
+                | or drop files here
+            img(ng-src="{{item.path}}", ng-hide="item.path==''")
