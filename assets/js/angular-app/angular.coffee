@@ -71,7 +71,7 @@ app.config [
         # > loads a list of all members of the current room and a maximized chat
         # > window.
         # >
-        # > load RoomCtrl
+        # > load MembersCtrl
         $routeProvider.when "/members",
             templateUrl: "/partials/members.html"
             controller: "MembersCtrl"
@@ -81,7 +81,7 @@ app.config [
         # > loads a list of shared items with interaction possibilities and a
         # > compressed chat window.
         # >
-        # > load RoomCtrl
+        # > load ShareCtrl
         $routeProvider.when "/share",
             templateUrl: "/partials/share.html"
             controller: "ShareCtrl"
@@ -90,7 +90,7 @@ app.config [
         # * <h3>route `/share/screenshot/:id`</h3>
         # > loads a specific shared screenshot by the given id
         # >
-        # > load RoomCtrl
+        # > load ScreenshotCtrl
         $routeProvider.when "/share/screenshot/:id",
             templateUrl: "/partials/items/screenshot.html"
             controller: "ScreenshotCtrl"
@@ -99,16 +99,25 @@ app.config [
         # * <h3>route `/share/note/:id`</h3>
         # > loads a specific shared note by the given id
         # >
-        # > load RoomCtrl
+        # > load NoteCtrl
         $routeProvider.when "/share/note/:id",
             templateUrl: "/partials/items/note.html"
             controller: "NoteCtrl"
 
         # ***
+        # * <h3>route `/share/code`</h3>
+        # > loads an empty code item to edit and share it
+        # >
+        # > load CodeCtrl
+        $routeProvider.when "/share/code",
+            templateUrl: "/partials/items/code.html"
+            controller: "CodeCtrl"
+
+        # ***
         # * <h3>route `/share/code/:id`</h3>
         # > loads a specific shared code by the given id
         # >
-        # > load RoomCtrl
+        # > load CodeCtrl
         $routeProvider.when "/share/code/:id",
             templateUrl: "/partials/items/code.html"
             controller: "CodeCtrl"
@@ -117,7 +126,7 @@ app.config [
         # * <h3>route `/share/shared-screen/:id`</h3>
         # > loads a specific shared screen by the given id
         # >
-        # > load RoomCtrl
+        # > load SharedScreenCtrl
         $routeProvider.when "/share/shared-screen/:id",
             templateUrl: "/partials/items/shared-screen.html"
             controller: "SharedScreenCtrl"
@@ -126,7 +135,7 @@ app.config [
         # * <h3>route `/share/shared-webcam/:id`</h3>
         # > loads a specific shared webcam by the given id
         # >
-        # > load RoomCtrl
+        # > load SharedWebcamCtrl
         $routeProvider.when "/share/shared-webcam/:id",
             templateUrl: "/partials/items/shared-webcam.html"
             controller: "SharedWebcamCtrl"

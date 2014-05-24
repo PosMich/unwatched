@@ -39,8 +39,8 @@ app.controller "SpacelabCtrl", ->
 # * <h3>Member Controller</h3>
 # >
 app.controller "MembersCtrl", [
-    "$scope", "ChatStateService"
-    ($scope, ChatStateService) ->
+    "$scope", "ChatStateService", "LayoutService"
+    ($scope, ChatStateService, LayoutService) ->
         $scope.members = []
 
         $scope.$watch (->
@@ -62,33 +62,43 @@ app.controller "MembersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "ChatStateService", "SharedItemsService"
-    ($scope, ChatStateService, SharedItemsService) ->
+    "$scope", "ChatStateService", "SharedItemsService", "LayoutService"
+    ($scope, ChatStateService, SharedItemsService, LayoutService) ->
         $scope.shared_items = []
+
         $scope.$watch (->
             return ChatStateService.chat_state
         ), ((new_state, old_state) ->
             $scope.chat_state = new_state
         ), true
 
+        $scope.$watch (->
+            return LayoutService.layout
+        ), ((layout) ->
+            $scope.controls.layout = layout
+        ), true
+
         $scope.controls = {}
-        $scope.controls.layout = "layout-icons"
         $scope.controls.sorting = {}
         $scope.controls.sorting.state = "name"
         $scope.controls.sorting.ascending = false
+        $scope.controls.layout = LayoutService.layout
 
         $scope.shared_items = SharedItemsService.getItems()
 
         $scope.setSortingState = (state) ->
             if $scope.controls.sorting.state is state
-                scope.controls.sorting.ascending =
+                $scope.controls.sorting.ascending =
                     !$scope.controls.sorting.ascending
             else
                 $scope.controls.sorting.ascending = false
                 $scope.controls.sorting.state = state
 
         $scope.delete = (item_id) ->
-            SharedItemsService.deleteItem(item_id)
+            SharedItemsService.delete(item_id)
+
+        $scope.setLayout = (layout) ->
+            LayoutService.setLayout(layout)
 
 ]
 
@@ -99,7 +109,7 @@ app.controller "ScreenshotCtrl", [
         $scope.item = {}
 
         if $routeParams.id
-            $scope.item = SharedItemsService.getItem($routeParams.id)
+            $scope.item = SharedItemsService.get($routeParams.id)
         else
             $scope.error = "No such item is shared in your current room."
 ]
@@ -114,80 +124,126 @@ app.controller "NoteCtrl", [
 ]
 
 app.controller "CodeCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "ChatStateService"
-    ($scope, $routeParams, SharedItemsService, ChatStateService) ->
+    "$scope", "$routeParams", "SharedItemsService", "ChatStateService", 
+    "available_extensions", "font_sizes", "ace_themes", "$location",
+    "AceSettingsService"
+    ($scope, $routeParams, SharedItemsService, ChatStateService, 
+        available_extensions, font_sizes, ace_themes, $location, 
+        AceSettingsService) ->
 
-        if $routeParams.id
+        # init ace editor
+        $scope.editor = ace.edit("editor")
+        $scope.editor.getSession().setUseWorker(false)
+        $scope.editor.session.setNewLineMode("unix")
 
-            $scope.containerResize = ->
-                $scope.editor.resize()
+        # init settings for ace editor
+        $scope.settings = {}
 
-            $scope.setEditorExtension = (value) ->
-                ace_ext = value
-                ace_ext = "javascript" if value is "js"
-                ace_ext = "ruby" if value is "rb"
-                ace_ext = "python" if value is "py"
-                $scope.editor.getSession().setMode("ace/mode/" + ace_ext)
+        # get available setting options (constants)
+        $scope.settings.available_extensions = available_extensions
+        $scope.settings.available_font_sizes = font_sizes
+        $scope.settings.available_themes = ace_themes
 
-            $scope.setEditorFontSize = (value) ->
-                $scope.editor.setFontSize(value)
-                return
+        # helper functions
+        $scope.containerResize = ->
+            $scope.editor.resize()
 
-            getExtensionId = (value) ->
-                extension = {}
-                for i of $scope.settings.available_extensions
-                    extension = $scope.settings.available_extensions[i]
-                    if value is extension.value
-                        return i
+        $scope.setEditorExtension = (extension) ->
+            return if extension is ""
+            ace_ext = extension
+            ace_ext = "javascript" if extension is "js"
+            ace_ext = "ruby" if extension is "rb"
+            ace_ext = "python" if extension is "py"
+            $scope.editor.getSession().setMode("ace/mode/" + ace_ext)
 
-            $scope.settings = {}
+        $scope.setEditorFontSize = (font_size) ->
+            $scope.editor.setFontSize(font_size)
+            return
 
-            $scope.settings.available_extensions = [
-                { value: "", name: "Choose language" }
-                { value: "html", name: "HTML" }
-                { value: "css", name: "CSS" }
-                { value: "js", name: "JavaScript" }
-                { value: "java", name: "Java" }
-                { value: "rb", name: "Ruby" }
-                { value: "py", name: "Python" }
-            ]
+        $scope.setEditorTheme = (theme) ->
+            $scope.editor.setTheme("ace/theme/" + theme)
+            return
 
-            $scope.settings.available_font_sizes = [
-                { value: 12, name: "12px"}
-                { value: 14, name: "14px"}
-                { value: 16, name: "16px"}
-                { value: 18, name: "18px"}
-                { value: 20, name: "20px"}
-            ]
+        $scope.getExtensionId = (value) ->
+            extension = {}
+            for i of $scope.settings.available_extensions
+                extension = $scope.settings.available_extensions[i]
+                if value is extension.value
+                    return i
 
-            $scope.item = SharedItemsService.getItem($routeParams.id)
+        $scope.getThumbnail = ->
+            thumbnail = $scope.editor.getSession().doc.getValue()
+            # thumbnail = thumbnail.replace(/\s/g, '&nbsp;')
+            # thumbnail = thumbnail.replace("<", "&lt;")
+            # thumbnail = thumbnail.replace(/\n/g, "<br />")
+            thumbnail
 
-            $scope.editor = ace.edit("editor")
-            $scope.editor.getSession().setUseWorker(false)
-            $scope.editor.setTheme("ace/theme/monokai")
-            $scope.editor.setValue($scope.item.content)
+        if !$routeParams.id?
+            # create new code item
+            $scope.item = SharedItemsService.create("code")
 
-            extension_id = getExtensionId( $scope.item.extension )
-            $scope.settings.extension = 
-                $scope.settings.available_extensions[extension_id]
-            $scope.settings.font_size = $scope.settings.available_font_sizes[0]
-
-            $scope.setEditorExtension( $scope.settings.extension.value )
-            $scope.setEditorFontSize( $scope.settings.font_size.value )
-
-            $scope.$watch "settings.extension", (option, old_option) ->
-                if option.value is ""
-                    $scope.settings.extension = old_option
-                    return
-                $scope.setEditorExtension( option.value )    
-
-
-            $scope.$watch "settings.font_size", (option) ->
-                $scope.setEditorFontSize(option.value)
-                
         else
-            $scope.id = "No ID :("
+            # get shared item by given id
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
 
+            $scope.item_name = $scope.item.name
+
+            # set init value of code and clear predefined selection
+            $scope.editor.setValue($scope.item.content)
+            $scope.editor.clearSelection()
+
+        # for inline editing
+        $scope.disabled = true
+
+        # set init coding language, font size and theme
+        extension_id = $scope.getExtensionId( $scope.item.extension )
+
+        $scope.settings.extension =
+            $scope.settings.available_extensions[extension_id]
+        $scope.settings.font_size = AceSettingsService.font_size
+        $scope.settings.theme = AceSettingsService.theme
+
+        $scope.setEditorExtension( $scope.settings.extension.value )
+        $scope.setEditorFontSize( $scope.settings.font_size.value )
+        $scope.setEditorTheme( $scope.settings.theme.value )
+
+        # observe 'change' event
+        # TODO: implement change emitter to other viewers
+        $scope.editor.on 'change', (e) ->
+            $scope.item.content = $scope.editor.getSession().getValue()
+            $scope.item.thumbnail = $scope.getThumbnail()
+
+        # watch changes on coding language and update editor
+        $scope.$watch "settings.extension", (option, old_option) ->
+            if option.value is ""
+                $scope.settings.extension = old_option
+                return
+            $scope.setEditorExtension( option.value )
+            $scope.item.extension = option.extension
+            return
+
+        # watch changes on font size and update editor
+        $scope.$watch "settings.font_size", (option) ->
+            AceSettingsService.setFontSize(option)
+            $scope.setEditorFontSize(option.value)
+
+        # watch changes on theme and update editor
+        $scope.$watch "settings.theme", (option) ->
+            AceSettingsService.setTheme(option)
+            $scope.setEditorTheme(option.value)
+
+        $scope.$watch (->
+            return AceSettingsService.font_size
+        ), ((font_size) ->
+            $scope.settings.font_size = font_size
+        ), true
+
+        $scope.$watch (->
+            return AceSettingsService.theme
+        ), ((theme) ->
+            $scope.settings.theme = theme
+        ), true
 
 ]
 
@@ -330,8 +386,23 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
-            "(\"Helloworld\")<br/>}"
+        thumbnail: ".newspaper {<br/>" +
+            "&nbsp&nbsp&nbsp&nbsp-webkit-column-count:3; /* Chrome, Safari, " +
+                "Opera */"
+        content: '.newspaper {\n' +
+            '\t-webkit-column-count:3; /* Chrome, Safari, Opera */\n' +
+            '\t-moz-column-count:3; /* Firefox */\n' +
+            '\tcolumn-count:3;\n' +
+            '\n\n' +
+            '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */\n' +
+            '\t-moz-column-gap:40px; /* Firefox */\n' +
+            '\tcolumn-gap:40px;\n' +
+            '\n\n' +
+            '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari, Ope' +
+                'ra */\n' +
+            '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */\n' +
+            '\tcolumn-rule:4px outset #ff00ff;\n' +
+            '}'
         path: "/future/path/to/file"
         extension: "css"
         templateUrl: "/partials/items/thumbnails/code.html"
@@ -343,8 +414,18 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
-            "(\"Helloworld\")<br/>}"
+        thumbnail: "import java.io.IOException<br/>" +
+            "import java.util.Map<br/><br/>" +
+            "public class MyFirstJavaProgram {<br/><br/>" +
+            "&nbsp&nbsp&nbsp&nbsp public static void main(String[] args){<br/>"
+
+        content: 'import java.io.IOException\n' +
+            'import java.util.Map\n\n' +
+            'public class MyFirstJavaProgram {\n\n' +
+                '\tpublic static void main(String[] args) {\n' +
+                   '\t\tSystem.out.println("Hello World");\n' +
+                '\t}\n' +
+            '}\n'
         path: "/future/path/to/file"
         extension: "java"
         templateUrl: "/partials/items/thumbnails/code.html"
@@ -356,8 +437,16 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
-            "(\"Helloworld\")<br/>}"
+        thumbnail: "var x = myFunction(4, 3) // Function is called,<br/><br/>" +
+            "function myFunction(a, b) {<br/>" +
+            "&nbsp&nbsp&nbsp&nbspreturn a * b; // Fucntion returns the " +
+            "product of a and b <br/>" +
+            "}"
+        content: 'var x = myFunction(4, 3); // Function is called, return val' +
+            'ue will end up in x\n\n' +
+            'function myFunction(a, b) {\n' +
+            '\treturn a * b; // Function returns the product of a and b\n' +
+            '}'
         path: "/future/path/to/file"
         extension: "js"
         templateUrl: "/partials/items/thumbnails/code.html"
@@ -369,10 +458,10 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "var dummy = function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.l"+
-            "og(\"Helloworld\")<br/>}"
+        thumbnail: "&lt;!doctype html><br/>&nbsp&nbsp&nbsp&nbsp &lt;html " +
+            "lang=\"en\">"
         content: 
-            '<!doctype html>\n' +
+            '!doctype html>\n' +
                 '<html lang="en">\n' +
                     '\t<head>\n' +
                         '\t\t<meta charset="utf-8">\n' +
@@ -398,8 +487,16 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
-            "(\"Helloworld\")<br/>}"
+        thumbnail: "testparents, babies = (1, 1)<br/>" +
+            "while babies &lt; 100:<br/>" +
+            "&nbsp&nbsp&nbsp&nbsp print 'This generation has {0} babies'." +
+            "format(babies)<br/>" +
+            "&nbsp&nbsp&nbsp&nbsp parents, babies = (babies, parents + " +
+            "babies)'<br/>"
+        content: "parents, babies = (1, 1)\n\n" +
+            "while babies < 100:\n" +
+            "\tprint 'This generation has {0} babies'.format(babies)\n" +
+            "\tparents, babies = (babies, parents + babies)'\n"
         path: "/future/path/to/file"
         extension: "py"
         templateUrl: "/partials/items/thumbnails/code.html"
@@ -411,8 +508,18 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "vardummy=function() {<br/>&nbsp&nbsp&nbsp&nbspconsole.log"+
-            "(\"Helloworld\")<br/>}"
+        thumbnail: "for j in 1..5 do<br/>" + 
+            "&nbsp&nbsp&nbsp&nbsp for i in 1..5 do<br/>" +
+            "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp print i, \"&nbsp\"<br/>" +
+            "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp break if i == 2<br/>" +
+            "&nbsp&nbsp&nbsp&nbsp end<br/>" +
+            "end"
+        content: 'for j in 1..5 do\n' + 
+            '\tfor i in 1..5 do\n' + 
+            '\t\tprint i,  " "\n' +
+            '\t\tbreak if i == 2\n' +
+            '\tend\n' +
+            'end'
         path: "/future/path/to/file"
         extension: "rb"
         templateUrl: "/partials/items/thumbnails/code.html"

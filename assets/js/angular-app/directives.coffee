@@ -222,13 +222,31 @@ app.directive "resizable", [
 
             scope.$watch ->
                 ChatStateService.chat_state
-            , ->
+            , (state) ->
                 window.setTimeout(( ->
                     width = elem.parent().width()
                     if elem.width() > width
                         elem.width width
+                    else if state is 'expanded'
+                        elem.width '100%'
+                    else if state isnt 'expanded'
+                        elem.width '60%'
                     elem.resizable('option', 'maxWidth', width)
                 ), 0)
 
 ]
+
+app.directive "inlineEdit", ->
+    link: (scope, element, attrs) ->
+        element.find("input").bind "blur", ->
+            if element.find("input").val().length is 0
+                scope.item_name = scope.item.name
+            else
+                scope.item.name = scope.item_name
+            scope.disabled = true
+            scope.$apply()
+        element.bind "dblclick", ->
+            scope.disabled = false
+            scope.$apply()
+            element.find("input").focus()
 

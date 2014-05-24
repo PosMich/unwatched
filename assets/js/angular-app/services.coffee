@@ -264,28 +264,149 @@ app.service "ChatStateService", ->
 
     return
 
-app.service "SharedItemsService", ->
+app.service "LayoutService", ->
 
-    @items = []
+    @layout = "layout-icons"
 
-    getItemIndex = (id) =>
-        item = {}
-        for i of @items
-            item = @items[i]
-            if item.id is parseInt(id)
-                return i
-
-    @initItems = (items_arr) ->
-        @items = items_arr
-
-    @getItems = ->
-        @items
-
-    @getItem = (id) -> 
-        @items[ getItemIndex(id) ]
-
-    @deleteItem = (id) ->
-        @items.splice( getItemIndex(id), 1 )
+    @setLayout = (layout) ->
+        @layout = layout
 
     return
 
+app.service "AceSettingsService", [
+    "font_sizes", "ace_themes"
+    (font_sizes, ace_themes) ->
+
+        @font_size = font_sizes[0]
+        @theme = ace_themes[0]
+
+        @setFontSize = (font_size) ->
+            @font_size = font_size
+
+        @setTheme = (theme) ->
+            @theme = theme
+
+
+        return
+]
+
+app.service "SharedItemsService", [
+    "item_template_code", "dummy_authors", "$filter", "dummy_code_names"
+    (item_template_code, dummy_authors, $filter, dummy_code_names) ->
+
+        @items = []
+
+        getItemIndex = (id) =>
+            item = {}
+            for i of @items
+                item = @items[i]
+                if item.id is parseInt(id)
+                    return i
+
+        getFirstFreeId = =>
+            ids = []
+            freeId = 0
+            for i of @items
+                ids.push @items[i].id
+
+            while true
+                if ids.indexOf(freeId) isnt -1
+                    freeId++
+                else
+                    return freeId
+
+        @initItems = (items_arr) ->
+            @items = items_arr
+
+        @getItems = ->
+            @items
+
+        @get = (id) -> 
+            @items[ getItemIndex(id) ]
+
+        @delete = (id) ->
+            @items.splice( getItemIndex(id), 1 )
+
+
+        @create = ->
+            item = item_template_code
+            item.id = getFirstFreeId()
+
+            name_id = Math.floor(Math.random() * dummy_code_names.length)
+            item.name = dummy_code_names[name_id]
+
+            author_id = Math.floor(Math.random() * dummy_authors.length)
+            item.author = dummy_authors[author_id]
+
+            item.created = $filter("date")(new Date(), "dd.MM.yyyy hh:mm")
+
+            @items.push item
+
+            return item
+
+        return
+        
+]
+
+app.constant "available_extensions", [
+    { value: "", name: "Choose language", extension: "" }
+    { value: "html", name: "HTML", extension: "html" }
+    { value: "css", name: "CSS", extension: "css" }
+    { value: "js", name: "JavaScript", extension: "js" }
+    { value: "java", name: "Java", extension: "java" }
+    { value: "rb", name: "Ruby", extension: "rb" }
+    { value: "py", name: "Python", extension: "py" }
+]
+
+app.constant "font_sizes", [
+    { value: 12, name: "12px"}
+    { value: 14, name: "14px"}
+    { value: 16, name: "16px"}
+    { value: 18, name: "18px"}
+    { value: 20, name: "20px"}
+]
+
+app.constant "ace_themes", [
+    { value: "monokai", name: "Monokai"}
+    { value: "github", name: "Github"}
+    { value: "ambiance", name: "Ambiance"}
+    { value: "mono_industrial", name: "Mono Industrial"}
+    { value: "terminal", name: "Terminal"}
+]
+
+app.constant "dummy_authors", [
+    "Antoinette Dean"
+    "Rex Vargas"
+    "Pearl Carr"
+    "Clark Miller"
+    "Clinton Richardson"
+    "Donna Norman"
+    "Laurie Bowen"
+    "Kristi Saunders"
+    "Amanda Swanson"
+    "Brandy Glover"
+]
+
+app.constant "dummy_code_names", [
+    "main"
+    "script"
+    "style"
+    "index"
+    "spec"
+    "template"
+    "code"
+]
+
+app.constant "item_template_code", {
+    id: 0
+    name: ""
+    size: Math.floor((Math.random()*1024*1024)+400)
+    author: ""
+    created: ""
+    category: "code"
+    thumbnail: ""
+    content: ""
+    path: ""
+    extension: ""
+    templateUrl: "/partials/items/thumbnails/code.html"
+}
