@@ -1,30 +1,116 @@
-<!DOCTYPE html><html lang="en"><head><title>modules/signaling</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="modules/signaling"><meta name="groc-project-path" content="modules/signaling.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">modules/signaling.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nv">WebSocketServer = </span><span class="nx">require</span><span class="p">(</span><span class="s">&quot;ws&quot;</span><span class="p">).</span><span class="nx">Server</span>
+<!DOCTYPE html><html lang="en"><head><title>modules/signaling</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="modules/signaling"><meta name="groc-project-path" content="modules/signaling.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">modules/signaling.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nv">crypto = </span><span class="nx">require</span> <span class="s">&quot;crypto&quot;</span>
+<span class="nv">WebSocketServer = </span><span class="nx">require</span><span class="p">(</span><span class="s">&quot;ws&quot;</span><span class="p">).</span><span class="nx">Server</span>
 <span class="nv">logger = </span><span class="nx">require</span> <span class="s">&quot;./logger&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>WebSocket stuff
 </code></pre></div></div><div class="code"><div class="wrapper"><span class="nv">roomList = </span><span class="p">[]</span>
 
 <span class="k">class</span> <span class="nx">Room</span>
-    <span class="nv">constructor: </span><span class="nf">(@name, @ws) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>new Room 
-new SingleRoom
-connect to Room</p></div></div><div class="code"><div class="wrapper"><span class="nv">exports.connect = </span><span class="nf">(server) -&gt;</span>
-    <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;should work&quot;</span>
+    <span class="nv">constructor: </span><span class="nf">(@name, @ws) -&gt;</span>
+
+
+<span class="nv">exports.connect = </span><span class="nf">(server) -&gt;</span>
+    <span class="nv">clientId = </span><span class="mi">0</span>
 
     <span class="nv">wss = </span><span class="k">new</span> <span class="nx">WebSocketServer</span><span class="p">(</span> <span class="nv">server: </span><span class="nx">server</span> <span class="p">)</span>
 
+    <span class="nv">wss.broadcast = </span><span class="nf">(data) -&gt;</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="k">of</span> <span class="nx">@clients</span>
+            <span class="nx">@clients</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">send</span> <span class="nx">data</span>
+        <span class="k">return</span>
+
     <span class="nx">wss</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;connection&quot;</span><span class="p">,</span> <span class="nf">(ws) -&gt;</span>
-        <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;new ws connection&quot;</span>
+        <span class="nv">exists = </span><span class="kc">true</span>
+        <span class="k">while</span> <span class="nx">exists</span>
+            <span class="nv">exists = </span><span class="kc">false</span>
+            <span class="nv">id = </span><span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="nx">toString</span> <span class="s">&quot;hex&quot;</span>
+            <span class="k">for</span> <span class="nx">client</span> <span class="k">in</span> <span class="nx">wss</span><span class="p">.</span><span class="nx">clients</span>
+                <span class="k">if</span> <span class="nx">client</span><span class="p">.</span><span class="nx">clientId</span><span class="o">?</span> <span class="o">is</span> <span class="nx">id</span>
+                    <span class="nx">exists</span> <span class="kc">true</span>
+            <span class="k">if</span> <span class="nx">exists</span> <span class="o">is</span> <span class="kc">false</span>
+                <span class="vi">@clientId = </span><span class="nx">id</span>
+            
+        <span class="vi">@roomId = </span><span class="kc">null</span>
+        <span class="vi">@isMaster = </span><span class="kc">null</span>
+        <span class="vi">@master = </span><span class="kc">null</span>
+        <span class="vi">@peers = </span><span class="p">[]</span>
+
+        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;new ws connection&quot;</span>
+
         <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;message&quot;</span><span class="p">,</span> <span class="nf">(msg) -&gt;</span>
             <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&#39;ws received: &#39;</span><span class="p">,</span> <span class="nx">msg</span>
-
             <span class="k">try</span>
-                <span class="nv">msg = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">msg</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>switch msg.type
-    case "newRoom":
-    case "newSingleRoom":
-    case "connect":
-    case "offer":
-    case "answer":
-    default ""</p></div></div><div class="code"><div class="wrapper">            <span class="k">catch</span> <span class="nx">e</span>
+                <span class="nv">originalMsg = </span><span class="nx">msg</span>
+                <span class="nv">msg = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">msg</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">msg</span>
+                
+                
+                <span class="k">if</span> <span class="o">!</span><span class="nx">msg</span><span class="p">.</span><span class="nx">type</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s">&quot;msg.type not defined&quot;</span><span class="p">)</span>
+
+                <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;msg&quot;</span><span class="p">,</span> <span class="nx">msg</span>
+
+                <span class="k">switch</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">type</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>master creates new room</p></div></div><div class="code"><div class="wrapper">                    <span class="k">when</span> <span class="s">&quot;new&quot;</span> 
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws: got new msg&quot;</span>
+
+                        <span class="nv">exists = </span><span class="kc">true</span>
+                        <span class="nv">id = </span><span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="nx">toString</span> <span class="s">&quot;hex&quot;</span>
+                        
+                        <span class="k">while</span> <span class="nx">exists</span>
+                            <span class="nv">exists = </span><span class="kc">false</span>
+                            
+                            <span class="k">for</span> <span class="nx">client</span> <span class="k">in</span> <span class="nx">wss</span><span class="p">.</span><span class="nx">clients</span>
+                                <span class="k">if</span> <span class="nx">client</span><span class="p">.</span><span class="nx">roomId</span><span class="o">?</span> <span class="o">is</span> <span class="nx">id</span>
+                                    <span class="nv">exists = </span><span class="kc">true</span>
+                                    <span class="nv">id = </span><span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="nx">toString</span> <span class="s">&quot;hex&quot;</span>
+                                    <span class="k">break</span>   
+                            <span class="k">if</span> <span class="nx">exists</span> <span class="o">is</span> <span class="kc">false</span>
+                                <span class="k">break</span>
+                        
+                        <span class="vi">@roomId = </span><span class="nx">id</span>
+                        <span class="vi">@isMaster = </span><span class="kc">true</span>
+                        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>tell the master his roomId</p></div></div><div class="code"><div class="wrapper">                        <span class="nx">@send</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span> 
+                            <span class="nv">type: </span><span class="s">&quot;id&quot;</span>
+                            <span class="nv">value: </span><span class="nx">@roomId</span>
+                        <span class="p">)</span>
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;created new room&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>client connects to master (=room)</p></div></div><div class="code"><div class="wrapper">                    <span class="k">when</span> <span class="s">&quot;connect&quot;</span> 
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws: got connect msg&quot;</span>
+                        <span class="k">for</span> <span class="nx">client</span> <span class="k">in</span> <span class="nx">wss</span><span class="p">.</span><span class="nx">clients</span>
+                            <span class="k">if</span> <span class="nx">client</span><span class="p">.</span><span class="nx">isMaster</span> <span class="o">and</span> <span class="nx">client</span><span class="p">.</span><span class="nx">roomId</span> <span class="o">is</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">Id</span>
+                                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;room found&quot;</span>
+                                <span class="vi">@master = </span><span class="nx">client</span>
+                                <span class="vi">@isMaster = </span><span class="kc">false</span>
+                                <span class="vi">@roomId = </span><span class="nx">client</span><span class="p">.</span><span class="nx">roomId</span>
+                                <span class="nx">client</span><span class="p">.</span><span class="nx">peers</span><span class="p">.</span><span class="nx">push</span> <span class="nx">@</span>
+                                <span class="nx">client</span><span class="p">.</span><span class="nx">send</span> <span class="s">&quot;connected&quot;</span>
+                        <span class="nx">@send</span> <span class="s">&quot;connected&quot;</span>
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;sent connect msg&quot;</span>
+                    <span class="k">when</span> <span class="s">&quot;offer&quot;</span> <span class="c1"># client --&gt; master                                add Client id?</span>
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws: got offer msg&quot;</span>
+                        <span class="k">unless</span> <span class="nx">@isMaster</span> <span class="o">and</span> <span class="nx">@master</span>
+                            <span class="nv">msg.clientId = </span><span class="nx">@clientId</span>
+                            <span class="nx">@master</span><span class="p">.</span><span class="nx">send</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span> <span class="nx">msg</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>master --> peer                                           &lt;-- hm... peer id or what? &lt;&lt;&lt;======</p></div></div><div class="code"><div class="wrapper">                    <span class="k">when</span> <span class="s">&quot;answer&quot;</span> 
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws: got answer msg&quot;</span>
+                        <span class="k">if</span> <span class="nx">@isMaster</span> <span class="o">and</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">clientId</span>
+                            <span class="k">for</span> <span class="nx">peer</span> <span class="k">in</span> <span class="nx">@peers</span>
+                                <span class="k">if</span> <span class="nx">peer</span><span class="p">.</span><span class="nx">clientId</span> <span class="o">is</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">clientId</span>
+                                    <span class="nx">peer</span><span class="p">.</span><span class="nx">send</span> <span class="nx">originalMsg</span>
+                        
+                    <span class="k">when</span> <span class="s">&quot;candidate&quot;</span> <span class="c1"># send to other host</span>
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws: got candidate msg&quot;</span>
+                        <span class="nv">msg.clientId = </span><span class="nx">@clientId</span>
+                        <span class="k">if</span> <span class="nx">@isMaster</span> <span class="o">and</span> <span class="nx">@peers</span>
+                            <span class="k">for</span> <span class="nx">peer</span> <span class="k">in</span> <span class="nx">@peers</span>
+                                <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">peerId</span> <span class="o">is</span> <span class="nx">peer</span><span class="p">.</span><span class="nx">clientId</span>
+                                    <span class="nx">peer</span><span class="p">.</span><span class="nx">send</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+                                    <span class="k">break</span>
+                        <span class="k">else</span> <span class="k">if</span> <span class="nx">@master</span>
+                            <span class="nx">@master</span><span class="p">.</span><span class="nx">send</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+                    <span class="k">else</span> 
+                        <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;ws: unknown msg&quot;</span>
+                
+            <span class="k">catch</span> <span class="nx">e</span>
                 <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span> <span class="nx">e</span>
+                <span class="nx">logger</span><span class="p">.</span><span class="nx">error</span> <span class="s">&quot;wasn&#39;t able to decode msg&quot;</span>
                 <span class="c1">#ws.close()</span>
 
         <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;close&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-            <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws connection closed&quot;</span></div></div></div></div></body></html>
+            <span class="c1">#for room in roomList</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if room.ws is </p></div></div><div class="code"><div class="wrapper">            <span class="nx">logger</span><span class="p">.</span><span class="nx">info</span> <span class="s">&quot;ws connection closed&quot;</span></div></div></div></div></body></html>

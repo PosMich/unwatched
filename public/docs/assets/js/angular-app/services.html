@@ -3,34 +3,287 @@
 <span class="k">class</span> <span class="nx">Client</span>
     <span class="nv">name: </span><span class="kc">null</span>
     <span class="nv">eMail: </span><span class="kc">null</span>
-    <span class="nv">hash: </span><span class="kc">null</span>
+    <span class="nv">id: </span><span class="kc">null</span>
     <span class="nv">connections: </span><span class="p">[]</span>
     <span class="nv">constructor: </span><span class="nf">(@name, @email) -&gt;</span>
+    <span class="nv">get: </span><span class="nf">-&gt;</span>
+
+<span class="k">class</span> <span class="nx">Signaller</span> 
+    <span class="vi">@channel = </span><span class="kc">null</span>
+    <span class="vi">@sendBuffer = </span><span class="p">[]</span>
+    <span class="nv">constructor: </span><span class="nf">(@channel) -&gt;</span>
+        <span class="vi">@channel.onopen    = </span><span class="nx">@onOpen</span>
+        <span class="vi">@channel.onerror   = </span><span class="nx">@onError</span>
+        <span class="vi">@channel.onclose   = </span><span class="nx">@onClose</span>
+        <span class="vi">@channel.onmessage = </span><span class="nx">@onMessage</span>
+    <span class="nv">createNew: </span><span class="nf">(type) -&gt;</span>
+        <span class="nv">type: </span><span class="s">&quot;new&quot;</span>
+        <span class="nv">newType: </span><span class="s">&quot;share&quot;</span>
+        <span class="nv">id: </span><span class="s">&quot;&quot;</span>
+    <span class="nv">onOpen: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Signalling Channel opened&quot;</span>
+    <span class="nv">onError: </span><span class="nf">(error) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Signalling Channel: error&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">error</span>
+    <span class="nv">onClose: </span><span class="nf">-&gt;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Signalling Channel closed&quot;</span>
+    <span class="nv">onMessage: </span><span class="nf">(msg) -&gt;</span>
+    <span class="nv">send: </span><span class="nf">(msg)-&gt;</span>
+
+
 
 
 <span class="k">class</span> <span class="nx">RTConnection</span>
-    <span class="nv">servers:</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">isOfferer = </span><span class="kc">false</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">isStarted = </span><span class="kc">false</span>
+
+    <span class="nx">@</span><span class="o">::</span><span class="nv">pcConfig =</span>
         <span class="nv">iceServers: </span><span class="p">[</span>
             <span class="nv">url: </span><span class="s">&quot;stun:stun.l.google.com:19302&quot;</span>
         <span class="p">]</span>
-        <span class="nv">connectionServer: </span><span class="s">&quot;localhost&quot;</span>
-    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
-    <span class="nv">createOffer: </span><span class="nf">-&gt;</span>
-    <span class="nv">createAnswer: </span><span class="nf">-&gt;</span>
-    <span class="nv">onIce: </span><span class="nf">-&gt;</span>
-    <span class="nv">addReliableChannel: </span><span class="nf">-&gt;</span>
-    <span class="nv">addUnreliableChannel: </span><span class="nf">-&gt;</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">pcConstraints = </span>
+        <span class="nv">optional: </span><span class="p">[</span>
+            <span class="p">{</span> <span class="nv">DtlsSrtpKeyAgreement: </span><span class="kc">true</span> <span class="p">}</span>
+            <span class="p">{</span> <span class="nv">RtpDataChannels: </span><span class="kc">true</span> <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">sdpConstraints = </span>
+        <span class="nv">mandatory:</span>
+            <span class="nv">OfferToReceiveAudio: </span><span class="kc">true</span>
+            <span class="nv">OfferToReceiveVideo: </span><span class="kc">true</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">dataChannelOptions = </span>
+        <span class="nv">ordered: </span><span class="kc">false</span>
+        <span class="nv">maxRetransmitTime: </span><span class="mi">3000</span>
+        <span class="c1">#maxRetransmits: </span>
+        <span class="c1">#protocol:</span>
+        <span class="c1">#negotiated:</span>
+        <span class="c1">#id:</span>
+        
+    <span class="nx">@</span><span class="o">::</span><span class="nv">peerConnection = </span><span class="kc">null</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">roomId = </span><span class="kc">null</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">dataChannel = </span><span class="kc">null</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">signalChannel = </span><span class="kc">null</span>
 
+    <span class="nv">constructor: </span><span class="nf">(@signalChannel, isOffererOrRoomId) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection constructor&quot;</span> 
+        <span class="k">if</span> <span class="nx">isOffererOrRoomId</span> <span class="o">is</span> <span class="kc">true</span>
+            <span class="vi">@isOfferer = </span><span class="kc">true</span>
+        <span class="k">else</span>
+            <span class="vi">@roomId = </span><span class="nx">isOffererOrRoomId</span>
+        
+        <span class="vi">@signalChannel.onmessage = </span><span class="nx">@handleSignalChannelMessage</span>
+        <span class="k">if</span> <span class="nx">@isOfferer</span>
+            <span class="nx">@createRoom</span><span class="p">()</span>
+        <span class="k">else</span>
+            <span class="nx">@joinRoom</span><span class="p">()</span>
+    <span class="nv">createRoom: </span><span class="nf">-&gt;</span>
+        <span class="k">if</span> <span class="nx">@signalChannelIsReady</span><span class="p">()</span>
+            <span class="nx">@signalChannelSend</span> 
+                <span class="nv">type: </span><span class="s">&quot;new&quot;</span>
+        <span class="k">else</span>
+            <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
+                <span class="nx">@createRoom</span><span class="p">()</span>
+            <span class="p">,</span> <span class="mi">25</span>
+    <span class="nv">joinRoom: </span><span class="nf">-&gt;</span>
+        <span class="k">if</span> <span class="nx">@signalChannelIsReady</span><span class="p">()</span>
+            <span class="nx">@signalChannelSend</span>
+                <span class="nv">type: </span><span class="s">&quot;connect&quot;</span>
+                <span class="nv">id: </span><span class="nx">@roomId</span>
+        <span class="k">else</span>
+            <span class="nx">setTimeout</span> <span class="o">=&gt;</span>
+                <span class="nx">@joinRoom</span><span class="p">()</span>
+            <span class="p">,</span> <span class="mi">25</span>
+    <span class="nv">signalChannelSend: </span><span class="nf">(msg)-&gt;</span>
+        <span class="nx">@signalChannel</span><span class="p">.</span><span class="nx">send</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+    <span class="nv">signalChannelIsReady: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection signalChannelIsReady&quot;</span>
+        <span class="k">return</span> <span class="kc">true</span> <span class="k">if</span> <span class="nx">@signalChannel</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">is</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="kc">false</span>
+    <span class="nv">start: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnectoin start&quot;</span>
+        <span class="k">unless</span> <span class="nx">@isStarted</span> <span class="o">and</span> <span class="nx">@signalChannel</span><span class="p">.</span><span class="nx">isReady</span><span class="p">()</span>
+            <span class="nx">@createConnection</span><span class="p">()</span>
+            <span class="vi">@isStarted = </span><span class="kc">true</span>
+            <span class="nx">@doOffer</span><span class="p">()</span> <span class="k">if</span> <span class="nx">@isOfferer</span>
+    <span class="nv">peerConnectionConnecting: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection peerConnectionConnecting&quot;</span>
+    <span class="nv">peerConnectionOpen: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection peerConnectionOpen&quot;</span>
+    <span class="nv">stop: </span><span class="nf">-&gt;</span>
+        <span class="vi">@isStarted = </span><span class="kc">false</span>
+        <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span>
+        <span class="vi">@peerConnection = </span><span class="kc">null</span>
+    <span class="nv">createConnection: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection startConnection&quot;</span>
+        <span class="k">try</span> 
+            <span class="vi">@peerConnection = </span><span class="k">new</span> <span class="nb">window</span><span class="p">.</span><span class="nx">RTCPeerConnection</span><span class="p">(</span><span class="nx">@pcConfig</span><span class="p">,</span> <span class="nx">@pcConstraints</span><span class="p">)</span>
+            <span class="vi">@peerConnection.onicecandidate = </span><span class="nx">@handleIceCandidate</span>
+        <span class="k">catch</span> <span class="nx">error</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;error creating peerConnection&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span>
 
+        <span class="vi">@peerConnection.onconnecting = </span><span class="nx">@peerConnectionConnecting</span>
+        <span class="vi">@peerConnection.onopen = </span><span class="nx">@peerConnectionOpen</span>
+
+        <span class="vi">@peerConnection.onaddstream = </span><span class="nx">@remoteStreamAdded</span>
+        <span class="vi">@peerConnection.onremovestream = </span><span class="nx">@remoteStreamRemoved</span>
+        
+        <span class="k">if</span> <span class="nx">@isOfferer</span>
+            <span class="nx">@addDataChannel</span><span class="p">()</span>
+        <span class="k">else</span>
+            <span class="vi">@peerConnection.ondatachannel = </span><span class="nx">@gotDataChannel</span>
+
+        <span class="vi">@isStarted = </span><span class="kc">true</span>
+        <span class="k">return</span>
+    <span class="nv">addDataChannel: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection addDataChannel&quot;</span>
+        <span class="k">try</span>
+            <span class="vi">@dataChannel = </span><span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">createDataChannel</span><span class="p">(</span><span class="s">&quot;unwatched&quot;</span><span class="p">,</span> <span class="nx">@dataChannelOptions</span><span class="p">)</span>
+            <span class="vi">@dataChannel.onmessage = </span><span class="nx">@DChandleMessage</span>
+            <span class="vi">@dataChannel.onerror   = </span><span class="nx">@DChandleError</span>
+            <span class="vi">@dataChannel.onopen    = </span><span class="nx">@DChandleOpen</span>
+            <span class="vi">@dataChannel.onclose   = </span><span class="nx">@DChandleClose</span>
+        <span class="k">catch</span> <span class="nx">error</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;error creating Data Channel&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span>
+    <span class="nv">gotDataChannel: </span><span class="nf">(event) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection gotDataChannel&quot;</span>
+        <span class="vi">@dataChannel = </span><span class="nx">event</span><span class="p">.</span><span class="nx">channel</span>
+        <span class="vi">@dataChannel.onmessage = </span><span class="nx">@DChandleMessage</span>
+        <span class="vi">@dataChannel.onerror   = </span><span class="nx">@DChandleError</span>
+        <span class="vi">@dataChannel.onopen    = </span><span class="nx">@DChandleOpen</span>
+        <span class="vi">@dataChannel.onclose   = </span><span class="nx">@DChandleClose</span>
+    <span class="nv">DChandleMessage: </span><span class="nf">(msg)-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;DataChannel message&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+    <span class="nv">DCHandleError: </span><span class="nf">(error)-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;DataChannel Error&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">error</span>
+    <span class="nv">DChandleOpen: </span><span class="nf">-&gt;</span>
+        <span class="vi">@dataChannelReady = </span><span class="kc">true</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;DataChannel opened&quot;</span>
+    <span class="nv">DChandleClose: </span><span class="nf">-&gt;</span>
+        <span class="vi">@dataChannelReady = </span><span class="kc">false</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;DataChannel closed&quot;</span>
+    <span class="nv">handleIceCandidate: </span><span class="nf">(event) =&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection handleIceCandidate&quot;</span>
+        <span class="k">if</span> <span class="nx">event</span><span class="p">.</span><span class="nx">candidate</span>
+            <span class="nx">@signalChannelSend</span>
+                <span class="nv">type: </span><span class="s">&quot;candidate&quot;</span>
+                <span class="nv">label: </span><span class="nx">event</span><span class="p">.</span><span class="nx">candidate</span><span class="p">.</span><span class="nx">sdpMLineIndex</span>
+                <span class="nv">id: </span><span class="nx">event</span><span class="p">.</span><span class="nx">candidate</span><span class="p">.</span><span class="nx">sdpMid</span>
+                <span class="nv">candidate: </span><span class="nx">event</span><span class="p">.</span><span class="nx">candidate</span><span class="p">.</span><span class="nx">candidate</span>
+        <span class="k">else</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;end of candidates&quot;</span>
+    <span class="nv">doOffer: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection startCall&quot;</span>
+        <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">createOffer</span> <span class="nf">(sessionDescription)=&gt;</span> 
+            <span class="nx">@setLocalSdpSend</span><span class="p">(</span><span class="nx">sessionDescription</span><span class="p">,</span> <span class="s">&quot;offer&quot;</span><span class="p">)</span>
+        <span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">@sdpConstraints</span>
+
+    <span class="nv">doAnswer: </span><span class="nf">-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection doAnswer&quot;</span>
+        <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">createAnswer</span> <span class="nf">(sessionDescription) =&gt;</span>
+            <span class="nx">@setLocalSdpSend</span><span class="p">(</span><span class="nx">sessionDescription</span><span class="p">,</span> <span class="s">&quot;answer&quot;</span><span class="p">)</span>
+        <span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">@sdpConstraints</span>
+
+    <span class="nv">setLocalSdpSend: </span><span class="nf">(sessionDescription, type)-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection setLocalSdpSend&quot;</span>
+        <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">setLocalDescription</span> <span class="nx">sessionDescription</span>
+        <span class="nx">@signalChannelSend</span> 
+            <span class="nv">type: </span><span class="nx">type</span>
+            <span class="nv">sdp: </span><span class="nx">sessionDescription</span>
+
+    <span class="nv">handleSignalChannelMessage: </span><span class="nf">(message) =&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTConnection handleSignalChannelMessage&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Received message:&quot;</span><span class="p">,</span> <span class="nx">message</span>
+        
+        <span class="k">if</span> <span class="nx">message</span><span class="p">.</span><span class="nx">type</span> <span class="o">is</span> <span class="s">&quot;offer&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;offer&quot;</span>
+            <span class="nx">@start</span><span class="p">()</span> <span class="k">if</span> <span class="o">not</span> <span class="nx">@isOfferer</span> <span class="o">and</span> <span class="o">not</span> <span class="nx">@isStarted</span>
+            <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">setRemoteDescription</span> <span class="k">new</span> <span class="nx">RTCSessionDescription</span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">sdp</span><span class="p">)</span>
+            <span class="nx">@doAnswer</span><span class="p">()</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">message</span><span class="p">.</span><span class="nx">type</span> <span class="o">is</span> <span class="s">&quot;answer&quot;</span> <span class="o">and</span> <span class="nx">@isStarted</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;answer&quot;</span>
+            <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">setRemoteDescription</span> <span class="k">new</span> <span class="nx">RTCSessionDescription</span><span class="p">(</span><span class="nx">message</span><span class="p">.</span><span class="nx">sdp</span><span class="p">)</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">message</span><span class="p">.</span><span class="nx">type</span> <span class="o">is</span> <span class="s">&quot;candidate&quot;</span> <span class="o">and</span> <span class="nx">@isStarted</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;candidate&quot;</span>
+            <span class="nx">@peerConnection</span><span class="p">.</span><span class="nx">addIceCandidate</span> <span class="k">new</span> <span class="nx">RTCIceCandidate</span><span class="p">(</span>
+                <span class="nv">sdpMLineIndex: </span><span class="nx">message</span><span class="p">.</span><span class="nx">label</span>
+                <span class="nv">candidate: </span><span class="nx">message</span><span class="p">.</span><span class="nx">candidate</span>
+            <span class="p">)</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">message</span><span class="p">.</span><span class="nx">data</span> <span class="o">is</span> <span class="s">&quot;bye&quot;</span> <span class="o">and</span> <span class="nx">@isStarted</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;bye&quot;</span>
+            <span class="nx">@stop</span><span class="p">()</span> 
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">message</span><span class="p">.</span><span class="nx">data</span> <span class="o">is</span> <span class="s">&quot;connected&quot;</span>
+            <span class="nx">@start</span><span class="p">()</span>
+        <span class="k">else</span>
+            <span class="k">try</span>
+                <span class="nv">msg = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">message</span><span class="p">.</span><span class="nx">data</span>
+            <span class="k">catch</span> <span class="nx">e</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;wasn&#39;t able to parse&quot;</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">e</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">message</span>
+            
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">type</span>
+            <span class="k">if</span> <span class="nx">msg</span><span class="p">.</span><span class="nx">type</span> <span class="o">is</span> <span class="s">&quot;id&quot;</span> <span class="o">and</span> <span class="nx">@isOfferer</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set id&quot;</span>
+                <span class="vi">@roomId = </span><span class="nx">msg</span><span class="p">.</span><span class="nx">value</span>
+                <span class="vi">@signalChannelId = </span><span class="nx">msg</span><span class="p">.</span><span class="nx">wsId</span>
+            <span class="k">else</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;got unknown msg&quot;</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">msg</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nv">RTConnection = </span><span class="nx">RTConnection</span>
+<span class="c1">#(new WebSocket(&quot;wss://localhost:3001&quot;))</span>
 
 <span class="k">class</span> <span class="nx">RTCProvider</span>
     <span class="nx">@</span><span class="o">::</span><span class="nv">isMaster   = </span><span class="kc">true</span>
     <span class="nx">@</span><span class="o">::</span><span class="nv">name       = </span><span class="s">&quot;&quot;</span>
     <span class="nx">@</span><span class="o">::</span><span class="nv">clients    = </span><span class="p">[]</span>
     <span class="nx">@</span><span class="o">::</span><span class="nv">moderators = </span><span class="p">[]</span>
-    <span class="nx">@</span><span class="o">::</span><span class="nv">signalServer = </span><span class="s">&quot;wss://localhost&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exposed to .config</p></div></div><div class="code"><div class="wrapper">    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
-    <span class="nv">setSignalServer: </span><span class="nf">(@signalServer) -&gt;</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set Signal Server: &quot;</span> <span class="o">+</span> <span class="nx">signalServer</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">signalServer = </span><span class="s">&quot;wss://localhost:3001&quot;</span> 
+    
+    <span class="nx">@</span><span class="o">::</span><span class="nv">wss          = </span><span class="kc">null</span>
+    <span class="nx">@</span><span class="o">::</span><span class="nv">room         = </span><span class="kc">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>exposed to .config</p></div></div><div class="code"><div class="wrapper">    <span class="nv">constructor: </span><span class="nf">-&gt;</span>
+
+    <span class="nv">setSignalServer: </span><span class="nf">(@signalServer)-&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;set Signal Server: &quot;</span><span class="o">+</span><span class="nx">signalServer</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;RTCPeerConnection:&quot;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">RTCPeerConnection</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;getUserMedia:&quot;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">getUserMedia</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;attachMediaStraem:&quot;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">attachMediaStream</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;reattachMediaStream&quot;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">reattachMediaStream</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;webrtcDetectedBrowser&quot;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">webrtcDetectedBrowser</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;webrtcDetectedVersion&quot;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">webrtcDetectedVersion</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;isWebrtcAble&quot;</span> 
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nb">window</span><span class="p">.</span><span class="nx">isWebrtcAble</span>
+        <span class="k">return</span>
+    <span class="nv">connect: </span><span class="nf">-&gt;</span>
+        <span class="nv">wss = </span><span class="k">new</span> <span class="nx">WebSocket</span> <span class="nx">@signalServer</span>
+        <span class="nv">wss.onopen = </span><span class="nf">-&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;wss open&quot;</span>
+        
+        <span class="nv">wss.onerror = </span><span class="nf">(error) -&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;wss error&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">error</span>
+        <span class="nv">wss.onmessage = </span><span class="nf">(msg) -&gt;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;wss msg received&quot;</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">msg</span><span class="p">)</span>
+
+        <span class="nv">wss.onclose = </span><span class="nf">-&gt;</span>
+        
+    <span class="nv">newRoom: </span><span class="nf">(name) -&gt;</span>
+    <span class="nv">newShare: </span><span class="nf">(type) -&gt;</span>
+
+    <span class="nv">connectToRoom: </span><span class="nf">-&gt;</span>
+
+    <span class="nv">connectToShare: </span><span class="nf">-&gt;</span>
+    
     <span class="nv">setName: </span><span class="nf">(@name) -&gt;</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;inner set Name: &quot;</span> <span class="o">+</span> <span class="nx">name</span>
     <span class="nv">addClients: </span><span class="nf">(name, eMail) -&gt;</span>
@@ -68,7 +321,9 @@
 
 
 <span class="nv">app = </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span> <span class="s">&quot;unwatched.services&quot;</span><span class="p">,</span> <span class="p">[]</span>
+
 <span class="nx">app</span><span class="p">.</span><span class="nx">provider</span> <span class="s">&quot;RTC&quot;</span><span class="p">,</span> <span class="nx">RTCProvider</span>
+
 <span class="nx">app</span><span class="p">.</span><span class="nx">value</span> <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">service</span> <span class="s">&quot;ChatStateService&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>

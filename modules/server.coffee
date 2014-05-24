@@ -4,11 +4,11 @@ http    = require "http"
 https   = require "https"
 fs      = require "fs"
 
-routes    = require "./routes"
-routesAPI = require "./routes.api"
-signaling = require "./signaling"
-logger    = require "./logger"
-config    = require "./userconfig"
+routes     = require "./routes"
+routesAPI  = require "./routes.api"
+signalling = require "./signalling"
+logger     = require "./logger"
+config     = require "./userconfig"
 
 
 process.on "uncaughtException", (err) ->
@@ -60,6 +60,6 @@ app.start = ->
     http.listen config.port.http
     https.listen config.port.https
     
-    signaling.connect https
-    
+    signalling.connect https
+    return
 module.exports = app

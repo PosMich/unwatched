@@ -13,7 +13,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "commentsOnly": true,
           "name": "Markdown"
         },
-        "sourcePath": "/home/calvitium/www/unwatched/README.md",
+        "sourcePath": "/home/ubuser/www/unwatched/README.md",
         "projectPath": "README.md",
         "targetPath": "index",
         "pageTitle": "index",
@@ -279,6 +279,27 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "depth": 2,
           "children": [
             {
+              "type": "file",
+              "data": {
+                "language": {
+                  "nameMatchers": [".coffee", "Cakefile"],
+                  "pygmentsLexer": "coffee-script",
+                  "multiLineComment": ["###*", " *", " ###", "###", "#", "###", "###*", "#", "###"],
+                  "strictMultiLineEnd": false,
+                  "singleLineComment": ["#"],
+                  "ignorePrefix": "}",
+                  "foldPrefix": "^",
+                  "name": "CoffeeScript"
+                },
+                "sourcePath": "/home/ubuser/www/unwatched/assets/js/adapter.coffee",
+                "projectPath": "assets/js/adapter.coffee",
+                "targetPath": "assets/js/adapter",
+                "pageTitle": "assets/js/adapter",
+                "title": "adapter"
+              },
+              "depth": 3,
+              "outline": []
+            }, {
               "type": "folder",
               "data": {
                 "path": "assets/js/angular-app",
@@ -299,7 +320,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/angular.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/angular.coffee",
                     "projectPath": "assets/js/angular-app/angular.coffee",
                     "targetPath": "assets/js/angular-app/angular",
                     "pageTitle": "assets/js/angular-app/angular",
@@ -373,7 +394,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/controllers.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/controllers.coffee",
                     "projectPath": "assets/js/angular-app/controllers.coffee",
                     "targetPath": "assets/js/angular-app/controllers",
                     "pageTitle": "assets/js/angular-app/controllers",
@@ -425,7 +446,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/directives.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/directives.coffee",
                     "projectPath": "assets/js/angular-app/directives.coffee",
                     "targetPath": "assets/js/angular-app/directives",
                     "pageTitle": "assets/js/angular-app/directives",
@@ -456,7 +477,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/filters.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/filters.coffee",
                     "projectPath": "assets/js/angular-app/filters.coffee",
                     "targetPath": "assets/js/angular-app/filters",
                     "pageTitle": "assets/js/angular-app/filters",
@@ -487,7 +508,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                       "foldPrefix": "^",
                       "name": "CoffeeScript"
                     },
-                    "sourcePath": "/home/calvitium/www/unwatched/assets/js/angular-app/services.coffee",
+                    "sourcePath": "/home/ubuser/www/unwatched/assets/js/angular-app/services.coffee",
                     "projectPath": "assets/js/angular-app/services.coffee",
                     "targetPath": "assets/js/angular-app/services",
                     "pageTitle": "assets/js/angular-app/services",
@@ -520,7 +541,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
                   "foldPrefix": "^",
                   "name": "CoffeeScript"
                 },
-                "sourcePath": "/home/calvitium/www/unwatched/assets/js/app.coffee",
+                "sourcePath": "/home/ubuser/www/unwatched/assets/js/app.coffee",
                 "projectPath": "assets/js/app.coffee",
                 "targetPath": "assets/js/app",
                 "pageTitle": "assets/js/app",
@@ -573,7 +594,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/index.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/index.coffee",
             "projectPath": "modules/index.coffee",
             "targetPath": "modules/index",
             "pageTitle": "modules/index",
@@ -594,7 +615,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/logger.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/logger.coffee",
             "projectPath": "modules/logger.coffee",
             "targetPath": "modules/logger",
             "pageTitle": "modules/logger",
@@ -615,7 +636,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/room.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/room.coffee",
             "projectPath": "modules/room.coffee",
             "targetPath": "modules/room",
             "pageTitle": "modules/room",
@@ -636,7 +657,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/routes.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.coffee",
             "projectPath": "modules/routes.coffee",
             "targetPath": "modules/routes",
             "pageTitle": "modules/routes",
@@ -688,7 +709,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/routes.api.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/routes.api.coffee",
             "projectPath": "modules/routes.api.coffee",
             "targetPath": "modules/routes.api",
             "pageTitle": "modules/routes.api",
@@ -740,7 +761,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/server.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/server.coffee",
             "projectPath": "modules/server.coffee",
             "targetPath": "modules/server",
             "pageTitle": "modules/server",
@@ -771,7 +792,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
               "foldPrefix": "^",
               "name": "CoffeeScript"
             },
-            "sourcePath": "/home/calvitium/www/unwatched/modules/signaling.coffee",
+            "sourcePath": "/home/ubuser/www/unwatched/modules/signaling.coffee",
             "projectPath": "modules/signaling.coffee",
             "targetPath": "modules/signaling",
             "pageTitle": "modules/signaling",

@@ -12,7 +12,8 @@
 <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;IndexCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
     <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;RTC&quot;</span>
     <span class="nf">($scope, RTCProvider) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>console.log RTCProvider
-console.log "index ctrl here"</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>$scope.submitCreateRoom = -></p></div></div><div class="code"><div class="wrapper"><span class="p">]</span>
+console.log "index ctrl here"
+$scope.submitCreateRoom = -></p></div></div><div class="code"><div class="wrapper"><span class="p">]</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SpacelabCtrl&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;spacelab ctrl here&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
@@ -51,17 +52,6 @@ console.log "index ctrl here"</p></div></div></div><div class="segment"><div cla
                 <span class="nv">avatar:</span>
                     <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">())</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="s">&quot;/images/avatar.png&quot;</span>
                     <span class="k">else</span> <span class="s">&quot;/images/avatar_inverted.png&quot;</span>
-<span class="p">]</span>
-
-<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ViewInstanceCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-    <span class="s">&quot;$scope&quot;</span>
-    <span class="nf">($scope, viewInstance) -&gt;</span>
-        
-        <span class="nv">$scope.ok = </span><span class="nf">-&gt;</span>
-            <span class="nx">viewInstance</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span>
-
-        <span class="nv">$scope.cancel = </span><span class="nf">-&gt;</span>
-            <span class="nx">viewInstance</span><span class="p">.</span><span class="nx">dismiss</span><span class="p">()</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -71,8 +61,8 @@ console.log "index ctrl here"</p></div></div></div><div class="segment"><div cla
   <p></li>
   </ul></p>
 </blockquote></div></div><div class="code"><div class="wrapper"><span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ShareCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
-    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$modal&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
-    <span class="nf">($scope, $modal, ChatStateService) -&gt;</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;ChatStateService&quot;</span>
+    <span class="nf">($scope, ChatStateService) -&gt;</span>
         <span class="nv">$scope.shared_items = </span><span class="p">[]</span>
 
         <span class="nx">$scope</span><span class="p">.</span><span class="nx">$watch</span> <span class="p">(</span><span class="nf">-&gt;</span>
@@ -87,83 +77,7 @@ console.log "index ctrl here"</p></div></div></div><div class="segment"><div cla
         <span class="nv">$scope.controls.sorting.state = </span><span class="s">&quot;name&quot;</span>
         <span class="nv">$scope.controls.sorting.ascending = </span><span class="kc">false</span>
 
-        <span class="nv">$scope.openView = </span><span class="nf">(item_category) -&gt;</span>
-            <span class="nv">viewInstance = </span><span class="nx">$modal</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span>
-                <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/&quot;</span> <span class="o">+</span> <span class="nx">item_category</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
-                <span class="nv">controller: </span><span class="s">&quot;ViewInstanceCtrl&quot;</span>
-                <span class="nv">size: </span><span class="s">&quot;lg&quot;</span>
-            <span class="p">)</span>
-
-        <span class="nv">shared_items_amount = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span>
-
-        <span class="nv">file_names = </span><span class="p">[</span>
-            <span class="s">&#39;Lothar&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Rafael&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Angelika&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Wolfram&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Lisa&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Sophia&#39;</span><span class="p">,</span>
-            <span class="s">&#39;David&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Andrea&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Hermine&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Rudolf&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Steffen&#39;</span><span class="p">,</span>
-            <span class="s">&#39;Johanna&#39;</span>
-        <span class="p">]</span>
-
-        <span class="nv">code_extensions = </span><span class="p">[</span>
-            <span class="s">&quot;html&quot;</span>
-            <span class="s">&quot;css&quot;</span>
-            <span class="s">&quot;js&quot;</span>
-            <span class="s">&quot;py&quot;</span>
-            <span class="s">&quot;java&quot;</span>
-            <span class="s">&quot;rb&quot;</span>
-        <span class="p">]</span>
-    
-        <span class="k">while</span> <span class="nx">shared_items_amount</span> <span class="o">-=</span> <span class="mi">1</span>
-
-            <span class="nv">rand = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)</span>
-
-            <span class="nv">file = </span><span class="p">{}</span>
-            <span class="nv">file.name = </span><span class="nx">file_names</span><span class="p">[</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">12</span><span class="p">)</span> <span class="p">]</span>
-            <span class="nv">file.size = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span> <span class="o">+</span> <span class="mi">100</span>
-            <span class="nv">file.author = </span><span class="s">&quot;Max Mustermann&quot;</span>
-            <span class="nv">file.created = </span><span class="s">&quot;14.05.2014 - 15:10&quot;</span>
-
-            <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">0</span>
-                <span class="nv">file.category = </span><span class="s">&quot;note&quot;</span>
-                <span class="nv">file.thumbnail =</span>
-                    <span class="nv">title: </span><span class="s">&quot;Lorem Ipsum&quot;</span>
-                    <span class="nv">content: </span><span class="s">&quot;&lt;p&gt;Lorem ipsum dolor sit amet, consetetur sadips&quot;</span><span class="o">+</span>
-                        <span class="s">&quot;cing elitr, sed diam nonumy eirmod.&lt;/p&gt;&lt;p&gt;tempor invi&quot;</span><span class="o">+</span>
-                        <span class="s">&quot;dunt ut labore et dolore magna aliquyam erat, sed dia&quot;</span><span class="o">+</span>
-                        <span class="s">&quot;m voluptua.&lt;/p&gt;&quot;</span>
-                <span class="nv">file.edited = </span><span class="s">&quot;20.05.2014 - 20:25&quot;</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">1</span>
-                <span class="nv">file.category = </span><span class="s">&quot;screenshot&quot;</span>
-                <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot.png&quot;</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">2</span>
-                <span class="nv">file.category = </span><span class="s">&quot;file&quot;</span>
-                <span class="nv">file.thumbnail = </span><span class="s">&quot;icon&quot;</span>
-                <span class="nv">file.extension = </span><span class="s">&quot;.pdf&quot;</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">3</span>
-                <span class="nv">file.category = </span><span class="s">&quot;code&quot;</span>
-                <span class="nv">file.thumbnail = </span><span class="s">&quot;var dummy = function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&quot;</span><span class="o">+</span>
-                    <span class="s">&quot;&amp;nbspconsole.log(\&quot;Hello world\&quot;)&lt;br/&gt;}&quot;</span>
-                <span class="nv">file.extension = </span><span class="nx">code_extensions</span><span class="p">[</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">6</span><span class="p">)]</span>
-            <span class="k">else</span> <span class="k">if</span> <span class="nx">rand</span> <span class="o">is</span> <span class="mi">4</span>
-                <span class="nv">file.category = </span><span class="s">&quot;shared-screen&quot;</span>
-                <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot-screen.png&quot;</span>
-                <span class="nv">file.size = </span><span class="mi">0</span>
-            <span class="k">else</span>
-                <span class="nv">file.category = </span><span class="s">&quot;shared-webcam&quot;</span>
-                <span class="nv">file.thumbnail = </span><span class="s">&quot;screenshot-webcam.jpg&quot;</span>
-                <span class="nv">file.size = </span><span class="mi">0</span>
-
-
-            <span class="nv">file.templateUrl = </span><span class="s">&quot;/partials/items/&quot;</span> <span class="o">+</span> <span class="nx">file</span><span class="p">.</span><span class="nx">category</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span>
-
-            <span class="nx">$scope</span><span class="p">.</span><span class="nx">shared_items</span><span class="p">.</span><span class="nx">push</span> <span class="nx">file</span>
+        <span class="nv">$scope.shared_items = </span><span class="nx">dummy_items</span>
 
         <span class="nv">$scope.setSortingState = </span><span class="nf">(state) -&gt;</span>
             <span class="k">if</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">controls</span><span class="p">.</span><span class="nx">sorting</span><span class="p">.</span><span class="nx">state</span> <span class="o">is</span> <span class="nx">state</span>
@@ -173,6 +87,71 @@ console.log "index ctrl here"</p></div></div></div><div class="segment"><div cla
                 <span class="nv">$scope.controls.sorting.ascending = </span><span class="kc">false</span>
                 <span class="nv">$scope.controls.sorting.state = </span><span class="nx">state</span>
 
+        <span class="nv">$scope.delete = </span><span class="nf">(index) -&gt;</span>
+            <span class="nv">i = </span><span class="mi">0</span>
+            <span class="nv">item = </span><span class="p">{}</span>
+            <span class="k">while</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">$scope</span><span class="p">.</span><span class="nx">shared_items</span><span class="p">.</span><span class="nx">length</span>
+                <span class="nv">item = </span><span class="nx">$scope</span><span class="p">.</span><span class="nx">shared_items</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nx">item</span><span class="p">.</span><span class="nx">id</span> <span class="o">is</span> <span class="nx">index</span>
+                    <span class="nx">$scope</span><span class="p">.</span><span class="nx">shared_items</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">i</span><span class="p">,</span> <span class="mi">1</span> 
+                    <span class="k">break</span>
+                <span class="nx">i</span><span class="o">++</span>
+
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;ScreenshotCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$routeParams&quot;</span>
+    <span class="nf">($scope, $routeParams) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$routeParams</span>
+        <span class="k">if</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+            <span class="nv">$scope.id = </span><span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+
+        <span class="k">else</span>
+            <span class="nv">$scope.id = </span><span class="s">&quot;No ID :(&quot;</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;NoteCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$routeParams&quot;</span>
+    <span class="nf">($scope, $routeParams) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$routeParams</span>
+        <span class="k">if</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+            <span class="nv">$scope.id = </span><span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+
+        <span class="k">else</span>
+            <span class="nv">$scope.id = </span><span class="s">&quot;No ID :(&quot;</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;CodeCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$routeParams&quot;</span>
+    <span class="nf">($scope, $routeParams) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$routeParams</span>
+        <span class="k">if</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+            <span class="nv">$scope.id = </span><span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+
+        <span class="k">else</span>
+            <span class="nv">$scope.id = </span><span class="s">&quot;No ID :(&quot;</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SharedScreenCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$routeParams&quot;</span>
+    <span class="nf">($scope, $routeParams) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$routeParams</span>
+        <span class="k">if</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+            <span class="nv">$scope.id = </span><span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+
+        <span class="k">else</span>
+            <span class="nv">$scope.id = </span><span class="s">&quot;No ID :(&quot;</span>
+<span class="p">]</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">controller</span> <span class="s">&quot;SharedWebcamCtrl&quot;</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s">&quot;$scope&quot;</span><span class="p">,</span> <span class="s">&quot;$routeParams&quot;</span>
+    <span class="nf">($scope, $routeParams) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$routeParams</span>
+        <span class="k">if</span> <span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+            <span class="nv">$scope.id = </span><span class="nx">$routeParams</span><span class="p">.</span><span class="nx">id</span>
+
+        <span class="k">else</span>
+            <span class="nv">$scope.id = </span><span class="s">&quot;No ID :(&quot;</span>
 <span class="p">]</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
@@ -263,5 +242,138 @@ console.log "index ctrl here"</p></div></div></div><div class="segment"><div cla
 
         <span class="nv">$scope.removeNote = </span><span class="nf">(index) -&gt;</span>
             <span class="nx">$scope</span><span class="p">.</span><span class="nx">room</span><span class="p">.</span><span class="nx">notes</span><span class="p">.</span><span class="nx">splice</span> <span class="nx">index</span><span class="p">,</span> <span class="mi">1</span>
+
+<span class="p">]</span>
+
+
+<span class="nv">dummy_items = </span><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">1</span>
+        <span class="nv">category: </span><span class="s">&quot;screenshot&quot;</span>
+        <span class="nv">name: </span><span class="s">&quot;Sophia&quot;</span>
+        <span class="nv">size: </span><span class="mi">1036463</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;screenshot.png&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/screenshot.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">2</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;Steffen&quot;</span>
+        <span class="nv">size: </span><span class="mi">43696</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;file&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;icon&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;.pdf&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/file.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">3</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;style&quot;</span>
+        <span class="nv">size: </span><span class="mi">876432</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;code&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;vardummy=function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log&quot;</span><span class="o">+</span>
+            <span class="s">&quot;(\&quot;Helloworld\&quot;)&lt;br/&gt;}&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;css&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/code.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">4</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;index&quot;</span>
+        <span class="nv">size: </span><span class="mi">346432</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;code&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;vardummy=function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log&quot;</span><span class="o">+</span>
+            <span class="s">&quot;(\&quot;Helloworld\&quot;)&lt;br/&gt;}&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;html&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/code.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">5</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;main&quot;</span>
+        <span class="nv">size: </span><span class="mi">832</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;code&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;vardummy=function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log&quot;</span><span class="o">+</span>
+            <span class="s">&quot;(\&quot;Helloworld\&quot;)&lt;br/&gt;}&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;js&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/code.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">6</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;HelloWorld&quot;</span>
+        <span class="nv">size: </span><span class="mi">876432</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;code&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;vardummy=function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log&quot;</span><span class="o">+</span>
+            <span class="s">&quot;(\&quot;Helloworld\&quot;)&lt;br/&gt;}&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;java&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/code.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">7</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;script&quot;</span>
+        <span class="nv">size: </span><span class="mi">1024</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;code&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;vardummy=function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log&quot;</span><span class="o">+</span>
+            <span class="s">&quot;(\&quot;Helloworld\&quot;)&lt;br/&gt;}&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;py&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/code.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">8</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;spec&quot;</span>
+        <span class="nv">size: </span><span class="mi">90123</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;code&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;vardummy=function() {&lt;br/&gt;&amp;nbsp&amp;nbsp&amp;nbsp&amp;nbspconsole.log&quot;</span><span class="o">+</span>
+            <span class="s">&quot;(\&quot;Helloworld\&quot;)&lt;br/&gt;}&quot;</span>
+        <span class="nv">extension: </span><span class="s">&quot;rb&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/code.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">9</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;Untitled&quot;</span>
+        <span class="nv">size: </span><span class="mi">90123</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;note&quot;</span>
+        <span class="nv">thumbnail:</span>
+            <span class="nv">title: </span><span class="s">&quot;Protocol&quot;</span><span class="p">,</span>
+            <span class="nv">content: </span><span class="s">&quot;&lt;p&gt;Loremipsumdolorsitamet, consetetursadipscingelitr, &quot;</span><span class="o">+</span>
+                <span class="s">&quot;seddiamnonumyeirmod.&lt;/p&gt;&lt;p&gt;temporinvidun tutlaboreet dolorem &quot;</span><span class="o">+</span>
+                <span class="s">&quot;agnaaliquy amerat, seddiamvoluptua.&lt;/p&gt;&quot;</span>
+        <span class="nv">edited: </span><span class="s">&quot;20.05.2014-20:25&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/note.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">10</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;How to photoshop&quot;</span>
+        <span class="nv">size: </span><span class="mi">0</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;shared-screen&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;screenshot-screen.png&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/shared-screen.html&quot;</span>
+    <span class="p">}</span>
+    <span class="p">{</span>
+        <span class="nv">id: </span><span class="mi">11</span><span class="p">,</span>
+        <span class="nv">name: </span><span class="s">&quot;See me cooking&quot;</span>
+        <span class="nv">size: </span><span class="mi">0</span>
+        <span class="nv">author: </span><span class="s">&quot;Max Mustermann&quot;</span>
+        <span class="nv">created: </span><span class="s">&quot;14.05.2014-15:10&quot;</span>
+        <span class="nv">category: </span><span class="s">&quot;shared-webcam&quot;</span>
+        <span class="nv">thumbnail: </span><span class="s">&quot;screenshot-webcam.jpg&quot;</span>
+        <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/thumbnails/shared-webcam.html&quot;</span>
+    <span class="p">}</span>
 
 <span class="p">]</span></div></div></div></div></body></html>

@@ -30,6 +30,7 @@
         <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">setName</span> <span class="s">&quot;Alibert&quot;</span>
         <span class="nx">RTCProvider</span><span class="p">.</span><span class="nx">setSignalServer</span> <span class="s">&quot;wss://localhost&quot;</span>
     
+    
 
         <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">html5Mode</span> <span class="kc">true</span>
         <span class="nx">$locationProvider</span><span class="p">.</span><span class="nx">hashPrefix</span> <span class="s">&quot;!&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h3 id="routes">Routes</h3></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
@@ -95,6 +96,66 @@
 </blockquote></div></div><div class="code"><div class="wrapper">        <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share&quot;</span><span class="p">,</span>
             <span class="nv">templateUrl: </span><span class="s">&quot;/partials/share.html&quot;</span>
             <span class="nv">controller: </span><span class="s">&quot;ShareCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/share/screenshot/:id</code></h3></p>
+
+<blockquote>
+  <p>loads a specific shared screenshot by the given id</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">        <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share/screenshot/:id&quot;</span><span class="p">,</span>
+            <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/screenshot.html&quot;</span>
+            <span class="nv">controller: </span><span class="s">&quot;ScreenshotCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/share/note/:id</code></h3></p>
+
+<blockquote>
+  <p>loads a specific shared note by the given id</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">        <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share/note/:id&quot;</span><span class="p">,</span>
+            <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/note.html&quot;</span>
+            <span class="nv">controller: </span><span class="s">&quot;NoteCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/share/code/:id</code></h3></p>
+
+<blockquote>
+  <p>loads a specific shared code by the given id</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">        <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share/code/:id&quot;</span><span class="p">,</span>
+            <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/code.html&quot;</span>
+            <span class="nv">controller: </span><span class="s">&quot;CodeCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/share/shared-screen/:id</code></h3></p>
+
+<blockquote>
+  <p>loads a specific shared screen by the given id</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">        <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share/shared-screen/:id&quot;</span><span class="p">,</span>
+            <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/shared-screen.html&quot;</span>
+            <span class="nv">controller: </span><span class="s">&quot;SharedScreenCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
+
+<p><ul>
+<li><h3>route <code>/share/shared-webcam/:id</code></h3></p>
+
+<blockquote>
+  <p>loads a specific shared webcam by the given id</p>
+  
+  <p>load RoomCtrl</li>
+  </ul></p>
+</blockquote></div></div><div class="code"><div class="wrapper">        <span class="nx">$routeProvider</span><span class="p">.</span><span class="nx">when</span> <span class="s">&quot;/share/shared-webcam/:id&quot;</span><span class="p">,</span>
+            <span class="nv">templateUrl: </span><span class="s">&quot;/partials/items/shared-webcam.html&quot;</span>
+            <span class="nv">controller: </span><span class="s">&quot;SharedWebcamCtrl&quot;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr />
 
 <p><ul>
 <li><h3>route <code>/</code></h3></p>
