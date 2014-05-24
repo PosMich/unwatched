@@ -26,7 +26,6 @@
             //box-shadow 0 0 35px #333
             box-shadow 0 0 15px rgba(53,53,53,0.2)
             background white
-            overflow hidden
 
             &:hover
                 box-shadow 0 0 15px rgba(53,53,53,1)
@@ -97,6 +96,12 @@
                                 opacity 1
                                 font-size 30px
 
+                .popover
+                    font-size 10px
+
+                    .popover-content
+                        padding 5px 9px
+
                 &.note
 
                     .item-thumbnail
@@ -149,6 +154,7 @@
                             padding 5px
                             text-align left
                             oveflow hidden
+                            width 100%
 
                             h3
                                 text-align left
@@ -162,6 +168,9 @@
                                     background transparent
                                     padding 0
                                     white-space pre
+                                    overflow hidden
+                                    width 100%
+                                    display block
 
 
                     .item-infos
@@ -251,6 +260,7 @@
                         text-decoration none
                         color black
                         transition color .3s ease-in-out
+                        float right
 
                         i
                             padding-left 10px
@@ -259,7 +269,6 @@
                             opacity 0.7
                             cursor pointer
                             transition opacity .3s linear, width 300ms ease-in-out, height 300ms ease-in-out, font-size 300ms ease-in-out
-                            float right
 
                             &:hover
                                 opacity 1
@@ -349,7 +358,8 @@
                     transition opacity .5 ease-in-out
                     background rgba(27,27,27, 0.7)
 
-            img, .drop-box
+            .img, .drop-box
+                opacity 1
                 &.ng-hide-add, &.ng-hide-remove
                     display block !important
 
@@ -358,9 +368,7 @@
                     transition opacity .5s ease-in-out
 
                 &.ng-hide
-                    line-height 0
                     opacity 0
-                    padding 0 10px
                 
         .settings-container
             
