@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en"><head><title>assets/js/adapter</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../../"><meta name="groc-document-path" content="assets/js/adapter"><meta name="groc-project-path" content="assets/js/adapter.coffee"><link rel="stylesheet" type="text/css" media="all" href="../../assets/style.css"><script type="text/javascript" src="../../assets/behavior.js"></script><body><div id="meta"><div class="file-path">assets/js/adapter.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="c1">#https://code.google.com/p/webrtc/source/browse/stable/samples/js/base/adapter.js</span>
+
+<span class="nv">trace = </span><span class="nf">(text) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This function is used for logging.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">text = </span><span class="nx">text</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">text</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>  <span class="k">if</span> <span class="nx">text</span><span class="p">[</span><span class="nx">text</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">is</span> <span class="s">&quot;\n&quot;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="p">(</span><span class="nx">performance</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;: &quot;</span> <span class="o">+</span> <span class="nx">text</span>
+    <span class="k">return</span>
+
+<span class="nv">RTCPeerConnection = </span><span class="kc">null</span>
+<span class="nv">getUserMedia = </span><span class="kc">null</span>
+<span class="nv">attachMediaStream = </span><span class="kc">null</span>
+<span class="nv">reattachMediaStream = </span><span class="kc">null</span>
+<span class="nv">webrtcDetectedBrowser = </span><span class="kc">null</span>
+<span class="nv">webrtcDetectedVersion = </span><span class="kc">null</span>
+<span class="nv">isWebrtcAble = </span><span class="kc">false</span>
+
+<span class="k">if</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">mozGetUserMedia</span>
+    <span class="nv">isWebrtcAble = </span><span class="kc">true</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;This appears to be Firefox&quot;</span>
+    <span class="nv">webrtcDetectedBrowser = </span><span class="s">&quot;firefox&quot;</span>
+    <span class="nv">webrtcDetectedVersion = </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/Firefox\/([0-9]+)\./</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The RTCPeerConnection object.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">RTCPeerConnection = </span><span class="nx">mozRTCPeerConnection</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The RTCSessionDescription object.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">RTCSessionDescription = </span><span class="nx">mozRTCSessionDescription</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The RTCIceCandidate object.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">RTCIceCandidate = </span><span class="nx">mozRTCIceCandidate</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get UserMedia (only difference is the prefix).
+Code from Adam Barth.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">getUserMedia = </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">mozGetUserMedia</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">navigator</span><span class="p">)</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Creates iceServer from the url for FF.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">createIceServer = </span><span class="nf">(url, username, password) -&gt;</span>
+        <span class="nv">iceServer = </span><span class="kc">null</span>
+        <span class="nv">url_parts = </span><span class="nx">url</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">url_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;stun&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="mi">0</span>
+            </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create iceServer with stun url.</p></div></div><div class="code"><div class="wrapper">            <span class="nv">iceServer = url: </span><span class="nx">url</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">url_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;turn&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="mi">0</span>
+            <span class="k">if</span> <span class="nx">webrtcDetectedVersion</span> <span class="o">&lt;</span> <span class="mi">27</span>
+                </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create iceServer with turn url.
+Ignore the transport parameter from TURN url for FF version &lt;=27.</p></div></div><div class="code"><div class="wrapper">                <span class="nv">turn_url_parts = </span><span class="nx">url</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;?&quot;</span><span class="p">)</span>
+                </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return null for createIceServer if transport=tcp.</p></div></div><div class="code"><div class="wrapper">                <span class="k">if</span> <span class="nx">turn_url_parts</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;transport=udp&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="mi">0</span>
+                    <span class="nv">iceServer =</span>
+                        <span class="nv">url: </span><span class="nx">turn_url_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="nv">credential: </span><span class="nx">password</span>
+                        <span class="nv">username: </span><span class="nx">username</span>
+            <span class="k">else</span>
+                </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>FF 27 and above supports transport parameters in TURN url,
+So passing in the full url to create iceServer.</p></div></div><div class="code"><div class="wrapper">                <span class="nv">iceServer =</span>
+                    <span class="nv">url: </span><span class="nx">url</span>
+                    <span class="nv">credential: </span><span class="nx">password</span>
+                    <span class="nv">username: </span><span class="nx">username</span>
+        <span class="nx">iceServer</span>
+
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Attach a media stream to an element.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">attachMediaStream = </span><span class="nf">(element, stream) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Attaching media stream&quot;</span>
+        <span class="nv">element.mozSrcObject = </span><span class="nx">stream</span>
+        <span class="nx">element</span><span class="p">.</span><span class="nx">play</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    <span class="nv">reattachMediaStream = </span><span class="nf">(to, from) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Reattaching media stream&quot;</span>
+        <span class="nv">to.mozSrcObject = </span><span class="nx">from</span><span class="p">.</span><span class="nx">mozSrcObject</span>
+        <span class="nx">to</span><span class="p">.</span><span class="nx">play</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Fake get{Video,Audio}Tracks</p></div></div><div class="code"><div class="wrapper">    <span class="k">unless</span> <span class="nx">MediaStream</span><span class="o">::</span><span class="nx">getVideoTracks</span>
+        <span class="nv">MediaStream::getVideoTracks = </span><span class="nf">-&gt;</span>
+            <span class="p">[]</span>
+    <span class="k">unless</span> <span class="nx">MediaStream</span><span class="o">::</span><span class="nx">getAudioTracks</span>
+        <span class="nv">MediaStream::getAudioTracks = </span><span class="nf">-&gt;</span>
+            <span class="p">[]</span>
+
+<span class="k">else</span> <span class="k">if</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">webkitGetUserMedia</span>
+    <span class="nv">isWebrtcAble = </span><span class="kc">true</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;This appears to be Chrome&quot;</span>
+    <span class="nv">webrtcDetectedBrowser = </span><span class="s">&quot;chrome&quot;</span>
+    <span class="nv">webrtcDetectedVersion = </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/Chrom(e|ium)\/([0-9]+)\./</span><span class="p">)[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">10</span><span class="p">)</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Creates iceServer from the url for Chrome.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">createIceServer = </span><span class="nf">(url, username, password) -&gt;</span>
+        <span class="nv">iceServer = </span><span class="kc">null</span>
+        <span class="nv">url_parts = </span><span class="nx">url</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nx">url_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;stun&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="mi">0</span>
+            </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create iceServer with stun url.</p></div></div><div class="code"><div class="wrapper">            <span class="nv">iceServer = url: </span><span class="nx">url</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">url_parts</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="s">&quot;turn&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="mi">0</span>
+            </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Chrome M28 &amp; above uses below TURN format.</p></div></div><div class="code"><div class="wrapper">            <span class="nv">iceServer =</span>
+                <span class="nv">url: </span><span class="nx">url</span>
+                <span class="nv">credential: </span><span class="nx">password</span>
+                <span class="nv">username: </span><span class="nx">username</span>
+        <span class="nx">iceServer</span>
+
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>The RTCPeerConnection object.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">RTCPeerConnection = </span><span class="nx">webkitRTCPeerConnection</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Get UserMedia (only difference is the prefix).
+Code from Adam Barth.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">getUserMedia = </span><span class="nx">navigator</span><span class="p">.</span><span class="nx">webkitGetUserMedia</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">navigator</span><span class="p">)</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Attach a media stream to an element.</p></div></div><div class="code"><div class="wrapper">    <span class="nv">attachMediaStream = </span><span class="nf">(element, stream) -&gt;</span>
+        <span class="k">if</span> <span class="k">typeof</span> <span class="nx">element</span><span class="p">.</span><span class="nx">srcObject</span> <span class="o">isnt</span> <span class="s">&quot;undefined&quot;</span>
+            <span class="nv">element.srcObject = </span><span class="nx">stream</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="k">typeof</span> <span class="nx">element</span><span class="p">.</span><span class="nx">mozSrcObject</span> <span class="o">isnt</span> <span class="s">&quot;undefined&quot;</span>
+            <span class="nv">element.mozSrcObject = </span><span class="nx">stream</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="k">typeof</span> <span class="nx">element</span><span class="p">.</span><span class="nx">src</span> <span class="o">isnt</span> <span class="s">&quot;undefined&quot;</span>
+            <span class="nv">element.src = </span><span class="nx">URL</span><span class="p">.</span><span class="nx">createObjectURL</span><span class="p">(</span><span class="nx">stream</span><span class="p">)</span>
+        <span class="k">else</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Error attaching stream to element.&quot;</span>
+        <span class="k">return</span>
+
+    <span class="nv">reattachMediaStream = </span><span class="nf">(to, from) -&gt;</span>
+        <span class="nv">to.src = </span><span class="nx">from</span><span class="p">.</span><span class="nx">src</span>
+        <span class="k">return</span>
+<span class="k">else</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;Browser does not appear to be WebRTC-capable&quot;</span>
+
+
+<span class="nb">window</span><span class="p">.</span><span class="nv">RTCPeerConnection = </span><span class="nx">RTCPeerConnection</span>
+<span class="nb">window</span><span class="p">.</span><span class="nv">getUserMedia = </span><span class="nx">getUserMedia</span>
+<span class="nb">window</span><span class="p">.</span><span class="nv">attachMediaStream = </span><span class="nx">attachMediaStream</span>
+<span class="nb">window</span><span class="p">.</span><span class="nv">reattachMediaStream = </span><span class="nx">reattachMediaStream</span>
+<span class="nb">window</span><span class="p">.</span><span class="nv">webrtcDetectedBrowser = </span><span class="nx">webrtcDetectedBrowser</span>
+<span class="nb">window</span><span class="p">.</span><span class="nv">webrtcDetectedVersion = </span><span class="nx">webrtcDetectedVersion</span>
+<span class="nb">window</span><span class="p">.</span><span class="nv">isWebrtcAble = </span><span class="nx">isWebrtcAble</span></div></div></div></div></body></html>
