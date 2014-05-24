@@ -34,3 +34,13 @@ app.filter "humanReadableFileSize", ->
         ]
         e = Math.floor(Math.log(bytes) / Math.log(1024))
         (bytes / Math.pow(1024, Math.floor(e))).toFixed(2) + " " + s[e]
+
+app.filter "breakFilter", ->
+    (text) ->
+        text.replace(/\n/g, '<br />') if text?
+
+app.filter "noHtml", ->
+    (text) ->
+        if text?
+            text.replace(/&/g, '&amp;').replace(/>/g, '&gt;')
+                .replace(/</g, '&lt;')

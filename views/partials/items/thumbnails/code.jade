@@ -3,8 +3,7 @@
         .content
             h3 {{item.name}}.{{item.extension}}
             p
-                code
-                    | {{item.thumbnail}}
+                code(ng-bind-html="item.thumbnail | noHtml | breakFilter")
     .item-infos(ng-class="item.extension")
         table
             tr

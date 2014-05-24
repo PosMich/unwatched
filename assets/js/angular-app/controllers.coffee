@@ -95,7 +95,10 @@ app.controller "ShareCtrl", [
                 $scope.controls.sorting.state = state
 
         $scope.delete = (item_id) ->
-            SharedItemsService.delete(item_id)
+            confirmation_text = "Are you sure you want to delete the item: " + 
+                SharedItemsService.get(item_id).name + "?"
+            confirmation = window.confirm(confirmation_text)
+            SharedItemsService.delete(item_id) if confirmation
 
         $scope.setLayout = (layout) ->
             LayoutService.setLayout(layout)
@@ -172,11 +175,26 @@ app.controller "CodeCtrl", [
                     return i
 
         $scope.getThumbnail = ->
-            thumbnail = $scope.editor.getSession().doc.getValue()
-            # thumbnail = thumbnail.replace(/\s/g, '&nbsp;')
-            # thumbnail = thumbnail.replace("<", "&lt;")
-            # thumbnail = thumbnail.replace(/\n/g, "<br />")
+            thumbnail = ""
+            lines = $scope.editor.session.doc.getAllLines()
+            i = 0
+            while i < 5
+                if lines[i]?
+                    line_string = lines[i]
+                    thumbnail += line_string
+                    thumbnail += "\n" if i < 4
+                i++
+
             thumbnail
+
+        $scope.delete = ->
+            confirmation_text = "Are you sure you want to delete the item: " + 
+                $scope.item.name + " and return to the overview page?"
+            confirmation = window.confirm(confirmation_text)
+            if confirmation
+                SharedItemsService.delete($scope.item.id)
+                $location.path("/share")
+
 
         if !$routeParams.id?
             # create new code item
@@ -212,7 +230,8 @@ app.controller "CodeCtrl", [
         # TODO: implement change emitter to other viewers
         $scope.editor.on 'change', (e) ->
             $scope.item.content = $scope.editor.getSession().getValue()
-            $scope.item.thumbnail = $scope.getThumbnail()
+            if e.data.range.start.row <= 5 || e.data.range.end.row <= 5
+                $scope.item.thumbnail = $scope.getThumbnail()
 
         # watch changes on coding language and update editor
         $scope.$watch "settings.extension", (option, old_option) ->
@@ -386,8 +405,8 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: ".newspaper {<br/>" +
-            "&nbsp&nbsp&nbsp&nbsp-webkit-column-count:3; /* Chrome, Safari, " +
+        thumbnail: ".newspaper {\n" +
+            "    -webkit-column-count:3; /* Chrome, Safari, " +
                 "Opera */"
         content: '.newspaper {\n' +
             '\t-webkit-column-count:3; /* Chrome, Safari, Opera */\n' +
@@ -414,10 +433,10 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "import java.io.IOException<br/>" +
-            "import java.util.Map<br/><br/>" +
-            "public class MyFirstJavaProgram {<br/><br/>" +
-            "&nbsp&nbsp&nbsp&nbsp public static void main(String[] args){<br/>"
+        thumbnail: "import java.io.IOException\n" +
+            "import java.util.Map\n\n" +
+            "public class MyFirstJavaProgram {\n\n" +
+            "     public static void main(String[] args){\n"
 
         content: 'import java.io.IOException\n' +
             'import java.util.Map\n\n' +
@@ -437,10 +456,10 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "var x = myFunction(4, 3) // Function is called,<br/><br/>" +
-            "function myFunction(a, b) {<br/>" +
-            "&nbsp&nbsp&nbsp&nbspreturn a * b; // Fucntion returns the " +
-            "product of a and b <br/>" +
+        thumbnail: "var x = myFunction(4, 3) // Function is called,\n\n" +
+            "function myFunction(a, b) {\n" +
+            "    return a * b; // Fucntion returns the " +
+            "product of a and b \n" +
             "}"
         content: 'var x = myFunction(4, 3); // Function is called, return val' +
             'ue will end up in x\n\n' +
@@ -458,7 +477,7 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "&lt;!doctype html><br/>&nbsp&nbsp&nbsp&nbsp &lt;html " +
+        thumbnail: "<!doctype html>\n     <html " +
             "lang=\"en\">"
         content: 
             '!doctype html>\n' +
@@ -487,12 +506,12 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "testparents, babies = (1, 1)<br/>" +
-            "while babies &lt; 100:<br/>" +
-            "&nbsp&nbsp&nbsp&nbsp print 'This generation has {0} babies'." +
-            "format(babies)<br/>" +
-            "&nbsp&nbsp&nbsp&nbsp parents, babies = (babies, parents + " +
-            "babies)'<br/>"
+        thumbnail: "testparents, babies = (1, 1)\n" +
+            "while babies < 100:\n" +
+            "     print 'This generation has {0} babies'." +
+            "format(babies)\n" +
+            "     parents, babies = (babies, parents + " +
+            "babies)'\n"
         content: "parents, babies = (1, 1)\n\n" +
             "while babies < 100:\n" +
             "\tprint 'This generation has {0} babies'.format(babies)\n" +
@@ -508,11 +527,11 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "for j in 1..5 do<br/>" + 
-            "&nbsp&nbsp&nbsp&nbsp for i in 1..5 do<br/>" +
-            "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp print i, \"&nbsp\"<br/>" +
-            "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp break if i == 2<br/>" +
-            "&nbsp&nbsp&nbsp&nbsp end<br/>" +
+        thumbnail: "for j in 1..5 do\n" + 
+            "     for i in 1..5 do\n" +
+            "         print i, \" \"\n" +
+            "         break if i == 2\n" +
+            "     end\n" +
             "end"
         content: 'for j in 1..5 do\n' + 
             '\tfor i in 1..5 do\n' + 

@@ -291,8 +291,8 @@ app.service "AceSettingsService", [
 ]
 
 app.service "SharedItemsService", [
-    "item_template_code", "dummy_authors", "$filter", "dummy_code_names"
-    (item_template_code, dummy_authors, $filter, dummy_code_names) ->
+    "item_template_code", "dummy_authors", "$filter"
+    (item_template_code, dummy_authors, $filter) ->
 
         @items = []
 
@@ -333,7 +333,7 @@ app.service "SharedItemsService", [
             item.id = getFirstFreeId()
 
             name_id = Math.floor(Math.random() * dummy_code_names.length)
-            item.name = dummy_code_names[name_id]
+            item.name = "Untitled Code Document"
 
             author_id = Math.floor(Math.random() * dummy_authors.length)
             item.author = dummy_authors[author_id]
@@ -385,16 +385,6 @@ app.constant "dummy_authors", [
     "Kristi Saunders"
     "Amanda Swanson"
     "Brandy Glover"
-]
-
-app.constant "dummy_code_names", [
-    "main"
-    "script"
-    "style"
-    "index"
-    "spec"
-    "template"
-    "code"
 ]
 
 app.constant "item_template_code", {
