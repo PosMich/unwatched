@@ -473,14 +473,41 @@ app.controller "ScreenshotCtrl", [
 
 ]
 
-app.controller "SharedScreenCtrl", [
-    "$scope", "$routeParams"
-    ($scope, $routeParams) ->
-        if $routeParams.id
-            $scope.id = $routeParams.id
+app.controller "ScreenCtrl", [
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$modal"
+    ($scope, $routeParams, SharedItemsService, $location, $filter
+        $modal) ->
+        
+        $scope.item = {}
+
+        if !$routeParams.id?
+            # create new image item
+            $scope.item = SharedItemsService.create("screen")
 
         else
-            $scope.id = "No ID :("
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+
+        $scope.item.name = $scope.item.author + "'s Shared Screen"
+
+        $scope.resolution = "High"
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                SharedItemsService.delete($scope.item.id)
+                $location.path("/share")
+            )
 ]
 
 app.controller "SharedWebcamCtrl", [
@@ -751,9 +778,9 @@ dummy_items = [
         size: 0
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
-        category: "shared-screen"
+        category: "screen"
         thumbnail: "screenshot-screen.png"
-        templateUrl: "/partials/items/thumbnails/shared-screen.html"
+        templateUrl: "/partials/items/thumbnails/screen.html"
     }
     {
         id: 11,

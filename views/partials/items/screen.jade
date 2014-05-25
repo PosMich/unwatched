@@ -1,0 +1,44 @@
+.detail-view.shared-image-container
+    .heading.clearfix.controls
+        .row
+            .col-xs-12.controls
+                a(href="/share")
+                    .back
+                        i.fa.fa-arrow-left
+                        span Overview
+                a(ng-href="#", ng-click="save()")
+                    .copy-clipboard
+                        i.fa.fa-clipboard
+                        span Copy infos to clipboard
+                a(ng-href="#", ng-click="delete()")
+                    .copy-clipboard
+                        i.fa.fa-trash-o
+                        span Remove
+
+    .jumbotron
+        .detail-heading
+            h1
+                | {{item.name}} 
+        .infos-container
+            .info
+                b Author: 
+                | {{item.author}}
+            .info
+                b Created: 
+                | {{item.created}}
+            .info
+                b Category: 
+                | {{item.category}}
+
+        .settings-container
+            h4 Settings
+            .btn-group
+                label.btn.btn-default(ng-model="resolution", 
+                    btn-radio="'Low'") Low
+                label.btn.btn-default(ng-model="resolution", 
+                    btn-radio="'Middle'") Middle
+                label.btn.btn-default(ng-model="resolution", 
+                    btn-radio="'High'") High
+
+        .video-container
+            video(autoplay, screen="resolution")

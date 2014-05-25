@@ -133,13 +133,22 @@ app.config [
             controller: "CodeCtrl"
 
         # ***
-        # * <h3>route `/share/shared-screen/:id`</h3>
+        # * <h3>route `/share/screen/:id`</h3>
+        # > loads an empty screen item to share it
+        # >
+        # > load SharedScreenCtrl
+        $routeProvider.when "/share/screen",
+            templateUrl: "/partials/items/screen.html"
+            controller: "ScreenCtrl"
+
+        # ***
+        # * <h3>route `/share/screen/:id`</h3>
         # > loads a specific shared screen by the given id
         # >
         # > load SharedScreenCtrl
-        $routeProvider.when "/share/shared-screen/:id",
-            templateUrl: "/partials/items/shared-screen.html"
-            controller: "SharedScreenCtrl"
+        $routeProvider.when "/share/screen/:id",
+            templateUrl: "/partials/items/screen.html"
+            controller: "ScreenCtrl"
 
         # ***
         # * <h3>route `/share/shared-webcam/:id`</h3>
