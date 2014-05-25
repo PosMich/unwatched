@@ -52,16 +52,26 @@ ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{
 
             .item-controls.col-xs-3.clearfix(
                 ng-class="{'col-xs-offset-1':chat_state!='expanded'}")
-                a(ng-click="delete(item.id)")
+                a(ng-click="delete(item.id)", popover="Delete",
+                    popover-trigger="mouseenter", popover-placement="bottom",
+                    popover-popup-delay="750")
                     i.fa.fa-trash-o
-                a(ng-click="copyClipboard(item.id)")
+                a(ng-click="copyClipboard(item.id)", 
+                    popover="Copy to clipboard", popover-trigger="mouseenter",
+                    popover-placement="bottom", popover-popup-delay="750")
                     i.fa.fa-clipboard
-                a(ng-href="{{item.path}}",
+                a(ng-href="{{item.path}}", popover="Download",
+                    popover-trigger="mouseenter", popover-placement="bottom",,
+                    popover-popup-delay="750",
                     ng-show="item.category=='note' || item.category=='file' || item.category=='code' || item.category=='screenshot' || item.category=='image'")
                     i.fa.fa-download
                 a(ng-href="/share/{{item.category}}/{{item.id}}",
-                    ng-show="item.category=='note' || item.category=='code'")
+                    ng-show="item.category=='note' || item.category=='code'",
+                    popover="Edit", popover-trigger="mouseenter", 
+                    popover-placement="bottom", popover-popup-delay="750")
                     i.fa.fa-pencil
-                a(ng-href="/share/{{item.category}}/{{item.id}}",
+                a(ng-href="/share/{{item.category}}/{{item.id}}", 
+                    popover="View", popover-trigger="mouseenter", 
+                    popover-placement="bottom", popover-popup-delay="750",
                     ng-show="item.category=='shared-screen' || item.category=='shared-webcam' || item.category=='screenshot' || item.category=='image'")
                     i.fa.fa-eye

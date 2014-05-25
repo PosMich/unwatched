@@ -50,7 +50,7 @@
                 b Category: 
                 | {{item.category}}
 
-        .settings-container.image
+        .settings-container.image(ng-hide="item.path!=''")
             h4 Choose an image from you drive
             form.form-inline(role="form")
                 .form-group(ng-class="{'has-error':image_error!=''}")
@@ -60,7 +60,8 @@
                         | {{image_error}}
 
         .image-container
-            .drop-box(ng-file-drop="onFileSelect($files)", ng-hide="item.path!=''", 
+            .drop-box(ng-file-drop="onFileSelect($files)", ng-show="item.path==''", 
                 ng-file-drag-over-class="drag-over-class")
                 | or drop files here
-            img(ng-src="{{item.path}}", ng-hide="item.path==''")
+            .img(ng-hide="item.path==''")
+                img(ng-src="{{item.path}}")

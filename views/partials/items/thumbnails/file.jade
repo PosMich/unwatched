@@ -35,9 +35,15 @@
                 td {{item.created}}
 
         .item-controls.clearfix
-            a(ng-click="delete(item.id)")
+            a(ng-click="delete(item.id)", popover="Delete",
+                popover-trigger="mouseenter", popover-placement="bottom",
+                popover-popup-delay="750")
                 i.fa.fa-trash-o
-            a(ng-click="copyClipboard(item.id)")
+            a(ng-click="copyClipboard(item.id)", popover="Copy to clipboard",
+                popover-trigger="mouseenter", popover-placement="bottom",
+                popover-popup-delay="750")
                 i.fa.fa-clipboard
-            a(ng-href="{{item.path}}")
+            a(ng-href="{{item.path}}", popover="Download",
+                popover-trigger="mouseenter", popover-placement="bottom",
+                popover-popup-delay="750")
                 i.fa.fa-download
