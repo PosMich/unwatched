@@ -63,8 +63,9 @@ app.controller "MembersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "ChatStateService", "SharedItemsService", "LayoutService"
-    ($scope, ChatStateService, SharedItemsService, LayoutService) ->
+    "$scope", "ChatStateService", "SharedItemsService", "LayoutService", 
+    "$modal"
+    ($scope, ChatStateService, SharedItemsService, LayoutService, $modal) ->
         $scope.shared_items = []
 
         $scope.$watch (->
@@ -96,13 +97,42 @@ app.controller "ShareCtrl", [
                 $scope.controls.sorting.state = state
 
         $scope.delete = (item_id) ->
-            confirmation_text = "Are you sure you want to delete the item: " + 
-                SharedItemsService.get(item_id).name + "?"
-            confirmation = window.confirm(confirmation_text)
-            SharedItemsService.delete(item_id) if confirmation
+
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                console.log "item_id: " + item_id
+                SharedItemsService.delete(item_id)
+            )
+
+            # confirmation_text = "Are you sure you want to delete the item: " + 
+                # SharedItemsService.get(item_id).name + "?"
+            # confirmation = window.confirm(confirmation_text)
+            # SharedItemsService.delete(item_id) if confirmation
 
         $scope.setLayout = (layout) ->
             LayoutService.setLayout(layout)
+
+]
+
+app.controller "DeleteModalInstanceCtrl", [
+    "$scope", "$modalInstance", "item"
+    ($scope, $modalInstance, item) ->
+        $scope.item = item
+
+        $scope.ok = ->
+            $modalInstance.close()
+
+        $scope.cancel = ->
+            $modalInstance.dismiss('cancel')
 
 ]
 
