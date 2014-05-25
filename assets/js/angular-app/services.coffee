@@ -3,24 +3,33 @@
 
 "use strict"
 
-
 class RTCProvider
     @::isMaster      = true
     @::signalServer  = "wss://localhost:3001" 
     @::roomId        = null
     @::peerConnections = []
     @::signalClients   = []
-    @::masterPC    
-    setup: ->
-        @isMaster = false if @roomId is not null
+    @::signalConnection = null
+    @::masterPC         = null
+    setup: (@roomId)->
+        @isMaster = false if roomId
+        
         @setupSignalServer()
 
     setupSignalServer: ->
+        console.log "isMaster: "+@isMaster
+        console.log "1"
         @signalConnection = new WebSocket(@signalServer)
-        @signalConnection.onopen    @handleSignalOpen
-        @signalConnection.onmessage @handleSignalMessge
-        @signalConnection.onerror   @handleSignalError
-        @signalConnection.onclose   @handleSignalClose
+        console.log "2"
+        @signalConnection.onopen    =  @handleSignalOpen
+        console.log "3"
+        @signalConnection.onmessage = @handleSignalMessage
+        console.log "4"
+        @signalConnection.onerror   =  @handleSignalError
+        console.log "5"
+        @signalConnection.onclose   =  @handleSignalClose
+        console.log "6"
+        
         if @isMaster
             @signalSend type: "new"
         else
@@ -32,17 +41,22 @@ class RTCProvider
             @signalConnection.send JSON.stringify(msg)
         else
             console.log "Signalling Channel isn't ready"
+            setTimeout =>
+                @signalSend msg
+            , 25
     handleSignalOpen: (event) =>
         console.log "Signalling Channel Opened"
-    handleSignalMessage: (message) =>
+    handleSignalMessage: (event) =>
+        console.log "got message!"
         try 
-            parsedMsg = JSON.parse(message)
+            parsedMsg = JSON.parse(event.data)
 
-            if parsedMsg.type?
+            if !parsedMsg.type
                 throw new Error("message Type not defined")
 
             switch parsedMsg.type
                 when "id" # room creation successful
+                    console.log "got id: "+parsedMsg.roomId
                     @roomId = parsedMsg.roomId
                     console.log "created room"
                 when "connect"  # new client
@@ -55,9 +69,14 @@ class RTCProvider
                 when "candidate"
                     console.log "candidate"
                     # traverse peerconnections, send to corresponding peerconnection
+                else
+                    console.log "other message"
+                    console.log parsedMsg
         catch e
             console.log "wasn't able to parse message"
-
+            console.log e.message
+            console.log event
+            console.log event.data
     handleSignalError: (event) =>
         console.log "Signalling Channel Error"
         console.log event
@@ -66,9 +85,10 @@ class RTCProvider
 
 window.rtc = RTCProvider
 
-app = angular.module "unwatched.services", []
-
+###
 app.provider "RTC", RTCProvider
+###
+app = angular.module "unwatched.services", []
 
 app.value "version", "0.1"
 

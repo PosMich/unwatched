@@ -15,11 +15,10 @@ class Room
 
 class Rooms
     class Room 
-        constructor: (@is, @master) ->
+        constructor: (@id, @masterId) ->
 
     constructor: (@roomList = []) ->
     newId: ->
-        return Math.random()
         crypto.randomBytes(20).toString "hex"
     createId: ->
         id = null
@@ -32,20 +31,25 @@ class Rooms
                     exist = true
         return id
 
-    add: (master) ->
+    add: (masterId) ->
         for room in @roomList
-            return false if room.master is master 
+            return false if room.masterId is masterId 
         id = @createId()
-        @roomList.push new Room(id, master)
+        @roomList.push new Room(id, masterId)
         return true
     get: (roomId) ->
         for room in @roomList
             return room if room.id is roomId
         return 
-    getMaster: (roomId) ->
+    getMasterId: (roomId) ->
         for room in @roomList
-            return room.master if room.id is roomId
+            console.log "room: "
+            console.log room
+            return room.masterId if room.id is roomId
         return
+    getRoomId: (masterId) ->
+        for room in @roomList
+            return room.id if room.masterId is masterId
 
 
 exports.connect = (server) ->
@@ -92,7 +96,7 @@ exports.connect = (server) ->
                             # tell the master his roomId
                             wsConnection.send JSON.stringify( 
                                 type: "id"
-                                roomId: @roomId
+                                roomId: rooms.getRoomId(wsConnection.clientId)
                             )
                         else
                             logger.warn "this Client allready created a room"
@@ -103,8 +107,10 @@ exports.connect = (server) ->
 
                     when "connect" # client --> server --> master
                         logger.info "ws: got 'connect' msg"
-                        masterId = rooms.getMaster(parsedMsg.roomId)
+                        masterId = rooms.getMasterId(parsedMsg.roomId)
+                        console.log "master's id: "+masterId
                         for master in wss.clients
+                            console.log "clientId: "+master.clientId
                             if master.clientId is masterId
                                 console.log "room found"
                                 master.send JSON.stringify(
@@ -112,7 +118,8 @@ exports.connect = (server) ->
                                     clientId: wsConnection.clientId
                                 )
                                 wsConnection.masterId = master.clientId
-                        logger.info "sent connect msg"
+                                logger.info "sent connect msg"
+                                break
 
                     when "offer" # master --> client                                
                         logger.info "ws: got 'offer' msg"
