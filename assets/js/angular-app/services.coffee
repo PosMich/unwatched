@@ -154,7 +154,6 @@ app.service "SharedItemsService", [
             angular.copy item_template, item
             # item = new 
             item.id = getFirstFreeId()
-            console.log "item_id: " + item.id
 
             item.name = "Untitled " + category + " item"
 
@@ -167,7 +166,6 @@ app.service "SharedItemsService", [
 
             @items.push item
 
-            console.log @items
 
             return item
 

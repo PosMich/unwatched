@@ -56,23 +56,23 @@ app.directive "updateScrollPosition", [
 
             scope.$watch attrs.updateScrollPosition, ->
                 window.setTimeout((->
-                    $(elem).scrollTop $(elem).find("> div").height()
+                    elem.scrollTop elem.find("> div").height()
                 ), 0)
 
             angular.element($window).bind "resize", ->
                 window.setTimeout((->
-                    $(elem).scrollTop $(elem).find("> div").height()
+                    elem.scrollTop elem.find("> div").height()
                 ), 0)
 
             scope.$watch ->
                 ChatStateService.chat_state
             , ->
                 window.setTimeout((->
-                    $(elem).scrollTop $(elem).find("> div").height()
+                    elem.scrollTop elem.find("> div").height()
                 ), 0)
 
             window.setTimeout((->
-                $(elem).scrollTop $(elem).find("> div").height()
+                elem.scrollTop elem.find("> div").height()
             ), 0)
 ]
 
@@ -220,6 +220,13 @@ app.directive "resizable", [
             elem.on "resizestop", (evt, ui) ->
                 scope.callback()  if scope.callback
 
+]
+
+app.directive "resizeDetailView", [
+    "ChatStateService"
+    (ChatStateService) ->
+        link: (scope, elem, attrs) ->
+
             scope.$watch ->
                 ChatStateService.chat_state
             , (state) ->
@@ -231,7 +238,6 @@ app.directive "resizable", [
                         elem.width '100%'
                     else if state isnt 'expanded'
                         elem.width '60%'
-                    elem.resizable('option', 'maxWidth', width)
                 ), 0)
 
 ]
@@ -250,4 +256,21 @@ app.directive "inlineEdit", ->
             scope.disabled = false
             scope.$apply()
             element.find("input").focus()
+
+app.directive "resizeModal", [
+    "ChatStateService"
+    (ChatStateService) ->
+        link: (scope, element, attrs) ->
+
+            resize = ->
+                width = "100%"
+                width = "50%" if ChatStateService.chat_state is 'expanded'
+                element.parent().parent().parent().width width
+            
+            scope.$watch ->
+                ChatStateService.chat_state
+            , ->
+                resize()
+
+]
 

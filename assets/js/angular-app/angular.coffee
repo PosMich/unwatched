@@ -96,6 +96,15 @@ app.config [
             controller: "ScreenshotCtrl"
 
         # ***
+        # * <h3>route `/share/note`</h3>
+        # > loads an empty note item to edit and share it
+        # >
+        # > load NoteCtrl
+        $routeProvider.when "/share/note",
+            templateUrl: "/partials/items/note.html"
+            controller: "NoteCtrl"
+
+        # ***
         # * <h3>route `/share/note/:id`</h3>
         # > loads a specific shared note by the given id
         # >
