@@ -15,10 +15,9 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-    "$scope"
-    # , "RTC"
+    "$scope" #, "RTC"
     ($scope) ->
-        # , RTCProvider
+    #, RTCProvider) ->
         # console.log RTCProvider
         # console.log "index ctrl here"
         # $scope.submitCreateRoom = ->

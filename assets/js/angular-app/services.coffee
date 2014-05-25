@@ -3,72 +3,93 @@
 
 "use strict"
 
+class RTCProvider
+    @::isMaster      = true
+    @::signalServer  = "wss://localhost:3001" 
+    @::roomId        = null
+    @::peerConnections = []
+    @::signalClients   = []
+    @::signalConnection = null
+    @::masterPC         = null
+    setup: (@roomId)->
+        @isMaster = false if roomId
+        
+        @setupSignalServer()
 
-# class RTCProvider
-#     @::isMaster      = true
-#     @::signalServer  = "wss://localhost:3001" 
-#     @::roomId        = null
-#     @::peerConnections = []
-#     @::signalClients   = []
-#     @::masterPC    
-#     setup: ->
-#         @isMaster = false if @roomId is not null
-#         @setupSignalServer()
+    setupSignalServer: ->
+        console.log "isMaster: "+@isMaster
+        console.log "1"
+        @signalConnection = new WebSocket(@signalServer)
+        console.log "2"
+        @signalConnection.onopen    =  @handleSignalOpen
+        console.log "3"
+        @signalConnection.onmessage = @handleSignalMessage
+        console.log "4"
+        @signalConnection.onerror   =  @handleSignalError
+        console.log "5"
+        @signalConnection.onclose   =  @handleSignalClose
+        console.log "6"
+        
+        if @isMaster
+            @signalSend type: "new"
+        else
+            @signalSend 
+                type: "connect"
+                roomId: @roomId
+    signalSend: (msg) ->
+        if @signalConnection.readyState is 1
+            @signalConnection.send JSON.stringify(msg)
+        else
+            console.log "Signalling Channel isn't ready"
+            setTimeout =>
+                @signalSend msg
+            , 25
+    handleSignalOpen: (event) =>
+        console.log "Signalling Channel Opened"
+    handleSignalMessage: (event) =>
+        console.log "got message!"
+        try 
+            parsedMsg = JSON.parse(event.data)
 
-#     setupSignalServer: ->
-#         @signalConnection = new WebSocket(@signalServer)
-#         @signalConnection.onopen    @handleSignalOpen
-#         @signalConnection.onmessage @handleSignalMessge
-#         @signalConnection.onerror   @handleSignalError
-#         @signalConnection.onclose   @handleSignalClose
-#         if @isMaster
-#             @signalSend type: "new"
-#         else
-#             @signalSend 
-#                 type: "connect"
-#                 roomId: @roomId
-#     signalSend: (msg) ->
-#         if @signalConnection.readyState is 1
-#             @signalConnection.send JSON.stringify(msg)
-#         else
-#             console.log "Signalling Channel isn't ready"
-#     handleSignalOpen: (event) =>
-#         console.log "Signalling Channel Opened"
-#     handleSignalMessage: (message) =>
-#         try 
-#             parsedMsg = JSON.parse(message)
+            if !parsedMsg.type
+                throw new Error("message Type not defined")
 
-#             if parsedMsg.type?
-#                 throw new Error("message Type not defined")
+            switch parsedMsg.type
+                when "id" # room creation successful
+                    console.log "got id: "+parsedMsg.roomId
+                    @roomId = parsedMsg.roomId
+                    console.log "created room"
+                when "connect"  # new client
+                    console.log "client want's to connect"
+                    signallingId = parsedMsg.clientId
+                    # create new PeerConnection, assign internal ClientId
+                when "answer"
+                    console.log "answer"
+                    # traverse peerconnections, send to corresponding peerconnection
+                when "candidate"
+                    console.log "candidate"
+                    # traverse peerconnections, send to corresponding peerconnection
+                else
+                    console.log "other message"
+                    console.log parsedMsg
+        catch e
+            console.log "wasn't able to parse message"
+            console.log e.message
+            console.log event
+            console.log event.data
+    handleSignalError: (event) =>
+        console.log "Signalling Channel Error"
+        console.log event
+    handleSignalClose: (event) =>
+        console.log "Signalling Channel Closed"
 
-#             switch parsedMsg.type
-#                 when "id" # room creation successful
-#                     @roomId = parsedMsg.roomId
-#                     console.log "created room"
-#                 when "connect"  # new client
-#                     console.log "client want's to connect"
-#                     signallingId = parsedMsg.clientId
-#                     # create new PeerConnection, assign internal ClientId
-#                 when "answer"
-#                     console.log "answer"
-#                     # traverse peerconnections, send to corresponding peerconnection
-#                 when "candidate"
-#                     console.log "candidate"
-#                     # traverse peerconnections, send to corresponding peerconnection
-#         catch e
-#             console.log "wasn't able to parse message"
+window.rtc = RTCProvider
 
-#     handleSignalError: (event) =>
-#         console.log "Signalling Channel Error"
-#         console.log event
-#     handleSignalClose: (event) =>
-#         console.log "Signalling Channel Closed"
-
-# window.rtc = RTCProvider
-
+###
+app.provider "RTC", RTCProvider
+###
 app = angular.module "unwatched.services", []
 
-# app.provider "RTC", RTCProvider
 
 app.value "version", "0.1"
 
