@@ -83,8 +83,8 @@ exports.connect = (server) ->
                 if !parsedMsg.type
                     throw new Error("msg.type not defined!")
 
-                switch parsedMsg.type
-                    when "new"
+                switch parsedMsg.type 
+                    when "new" # master --> server
                         logger.info "ws: got 'new' msg"
 
                         if rooms.add(wsConnection.clientId)
@@ -92,7 +92,7 @@ exports.connect = (server) ->
                             # tell the master his roomId
                             wsConnection.send JSON.stringify( 
                                 type: "id"
-                                value: @roomId
+                                roomId: @roomId
                             )
                         else
                             logger.warn "this Client allready created a room"
@@ -100,18 +100,20 @@ exports.connect = (server) ->
                                 type: "error"
                                 message: "allready created a room"
                             )
-                    when "connect"
+
+                    when "connect" # client --> server --> master
                         logger.info "ws: got 'connect' msg"
-                        masterId = rooms.getMaster(parsedMsg.id)
-                        for client in wss.clients
-                            if client.clientId is masterId
+                        masterId = rooms.getMaster(parsedMsg.roomId)
+                        for master in wss.clients
+                            if master.clientId is masterId
                                 console.log "room found"
-                                client.send JSON.stringify(
+                                master.send JSON.stringify(
                                     type: "connect"
                                     clientId: wsConnection.clientId
                                 )
-                                wsConnection.masterId = client.clientId
+                                wsConnection.masterId = master.clientId
                         logger.info "sent connect msg"
+
                     when "offer" # master --> client                                
                         logger.info "ws: got 'offer' msg"
                         for client in wss.clients
@@ -119,12 +121,15 @@ exports.connect = (server) ->
                                 client.send JSON.stringify(parsedMsg.data)
                                 logger.info "offer sent to client"
                                 break
-                    # client --> master                                           
-                    when "answer" 
+                                                          
+                    when "answer" # client --> master     
                         logger.info "ws: got 'answer' msg"
                         for master in wss.clients
                             if master.clientId is wsConnection.masterId
-                                master.send msg
+                                master.send JSON.stringify(
+                                    clientId: wsConnection.clientId
+                                    data: msg
+                                )
                                 logger.info "answer sent to master"
                                 break
 
@@ -137,7 +142,10 @@ exports.connect = (server) ->
                         else #msg is from client
                             for master in wss.clients
                                 if master.clientId is wsConnection.masterId
-                                    master.send msg
+                                    master.send JSON.stringify(
+                                        clientId: wsConnection.clientId
+                                        data: msg
+                                    )
                     else
                         logger.warn "type?"
             catch error

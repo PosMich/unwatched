@@ -29,9 +29,9 @@ app.config [
     "RTCProvider"
     ($routeProvider, $locationProvider, RTCProvider) ->
     
-        RTCProvider.setName "Alibert"
-        RTCProvider.setSignalServer "wss://localhost"
-    
+        #RTCProvider.setName "Alibert"
+        #RTCProvider.setSignalServer "wss://localhost"
+        
     
 
         $locationProvider.html5Mode true
