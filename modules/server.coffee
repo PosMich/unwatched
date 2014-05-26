@@ -43,7 +43,7 @@ routes.route app
 routesAPI.route app
 
 app.start = ->
-    
+
     logger.info "server started"
     # create dummy server, should be replaced with a reverse proxy or similar
     http = http.createServer( (req, res) ->
@@ -52,14 +52,14 @@ app.start = ->
         res.end()
     )
 
-    https = https.createServer(    
+    https = https.createServer(
         key: fs.readFileSync config.ssl.key
         cert: fs.readFileSync config.ssl.cert
     , app)
 
     http.listen config.port.http
     https.listen config.port.https
-    
+
     signalling.connect https
     return
 module.exports = app

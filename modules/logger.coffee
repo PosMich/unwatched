@@ -3,6 +3,8 @@ require "winston-logio"
 
 config = require "./userconfig"
 
+# logger consumes a lot cpu, y???
+# --> when logio isn't running..... check winstont-logio for reasons
 
 logger = new (winston.Logger)(transports: [
     new (winston.transports.Console)(
@@ -43,6 +45,8 @@ logger = new (winston.Logger)(transports: [
     )
 ])
 
+
+
 logger.handleExceptions new (winston.transports.File)(
     filename: config.log.dir+config.log.files.exception
     name: "exceptions"
@@ -50,6 +54,8 @@ logger.handleExceptions new (winston.transports.File)(
     handleExceptions: true
     json: true
 )
+
+logger.level = "error"
 
 logger.exitOnError = false
 

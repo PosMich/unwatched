@@ -13,6 +13,7 @@ class RTCService
             @::id = null
             @::connection = null
             @::signaller = null
+            @::debug = false
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
                     iceServers: [
@@ -27,14 +28,12 @@ class RTCService
                 )
                 @connection.onicecandidate = @handleOwnIce
 
-                @connection.onconnecting = @onConnecting
-                @connection.onopen = ->
-                    console.log "aodsifhrüjgöowaijgraoiwhjü9gr8j"
-                #@onOpen
+
+                @connection.onnegotiationneeded = @handleNegotiation
+                @connection.onsignalingstatechange = @handleStateChange
 
                 @connection.onaddstream = @onAddStream
                 @connection.onremovestream = @onRemoveStream
-
 
                 try
                     @dataChannel = @connection.createDataChannel "control",
@@ -47,9 +46,9 @@ class RTCService
                     console.log "error creating Data Channel"
                     console.log error.message
 
-                @createOffer()
+                #@createOffer()
             handleOwnIce: (event) =>
-                console.log "handleOwnIce"
+                console.log "handleOwnIce" if @debug
                 if event.candidate
                     @signaller.signalSend
                         type: "candidate"
@@ -60,44 +59,35 @@ class RTCService
                 else
                     console.log "end of candidates"
             createOffer: -> # send to client
-                console.log "create offer"
+                console.log "create offer" if @debug
                 @connection.createOffer (description) =>
                     @connection.setLocalDescription description
                     description.clientId = @id
                     @signaller.signalSend description
             handleAnswer: (answer) -> # recieved from client
-                console.log "handle answer"
-                console.log answer
+                console.log "handle answer" if @debug
+                console.log answer if @debug
                 @connection.setRemoteDescription new RTCSessionDescription(
                     answer
                 )
             handleIce: (ice) ->
-                console.log "handleIce"
+                console.log "handleIce" if @debug
                 @connection.addIceCandidate new RTCIceCandidate(
                     sdpMLineIndex: ice.label
                     candidate: ice.candidate
                 )
-            onConnecting: ->
-                console.log "connecting"
-            onOpen: ->
-                console.log "open"
-                try
-                    @dataChannel = @peerConnection.createDataChannel "control",
-                        reliable: false
-                    @dataChannel.onmessage = @DChandleMessage
-                    @dataChannel.onerror   = @DChandleError
-                    @dataChannel.onopen    = @DChandleOpen
-                    @dataChannel.onclose   = @DChandleClose
-                catch error
-                    console.log "error creating Data Channel"
-                    console.log error.message
+            handleNegotiation: =>
+                console.log "handleNegotiation" if @debug
+                @createOffer()
+            handleStateChange: ->
+                console.log "handle state change" if @debug
             onAddStream: ->
-                console.log "onAddStream"
+                console.log "onAddStream" if @debug
             onRemoveStream: ->
-                console.log "onRemoveStream"
+                console.log "onRemoveStream" if @debug
             DChandleMessage: (msg) =>
-                console.log "got a message from DC"
-                console.log msg
+                console.log "got a message from DC" if @debug
+                console.log msg if @debug
                 parsedMsg = JSON.parse(msg.data)
 
                 switch parsedMsg.type
@@ -107,12 +97,12 @@ class RTCService
                         console.log "DChandle: unknown msg"
 
             DChandleError: (error) ->
-                console.log "got an DC error!"
-                console.log error
+                console.log "got an DC error!" if @debug
+                console.log error if @debug
             DChandleOpen: ->
-                console.log "DC is open!"
+                console.log "DC is open!" if @debug
             DChandleClose: ->
-                console.log "DC is closed!"
+                console.log "DC is closed!" if @debug
             DCsend: (message) ->
                 @dataChannel.send JSON.stringify(message)
             sendBroadcastMessage: (message) ->
@@ -123,7 +113,7 @@ class RTCService
                 @signaller.handleBroadcastMessage message, @id
 
         constructor: ->
-            console.log "setup"
+            console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
             @signalConnection.onmessage = @handleSignalMessage
@@ -142,7 +132,7 @@ class RTCService
         handleSignalOpen: (event) ->
             console.log "Signalling Channel Opened"
         handleSignalMessage: (event) =>
-            console.log "got message!"
+            console.log "got message!" if @debug
             try
                 parsedMsg = JSON.parse(event.data)
 
@@ -157,27 +147,24 @@ class RTCService
 
             switch parsedMsg.type
                 when "id" # room creation successful
-                    console.log "got id: " + parsedMsg.roomId
+                    console.log "got id: " + parsedMsg.roomId if @debug
                     @roomId = parsedMsg.roomId
-                    console.log "created room"
+                    console.log "created room: " + parsedMsg.roomId
                 when "connect"  # new client
-                    console.log "client want's to connect"
-                    # create new peerconnection
-                    # @peerConnections.push new RTConnection(@,
-                    # parsedMsg.clientId, @isMaster)
+                    console.log "client want's to connect"  if @debug
                     @signallingClients.push new SlaveRTC(@, parsedMsg.clientId)
 
                 when "answer"
                     for slave in @signallingClients
                         if slave.id is parsedMsg.clientId
                             slave.handleAnswer parsedMsg
-                            console.log "answer"
+                            console.log "answer" if @debug
                             return
                 when "candidate"
                     for slave in @signallingClients
                         if slave.id is parsedMsg.clientId
                             slave.handleIce parsedMsg
-                            console.log "candidate for client"
+                            console.log "candidate for client" if @debug
                             break
                 else
                     console.log "other message"
@@ -193,14 +180,16 @@ class RTCService
                 client.sendBroadcastMessage( message )
         handleBroadcastMessage: (message, sender) ->
             # send to all, except sender!
-            console.log "handle message"
-            console.log message
-            console.log "from sender: " + sender
+            if @debug
+                console.log "handle message"
+                console.log message
+                console.log "from sender: " + sender
             for client in @signallingClients
                 continue if client.id is sender
                 message.clientId = sender
-                console.log "should send"
-                console.log message
+                if @debug
+                    console.log "should send"
+                    console.log message
                 client.sendBroadcastMessage( message )
             # send to listener
             for listener in @listeners
@@ -216,8 +205,9 @@ class RTCService
         @::id           = null
         @::connection   = null
         @::listeners    = []
+        @::debug        = false
         constructor: (@roomId) ->
-            console.log "setup"
+            console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
             @signalConnection.onmessage = @handleSignalMessage
@@ -237,8 +227,8 @@ class RTCService
             )
             @connection.onicecandidate = @handleOwnIce
 
-            @connection.onconnecting = @onConnecting
-            @connection.onopen = @onOpen
+            @connection.onnegotiationneeded = @handleNegotiation
+            @connection.onsignalingstatechange = @handleStateChange
 
             @connection.onaddstream = @onAddStream
             @connection.onremovestream = @onRemoveStream
@@ -260,7 +250,7 @@ class RTCService
         handleSignalOpen: (event) ->
             console.log "Signalling Channel Opened"
         handleSignalMessage: (event) =>
-            console.log "got message!"
+            console.log "got message!" if @debug
             try
                 parsedMsg = JSON.parse(event.data)
 
@@ -269,7 +259,7 @@ class RTCService
 
                 switch parsedMsg.type
                     when "id" # room creation successful
-                        console.log "got id: " + parsedMsg.clientId
+                        console.log "got id: " + parsedMsg.clientId if @debug
                         @id = parsedMsg.clientId
 
                     when "offer"
@@ -291,7 +281,7 @@ class RTCService
         handleSignalClose: (event) ->
             console.log "Signalling Channel Closed"
         handleOwnIce: (event) =>
-            console.log "handleOwnIce"
+            console.log "handleOwnIce" if @debug
             if event.candidate
                 @signalSend
                     type: "candidate"
@@ -302,27 +292,27 @@ class RTCService
             else
                 console.log "end of candidates"
         handleIce: (ice) ->
-            console.log "handleIce"
+            console.log "handleIce" if @debug
             @connection.addIceCandidate new RTCIceCandidate(
                 sdpMLineIndex: ice.label
                 candidate: ice.candidate
             )
         handleOffer: (offer) =>
-            console.log "handle offer"
+            console.log "handle offer" if @debug
             @connection.setRemoteDescription new RTCSessionDescription(offer)
             @createAnswer()
         createAnswer: ->
-            console.log "create answer"
+            console.log "create answer" if @debug
             @connection.createAnswer (description) =>
                 @connection.setLocalDescription description
                 description.clientId = @id
-                console.log @id
-                console.log "answer sent?"
+                console.log @id if @debug
+                console.log "answer sent?" if @debug
                 @signalSend description
-        onConnecting: ->
-            console.log "connecting"
-        onOpen: ->
-            console.log "opened"
+        handleNegotiation: ->
+            console.log "handleNegotiation"
+        handleStateChange: ->
+            console.log "stateChange"
         onAddStream: ->
             console.log "stream added"
         onRemoveStream: ->
@@ -336,8 +326,9 @@ class RTCService
             @dataChannel.onclose   = @DChandleClose
 
         DChandleMessage: (msg) =>
-            console.log "got a message from DC"
-            console.log msg
+            if @debug
+                console.log "got a message from DC"
+                console.log msg
             parsedMsg = JSON.parse(msg.data)
             switch parsedMsg.type
                 when "broadcast"
