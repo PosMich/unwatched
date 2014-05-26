@@ -74,7 +74,7 @@ app.controller "MembersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "ChatStateService", "SharedItemsService", "LayoutService", 
+    "$scope", "ChatStateService", "SharedItemsService", "LayoutService",
     "$modal", "StreamService"
     ($scope, ChatStateService, SharedItemsService, LayoutService, $modal,
         StreamService) ->
@@ -153,7 +153,7 @@ app.controller "ImageCtrl", [
     "$modal"
     ($scope, $routeParams, SharedItemsService, $location, $filter
         $modal) ->
-        
+
         $scope.item = {}
 
         if !$routeParams.id?
@@ -170,16 +170,16 @@ app.controller "ImageCtrl", [
                 file = $files[0]
 
                 if !(/image\/(gif|jpeg|png)$/i).test(file.type.toString())
-                    $scope.image_error = "The file you have coosen has a wrong" +
-                        " MIME-Type (it has: " + file.type.toString() + 
+                    $scope.image_error = "The file you have coosen has a " +
+                        "wrong MIME-Type (it has: " + file.type.toString() +
                         "). Please try it again with an image."
                     return
                 $scope.image_error = ""
 
                 $scope.item.size = file.size
-                $scope.item.created = $filter("date")(file.lastModifiedDate, 
+                $scope.item.created = $filter("date")(file.lastModifiedDate,
                     "dd.MM.yyyy H:mm")
-                $scope.item.uploaded = $filter("date")(new Date(), 
+                $scope.item.uploaded = $filter("date")(new Date(),
                     "dd.MM.yyyy H:mm")
                 $scope.item.name = file.name
                 $scope.item_name = file.name
@@ -192,8 +192,8 @@ app.controller "ImageCtrl", [
                     $scope.item.path = e.target.result
                     img.src = e.target.result
 
-                    img.onload = ->                        
-                        
+                    img.onload = ->
+
                         max_width = 300
                         width = img.width
                         height = img.height
@@ -208,7 +208,9 @@ app.controller "ImageCtrl", [
                         ctx = canvas.getContext "2d"
                         ctx.drawImage( img, 0, 0, width, height )
 
-                        $scope.item.thumbnail = canvas.toDataURL( $scope.item.mime_type )
+                        $scope.item.thumbnail = canvas.toDataURL(
+                            $scope.item.mime_type
+                        )
 
                     $scope.$apply()
 
@@ -248,7 +250,7 @@ app.controller "FileCtrl", [
     "$modal"
     ($scope, $routeParams, SharedItemsService, $location, $filter
         $modal) ->
-        
+
         $scope.item = {}
 
         if !$routeParams.id?
@@ -267,7 +269,7 @@ app.controller "FileCtrl", [
                 $scope.item.size = $scope.file.source.size
                 $scope.item.created = $filter("date")(
                     $scope.file.source.lastModifiedDate, "dd.MM.yyyy H:mm")
-                $scope.item.uploaded = $filter("date")(new Date(), 
+                $scope.item.uploaded = $filter("date")(new Date(),
                     "dd.MM.yyyy H:mm")
 
                 $scope.item.name = $scope.file.source.name
@@ -287,17 +289,20 @@ app.controller "FileCtrl", [
 
                     # console.log file
 
-                    window.requestFileSystem  = window.requestFileSystem || 
+                    window.requestFileSystem  = window.requestFileSystem ||
                         window.webkitRequestFileSystem
 
-                    window.requestFileSystem(window.TEMPORARY, 10*1024*1024, 
-                        onInitFs, onErrorFs)
+                    window.requestFileSystem window.TEMPORARY,
+                        10 * 1024 * 1024,
+                        onInitFs,
+                        onErrorFs,
+
 
                 reader.onprogress = (e) ->
                     $scope.file.show_progress = true
                     $scope.$apply()
                     percentLoaded = Math.round((e.loaded / e.total) * 100)
-                    $scope.file.progress = percentLoaded                        
+                    $scope.file.progress = percentLoaded
 
                 reader.readAsDataURL $scope.file.source
 
@@ -306,8 +311,8 @@ app.controller "FileCtrl", [
                 console.log "created file-system " + fs.name + ":"
                 console.log fs
 
-                fs.root.getFile( $scope.item.name, 
-                    { create: true, exclusive: false }, onCreateFile, 
+                fs.root.getFile( $scope.item.name,
+                    { create: true, exclusive: false }, onCreateFile,
                     onErrorCreateFile )
 
             onErrorFs = (error) ->
@@ -386,10 +391,10 @@ app.controller "NoteCtrl", [
                     col = e.level.bookmark.start[0]
                     row = e.level.bookmark.start[2]
                     # update thumbnail
-                    $scope.item.thumbnail.content = 
+                    $scope.item.thumbnail.content =
                         e.level.content.substr(0, 300)
                     # update last edited date
-                    $scope.item.last_edited = 
+                    $scope.item.last_edited =
                         $filter("date")(new Date(), "dd.MM.yyyy H:mm")
 
         }
@@ -422,11 +427,11 @@ app.controller "NoteCtrl", [
 ]
 
 app.controller "CodeCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "ChatStateService", 
+    "$scope", "$routeParams", "SharedItemsService", "ChatStateService",
     "available_extensions", "font_sizes", "ace_themes", "$location",
     "AceSettingsService", "$modal"
-    ($scope, $routeParams, SharedItemsService, ChatStateService, 
-        available_extensions, font_sizes, ace_themes, $location, 
+    ($scope, $routeParams, SharedItemsService, ChatStateService,
+        available_extensions, font_sizes, ace_themes, $location,
         AceSettingsService, $modal) ->
 
         # init ace editor
@@ -572,7 +577,7 @@ app.controller "CodeCtrl", [
 app.controller "ScreenshotCtrl", [
     "$scope", "$routeParams", "SharedItemsService", "$modal", "$location"
     ($scope, $routeParams, SharedItemsService, $modal, $location) ->
-        
+
         $scope.item = {}
 
         if $routeParams.id?
@@ -605,7 +610,7 @@ app.controller "ScreenCtrl", [
     "$modal", "StreamService"
     ($scope, $routeParams, SharedItemsService, $location, $filter
         $modal, StreamService) ->
-        
+
         $scope.item = {}
 
         if !$routeParams.id?
@@ -641,7 +646,7 @@ app.controller "WebcamCtrl", [
     "$modal", "StreamService"
     ($scope, $routeParams, SharedItemsService, $location, $filter
         $modal, StreamService) ->
-        
+
         $scope.item = {}
 
         if !$routeParams.id?
@@ -689,7 +694,7 @@ app.controller "ChatCtrl", [
             ChatService.messages
         , (value) ->
             console.log "blubb"
-            $scope.chat.messages = value 
+            $scope.chat.messages = value
         , true
         ###
         $scope.chat.messages = [
@@ -853,7 +858,7 @@ dummy_items = [
         category: "code"
         thumbnail: "<!doctype html>\n     <html " +
             "lang=\"en\">"
-        content: 
+        content:
             '!doctype html>\n' +
                 '<html lang="en">\n' +
                     '\t<head>\n' +
@@ -901,14 +906,14 @@ dummy_items = [
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "for j in 1..5 do\n" + 
+        thumbnail: "for j in 1..5 do\n" +
             "     for i in 1..5 do\n" +
             "         print i, \" \"\n" +
             "         break if i == 2\n" +
             "     end\n" +
             "end"
-        content: 'for j in 1..5 do\n' + 
-            '\tfor i in 1..5 do\n' + 
+        content: 'for j in 1..5 do\n' +
+            '\tfor i in 1..5 do\n' +
             '\t\tprint i,  " "\n' +
             '\t\tbreak if i == 2\n' +
             '\tend\n' +

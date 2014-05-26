@@ -126,14 +126,14 @@ app.directive "rearangeContainer", [
 
             rearange = (elem, attrs) ->
                 $container = $(".view-frame")
-          
+
                 if scope.chat.state is "expanded"
                     $container.addClass("chat-expanded")
                     $container.removeClass("chat-compressed")
                 else
                     $container.addClass("chat-compressed")
                     $container.removeClass("chat-expanded")
-            
+
 
             scope.$watch attrs.rearangeContainer, ->
                 rearange()
@@ -184,7 +184,7 @@ app.directive "fitItemHeight", [
                 window.setTimeout((->
                     fitHeight(elem, attrs)
                 ), 0)
-          
+
             angular.element($window).bind "resize", ->
                 fitHeight(elem, attrs)
 
@@ -267,7 +267,7 @@ app.directive "resizeModal", [
                 width = "100%"
                 width = "50%" if ChatStateService.chat_state is 'expanded'
                 element.parent().parent().parent().width width
-            
+
             scope.$watch ->
                 ChatStateService.chat_state
             , ->
@@ -280,9 +280,8 @@ app.directive "screen", [
     (StreamService) ->
 
         link: (scope, element, attrs) ->
-
-            navigator.getUserMedia = 
-                navigator.webkitGetUserMedia || 
+            navigator.getUserMedia =
+                navigator.webkitGetUserMedia ||
                 navigator.mozGetUserMedia ||
                 navigator.getUserMedia
 
@@ -294,24 +293,24 @@ app.directive "screen", [
             errorCallback = (error) ->
                 console.log('Failed.', error)
 
-            requestUserMedia = () ->
+            requestUserMedia = ->
 
                 maxWidth = 1280
                 maxHeight = 720
-                    
+
                 userMediaOptions = {
                     audio: false
                     video: {
                         mandatory: {
                             chromeMediaSource: 'screen'
                             maxWidth: maxWidth
-                            maxHeight: maxHeight    
+                            maxHeight: maxHeight
                         }
                     }
                 }
 
                 if navigator.getUserMedia?
-                    navigator.getUserMedia(userMediaOptions, 
+                    navigator.getUserMedia(userMediaOptions,
                         successCallback, errorCallback)
 
             element.on "click", ->
@@ -325,8 +324,8 @@ app.directive "webcam", [
 
         link: (scope, element, attrs) ->
 
-            navigator.getUserMedia = 
-                navigator.webkitGetUserMedia || 
+            navigator.getUserMedia =
+                navigator.webkitGetUserMedia ||
                 navigator.mozGetUserMedia ||
                 navigator.getUserMedia
 
@@ -338,18 +337,18 @@ app.directive "webcam", [
             errorCallback = (error) ->
                 console.log('Failed.', error)
 
-            requestUserMedia = () ->
+            requestUserMedia = ->
 
                 maxWidth = 1280
                 maxHeight = 720
-                    
+
                 userMediaOptions = {
                     audio: false
                     video: true
                 }
 
                 if navigator.getUserMedia?
-                    navigator.getUserMedia(userMediaOptions, 
+                    navigator.getUserMedia(userMediaOptions,
                         successCallback, errorCallback)
 
             element.on "click", ->

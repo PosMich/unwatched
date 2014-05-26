@@ -27,13 +27,13 @@ app.config [
     "$routeProvider"
     "$locationProvider"
     #"RTCProvider"
-    ($routeProvider, $locationProvider)->
+    ($routeProvider, $locationProvider) ->
     #, RTCProvider) ->
-    
+
         #RTCProvider.setName "Alibert"
         #RTCProvider.setSignalServer "wss://localhost"
-        
-    
+
+
 
         $locationProvider.html5Mode true
         $locationProvider.hashPrefix "!"

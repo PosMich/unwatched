@@ -5,7 +5,7 @@
 class RTCService
     @::listeners = []
     class Master
-        @::signalServer     = "wss://10.0.0.10:3001" 
+        @::signalServer     = "wss://localhost:3001"
         @::roomId           = null
         @::signallingClients = []
         @::listeners = []
@@ -13,7 +13,7 @@ class RTCService
             @::id = null
             @::connection = null
             @::signaller = null
-            constructor: (@signaller, @id)->
+            constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
                     iceServers: [
                         url: "stun:stun.l.google.com:19302"
@@ -26,10 +26,10 @@ class RTCService
                     ]
                 )
                 @connection.onicecandidate = @handleOwnIce
-                
+
                 @connection.onconnecting = @onConnecting
-                @connection.onopen = -> 
-                    console.log "aodsifhrüjgöowaijgraoiwhjü9gr8j" 
+                @connection.onopen = ->
+                    console.log "aodsifhrüjgöowaijgraoiwhjü9gr8j"
                 #@onOpen
 
                 @connection.onaddstream = @onAddStream
@@ -37,7 +37,8 @@ class RTCService
 
 
                 try
-                    @dataChannel = @connection.createDataChannel("control",  reliable: false)
+                    @dataChannel = @connection.createDataChannel "control",
+                        reliable: false
                     @dataChannel.onmessage = @DChandleMessage
                     @dataChannel.onerror   = @DChandleError
                     @dataChannel.onopen    = @DChandleOpen
@@ -64,22 +65,25 @@ class RTCService
                     @connection.setLocalDescription description
                     description.clientId = @id
                     @signaller.signalSend description
-            handleAnswer: (answer)-> # recieved from client
+            handleAnswer: (answer) -> # recieved from client
                 console.log "handle answer"
                 console.log answer
-                @connection.setRemoteDescription new RTCSessionDescription(answer)
+                @connection.setRemoteDescription new RTCSessionDescription(
+                    answer
+                )
             handleIce: (ice) ->
                 console.log "handleIce"
                 @connection.addIceCandidate new RTCIceCandidate(
                     sdpMLineIndex: ice.label
                     candidate: ice.candidate
                 )
-            onConnecting: =>
+            onConnecting: ->
                 console.log "connecting"
-            onOpen: =>
+            onOpen: ->
                 console.log "open"
                 try
-                    @dataChannel = @peerConnection.createDataChannel("control",  reliable: false)
+                    @dataChannel = @peerConnection.createDataChannel "control",
+                        reliable: false
                     @dataChannel.onmessage = @DChandleMessage
                     @dataChannel.onerror   = @DChandleError
                     @dataChannel.onopen    = @DChandleOpen
@@ -87,9 +91,9 @@ class RTCService
                 catch error
                     console.log "error creating Data Channel"
                     console.log error.message
-            onAddStream: =>
+            onAddStream: ->
                 console.log "onAddStream"
-            onRemoveStream: =>
+            onRemoveStream: ->
                 console.log "onRemoveStream"
             DChandleMessage: (msg) =>
                 console.log "got a message from DC"
@@ -101,18 +105,18 @@ class RTCService
                         @handleBroadcastMessage( parsedMsg.message )
                     else
                         console.log "DChandle: unknown msg"
-                
-            DChandleError: (error)=>
+
+            DChandleError: (error) ->
                 console.log "got an DC error!"
                 console.log error
-            DChandleOpen: =>
+            DChandleOpen: ->
                 console.log "DC is open!"
-            DChandleClose: =>
+            DChandleClose: ->
                 console.log "DC is closed!"
             DCsend: (message) ->
                 @dataChannel.send JSON.stringify(message)
             sendBroadcastMessage: (message) ->
-                @DCsend 
+                @DCsend
                     type: "broadcast"
                     message: message
             handleBroadcastMessage: (message) ->
@@ -125,7 +129,7 @@ class RTCService
             @signalConnection.onmessage = @handleSignalMessage
             @signalConnection.onerror   = @handleSignalError
             @signalConnection.onclose   = @handleSignalClose
-            
+
             @signalSend type: "new"
         signalSend: (msg) ->
             if @signalConnection.readyState is 1
@@ -135,11 +139,11 @@ class RTCService
                 setTimeout =>
                     @signalSend msg
                 , 25
-        handleSignalOpen: (event) =>
+        handleSignalOpen: (event) ->
             console.log "Signalling Channel Opened"
         handleSignalMessage: (event) =>
             console.log "got message!"
-            try 
+            try
                 parsedMsg = JSON.parse(event.data)
 
                 if !parsedMsg.type
@@ -150,16 +154,17 @@ class RTCService
                 console.log e.message
                 console.log event
                 console.log event.data
-            
+
             switch parsedMsg.type
                 when "id" # room creation successful
-                    console.log "got id: "+parsedMsg.roomId
+                    console.log "got id: " + parsedMsg.roomId
                     @roomId = parsedMsg.roomId
                     console.log "created room"
                 when "connect"  # new client
                     console.log "client want's to connect"
                     # create new peerconnection
-                    #@peerConnections.push new RTConnection(@, parsedMsg.clientId, @isMaster)
+                    # @peerConnections.push new RTConnection(@,
+                    # parsedMsg.clientId, @isMaster)
                     @signallingClients.push new SlaveRTC(@, parsedMsg.clientId)
 
                 when "answer"
@@ -177,10 +182,10 @@ class RTCService
                 else
                     console.log "other message"
                     console.log parsedMsg
-        handleSignalError: (event) =>
+        handleSignalError: (event) ->
             console.log "Signalling Channel Error"
             console.log event
-        handleSignalClose: (event) =>
+        handleSignalClose: (event) ->
             console.log "Signalling Channel Closed"
         sendBroadcastMessage: (message) ->
             for client in @signallingClients
@@ -190,7 +195,7 @@ class RTCService
             # send to all, except sender!
             console.log "handle message"
             console.log message
-            console.log "from sender: "+sender
+            console.log "from sender: " + sender
             for client in @signallingClients
                 continue if client.id is sender
                 message.clientId = sender
@@ -206,19 +211,19 @@ class RTCService
 
     # only 1 pc to the server
     class Slave
-        @::signalServer = "wss://10.0.0.10:3001" 
+        @::signalServer = "wss://localhost:3001"
         @::roomId       = null
         @::id           = null
         @::connection   = null
         @::listeners    = []
-        constructor: (@roomId)->
+        constructor: (@roomId) ->
             console.log "setup"
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
             @signalConnection.onmessage = @handleSignalMessage
             @signalConnection.onerror   = @handleSignalError
             @signalConnection.onclose   = @handleSignalClose
-             
+
             @connection = new RTCPeerConnection(
                 iceServers: [
                     url: "stun:stun.l.google.com:19302"
@@ -231,7 +236,7 @@ class RTCService
                 ]
             )
             @connection.onicecandidate = @handleOwnIce
-            
+
             @connection.onconnecting = @onConnecting
             @connection.onopen = @onOpen
 
@@ -240,7 +245,7 @@ class RTCService
 
             @connection.ondatachannel = @gotDataChannel
 
-            @signalSend 
+            @signalSend
                 type: "connect"
                 roomId: @roomId
 
@@ -252,11 +257,11 @@ class RTCService
                 setTimeout =>
                     @signalSend msg
                 , 25
-        handleSignalOpen: (event) =>
+        handleSignalOpen: (event) ->
             console.log "Signalling Channel Opened"
         handleSignalMessage: (event) =>
             console.log "got message!"
-            try 
+            try
                 parsedMsg = JSON.parse(event.data)
 
                 if !parsedMsg.type
@@ -264,7 +269,7 @@ class RTCService
 
                 switch parsedMsg.type
                     when "id" # room creation successful
-                        console.log "got id: "+parsedMsg.clientId
+                        console.log "got id: " + parsedMsg.clientId
                         @id = parsedMsg.clientId
 
                     when "offer"
@@ -280,10 +285,10 @@ class RTCService
                 console.log e.message
                 console.log event
                 console.log event.data
-        handleSignalError: (event) =>
+        handleSignalError: (event) ->
             console.log "Signalling Channel Error"
             console.log event
-        handleSignalClose: (event) =>
+        handleSignalClose: (event) ->
             console.log "Signalling Channel Closed"
         handleOwnIce: (event) =>
             console.log "handleOwnIce"
@@ -306,7 +311,7 @@ class RTCService
             console.log "handle offer"
             @connection.setRemoteDescription new RTCSessionDescription(offer)
             @createAnswer()
-        createAnswer: -> 
+        createAnswer: ->
             console.log "create answer"
             @connection.createAnswer (description) =>
                 @connection.setLocalDescription description
@@ -314,13 +319,13 @@ class RTCService
                 console.log @id
                 console.log "answer sent?"
                 @signalSend description
-        onConnecting: =>
+        onConnecting: ->
             console.log "connecting"
-        onOpen: =>
+        onOpen: ->
             console.log "opened"
-        onAddStream: =>
+        onAddStream: ->
             console.log "stream added"
-        onRemoveStream: =>
+        onRemoveStream: ->
             console.log "stream removed"
         gotDataChannel: (event) =>
             console.log "RTConnection gotDataChannel"
@@ -339,12 +344,12 @@ class RTCService
                     @handleBroadcastMessage( parsedMsg.message )
                 else
                     console.log "DChandle: unknown msg"
-        DChandleError: (error)=>
+        DChandleError: (error) ->
             console.log "got an DC error!"
             console.log error
-        DChandleOpen: =>
+        DChandleOpen: ->
             console.log "DC is open!"
-        DChandleClose: =>
+        DChandleClose: ->
             console.log "DC is closed!"
         handleBroadcastMessage: (message) ->
             for listener in @listeners
@@ -360,7 +365,7 @@ class RTCService
 
     constructor: ->
 
-    setup: (@roomId)->
+    setup: (@roomId) ->
         console.log "setup done"
 
         if !@roomId
@@ -370,7 +375,7 @@ class RTCService
             @handler = new Slave(@roomId)
             @handler.listeners = @listeners
         #@handler.onChatMessage = @onChatMessage
-    
+
     # type: "blubb", onMessage: function
     registerBroadcastListener: (listener) ->
         console.log "register new broadcast listener"
@@ -403,33 +408,60 @@ app.service "UserService", class Users
 
 app.service "RTCService", RTCService
 
-
-app.service "ChatService", ["RTCService", "$rootScope", class Messages
-    @::messages = []
-    class Message
-        constructor: (@sender, @message) ->
-
-    constructor: (@RTCService, @$rootScope)->
-        console.log @RTCService
-        @RTCService.registerBroadcastListener
-            type: "chat"
-            onMessage: @onMessage
-
-    onMessage: (message) =>
-        console.log "ChatService: got message"
-        console.log message
-        @messages.push new Message(message.clientId, message.message)
-        @$rootScope.$apply()
+app.service "SharesService", class Shares
+    @::shares = []
+    class Item
+        id: 0
+        name: ""
+        size: 0
+        author: ""
+        created: ""
+        category: ""
+        thumbnail: ""
+        content: ""
+        path: ""
+        extension: ""
+        templateUrl: ""
 
 
-    sendMessage: (message) ->
-        @messages.push new Message("me", message)
-        @RTCService.sendBroadcastMessage 
-            type: "chat"
-            message: message
+app.service "UserService", class Users
+    @::users = []
+    class User
+        @signallingId
+        @name
+        @email
+        @profilePic
 
-    #@addMessage = (sender, message) ->
-    #    @messages.push new Message(sender, message)
+    constructor: ->
+
+
+
+app.service "ChatService", [
+    "RTCService",
+    "$rootScope",
+    class Messages
+        @::messages = []
+        class Message
+            constructor: (@sender, @message) ->
+
+        constructor: (@RTCService, @$rootScope) ->
+            console.log @RTCService
+            @RTCService.registerBroadcastListener
+                type: "chat"
+                onMessage: @onMessage
+
+        onMessage: (message) =>
+            console.log "ChatService: got message"
+            console.log message
+            @messages.push new Message(message.clientId, message.message)
+            @$rootScope.$apply()
+
+
+        sendMessage: (message) ->
+            @messages.push new Message("me", message)
+            @RTCService.sendBroadcastMessage
+                type: "chat"
+                message: message
 ]
 
 
@@ -503,7 +535,7 @@ app.service "SharedItemsService", [
         @getItems = ->
             @items
 
-        @get = (id) -> 
+        @get = (id) ->
             @items[ getItemIndex(id) ]
 
         @delete = (id) ->
@@ -513,7 +545,7 @@ app.service "SharedItemsService", [
         @create = (category) ->
             item = {}
             angular.copy item_template, item
-            # item = new 
+            # item = new
             item.id = getFirstFreeId()
 
             item.name = "Untitled " + category + " item"
@@ -523,7 +555,8 @@ app.service "SharedItemsService", [
 
             item.created = $filter("date")(new Date(), "dd.MM.yyyy H:mm")
             item.category = category
-            item.templateUrl = "/partials/items/thumbnails/" + category + ".html"
+            item.templateUrl = "/partials/items/thumbnails/" +
+                category + ".html"
 
             @items.push item
 
@@ -531,7 +564,7 @@ app.service "SharedItemsService", [
             return item
 
         return
-        
+
 ]
 
 app.service "StreamService", [
@@ -586,7 +619,7 @@ app.service "StreamService", [
                     @screenStream.stop()
                     @screenStream = undefined
                     SharedItemsService.delete(@screen_item_id)
-                    
+
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)
 
@@ -599,7 +632,7 @@ app.service "StreamService", [
                     @webcamStream.stop()
                     @webcamStream = undefined
                     SharedItemsService.delete(@webcam_item_id)
-                    
+
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)
 
