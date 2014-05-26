@@ -169,8 +169,26 @@ app.config [
             controller: "WebcamCtrl"
 
         # ***
+        # * <h3>route `/share/file/:id`</h3>
+        # > loads an empty file item to share it
+        # >
+        # > load FileCtrl
+        $routeProvider.when "/share/file",
+            templateUrl: "/partials/items/file.html"
+            controller: "FileCtrl"
+
+        # ***
+        # * <h3>route `/share/file/:id`</h3>
+        # > loads a specific shared file by the given id
+        # >
+        # > load FileCtrl
+        $routeProvider.when "/share/file/:id",
+            templateUrl: "/partials/items/file.html"
+            controller: "FileCtrl"
+
+        # ***
         # * <h3>route `/share/image/:id`</h3>
-        # > loads an empty code item to edit and share it
+        # > loads an empty image item to share it
         # >
         # > load ImageCtrl
         $routeProvider.when "/share/image",

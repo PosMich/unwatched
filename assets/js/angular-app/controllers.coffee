@@ -237,6 +237,115 @@ app.controller "ImageCtrl", [
             )
 ]
 
+app.controller "FileCtrl", [
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$modal"
+    ($scope, $routeParams, SharedItemsService, $location, $filter
+        $modal) ->
+        
+        $scope.item = {}
+
+        if !$routeParams.id?
+            # create new image item
+            $scope.item = SharedItemsService.create("file")
+            $scope.item.mime_type = ""
+
+            $scope.onFileSelect = ($files) ->
+                $scope.file = {}
+                $scope.file.progress = 0
+                $scope.file.show_progress = false
+                $scope.file.ready = false
+
+                $scope.file.source = $files[0]
+
+                $scope.item.size = $scope.file.source.size
+                $scope.item.created = $filter("date")(
+                    $scope.file.source.lastModifiedDate, "dd.MM.yyyy H:mm")
+                $scope.item.uploaded = $filter("date")(new Date(), 
+                    "dd.MM.yyyy H:mm")
+
+                $scope.item.name = $scope.file.source.name
+                $scope.item_name = $scope.file.source.name
+                $scope.item.mime_type = $scope.file.source.type
+
+
+                # read file
+                reader = new FileReader()
+
+                reader.onload = (e) ->
+                    window.setTimeout((->
+                        $scope.file.show_progress = false
+                        $scope.file.ready = true
+                        $scope.$apply()
+                    ), 2000)
+
+                    # console.log file
+
+                    window.requestFileSystem  = window.requestFileSystem || 
+                        window.webkitRequestFileSystem
+
+                    window.requestFileSystem(window.TEMPORARY, 10*1024*1024, 
+                        onInitFs, onErrorFs)
+
+                reader.onprogress = (e) ->
+                    $scope.file.show_progress = true
+                    $scope.$apply()
+                    percentLoaded = Math.round((e.loaded / e.total) * 100)
+                    $scope.file.progress = percentLoaded                        
+
+                reader.readAsDataURL $scope.file.source
+
+
+            onInitFs = (fs) ->
+                console.log "created file-system " + fs.name + ":"
+                console.log fs
+
+                fs.root.getFile( $scope.item.name, 
+                    { create: true, exclusive: false }, onCreateFile, 
+                    onErrorCreateFile )
+
+            onErrorFs = (error) ->
+                if error.code is FileError.QUOTA_EXCEEDED_ERR
+                    console.log "quota exceeded"
+
+            onCreateFile = (fileEntry) ->
+                console.log fileEntry
+                fileEntry.createWriter( (fileWriter) ->
+                    fileWriter.write($scope.file.source)
+                    console.log "wrote file"
+                )
+
+            onErrorCreateFile = (error) ->
+                console.log error
+
+
+        else
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+
+        # for inline editing
+        $scope.disabled = true
+
+        $scope.item_name = $scope.item.name
+
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                SharedItemsService.delete($scope.item.id)
+                $location.path("/share")
+            )
+]
+
 app.controller "NoteCtrl", [
     "$scope", "$routeParams", "SharedItemsService", "$location", "$modal",
     "$filter"

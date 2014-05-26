@@ -343,15 +343,22 @@
         .video-container
             width 100%
 
-        .image-container
+        .image-container, .file-container
             box-shadow 0 0 15px rgba(53,53,53,1)
             width 100%
             margin-top 20px
+            position relative
 
-            img
+            &.file-container
+                width 70%
+                margin 20px auto
+                box-shadow none
+                border 1px dashed darkgrey
+
+            img, .file
                 width 100%
 
-            .drop-box
+            .drop-box, .file
                 display block
                 width 100%
                 height 300px
@@ -360,20 +367,51 @@
                 text-align center
                 font-style italic
 
+                &.file
+                    line-height 50px
+
                 &.drag-over-class
                     background rgba(27,27,27, 0.7)
+                    border 1px solid rgba(53,53,53,1)
+
+            .progress-container
+                absolute top left
+                width 100%
+                height 100%
+                background rgba(27,27,27, 0.7)
+
+
+                &.ng-hide-add, &.ng-hide-remove
+                    display block !important
+
+                &.ng-hide-add,
+                &.ng-hide-remove
+                    transition all .5s ease-in-out
+
+                &.ng-hide
+                    opacity 0
+
+                .progress
+                    width 50%
+                    margin auto
+                    margin-top 130px
 
             .img, .drop-box
                 opacity 1
-                // &.ng-hide-add, &.ng-hide-remove
-                //     display block !important
 
-                // &.ng-hide-add.ng-hide-add-active,
-                // &.ng-hide-remove.ng-hide-remove-active
-                //     transition all .5s ease-in-out
+        .alert
+            width 20%
+            margin-top 20px
 
-                // &.ng-hide
-                //     opacity 0
+            &.ng-hide-add, &.ng-hide-remove
+                display block !important
+
+            &.ng-hide-add,
+            &.ng-hide-remove
+                transition all 1s ease-in-out
+
+            &.ng-hide
+                opacity 0
                 
         .settings-container
             
