@@ -303,19 +303,21 @@ class RTCService
             console.log "DC is closed!"
     constructor: (@ChatService) ->
     @setRoomId: (@roomId)->
-    @setup: ->
+    setup: (@roomId)->
         console.log "setup done"
-        if @roomId is null
+
+        if !@roomId
             @handler = new Master()
         else
             @handler = new Slave(@roomId)
-
+        
 ###
 window.Master = Master
 window.Slave = Slave
 ###
 #console.log RTCProvider
 
+window.rtcService = RTCService
 
 
 app = angular.module "unwatched.services", []
@@ -323,20 +325,21 @@ app = angular.module "unwatched.services", []
 
 app.value "version", "0.1"
 
+app.service "UserService", class Users
+    constructor: ->
 
-app.service "ChatService", ->
+app.service "ChatService", class Messages
     class Message
         constructor: (@sender, @message) ->
 
-    @messages = []
+    constructor: ->
+        @messages = []
 
     @addMessage = (sender, message) ->
         @messages.push new Message(sender, message)
 
-    return
 
-
-app.service "RTC", ["ChatService", RTCService]
+app.service "RTCService", ["ChatService", RTCService]
 
 
 app.service "ChatStateService", ->

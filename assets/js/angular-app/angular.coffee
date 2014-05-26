@@ -50,6 +50,15 @@ app.config [
             controller: "IndexCtrl"
 
         # ***
+        # * <h3>route `/room/:id`</h3>
+        # > test ro
+        # >
+        # > load IndexCtrl
+
+        $routeProvider.when "/room/:id",
+            templateUrl: "/partials/index.html"
+            controller: "IndexCtrl"
+        # ***
         # * <h3>route `/cyborg`</h3>
         # > bla bla route to rule them all
         # >
@@ -64,9 +73,10 @@ app.config [
         # >
         # > load RoomCtrl
         $routeProvider.when "/room",
-            templateUrl: "/partials/room.html"
-            controller: "RoomCtrl"
-
+            #templateUrl: "/partials/room.html"
+            #controller: "RoomCtrl"
+            templateUrl: "/partials/index.html"
+            controller: "IndexCtrl"
         # ***
         # * <h3>route `/members`</h3>
         # > loads a list of all members of the current room and a maximized chat
