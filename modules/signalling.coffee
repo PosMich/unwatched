@@ -12,10 +12,13 @@ class Room
     constructor: (@name, @ws) ->
 ###
 
-
+###
 class Rooms
-    class Room 
+    class Room
+        @clients = [] 
         constructor: (@id, @masterId) ->
+        add: (clientId) ->
+            clients.push []
 
     constructor: (@roomList = []) ->
     newId: ->
@@ -50,12 +53,12 @@ class Rooms
     getRoomId: (masterId) ->
         for room in @roomList
             return room.id if room.masterId is masterId
+###
 
 
 exports.connect = (server) ->
-    rooms = new Rooms
+    #rooms = new Rooms
     wss = new WebSocketServer( server: server )
-    
 
     logger.info "wss init"
     wss.on "connection", (wsConnection) ->
@@ -68,10 +71,7 @@ exports.connect = (server) ->
                     exists true
         
         wsConnection.clientId = id
-        wsConnection.roomId   = null
         wsConnection.isMaster = false
-        wsConnection.master   = null
-        wsConnection.peers    = []
 
         
         logger.info "new ws connection"
@@ -90,7 +90,14 @@ exports.connect = (server) ->
                 switch parsedMsg.type 
                     when "new" # master --> server
                         logger.info "ws: got 'new' msg"
+                        wsConnection.isMaster = true
 
+                        wsConnection.send JSON.stringify(
+                            type: "id"
+                            roomId: wsConnection.clientId
+                        )
+
+                        ###
                         if rooms.add(wsConnection.clientId)
                             logger.info "created new room"
                             # tell the master his roomId
@@ -104,11 +111,29 @@ exports.connect = (server) ->
                                 type: "error"
                                 message: "allready created a room"
                             )
+                        ###
 
                     when "connect" # client --> server --> master
-                        logger.info "ws: got 'connect' msg"
+                        logger.info "ws: got 'connect' msg from: " + wsConnection.clientId
+                        for client in wss.clients
+                            if client.isMaster and client.clientId is parsedMsg.roomId
+                                console.log "master found"
+                                wsConnection.roomId = parsedMsg.roomId
+
+                                client.send JSON.stringify( 
+                                    type: "connect"
+                                    clientId: wsConnection.clientId
+                                )
+                                break
+                        
+                        wsConnection.send JSON.stringify( 
+                            type: "id"
+                            clientId: wsConnection.clientId
+                        )
+                        ###
                         masterId = rooms.getMasterId(parsedMsg.roomId)
                         console.log "master's id: "+masterId
+                        
                         for master in wss.clients
                             console.log "clientId: "+master.clientId
                             if master.clientId is masterId
@@ -118,42 +143,40 @@ exports.connect = (server) ->
                                     clientId: wsConnection.clientId
                                 )
                                 wsConnection.masterId = master.clientId
+                                wsConnection.send JSON.stringify( 
+                                    type: "id"
+                                    clientId: wsConnection.clientId
+                                )
                                 logger.info "sent connect msg"
                                 break
-
+                        ###
                     when "offer" # master --> client                                
                         logger.info "ws: got 'offer' msg"
                         for client in wss.clients
                             if client.clientId is parsedMsg.clientId
-                                client.send JSON.stringify(parsedMsg.data)
+                                client.send JSON.stringify(parsedMsg)
                                 logger.info "offer sent to client"
                                 break
                                                           
                     when "answer" # client --> master     
                         logger.info "ws: got 'answer' msg"
                         for master in wss.clients
-                            if master.clientId is wsConnection.masterId
-                                master.send JSON.stringify(
-                                    clientId: wsConnection.clientId
-                                    data: msg
-                                )
+                            if master.clientId is wsConnection.roomId
+                                master.send msg
                                 logger.info "answer sent to master"
                                 break
 
                     when "candidate" # send to other host
                         logger.info "ws: got 'candidate' msg"
-                        if parsedMsg.clientId? # msg is from master
+                        if wsConnection.isMaster 
                             for client in wss.clients
                                 if client.clientId is parsedMsg.clientId
-                                    client.send JSON.stringify(parsedMsg.data)
-                        else #msg is from client
-                            for master in wss.clients
-                                if master.clientId is wsConnection.masterId
-                                    master.send JSON.stringify(
-                                        clientId: wsConnection.clientId
-                                        data: msg
-                                    )
-                    else
+                                    client.send msg
+                        else
+                            for client in wss.clients
+                                if client.clientId is wsConnection.roomId
+                                    client.send msg
+                     else
                         logger.warn "type?"
             catch error
                 logger.error error.message
