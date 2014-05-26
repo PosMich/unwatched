@@ -151,13 +151,22 @@ app.config [
             controller: "ScreenCtrl"
 
         # ***
-        # * <h3>route `/share/shared-webcam/:id`</h3>
+        # * <h3>route `/share/webcam`</h3>
+        # > loads an empty webcam item to share it
+        # >
+        # > load WebcamCtrl
+        $routeProvider.when "/share/webcam",
+            templateUrl: "/partials/items/webcam.html"
+            controller: "WebcamCtrl"
+
+        # ***
+        # * <h3>route `/share/webcam/:id`</h3>
         # > loads a specific shared webcam by the given id
         # >
-        # > load SharedWebcamCtrl
-        $routeProvider.when "/share/shared-webcam/:id",
-            templateUrl: "/partials/items/shared-webcam.html"
-            controller: "SharedWebcamCtrl"
+        # > load WebcamCtrl
+        $routeProvider.when "/share/webcam/:id",
+            templateUrl: "/partials/items/webcam.html"
+            controller: "WebcamCtrl"
 
         # ***
         # * <h3>route `/share/image/:id`</h3>
@@ -187,7 +196,10 @@ app.config [
 
 app.run ($rootScope, $location) ->
 
-    $rootScope.showVideo = false
+    $rootScope.video = {}
+    $rootScope.video.show = {}
+    $rootScope.video.show.screen = false
+    $rootScope.video.show.webcam = false
 
     $rootScope.$on "$routeChangeSuccess", ->
         $rootScope.showChat = $location.path() isnt "/"

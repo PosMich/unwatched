@@ -11,9 +11,11 @@ app.controller "AppCtrl", [
 
         SharedItemsService.initItems( dummy_items )
 
-        $scope.killStream = ->
-            console.log "kill"
-            StreamService.killStream()
+        $scope.killStream = (type) ->
+            if type is 'screen'
+                StreamService.killScreenStream()
+            else
+                StreamService.killWebcamStream()
 
 ]
 
@@ -113,8 +115,11 @@ app.controller "ShareCtrl", [
             )
 
             modalInstance.result.then( ->
-                if SharedItemsService.get(item_id).category is "screen"
-                    StreamService.killStream()
+                category = SharedItemsService.get(item_id).category
+                if category is "screen"
+                    StreamService.killScreenStream(category)
+                else if category is "webcam"
+                    StreamService.killWebcamStream(category)
                 else
                     SharedItemsService.delete(item_id)
             )
@@ -497,7 +502,7 @@ app.controller "ScreenCtrl", [
             $location.path "/404" if !$scope.item?
 
         $scope.item.name = $scope.item.author + "'s Shared Screen"
-        StreamService.setItemId($scope.item.id)
+        StreamService.setScreenItemId($scope.item.id)
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -511,20 +516,45 @@ app.controller "ScreenCtrl", [
             )
 
             modalInstance.result.then( ->
-                # SharedItemsService.delete($scope.item.id)
-                StreamService.killStream()
+                StreamService.killScreenStream()
                 $location.path("/share")
             )
 ]
 
-app.controller "SharedWebcamCtrl", [
-    "$scope", "$routeParams"
-    ($scope, $routeParams) ->
-        if $routeParams.id
-            $scope.id = $routeParams.id
+app.controller "WebcamCtrl", [
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$modal", "StreamService"
+    ($scope, $routeParams, SharedItemsService, $location, $filter
+        $modal, StreamService) ->
+        
+        $scope.item = {}
+
+        if !$routeParams.id?
+            # create new image item
+            $scope.item = SharedItemsService.create("webcam")
 
         else
-            $scope.id = "No ID :("
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+
+        $scope.item.name = $scope.item.author + "'s Shared Webcam"
+        StreamService.setWebcamItemId($scope.item.id)
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                StreamService.killWebcamStream()
+                $location.path("/share")
+            )
 ]
 
 # ***
@@ -795,9 +825,9 @@ dummy_items = [
         size: 0
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
-        category: "shared-webcam"
+        category: "webcam"
         thumbnail: "screenshot-webcam.jpg"
-        templateUrl: "/partials/items/thumbnails/shared-webcam.html"
+        templateUrl: "/partials/items/thumbnails/webcam.html"
     }
     {
         id: 12,
@@ -818,6 +848,9 @@ app.controller "StreamCtrl", [
     "$scope", "StreamService"
     ($scope, StreamService) ->
 
-        $scope.killStream = ->
-            StreamService.killStream()
+        $scope.killStream = (type) ->
+            if type is 'screen'
+                StreamService.killScreenStream()
+            else
+                StreamService.killWebcamStream()
 ]
