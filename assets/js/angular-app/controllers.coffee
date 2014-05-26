@@ -6,11 +6,14 @@
 app = angular.module "unwatched.controllers", []
 
 app.controller "AppCtrl", [
-    "$scope", "SharedItemsService"
-    ($scope, SharedItemsService) ->
-
+    "$scope", "SharedItemsService", "StreamService"
+    ($scope, SharedItemsService, StreamService) ->
 
         SharedItemsService.initItems( dummy_items )
+
+        $scope.killStream = ->
+            console.log "kill"
+            StreamService.killStream()
 
 ]
 
@@ -64,8 +67,9 @@ app.controller "MembersCtrl", [
 # >
 app.controller "ShareCtrl", [
     "$scope", "ChatStateService", "SharedItemsService", "LayoutService", 
-    "$modal"
-    ($scope, ChatStateService, SharedItemsService, LayoutService, $modal) ->
+    "$modal", "StreamService"
+    ($scope, ChatStateService, SharedItemsService, LayoutService, $modal,
+        StreamService) ->
         $scope.shared_items = []
 
         $scope.$watch (->
@@ -104,19 +108,16 @@ app.controller "ShareCtrl", [
                 size: "lg"
                 resolve: {
                     item: ->
-                        $scope.item
+                        SharedItemsService.get(item_id)
                 }
             )
 
             modalInstance.result.then( ->
-                console.log "item_id: " + item_id
-                SharedItemsService.delete(item_id)
+                if SharedItemsService.get(item_id).category is "screen"
+                    StreamService.killStream()
+                else
+                    SharedItemsService.delete(item_id)
             )
-
-            # confirmation_text = "Are you sure you want to delete the item: " + 
-                # SharedItemsService.get(item_id).name + "?"
-            # confirmation = window.confirm(confirmation_text)
-            # SharedItemsService.delete(item_id) if confirmation
 
         $scope.setLayout = (layout) ->
             LayoutService.setLayout(layout)
@@ -137,8 +138,10 @@ app.controller "DeleteModalInstanceCtrl", [
 ]
 
 app.controller "ImageCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter"
-    ($scope, $routeParams, SharedItemsService, $location, $filter) ->
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$modal"
+    ($scope, $routeParams, SharedItemsService, $location, $filter
+        $modal) ->
         
         $scope.item = {}
 
@@ -210,24 +213,101 @@ app.controller "ImageCtrl", [
         $scope.disabled = true
 
         $scope.item_name = $scope.item.name
+
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                SharedItemsService.delete($scope.item.id)
+                $location.path("/share")
+            )
 ]
 
 app.controller "NoteCtrl", [
-    "$scope", "$routeParams"
-    ($scope, $routeParams) ->
-        if typeof $routeParams.id is "undefined"
-            $scope.item_error = "No such item is shared in your current room."
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$modal",
+    "$filter"
+    ($scope, $routeParams, SharedItemsService, $location, $modal
+        $filter) ->
+
+        $scope.item = {}
+
+        if !$routeParams.id?
+            # create new note item
+            $scope.item = SharedItemsService.create("note")
+            $scope.item.thumbnail = {}
+            $scope.item.thumbnail.title = ""
+            $scope.item.thumbnail.content = ""
+            $scope.item.content = ""
+
         else
-            $scope.item = dummy_items[$routeParams.id]
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+
+        # tinymce options
+        $scope.tinymceOptions = {
+            resize: "both"
+            height: 400
+            handle_event_callback: (e) ->
+                console.log e
+            onchange_callback: (e) ->
+                console.log e
+            setup: (editor) ->
+                editor.on "change", (e) ->
+                    console.log e
+                    col = e.level.bookmark.start[0]
+                    row = e.level.bookmark.start[2]
+                    # update thumbnail
+                    $scope.item.thumbnail.content = 
+                        e.level.content.substr(0, 300)
+                    # update last edited date
+                    $scope.item.last_edited = 
+                        $filter("date")(new Date(), "dd.MM.yyyy H:mm")
+
+        }
+
+        # for inline editing
+        $scope.disabled = true
+        $scope.item_name = $scope.item.name
+
+        $scope.$watch ->
+            $scope.item.name
+        , (value) ->
+            $scope.item.thumbnail.title = $scope.item.name
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                SharedItemsService.delete($scope.item.id)
+                $location.path("/share")
+            )
+
 ]
 
 app.controller "CodeCtrl", [
     "$scope", "$routeParams", "SharedItemsService", "ChatStateService", 
     "available_extensions", "font_sizes", "ace_themes", "$location",
-    "AceSettingsService"
+    "AceSettingsService", "$modal"
     ($scope, $routeParams, SharedItemsService, ChatStateService, 
         available_extensions, font_sizes, ace_themes, $location, 
-        AceSettingsService) ->
+        AceSettingsService, $modal) ->
 
         # init ace editor
         $scope.editor = ace.edit("editor")
@@ -283,13 +363,20 @@ app.controller "CodeCtrl", [
             thumbnail
 
         $scope.delete = ->
-            confirmation_text = "Are you sure you want to delete the item: " + 
-                $scope.item.name + " and return to the overview page?"
-            confirmation = window.confirm(confirmation_text)
-            if confirmation
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
                 SharedItemsService.delete($scope.item.id)
                 $location.path("/share")
-
+            )
 
         if !$routeParams.id?
             # create new code item
@@ -363,8 +450,8 @@ app.controller "CodeCtrl", [
 ]
 
 app.controller "ScreenshotCtrl", [
-    "$scope", "$routeParams", "SharedItemsService"
-    ($scope, $routeParams, SharedItemsService) ->
+    "$scope", "$routeParams", "SharedItemsService", "$modal", "$location"
+    ($scope, $routeParams, SharedItemsService, $modal, $location) ->
         
         $scope.item = {}
 
@@ -374,16 +461,60 @@ app.controller "ScreenshotCtrl", [
         else
             console.log "take new screenshot"
 
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                SharedItemsService.delete($scope.item.id)
+                $location.path("/share")
+            )
+
 ]
 
-app.controller "SharedScreenCtrl", [
-    "$scope", "$routeParams"
-    ($scope, $routeParams) ->
-        if $routeParams.id
-            $scope.id = $routeParams.id
+app.controller "ScreenCtrl", [
+    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$modal", "StreamService"
+    ($scope, $routeParams, SharedItemsService, $location, $filter
+        $modal, StreamService) ->
+        
+        $scope.item = {}
+
+        if !$routeParams.id?
+            # create new image item
+            $scope.item = SharedItemsService.create("screen")
 
         else
-            $scope.id = "No ID :("
+            $scope.item = SharedItemsService.get($routeParams.id)
+            $location.path "/404" if !$scope.item?
+
+        $scope.item.name = $scope.item.author + "'s Shared Screen"
+        StreamService.setItemId($scope.item.id)
+
+        $scope.delete = ->
+            modalInstance = $modal.open(
+                templateUrl: "/partials/deleteModal.html"
+                controller: "DeleteModalInstanceCtrl"
+                size: "lg"
+                resolve: {
+                    item: ->
+                        $scope.item
+                }
+            )
+
+            modalInstance.result.then( ->
+                # SharedItemsService.delete($scope.item.id)
+                StreamService.killStream()
+                $location.path("/share")
+            )
 ]
 
 app.controller "SharedWebcamCtrl", [
@@ -458,31 +589,6 @@ app.controller "ChatCtrl", [
                 ChatStateService.setChatState($scope.chat.state_history)
 
 ]
-
-# ***
-# * <h3>Notes Controller</h3>
-# > Contains the logic to add/remove notes - the title of a note is the key
-# > of the note-model-object - the path to the note is the corresponding value.
-app.controller "NotesCtrl", [
-    "$scope"
-    ($scope) ->
-        $scope.room.notes = []
-
-        $scope.tinymceOptions =
-            menubar: false
-
-        $scope.addNote = ->
-            $scope.room.notes.push
-                "title": "Untitled Document"
-                "content": "Click to edit"
-                "path": "future/path/to/note"
-            
-
-        $scope.removeNote = (index) ->
-            $scope.room.notes.splice index, 1
-
-]
-
 
 dummy_items = [
     {
@@ -656,7 +762,7 @@ dummy_items = [
     }
     {
         id: 9,
-        name: "Untitled"
+        name: "Protocol"
         size: 90123
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
@@ -666,8 +772,11 @@ dummy_items = [
             content: "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "+
                 "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "+
                 "agnaaliquy amerat, seddiamvoluptua.</p>"
+        content: "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "+
+            "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "+
+            "agnaaliquy amerat, seddiamvoluptua.</p>"
         path: "/future/path/to/file"
-        edited: "20.05.2014-20:25"
+        last_edited: "20.05.2014-20:25"
         templateUrl: "/partials/items/thumbnails/note.html"
     }
     {
@@ -676,9 +785,9 @@ dummy_items = [
         size: 0
         author: "Max Mustermann"
         created: "14.05.2014-15:10"
-        category: "shared-screen"
+        category: "screen"
         thumbnail: "screenshot-screen.png"
-        templateUrl: "/partials/items/thumbnails/shared-screen.html"
+        templateUrl: "/partials/items/thumbnails/screen.html"
     }
     {
         id: 11,
@@ -703,4 +812,12 @@ dummy_items = [
         templateUrl: "/partials/items/thumbnails/image.html"
     }
 
+]
+
+app.controller "StreamCtrl", [
+    "$scope", "StreamService"
+    ($scope, StreamService) ->
+
+        $scope.killStream = ->
+            StreamService.killStream()
 ]

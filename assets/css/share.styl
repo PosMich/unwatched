@@ -248,7 +248,7 @@
                             content: '\f1c9'
                         &.shared-webcam:before
                             content: '\f03d'
-                        &.shared-screen:before
+                        &.screen:before
                             content: '\f030'
                         &.image:before
                             content: '\f03e'
@@ -337,6 +337,9 @@
             h1
                 border-bottom 1px solid darkgrey
 
+        .video-container
+            width 100%
+
         .image-container
             box-shadow 0 0 15px rgba(53,53,53,1)
             width 100%
@@ -359,15 +362,15 @@
 
             .img, .drop-box
                 opacity 1
-                &.ng-hide-add, &.ng-hide-remove
-                    display block !important
+                // &.ng-hide-add, &.ng-hide-remove
+                //     display block !important
 
-                &.ng-hide-add.ng-hide-add-active,
-                &.ng-hide-remove.ng-hide-remove-active
-                    transition all .5s ease-in-out
+                // &.ng-hide-add.ng-hide-add-active,
+                // &.ng-hide-remove.ng-hide-remove-active
+                //     transition all .5s ease-in-out
 
-                &.ng-hide
-                    opacity 0
+                // &.ng-hide
+                //     opacity 0
                 
         .settings-container
             
@@ -396,7 +399,11 @@
                 right 0
                 bottom 0
                 left 0
-                font-size 15px
+
+        .note-container
+            margin-top 20px
+            position relative
+            width 90%
         
         .infos-container
             margin-top 20px
@@ -425,3 +432,16 @@
                         display none
                     i
                         padding-right 0
+
+.modal
+    overflow-y hidden
+
+    .modal-title
+        border-bottom 1px solid rgba(27,27,27, 0.9)
+
+    .modal-body
+        table
+            margin 10px
+
+            td
+                padding 5px

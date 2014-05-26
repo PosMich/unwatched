@@ -64,5 +64,6 @@
                         ng-options="theme.name for theme in settings.available_themes")
 
 
-        .code-container(resizable, on-resize="containerResize()")
+        .code-container(resizable, on-resize="containerResize()", 
+            resize-detail-view)
             #editor

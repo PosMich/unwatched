@@ -1,8 +1,45 @@
-.modal-header
+.modal-header(resize-modal)
     h3.modal-title
-        | Delete {{item.name}}
+        | Delete "{{item.name}}"
 .modal-body
-    | itemzeugs
+    | Are you sure you want to delete this shared item:
+    table
+        tr
+            td
+                b Name:
+            td
+                {{item.name}}
+        tr(ng-if="item.size!=0 && item.size!=''")
+            td
+                b Size:
+            td
+                {{item.size | humanReadableFileSize}}
+        tr
+            td
+                b Author:
+            td
+                {{item.author}}
+        tr
+            td
+                b Created:
+            td
+                {{item.created}}
+        tr(ng-if="item.uploaded")
+            td
+                b Uploaded:
+            td
+                {{item.uploaded}}
+        tr(ng-if="item.mime_type")
+            td
+                b MIME-Type:
+            td
+                {{item.mime_type}}
+        tr
+            td
+                b Category:
+            td
+                {{item.category}}
+
 .modal-footer
-    button.btn.btn-warning(ng-click="ok()") Delete
-    button.btn.btn-primary(ng-click="cancel()") Cancel
+    button.btn.btn-danger(ng-click="ok()") Delete
+    button.btn.btn-default(ng-click="cancel()") Cancel

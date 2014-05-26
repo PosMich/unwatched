@@ -1,2 +1,56 @@
-.row
-    h1 Note {{id}}
+.detail-view.shared-screenshot-container
+    .heading.clearfix.controls
+        .row
+            .col-xs-12.controls
+                a(href="/share")
+                    .back
+                        i.fa.fa-arrow-left
+                        span Overview
+                a(ng-href="{{item.path}}")
+                    .download
+                        i.fa.fa-download
+                        span Download
+                a(ng-href="#", ng-click="save()")
+                    .copy-clipboard
+                        i.fa.fa-clipboard
+                        span Copy infos to clipboard
+                a(ng-href="#", ng-click="delete()")
+                    .copy-clipboard
+                        i.fa.fa-trash-o
+                        span Remove
+
+    .jumbotron
+        .detail-heading(inline-edit="h1")
+            form(name="noteForm", ng-hide="disabled")
+                .input-container(ng-class="{'has-error': note.nName.$invalid}")
+                    input#noteName.form-control(type='text', name="nName"
+                        ng-model="item_name", required, ng-disabled="disabled"
+                        ng-class="{'input-disabled':disabled}")
+                    span.help-block(ng-show="note.nName.$error.required")
+                        | *Required field. Name won't be saved.
+            h1(ng-hide="!disabled")
+                | {{item.name}} 
+
+        .infos-container
+            .info
+                b Size: 
+                | {{item.size | humanReadableFileSize}}
+            .info
+                b Author: 
+                | {{item.author}}
+            .info
+                b Created: 
+                | {{item.created}}
+            .info
+                b Last edited: 
+                | {{item.last_edited}}
+            .info
+                b Path: 
+                | {{item.path}}
+            .info
+                b Category: 
+                | {{item.category}}
+
+        .note-container
+            form
+                textarea#editor(ui-tinymce="tinymceOptions", ng-model="item.content")
