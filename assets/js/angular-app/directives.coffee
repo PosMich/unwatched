@@ -56,6 +56,7 @@ app.directive "updateScrollPosition", [
 
             scope.$watch attrs.updateScrollPosition, ->
                 window.setTimeout((->
+                    console.log "blaaaa"
                     elem.scrollTop elem.find("> div").height()
                 ), 0)
 

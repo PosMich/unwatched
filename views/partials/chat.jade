@@ -18,7 +18,7 @@
                 .clearfix.chat-message(
                     ng-repeat="message in chat.messages")
                     span.well.well-sm(ng-class-even="'own'")
-                        | <b>{{message.sender}}:</b> {{message.content}}
+                        | <b>{{message.sender}}:</b> {{message.message}}
     .panel-footer.message-control.clearfix
         form(name="chatMessage", no-validate, 
             ng-submit="submitChatMessage()")

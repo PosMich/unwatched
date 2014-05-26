@@ -3,16 +3,16 @@
 
 "use strict"
 class RTCService
-    @::roomId = null
-    
+    @::listeners = []
     class Master
-        @::signalServer     = "wss://localhost:3001" 
+        @::signalServer     = "wss://10.0.0.10:3001" 
         @::roomId           = null
         @::signallingClients = []
+        @::listeners = []
         class SlaveRTC
             @::id = null
-            @connection = null
-            @signaller
+            @::connection = null
+            @::signaller = null
             constructor: (@signaller, @id)->
                 @connection = new RTCPeerConnection(
                     iceServers: [
@@ -94,6 +94,14 @@ class RTCService
             DChandleMessage: (msg) =>
                 console.log "got a message from DC"
                 console.log msg
+                parsedMsg = JSON.parse(msg.data)
+
+                switch parsedMsg.type
+                    when "broadcast"
+                        @handleBroadcastMessage( parsedMsg.message )
+                    else
+                        console.log "DChandle: unknown msg"
+                
             DChandleError: (error)=>
                 console.log "got an DC error!"
                 console.log error
@@ -101,6 +109,15 @@ class RTCService
                 console.log "DC is open!"
             DChandleClose: =>
                 console.log "DC is closed!"
+            DCsend: (message) ->
+                @dataChannel.send JSON.stringify(message)
+            sendBroadcastMessage: (message) ->
+                @DCsend 
+                    type: "broadcast"
+                    message: message
+            handleBroadcastMessage: (message) ->
+                @signaller.handleBroadcastMessage message, @id
+
         constructor: ->
             console.log "setup"
             @signalConnection = new WebSocket(@signalServer)
@@ -165,13 +182,35 @@ class RTCService
             console.log event
         handleSignalClose: (event) =>
             console.log "Signalling Channel Closed"
+        sendBroadcastMessage: (message) ->
+            for client in @signallingClients
+                message.clientId = @roomId
+                client.sendBroadcastMessage( message )
+        handleBroadcastMessage: (message, sender) ->
+            # send to all, except sender!
+            console.log "handle message"
+            console.log message
+            console.log "from sender: "+sender
+            for client in @signallingClients
+                continue if client.id is sender
+                message.clientId = sender
+                console.log "should send"
+                console.log message
+                client.sendBroadcastMessage( message )
+            # send to listener
+            for listener in @listeners
+                if listener.type is message.type
+                    message.clientId = @roomId
+                    listener.onMessage message
+
 
     # only 1 pc to the server
     class Slave
-        @::signalServer = "wss://localhost:3001" 
+        @::signalServer = "wss://10.0.0.10:3001" 
         @::roomId       = null
         @::id           = null
         @::connection   = null
+        @::listeners    = []
         constructor: (@roomId)->
             console.log "setup"
             @signalConnection = new WebSocket(@signalServer)
@@ -294,6 +333,12 @@ class RTCService
         DChandleMessage: (msg) =>
             console.log "got a message from DC"
             console.log msg
+            parsedMsg = JSON.parse(msg.data)
+            switch parsedMsg.type
+                when "broadcast"
+                    @handleBroadcastMessage( parsedMsg.message )
+                else
+                    console.log "DChandle: unknown msg"
         DChandleError: (error)=>
             console.log "got an DC error!"
             console.log error
@@ -301,16 +346,43 @@ class RTCService
             console.log "DC is open!"
         DChandleClose: =>
             console.log "DC is closed!"
-    constructor: (@ChatService) ->
-    @setRoomId: (@roomId)->
+        handleBroadcastMessage: (message) ->
+            for listener in @listeners
+                if listener.type is message.type
+                    console.log "listener found"
+                    listener.onMessage message
+        sendBroadcastMessage: (message) ->
+            @DCsend
+                type: "broadcast"
+                message: message
+        DCsend: (message) ->
+            @dataChannel.send JSON.stringify(message)
+
+    constructor: ->
+
     setup: (@roomId)->
         console.log "setup done"
 
         if !@roomId
             @handler = new Master()
+            @handler.listeners = @listeners
         else
             @handler = new Slave(@roomId)
-        
+            @handler.listeners = @listeners
+        #@handler.onChatMessage = @onChatMessage
+    
+    # type: "blubb", onMessage: function
+    registerBroadcastListener: (listener) ->
+        console.log "register new broadcast listener"
+        if @handler
+            @handler.listeners.push listener
+        else
+            @listeners.push listener
+    sendBroadcastMessage: (message) ->
+        console.log "send broadcast"
+        console.log message
+        @handler.sendBroadcastMessage message
+
 ###
 window.Master = Master
 window.Slave = Slave
@@ -328,18 +400,37 @@ app.value "version", "0.1"
 app.service "UserService", class Users
     constructor: ->
 
-app.service "ChatService", class Messages
+
+app.service "RTCService", RTCService
+
+
+app.service "ChatService", ["RTCService", "$rootScope", class Messages
+    @::messages = []
     class Message
         constructor: (@sender, @message) ->
 
-    constructor: ->
-        @messages = []
+    constructor: (@RTCService, @$rootScope)->
+        console.log @RTCService
+        @RTCService.registerBroadcastListener
+            type: "chat"
+            onMessage: @onMessage
 
-    @addMessage = (sender, message) ->
-        @messages.push new Message(sender, message)
+    onMessage: (message) =>
+        console.log "ChatService: got message"
+        console.log message
+        @messages.push new Message(message.clientId, message.message)
+        @$rootScope.$apply()
 
 
-app.service "RTCService", ["ChatService", RTCService]
+    sendMessage: (message) ->
+        @messages.push new Message("me", message)
+        @RTCService.sendBroadcastMessage 
+            type: "chat"
+            message: message
+
+    #@addMessage = (sender, message) ->
+    #    @messages.push new Message(sender, message)
+]
 
 
 app.service "ChatStateService", ->

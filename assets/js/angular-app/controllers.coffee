@@ -22,6 +22,7 @@ app.controller "AppCtrl", [
 app.controller "IndexCtrl", [
     "$scope", "$routeParams", "RTCService" #, "RTC"
     ($scope, $routeParams, RTCService) ->
+        window.rtc = RTCService
         console.log $routeParams
         if $routeParams.id
             RTCService.setup($routeParams.id)
@@ -54,11 +55,11 @@ app.controller "MembersCtrl", [
     ($scope, ChatStateService, LayoutService) ->
         $scope.members = []
 
-        $scope.$watch (->
-            return ChatStateService.chat_state
-        ), ((new_state, old_state) ->
+        $scope.$watch ->
+            ChatStateService.chat_state
+        , (new_state, old_state) ->
             $scope.chat_state = new_state
-        ), true
+        , true
 
         membersAmount = Math.floor(Math.random() * 10 + 1) + 6
         while membersAmount -= 1
@@ -566,12 +567,22 @@ app.controller "WebcamCtrl", [
 # * <h3>Chat Controller</h3>
 # >
 app.controller "ChatCtrl", [
-    "$scope", "ChatStateService"
-    ($scope, ChatStateService) ->
-
+    "$scope", "ChatStateService", "ChatService"
+    ($scope, ChatStateService, ChatService) ->
+        window.chat = ChatService
         $scope.chat = {}
         $scope.chat.state = ChatStateService.chat_state
         $scope.chat.state_history = ChatStateService.chat_state_history
+
+        #$scope.chat.messages = ChatService.messages
+
+        $scope.$watch ->
+            ChatService.messages
+        , (value) ->
+            console.log "blubb"
+            $scope.chat.messages = value 
+        , true
+        ###
         $scope.chat.messages = [
             # dummy entries
             {
@@ -597,11 +608,13 @@ app.controller "ChatCtrl", [
             }
 
         ]
+        ###
 
         $scope.submitChatMessage = ->
-            $scope.chat.messages.push
-                sender: "Lorem Ipsum"
-                content: $scope.chat.message
+            #$scope.chat.messages.push
+            #    sender: "Lorem Ipsum"
+            #    content: $scope.chat.message
+            ChatService.sendMessage $scope.chat.message
             $scope.chat.message = ""
 
         $scope.chat.compress = ->
