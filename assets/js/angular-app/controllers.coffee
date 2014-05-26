@@ -18,8 +18,13 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-    "$scope" #, "RTC"
-    ($scope) ->
+    "$scope", "$routeParams", "RTCService" #, "RTC"
+    ($scope, $routeParams, RTCService) ->
+        console.log $routeParams
+        if $routeParams.id
+            RTCService.setup($routeParams.id)
+        else
+            RTCService.setup()
     #, RTCProvider) ->
         # console.log RTCProvider
         # console.log "index ctrl here"
