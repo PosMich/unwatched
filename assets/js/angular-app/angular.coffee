@@ -187,6 +187,8 @@ app.config [
 
 app.run ($rootScope, $location) ->
 
+    $rootScope.showVideo = false
+
     $rootScope.$on "$routeChangeSuccess", ->
         $rootScope.showChat = $location.path() isnt "/"
         return

@@ -6,11 +6,14 @@
 app = angular.module "unwatched.controllers", []
 
 app.controller "AppCtrl", [
-    "$scope", "SharedItemsService"
-    ($scope, SharedItemsService) ->
-
+    "$scope", "SharedItemsService", "StreamService"
+    ($scope, SharedItemsService, StreamService) ->
 
         SharedItemsService.initItems( dummy_items )
+
+        $scope.killStream = ->
+            console.log "kill"
+            StreamService.killStream()
 
 ]
 
@@ -64,8 +67,9 @@ app.controller "MembersCtrl", [
 # >
 app.controller "ShareCtrl", [
     "$scope", "ChatStateService", "SharedItemsService", "LayoutService", 
-    "$modal"
-    ($scope, ChatStateService, SharedItemsService, LayoutService, $modal) ->
+    "$modal", "StreamService"
+    ($scope, ChatStateService, SharedItemsService, LayoutService, $modal,
+        StreamService) ->
         $scope.shared_items = []
 
         $scope.$watch (->
@@ -109,7 +113,10 @@ app.controller "ShareCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete(item_id)
+                if SharedItemsService.get(item_id).category is "screen"
+                    StreamService.killStream()
+                else
+                    SharedItemsService.delete(item_id)
             )
 
         $scope.setLayout = (layout) ->
@@ -475,9 +482,9 @@ app.controller "ScreenshotCtrl", [
 
 app.controller "ScreenCtrl", [
     "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
-    "$modal"
+    "$modal", "StreamService"
     ($scope, $routeParams, SharedItemsService, $location, $filter
-        $modal) ->
+        $modal, StreamService) ->
         
         $scope.item = {}
 
@@ -490,8 +497,7 @@ app.controller "ScreenCtrl", [
             $location.path "/404" if !$scope.item?
 
         $scope.item.name = $scope.item.author + "'s Shared Screen"
-
-        $scope.resolution = "High"
+        StreamService.setItemId($scope.item.id)
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -505,7 +511,8 @@ app.controller "ScreenCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete($scope.item.id)
+                # SharedItemsService.delete($scope.item.id)
+                StreamService.killStream()
                 $location.path("/share")
             )
 ]
@@ -805,4 +812,12 @@ dummy_items = [
         templateUrl: "/partials/items/thumbnails/image.html"
     }
 
+]
+
+app.controller "StreamCtrl", [
+    "$scope", "StreamService"
+    ($scope, StreamService) ->
+
+        $scope.killStream = ->
+            StreamService.killStream()
 ]

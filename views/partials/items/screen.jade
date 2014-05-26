@@ -30,15 +30,5 @@
                 b Category: 
                 | {{item.category}}
 
-        .settings-container
-            h4 Settings
-            .btn-group
-                label.btn.btn-default(ng-model="resolution", 
-                    btn-radio="'Low'") Low
-                label.btn.btn-default(ng-model="resolution", 
-                    btn-radio="'Middle'") Middle
-                label.btn.btn-default(ng-model="resolution", 
-                    btn-radio="'High'") High
-
         .video-container
-            video(autoplay, screen="resolution")
+            video(autoplay, screen)

@@ -274,65 +274,45 @@ app.directive "resizeModal", [
 
 ]
 
-app.directive "screen", [ ->
+app.directive "screen", [
+    "StreamService"
+    (StreamService) ->
 
-    link: (scope, element, attrs) ->
+        link: (scope, element, attrs) ->
 
-        navigator.getUserMedia = 
-            navigator.webkitGetUserMedia || 
-            navigator.mozGetUserMedia ||
-            navigator.getUserMedia
+            navigator.getUserMedia = 
+                navigator.webkitGetUserMedia || 
+                navigator.mozGetUserMedia ||
+                navigator.getUserMedia
 
-        successCallback = (stream) ->
-            element[0].src = window.URL.createObjectURL stream
-            element[0].play()
+            successCallback = (stream) ->
+                StreamService.setStream(stream)
+                StreamService.setVideo(angular.element("video#screen")[0])
+                StreamService.startVideo()
 
-        errorCallback = (error) ->
-            console.log('Failed.', error)
+            errorCallback = (error) ->
+                console.log('Failed.', error)
 
-        # element[0].on "play", ->
-        #     window.setTimeout((->
-        #         stream.play()
-        #     ), 500)
+            requestUserMedia = () ->
 
-
-        requestUserMedia = () ->
-
-            maxWidth = 1280
-            maxHeight = 720
-
-            if scope.resolution is "Low"
-                maxWidth = 320
-                maxHeight = 180
-            if scope.resolution is "Middle"
-                maxWidth = 640
-                maxHeight = 360
-                
-            userMediaOptions = {
-                audio: false
-                video: {
-                    mandatory: {
-                        chromeMediaSource: 'screen'
-                        maxWidth: maxWidth
-                        maxHeight: maxHeight    
+                maxWidth = 1280
+                maxHeight = 720
+                    
+                userMediaOptions = {
+                    audio: false
+                    video: {
+                        mandatory: {
+                            chromeMediaSource: 'screen'
+                            maxWidth: maxWidth
+                            maxHeight: maxHeight    
+                        }
                     }
                 }
-            }
 
-            if navigator.getUserMedia?
-                navigator.getUserMedia(userMediaOptions, 
-                    successCallback, errorCallback) 
+                if navigator.getUserMedia?
+                    navigator.getUserMedia(userMediaOptions, 
+                        successCallback, errorCallback)
 
-        scope.$watch ->
-            scope.resolution
-        , ->
-            
-            element[0].pause()
-            element[0].src = ""
             requestUserMedia()
-
-        requestUserMedia()
-
-
 
 ]

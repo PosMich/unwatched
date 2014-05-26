@@ -194,6 +194,49 @@ app.service "SharedItemsService", [
         
 ]
 
+app.service "StreamService", [
+    "$rootScope", "SharedItemsService"
+    ($rootScope, SharedItemsService) ->
+
+        @stream = undefined
+        @video = undefined
+        @item_id = undefined
+
+        @setStream = (stream) ->
+            @stream = stream
+            window.stream = @stream
+
+            @stream.onended = @killStream
+
+        @setVideo = (video) ->
+            @video = video
+
+        @setItemId = (item_id) ->
+            @item_id = item_id
+
+        @startVideo = ->
+            @video.src = window.URL.createObjectURL @stream
+            @video.play()
+            $rootScope.showVideo = true
+            $rootScope.$apply()
+
+        @killStream = =>
+            $rootScope.showVideo = false
+            window.setTimeout((=>
+                @video.pause()
+                @video.src = null
+                if @stream?
+                    @stream.stop()
+                    @stream = undefined
+                    SharedItemsService.delete(@item_id)
+                    
+                $rootScope.$apply()  if !$rootScope.$$phase
+            ), 500)
+
+        return
+
+]
+
 app.constant "available_extensions", [
     { value: "", name: "Choose language", extension: "" }
     { value: "html", name: "HTML", extension: "html" }
