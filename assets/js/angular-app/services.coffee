@@ -447,37 +447,67 @@ app.service "StreamService", [
     "$rootScope", "SharedItemsService"
     ($rootScope, SharedItemsService) ->
 
-        @stream = undefined
-        @video = undefined
-        @item_id = undefined
+        @screenStream = undefined
+        @screenVideo = undefined
+        @screen_item_id = undefined
+        @webcamStream = undefined
+        @webcamVideo = undefined
+        @webcam_item_id = undefined
 
-        @setStream = (stream) ->
-            @stream = stream
-            window.stream = @stream
+        @setScreenStream = (stream) ->
+            @screenStream = stream
+            @screenStream.onended = @killScreenStream
 
-            @stream.onended = @killStream
+        @setWebcamStream = (stream) ->
+            @webcamStream = stream
+            @webcamStream.onended = @killWebcamStream
 
-        @setVideo = (video) ->
-            @video = video
+        @setScreenVideo = (video) ->
+            @screenVideo = video
 
-        @setItemId = (item_id) ->
-            @item_id = item_id
+        @setWebcamVideo = (video) ->
+            @webcamVideo = video
 
-        @startVideo = ->
-            @video.src = window.URL.createObjectURL @stream
-            @video.play()
-            $rootScope.showVideo = true
+        @setScreenItemId = (item_id) ->
+            @screen_item_id = item_id
+
+        @setWebcamItemId = (item_id) ->
+            @webcam_item_id = item_id
+
+        @startScreenVideo = ->
+            @screenVideo.src = window.URL.createObjectURL @screenStream
+            @screenVideo.play()
+            $rootScope.video.show.screen = true
             $rootScope.$apply()
 
-        @killStream = =>
-            $rootScope.showVideo = false
+        @startWebcamVideo = ->
+            @webcamVideo.src = window.URL.createObjectURL @webcamStream
+            @webcamVideo.play()
+            $rootScope.video.show.webcam = true
+            $rootScope.$apply()
+
+        @killScreenStream = =>
+            $rootScope.video.show.screen = false
             window.setTimeout((=>
-                @video.pause()
-                @video.src = null
-                if @stream?
-                    @stream.stop()
-                    @stream = undefined
-                    SharedItemsService.delete(@item_id)
+                @screenVideo.pause()
+                @screenVideo.src = null
+                if @screenStream?
+                    @screenStream.stop()
+                    @screenStream = undefined
+                    SharedItemsService.delete(@screen_item_id)
+                    
+                $rootScope.$apply()  if !$rootScope.$$phase
+            ), 500)
+
+        @killWebcamStream = =>
+            $rootScope.video.show.webcam = false
+            window.setTimeout((=>
+                @webcamVideo.pause()
+                @webcamVideo.src = null
+                if @webcamStream?
+                    @webcamStream.stop()
+                    @webcamStream = undefined
+                    SharedItemsService.delete(@webcam_item_id)
                     
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)

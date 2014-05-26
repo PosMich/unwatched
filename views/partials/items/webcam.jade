@@ -1,4 +1,4 @@
-.detail-view.shared-screen-container
+.detail-view.shared-webcam-container
     .heading.clearfix.controls
         .row
             .col-xs-12.controls
@@ -30,9 +30,9 @@
                 b Category: 
                 | {{item.category}}
 
-        button.btn.btn-primary(ng-href="#", screen, ng-hide="video.show.screen")
-            | Share my screen
-        button.btn.btn-danger(ng-href="#", ng-show="video.show.screen", 
+        button.btn.btn-primary(ng-href="#", webcam, ng-hide="video.show.webcam")
+            | Share my webcam
+        button.btn.btn-danger(ng-href="#", ng-show="video.show.webcam", 
             ng-click="delete('screen')")
             | Stop sharing
 
