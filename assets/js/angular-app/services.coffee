@@ -2,58 +2,138 @@
 # ============================
 
 "use strict"
+class RTCService
+    @::roomId = null
+    
+    class Master
+        @::signalServer     = "wss://localhost:3001" 
+        @::roomId           = null
+        @::signallingClients = []
+        class SlaveRTC
+            @::id = null
+            @connection = null
+            @signaller
+            constructor: (@signaller, @id)->
+                @connection = new RTCPeerConnection(
+                    iceServers: [
+                        url: "stun:stun.l.google.com:19302"
+                    ]
+                ,
+                    optional: [
+                            DtlsSrtpKeyAgreement: true
+                        ,
+                            RtpDataChannels: true
+                    ]
+                )
+                @connection.onicecandidate = @handleOwnIce
+                
+                @connection.onconnecting = @onConnecting
+                @connection.onopen = -> 
+                    console.log "aodsifhrüjgöowaijgraoiwhjü9gr8j" 
+                #@onOpen
 
-class RTCProvider
-    @::isMaster      = true
-    @::signalServer  = "wss://localhost:3001" 
-    @::roomId        = null
-    @::peerConnections = []
-    @::signalClients   = []
-    @::signalConnection = null
-    @::masterPC         = null
-    setup: (@roomId)->
-        @isMaster = false if roomId
-        
-        @setupSignalServer()
+                @connection.onaddstream = @onAddStream
+                @connection.onremovestream = @onRemoveStream
 
-    setupSignalServer: ->
-        console.log "isMaster: "+@isMaster
-        console.log "1"
-        @signalConnection = new WebSocket(@signalServer)
-        console.log "2"
-        @signalConnection.onopen    =  @handleSignalOpen
-        console.log "3"
-        @signalConnection.onmessage = @handleSignalMessage
-        console.log "4"
-        @signalConnection.onerror   =  @handleSignalError
-        console.log "5"
-        @signalConnection.onclose   =  @handleSignalClose
-        console.log "6"
-        
-        if @isMaster
+
+                try
+                    @dataChannel = @connection.createDataChannel("control",  reliable: false)
+                    @dataChannel.onmessage = @DChandleMessage
+                    @dataChannel.onerror   = @DChandleError
+                    @dataChannel.onopen    = @DChandleOpen
+                    @dataChannel.onclose   = @DChandleClose
+                catch error
+                    console.log "error creating Data Channel"
+                    console.log error.message
+
+                @createOffer()
+            handleOwnIce: (event) =>
+                console.log "handleOwnIce"
+                if event.candidate
+                    @signaller.signalSend
+                        type: "candidate"
+                        label: event.candidate.sdpMLineIndex
+                        id: event.candidate.sdpMid
+                        candidate: event.candidate.candidate
+                        clientId: @id
+                else
+                    console.log "end of candidates"
+            createOffer: -> # send to client
+                console.log "create offer"
+                @connection.createOffer (description) =>
+                    @connection.setLocalDescription description
+                    description.clientId = @id
+                    @signaller.signalSend description
+            handleAnswer: (answer)-> # recieved from client
+                console.log "handle answer"
+                console.log answer
+                @connection.setRemoteDescription new RTCSessionDescription(answer)
+            handleIce: (ice) ->
+                console.log "handleIce"
+                @connection.addIceCandidate new RTCIceCandidate(
+                    sdpMLineIndex: ice.label
+                    candidate: ice.candidate
+                )
+            onConnecting: =>
+                console.log "connecting"
+            onOpen: =>
+                console.log "open"
+                try
+                    @dataChannel = @peerConnection.createDataChannel("control",  reliable: false)
+                    @dataChannel.onmessage = @DChandleMessage
+                    @dataChannel.onerror   = @DChandleError
+                    @dataChannel.onopen    = @DChandleOpen
+                    @dataChannel.onclose   = @DChandleClose
+                catch error
+                    console.log "error creating Data Channel"
+                    console.log error.message
+            onAddStream: =>
+                console.log "onAddStream"
+            onRemoveStream: =>
+                console.log "onRemoveStream"
+            DChandleMessage: (msg) =>
+                console.log "got a message from DC"
+                console.log msg
+            DChandleError: (error)=>
+                console.log "got an DC error!"
+                console.log error
+            DChandleOpen: =>
+                console.log "DC is open!"
+            DChandleClose: =>
+                console.log "DC is closed!"
+        constructor: ->
+            console.log "setup"
+            @signalConnection = new WebSocket(@signalServer)
+            @signalConnection.onopen    = @handleSignalOpen
+            @signalConnection.onmessage = @handleSignalMessage
+            @signalConnection.onerror   = @handleSignalError
+            @signalConnection.onclose   = @handleSignalClose
+            
             @signalSend type: "new"
-        else
-            @signalSend 
-                type: "connect"
-                roomId: @roomId
-    signalSend: (msg) ->
-        if @signalConnection.readyState is 1
-            @signalConnection.send JSON.stringify(msg)
-        else
-            console.log "Signalling Channel isn't ready"
-            setTimeout =>
-                @signalSend msg
-            , 25
-    handleSignalOpen: (event) =>
-        console.log "Signalling Channel Opened"
-    handleSignalMessage: (event) =>
-        console.log "got message!"
-        try 
-            parsedMsg = JSON.parse(event.data)
+        signalSend: (msg) ->
+            if @signalConnection.readyState is 1
+                @signalConnection.send JSON.stringify(msg)
+            else
+                console.log "Signalling Channel isn't ready"
+                setTimeout =>
+                    @signalSend msg
+                , 25
+        handleSignalOpen: (event) =>
+            console.log "Signalling Channel Opened"
+        handleSignalMessage: (event) =>
+            console.log "got message!"
+            try 
+                parsedMsg = JSON.parse(event.data)
 
-            if !parsedMsg.type
-                throw new Error("message Type not defined")
+                if !parsedMsg.type
+                    throw new Error("message Type not defined")
 
+            catch e
+                console.log "wasn't able to parse message"
+                console.log e.message
+                console.log event
+                console.log event.data
+            
             switch parsedMsg.type
                 when "id" # room creation successful
                     console.log "got id: "+parsedMsg.roomId
@@ -61,37 +141,203 @@ class RTCProvider
                     console.log "created room"
                 when "connect"  # new client
                     console.log "client want's to connect"
-                    signallingId = parsedMsg.clientId
-                    # create new PeerConnection, assign internal ClientId
+                    # create new peerconnection
+                    #@peerConnections.push new RTConnection(@, parsedMsg.clientId, @isMaster)
+                    @signallingClients.push new SlaveRTC(@, parsedMsg.clientId)
+
                 when "answer"
-                    console.log "answer"
-                    # traverse peerconnections, send to corresponding peerconnection
+                    for slave in @signallingClients
+                        if slave.id is parsedMsg.clientId
+                            slave.handleAnswer parsedMsg
+                            console.log "answer"
+                            return
                 when "candidate"
-                    console.log "candidate"
-                    # traverse peerconnections, send to corresponding peerconnection
+                    for slave in @signallingClients
+                        if slave.id is parsedMsg.clientId
+                            slave.handleIce parsedMsg
+                            console.log "candidate for client"
+                            break
                 else
                     console.log "other message"
                     console.log parsedMsg
-        catch e
-            console.log "wasn't able to parse message"
-            console.log e.message
+        handleSignalError: (event) =>
+            console.log "Signalling Channel Error"
             console.log event
-            console.log event.data
-    handleSignalError: (event) =>
-        console.log "Signalling Channel Error"
-        console.log event
-    handleSignalClose: (event) =>
-        console.log "Signalling Channel Closed"
+        handleSignalClose: (event) =>
+            console.log "Signalling Channel Closed"
 
-window.rtc = RTCProvider
+    # only 1 pc to the server
+    class Slave
+        @::signalServer = "wss://localhost:3001" 
+        @::roomId       = null
+        @::id           = null
+        @::connection   = null
+        constructor: (@roomId)->
+            console.log "setup"
+            @signalConnection = new WebSocket(@signalServer)
+            @signalConnection.onopen    = @handleSignalOpen
+            @signalConnection.onmessage = @handleSignalMessage
+            @signalConnection.onerror   = @handleSignalError
+            @signalConnection.onclose   = @handleSignalClose
+             
+            @connection = new RTCPeerConnection(
+                iceServers: [
+                    url: "stun:stun.l.google.com:19302"
+                ]
+            ,
+                optional: [
+                        DtlsSrtpKeyAgreement: true
+                    ,
+                        RtpDataChannels: true
+                ]
+            )
+            @connection.onicecandidate = @handleOwnIce
+            
+            @connection.onconnecting = @onConnecting
+            @connection.onopen = @onOpen
+
+            @connection.onaddstream = @onAddStream
+            @connection.onremovestream = @onRemoveStream
+
+            @connection.ondatachannel = @gotDataChannel
+
+            @signalSend 
+                type: "connect"
+                roomId: @roomId
+
+        signalSend: (msg) ->
+            if @signalConnection.readyState is 1
+                @signalConnection.send JSON.stringify(msg)
+            else
+                console.log "Signalling Channel isn't ready"
+                setTimeout =>
+                    @signalSend msg
+                , 25
+        handleSignalOpen: (event) =>
+            console.log "Signalling Channel Opened"
+        handleSignalMessage: (event) =>
+            console.log "got message!"
+            try 
+                parsedMsg = JSON.parse(event.data)
+
+                if !parsedMsg.type
+                    throw new Error("message Type not defined")
+
+                switch parsedMsg.type
+                    when "id" # room creation successful
+                        console.log "got id: "+parsedMsg.clientId
+                        @id = parsedMsg.clientId
+
+                    when "offer"
+                        @handleOffer( parsedMsg )
+
+                    when "candidate"
+                        @handleIce( parsedMsg )
+                    else
+                        console.log "other message"
+                        console.log parsedMsg
+            catch e
+                console.log "wasn't able to parse message"
+                console.log e.message
+                console.log event
+                console.log event.data
+        handleSignalError: (event) =>
+            console.log "Signalling Channel Error"
+            console.log event
+        handleSignalClose: (event) =>
+            console.log "Signalling Channel Closed"
+        handleOwnIce: (event) =>
+            console.log "handleOwnIce"
+            if event.candidate
+                @signalSend
+                    type: "candidate"
+                    label: event.candidate.sdpMLineIndex
+                    id: event.candidate.sdpMid
+                    candidate: event.candidate.candidate
+                    clientId: @id
+            else
+                console.log "end of candidates"
+        handleIce: (ice) ->
+            console.log "handleIce"
+            @connection.addIceCandidate new RTCIceCandidate(
+                sdpMLineIndex: ice.label
+                candidate: ice.candidate
+            )
+        handleOffer: (offer) =>
+            console.log "handle offer"
+            @connection.setRemoteDescription new RTCSessionDescription(offer)
+            @createAnswer()
+        createAnswer: -> 
+            console.log "create answer"
+            @connection.createAnswer (description) =>
+                @connection.setLocalDescription description
+                description.clientId = @id
+                console.log @id
+                console.log "answer sent?"
+                @signalSend description
+        onConnecting: =>
+            console.log "connecting"
+        onOpen: =>
+            console.log "opened"
+        onAddStream: =>
+            console.log "stream added"
+        onRemoveStream: =>
+            console.log "stream removed"
+        gotDataChannel: (event) =>
+            console.log "RTConnection gotDataChannel"
+            @dataChannel = event.channel
+            @dataChannel.onmessage = @DChandleMessage
+            @dataChannel.onerror   = @DChandleError
+            @dataChannel.onopen    = @DChandleOpen
+            @dataChannel.onclose   = @DChandleClose
+
+        DChandleMessage: (msg) =>
+            console.log "got a message from DC"
+            console.log msg
+        DChandleError: (error)=>
+            console.log "got an DC error!"
+            console.log error
+        DChandleOpen: =>
+            console.log "DC is open!"
+        DChandleClose: =>
+            console.log "DC is closed!"
+    constructor: (@ChatService) ->
+    @setRoomId: (@roomId)->
+    @setup: ->
+        console.log "setup done"
+        if @roomId is null
+            @handler = new Master()
+        else
+            @handler = new Slave(@roomId)
 
 ###
-app.provider "RTC", RTCProvider
+window.Master = Master
+window.Slave = Slave
 ###
+#console.log RTCProvider
+
+
+
 app = angular.module "unwatched.services", []
 
 
 app.value "version", "0.1"
+
+
+app.service "ChatService", ->
+    class Message
+        constructor: (@sender, @message) ->
+
+    @messages = []
+
+    @addMessage = (sender, message) ->
+        @messages.push new Message(sender, message)
+
+    return
+
+
+app.service "RTC", ["ChatService", RTCService]
+
 
 app.service "ChatStateService", ->
 
