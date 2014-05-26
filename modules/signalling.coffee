@@ -99,6 +99,4 @@ exports.connect = (server) ->
                 logger.error error.message
         
         wsConnection.on "close", ->
-            #for room in roomList
-            #    if room.ws is 
             logger.info "ws connection closed"
