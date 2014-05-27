@@ -9,7 +9,7 @@ class RTCService
         @::roomId            = null
         @::signallingClients = []
         @::listeners         = []
-        @::password          = null
+        @::password          = ""
         class SlaveRTC
             @::id         = null
             @::connection = null
@@ -207,7 +207,7 @@ class RTCService
             for listener in @listeners
                 if listener.type is message.type
                     listener.onMessage message
-        setPassword: (@password)->
+        setPassword: (@password) ->
 
     # only 1 pc to the server
     class Slave
@@ -396,8 +396,7 @@ class RTCService
         @handler.sendBroadcastMessage message
     setPassword: (password) ->
         if @handler.password
-            @hanlder.password = password
-
+            @handler.password = password
 
 ###
 window.Master = Master
@@ -414,7 +413,102 @@ app = angular.module "unwatched.services", []
 app.value "version", "0.1"
 
 app.service "UserService", class Users
+    @::users = []
+    @::colors = [
+        [125,217,148]
+        [203,85,215]
+        [223,93,43]
+        [55,48,67]
+        [120,163,213]
+        [199,217,74]
+        [144,111,47]
+        [95,132,115]
+        [211,79,152]
+        [130,117,214]
+        [220,79,95]
+        [206,205,158]
+        [93,142,56]
+        [104,216,71]
+        [127,210,208]
+        [134,57,88]
+        [206,163,192]
+        [59,70,37]
+        [112,63,130]
+        [91,45,35]
+        [197,137,112]
+        [215,169,64]
+        [80,99,136]
+        [153,55,39]
+    ]
+
+    class User
+        @::isMaster = false
+        @::name     = ""
+        @::pic      = ""
+        @::id       = -1
+        @::color    = null
+        @::joinedDate = null
+        @::isActive   = true
+        constructor: (@name, @id, @color) ->
+            @joinedDate = new Date()
+        getColorAsHex: ->
+            "#" +
+            @color[0].toString(16) +
+            @color[1].toString(16) +
+            @color[2].toString(16)
+        getColorAsRGB: ->
+            "rgb(" +
+            color[0] + "," +
+            color[1] + "," +
+            color[2] + ")"
+        getColorWithOpacity: (opacity) ->
+            "rgba(" +
+            colors[0] + "," +
+            colors[1] + "," +
+            colors[2] + "," +
+            opacity + ")"
+        changePic: (@pic) ->
+        changeName: (@name) ->
+
     constructor: ->
+    addUser: (name)->
+        id = @users.length
+        @users.push new User(name, id, @colors[id] )
+
+
+    setInactive: (id) ->
+        for user in @users
+            if user.id is id
+                user.isActive = false
+                break
+
+    setActive: (id) ->
+        for user in @users
+            if user.id is id
+                user.isActive = true
+                break
+
+    changeName: (id, newName) ->
+        exists = false
+        for user in @users
+            continue if user.id is id
+            if user.name is newName
+                exists = true
+                break
+
+        return if exists
+
+        for user in @users
+            if user.id is id
+                user.changeName newName
+                break
+
+    changePic: (id, newPic) ->
+        for user in @users
+            if user.id is id
+                user.changePic newPic
+                break
+
 
 
 app.service "RTCService", RTCService
