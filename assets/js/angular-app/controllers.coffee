@@ -22,7 +22,7 @@ app.controller "AppCtrl", [
 app.controller "IndexCtrl", [
     "$scope", "$routeParams", "RTCService", "RoomService" #, "RTC"
     ($scope, $routeParams, RTCService, RoomService) ->
-        
+
         window.rtc = RTCService
         if $routeParams.id
             RTCService.setup($routeParams.id)
@@ -34,7 +34,7 @@ app.controller "IndexCtrl", [
                 RTCService.setup()
                 RoomService.name = $scope.createRoom.rName
                 return
-        
+
         return
 ]
 

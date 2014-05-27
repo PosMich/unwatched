@@ -150,7 +150,7 @@ class RTCService
                     console.log "got id: " + parsedMsg.roomId if @debug
                     @roomId = parsedMsg.roomId
                     console.log "created room: " + parsedMsg.roomId
-                    
+
                     @sendBroadcastMessage
                         type: 'room'
                         message: parsedMsg.roomId
@@ -180,9 +180,15 @@ class RTCService
         handleSignalClose: (event) ->
             console.log "Signalling Channel Closed"
         sendBroadcastMessage: (message) ->
+            console.log "send broadcast message"
+            console.log message
             for client in @signallingClients
                 message.clientId = @roomId
                 client.sendBroadcastMessage( message )
+            for listener in @listeners
+                if listener.type is message.type
+                    message.clientId = @roomId
+                    listener.onMessage message
         handleBroadcastMessage: (message, sender) ->
             # send to all, except sender!
             if @debug
@@ -356,6 +362,9 @@ class RTCService
             @DCsend
                 type: "broadcast"
                 message: message
+            for listener in @listeners
+                if listener.type is message.type
+                    listener.onMessage message
         DCsend: (message) ->
             @dataChannel.send JSON.stringify(message)
 
@@ -454,7 +463,7 @@ app.service "ChatService", [
 
 
         sendMessage: (message) ->
-            @messages.push new Message("me", message)
+            #@messages.push new Message("me", message)
             @RTCService.sendBroadcastMessage
                 type: "chat"
                 message: message
