@@ -25,8 +25,9 @@ app.controller "IndexCtrl", [
 
         window.rtc = RTCService
 
-        $scope.room = {}
+        $scope.room = RoomService.getRoom() || {}
         $scope.room.id = ""
+        $scope.user = {}
 
         if $routeParams.id
             RTCService.setup($routeParams.id)
@@ -49,8 +50,68 @@ app.controller "IndexCtrl", [
             if value?
                 $scope.room.id = value
                 RoomService.setName $scope.room.name
+                RoomService.setUrl( "/room/" + $scope.room.id )
                 $scope.room = RoomService.getRoom()
+
         , true
+
+        $scope.$watch (->
+            RoomService.url
+        ), ((value) ->
+            $scope.room.url = value
+        ), true
+
+        # image processing
+        img = document.createElement("img")
+        canvas = document.createElement("canvas")
+
+        $scope.onFileSelect = ($files)->
+            file = $files[0]
+
+            $scope.mime = file.type
+
+            if !(/image\/(gif|jpeg|png)$/i).test(file.type.toString())
+
+                $scope.image_error = "The file you have coosen has a " +
+                    "wrong MIME-Type (it has: " + file.type.toString() +
+                    "). Please try it again with an image."
+                return
+
+            $scope.user.avatar_error = ""
+
+            # read file
+            reader = new FileReader()
+
+            reader.onload = (e) ->
+                # $scope.item.path = e.target.result
+
+                img.src = e.target.result
+
+                img.onload = ->
+
+                    max_width = 300
+                    width = img.width
+                    height = img.height
+
+                    if width > max_width
+                        height *= max_width / width
+                        width = max_width
+
+                    canvas.width = width
+                    canvas.height = height
+
+                    ctx = canvas.getContext "2d"
+                    ctx.drawImage( img, 0, 0, width, height )
+
+                    $scope.user.profilePic = canvas.toDataURL(
+                        $scope.mime
+                    )
+
+                    $scope.$apply()
+
+            reader.readAsDataURL file
+
+
 ]
 
 app.controller "SpacelabCtrl", ->
