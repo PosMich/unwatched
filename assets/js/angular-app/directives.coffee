@@ -91,8 +91,8 @@ app.directive "focusOnClick", [ ->
 ]
 
 app.directive "centerVertical", [
-    "$window"
-    ($window) ->
+    "$window", "RoomService"
+    ($window, RoomService) ->
         link: (scope, elem, attrs) ->
 
             centerVertical = (elem, attrs) ->
@@ -104,6 +104,14 @@ app.directive "centerVertical", [
                 window.setTimeout( (->
                     centerVertical(elem, attrs)
                 ), 1)
+
+            scope.$watch ->
+                RoomService.id
+            , ->
+                window.setTimeout( (->
+                    centerVertical(elem, attrs)
+                ), 1)
+            , true
 
             angular.element($window).bind "resize", ->
                 centerVertical(elem, attrs)

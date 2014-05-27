@@ -153,7 +153,8 @@ class RTCService
 
                     @sendBroadcastMessage
                         type: 'room'
-                        message: parsedMsg.roomId
+                        message:
+                            room_id: parsedMsg.roomId
 
                 when "connect"  # new client
                     console.log "client want's to connect"  if @debug
@@ -472,21 +473,45 @@ app.service "ChatService", [
 app.service "RoomService", [
     "RTCService",
     "$filter",
+    "$rootScope"
     class Room
         @id
         @name
         @created
+        @usersLength
+        @filesLength
+        @description
 
-        constructor: (@RTCService, @$filter, @id, @name) ->
+        constructor: (@RTCService, @$filter, @$rootScope) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
+
+            @usersLength = 10
+            @filesLength = 20
+            @description = "Room description"
 
             @RTCService.registerBroadcastListener
                 type: "room"
                 onMessage: @onMessage
 
         onMessage: (message) =>
-            console.log "RoomService: got message"
-            console.log message
+            if message.message.room_id
+                @id = message.message.room_id
+                @$rootScope.$apply()  if !@$rootScope.$$phase
+
+        setName: (name) ->
+            @name = name
+            console.log @name
+
+        getRoom: ->
+            return {
+                id: @id
+                name: @name
+                created: @created
+                usersLength: @usersLength
+                filesLength: @filesLength
+                description: @description
+            }
+
 
 ]
 

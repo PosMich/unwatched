@@ -24,6 +24,10 @@ app.controller "IndexCtrl", [
     ($scope, $routeParams, RTCService, RoomService) ->
 
         window.rtc = RTCService
+
+        $scope.room = {}
+        $scope.room.id = ""
+
         if $routeParams.id
             RTCService.setup($routeParams.id)
 
@@ -32,10 +36,21 @@ app.controller "IndexCtrl", [
                 return
             else
                 RTCService.setup()
-                RoomService.name = $scope.createRoom.rName
+                RTCService.setPassword $scope.room.password
+                $scope.user = {}
+                $scope.user.name = "Unnamed"
+                $scope.user.profilePic = "/images/avatar.png"
+
                 return
 
-        return
+        $scope.$watch ->
+            RoomService.id
+        , (value) ->
+            if value?
+                $scope.room.id = value
+                RoomService.setName $scope.room.name
+                $scope.room = RoomService.getRoom()
+        , true
 ]
 
 app.controller "SpacelabCtrl", ->

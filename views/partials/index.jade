@@ -1,10 +1,10 @@
-.info-container(center-vertical)
+.info-container(center-vertical, ng-show="room.id==''")
     .info
         | Chat with others
     .info
         | Share anything
 
-#create-room-container.well(center-vertical)
+#create-room-container.well(center-vertical, ng-show="room.id==''")
     form.form-horizontal(novalidate, name="createRoom")
         fieldset
             legend Create Room
@@ -50,3 +50,40 @@
                 .col-xs-11.col-offset-xs-1
                     button.btn.btn-primary.pull-right(ng-click="submitRoom()",
                         ng-disabled="createRoom.$invalid") Submit
+
+.row.dashboard(ng-hide="room.id==''", center-vertical)
+    .col-xs-offset-1.col-xs-4
+        .well
+            h1 {{room.name}}
+            p {{room.description}}
+            dl.dl-horizontal
+                dt Users
+                dd {{room.usersLength}}
+                dt Shared files
+                dd {{room.filesLength}}
+                dt Up since
+                dd {{room.created}}
+                dt Users
+                dd {{room.usersLength}}
+    .col-xs-offset-2.col-xs-4.col-xs-offset-1
+        .well
+            form.form-horizontal(role="form")
+                .form-group
+                    label.col-xs-4.control-label(for="inputUserName")
+                        | Your name:
+                    .col-xs-8
+                        input#inputUserName.form-control(type="text",
+                            ng-model="user.name")
+
+                .form-group
+                    label.col-xs-4.control-label(for="inputUserAvatar")
+                        | Your Avatar:
+                    .col-xs-8
+                        input#inputUserAvatar.form-control(type="file",
+                            ng-model="user.avatar")
+
+                .form-group
+                    .col-xs-offset-4.col-xs-8
+                        .img-container
+                            img(ng-src="user.profilePic")
+
