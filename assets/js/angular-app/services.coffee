@@ -406,13 +406,7 @@ window.Slave = Slave
 
 window.rtcService = RTCService
 
-
-app = angular.module "unwatched.services", []
-
-
-app.value "version", "0.1"
-
-app.service "UserService", class Users
+class Users
     @::users = []
     @::colors = [
         [125,217,148]
@@ -470,22 +464,24 @@ app.service "UserService", class Users
         changePic: (@pic) ->
         changeName: (@name) ->
 
-    constructor: ->
-    addUser: (name)->
+    constructor: (@$rootScope) ->
+    addUser: (name) ->
         id = @users.length
         @users.push new User(name, id, @colors[id] )
-
+        @$rootScope.$apply() if !@$rootScope.$$phase
 
     setInactive: (id) ->
         for user in @users
             if user.id is id
                 user.isActive = false
+                @$rootScope.$apply() if !@$rootScope.$$phase
                 break
 
     setActive: (id) ->
         for user in @users
             if user.id is id
                 user.isActive = true
+                @$rootScope.$apply() if !@$rootScope.$$phase
                 break
 
     changeName: (id, newName) ->
@@ -501,14 +497,24 @@ app.service "UserService", class Users
         for user in @users
             if user.id is id
                 user.changeName newName
+                @$rootScope.$apply() if !@$rootScope.$$phase
                 break
 
     changePic: (id, newPic) ->
         for user in @users
             if user.id is id
                 user.changePic newPic
+                @$rootScope.$apply() if !@$rootScope.$$phase
                 break
 
+
+
+app = angular.module "unwatched.services", []
+
+
+app.value "version", "0.1"
+
+app.service "UserService", [ "$rootScope", Users ]
 
 
 app.service "RTCService", RTCService
@@ -528,16 +534,6 @@ app.service "SharesService", class Shares
         extension: ""
         templateUrl: ""
 
-
-app.service "UserService", class Users
-    @::users = []
-    class User
-        @signallingId
-        @name
-        @email
-        @profilePic
-
-    constructor: ->
 
 
 
