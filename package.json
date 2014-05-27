@@ -27,7 +27,7 @@
     "walk": "latest",
     "which": "latest",
     "winston": "^0.7.3",
-    "winston-logio": "^0.2.0",
+    "winston-logio": "PosMich/winston-logio",
     "wrench": "latest",
     "ws": "^0.4.31"
   },

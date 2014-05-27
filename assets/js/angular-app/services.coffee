@@ -9,6 +9,7 @@ class RTCService
         @::roomId           = null
         @::signallingClients = []
         @::listeners = []
+        @::password = null
         class SlaveRTC
             @::id = null
             @::connection = null
@@ -109,6 +110,7 @@ class RTCService
                 @DCsend
                     type: "broadcast"
                     message: message
+                    clientId: @roomId
             handleBroadcastMessage: (message) ->
                 @signaller.handleBroadcastMessage message, @id
 
@@ -183,12 +185,11 @@ class RTCService
         sendBroadcastMessage: (message) ->
             console.log "send broadcast message"
             console.log message
+            message.clientId = @roomId
             for client in @signallingClients
-                message.clientId = @roomId
                 client.sendBroadcastMessage( message )
             for listener in @listeners
                 if listener.type is message.type
-                    message.clientId = @roomId
                     listener.onMessage message
         handleBroadcastMessage: (message, sender) ->
             # send to all, except sender!
@@ -198,7 +199,6 @@ class RTCService
                 console.log "from sender: " + sender
             for client in @signallingClients
                 continue if client.id is sender
-                message.clientId = sender
                 if @debug
                     console.log "should send"
                     console.log message
@@ -206,9 +206,8 @@ class RTCService
             # send to listener
             for listener in @listeners
                 if listener.type is message.type
-                    message.clientId = @roomId
                     listener.onMessage message
-
+        setPassword: (@password)->
 
     # only 1 pc to the server
     class Slave
@@ -360,9 +359,11 @@ class RTCService
                     console.log "listener found"
                     listener.onMessage message
         sendBroadcastMessage: (message) ->
+            message.clientId = @id
             @DCsend
                 type: "broadcast"
                 message: message
+                clientId: @id
             for listener in @listeners
                 if listener.type is message.type
                     listener.onMessage message
@@ -393,6 +394,10 @@ class RTCService
         console.log "send broadcast"
         console.log message
         @handler.sendBroadcastMessage message
+    setPassword: (password) ->
+        if @handler.password
+            @hanlder.password = password
+
 
 ###
 window.Master = Master
@@ -460,7 +465,8 @@ app.service "ChatService", [
             console.log "ChatService: got message"
             console.log message
             @messages.push new Message(message.clientId, message.message)
-            @$rootScope.$apply()
+
+            @$rootScope.$apply() if !@$rootScope.$$phase
 
 
         sendMessage: (message) ->
