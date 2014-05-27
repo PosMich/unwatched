@@ -150,6 +150,11 @@ class RTCService
                     console.log "got id: " + parsedMsg.roomId if @debug
                     @roomId = parsedMsg.roomId
                     console.log "created room: " + parsedMsg.roomId
+                    
+                    @sendBroadcastMessage
+                        type: 'room'
+                        message: parsedMsg.roomId
+
                 when "connect"  # new client
                     console.log "client want's to connect"  if @debug
                     @signallingClients.push new SlaveRTC(@, parsedMsg.clientId)
@@ -453,6 +458,27 @@ app.service "ChatService", [
             @RTCService.sendBroadcastMessage
                 type: "chat"
                 message: message
+]
+
+app.service "RoomService", [
+    "RTCService",
+    "$filter",
+    class Room
+        @id
+        @name
+        @created
+
+        constructor: (@RTCService, @$filter, @id, @name) ->
+            @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
+
+            @RTCService.registerBroadcastListener
+                type: "room"
+                onMessage: @onMessage
+
+        onMessage: (message) =>
+            console.log "RoomService: got message"
+            console.log message
+
 ]
 
 

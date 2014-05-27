@@ -20,18 +20,22 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-    "$scope", "$routeParams", "RTCService" #, "RTC"
-    ($scope, $routeParams, RTCService) ->
+    "$scope", "$routeParams", "RTCService", "RoomService" #, "RTC"
+    ($scope, $routeParams, RTCService, RoomService) ->
+        
         window.rtc = RTCService
-        console.log $routeParams
         if $routeParams.id
             RTCService.setup($routeParams.id)
-        else
-            RTCService.setup()
-    #, RTCProvider) ->
-        # console.log RTCProvider
-        # console.log "index ctrl here"
-        # $scope.submitCreateRoom = ->
+
+        $scope.submitRoom = ->
+            if $scope.createRoom.$invalid
+                return
+            else
+                RTCService.setup()
+                RoomService.name = $scope.createRoom.rName
+                return
+        
+        return
 ]
 
 app.controller "SpacelabCtrl", ->

@@ -48,5 +48,5 @@
                     
             .form-group
                 .col-xs-11.col-offset-xs-1
-                    button.btn.btn-primary.pull-right(type='submit',
-                    ng-disabled="createRoom.$invalid") Submit
+                    button.btn.btn-primary.pull-right(ng-click="submitRoom()",
+                        ng-disabled="createRoom.$invalid") Submit
