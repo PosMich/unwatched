@@ -5,16 +5,16 @@
 class RTCService
     @::listeners = []
     class Master
-        @::signalServer     = "wss://localhost:3001"
-        @::roomId           = null
+        @::signalServer      = "wss://localhost:3001"
+        @::roomId            = null
         @::signallingClients = []
-        @::listeners = []
-        @::password = null
+        @::listeners         = []
+        @::password          = null
         class SlaveRTC
-            @::id = null
+            @::id         = null
             @::connection = null
-            @::signaller = null
-            @::debug = false
+            @::signaller  = null
+            @::debug      = false
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
                     iceServers: [
