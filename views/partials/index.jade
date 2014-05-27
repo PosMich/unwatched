@@ -63,11 +63,11 @@
                 dd {{room.filesLength}}
                 dt Up since
                 dd {{room.created}}
-                dt Users
-                dd {{room.usersLength}}
+                dt(ng-hide="room.url==''") URL
+                dd(ng-hide="room.url==''") {{room.url}}
     .col-xs-offset-2.col-xs-4.col-xs-offset-1
         .well
-            form.form-horizontal(role="form")
+            form.form-horizontal(name="userForm", role="form")
                 .form-group
                     label.col-xs-4.control-label(for="inputUserName")
                         | Your name:
@@ -75,15 +75,20 @@
                         input#inputUserName.form-control(type="text",
                             ng-model="user.name")
 
-                .form-group
+                .form-group(ng-class="{'has-error': user.avatar_error}")
                     label.col-xs-4.control-label(for="inputUserAvatar")
                         | Your Avatar:
                     .col-xs-8
                         input#inputUserAvatar.form-control(type="file",
-                            ng-model="user.avatar")
+                            ng-model="user.avatar", name="avatar"
+                            ng-file-select="onFileSelect($files)")
+                        span.help-block(ng-show="imageForm.iName.$error.required")
+                            | *Required field. Name won't be saved.
 
                 .form-group
                     .col-xs-offset-4.col-xs-8
                         .img-container
-                            img(ng-src="user.profilePic")
+                            .img(ng-file-drop="onFileSelect($files)", square,
+                                ng-file-drag-over-class="drag-over-class",
+                                style="background-image: url({{user.profilePic}})")
 

@@ -477,18 +477,23 @@ app.service "ChatService", [
 ]
 
 app.service "RoomService", [
-    "RTCService",
-    "$filter",
+    "RTCService"
+    "$filter"
     "$rootScope"
+    "$http"
+    "SERVER_URL"
+    "SERVER_PORT"
     class Room
-        @id
-        @name
-        @created
-        @usersLength
-        @filesLength
-        @description
+        @::id
+        @::name
+        @::created
+        @::usersLength
+        @::filesLength
+        @::description
+        @::url = ""
 
-        constructor: (@RTCService, @$filter, @$rootScope) ->
+        constructor: (@RTCService, @$filter, @$rootScope, @$http, @SERVER_URL,
+            @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
 
             @usersLength = 10
@@ -507,6 +512,15 @@ app.service "RoomService", [
         setName: (name) ->
             @name = name
             console.log @name
+
+        setUrl: (longUrl) ->
+            apiUrl = "https://www.googleapis.com/urlshortener/v1/url?"
+            url = @SERVER_URL + ":" + @SERVER_PORT + longUrl
+            
+            @$http.post(apiUrl, {"longUrl":url}).success( (data) =>
+                @url = data.id
+            )
+
 
         getRoom: ->
             return {
@@ -749,3 +763,6 @@ app.constant "item_template", {
     extension: ""
     templateUrl: ""
 }
+
+app.constant "SERVER_URL", "https://localhost"
+app.constant "SERVER_PORT", "3001"

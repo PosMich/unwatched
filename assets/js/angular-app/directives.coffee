@@ -363,3 +363,32 @@ app.directive "webcam", [
                 requestUserMedia()
 
 ]
+
+app.directive "square", [
+    "$window", "RoomService"
+    ($window, RoomService) ->
+        link: (scope, element, attrs) ->
+            
+            angular.element($window).bind "resize", ->
+                element.height element.width()
+
+
+            scope.$watch ->
+                RoomService.id
+            , ->
+                window.setTimeout( (->
+                    element.height element.width()
+                ), 1)
+            , true
+
+            console.log scope
+
+            scope.$watch ->
+                scope.user.profilePic
+            , ->
+                console.log "change now"
+                window.setTimeout( (->
+                    element.height element.width()
+                ), 1)
+            , true
+]

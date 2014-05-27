@@ -164,7 +164,7 @@ body:after
 
 .dashboard
     .well
-        font-size 15px
+        font-size 13px
         box-shadow 0 0 15px rgba(53,53,53,1)
 
         dl
@@ -175,9 +175,15 @@ body:after
             border-bottom 1px solid black
 
         .img-container
-            padding 30px
-
-            img
+            padding 30px            
+            .img
                 border-radius 50%
                 width 100%
-                box-shadow 0 0 15px rgba(53,53,53,1)
+                border 1px dashed grey
+                background-size 100%
+                background-repeat no-repeat
+                background-position center
+
+                &.drag-over-class
+                    box-shadow 0 0 15px rgba(53,53,53,1)
+                    border 1px solid grey
