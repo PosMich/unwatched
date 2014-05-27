@@ -9,6 +9,7 @@ class RTCService
         @::roomId           = null
         @::signallingClients = []
         @::listeners = []
+        @::password = null
         class SlaveRTC
             @::id = null
             @::connection = null
@@ -205,7 +206,7 @@ class RTCService
             for listener in @listeners
                 if listener.type is message.type
                     listener.onMessage message
-
+        setPassword: (@password)->
 
     # only 1 pc to the server
     class Slave
@@ -392,6 +393,10 @@ class RTCService
         console.log "send broadcast"
         console.log message
         @handler.sendBroadcastMessage message
+    setPassword: (password) ->
+        if @handler.password
+            @hanlder.password = password
+
 
 ###
 window.Master = Master
