@@ -10,7 +10,7 @@ exports.route = (app) ->
     app.get "/partials/:name",  (req, res) ->
         name = req.params.name
 
-        logger.info "render #{req.params.name} partial", 
+        logger.info "render #{req.params.name} partial",
             url: req.url
             params: req.params
         
@@ -21,11 +21,11 @@ exports.route = (app) ->
         name = req.params.name
         dir  = req.params.dir
 
-        logger.info "render #{dir}/#{name} partial", 
+        logger.info "render #{dir}/#{name} partial",
             url: req.url
             params: req.params
         
-        res.render "partials/#{dir}/#{name}" 
+        res.render "partials/#{dir}/#{name}"
 
 
     # ***

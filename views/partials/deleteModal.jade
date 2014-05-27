@@ -7,38 +7,31 @@
         tr
             td
                 b Name:
-            td
-                {{item.name}}
+            td {{item.name}}
         tr(ng-if="item.size!=0 && item.size!=''")
             td
                 b Size:
-            td
-                {{item.size | humanReadableFileSize}}
+            td {{item.size | humanReadableFileSize}}
         tr
             td
                 b Author:
-            td
-                {{item.author}}
+            td {{item.author}}
         tr
             td
                 b Created:
-            td
-                {{item.created}}
+            td {{item.created}}
         tr(ng-if="item.uploaded")
             td
                 b Uploaded:
-            td
-                {{item.uploaded}}
+            td {{item.uploaded}}
         tr(ng-if="item.mime_type")
             td
                 b MIME-Type:
-            td
-                {{item.mime_type}}
+            td {{item.mime_type}}
         tr
             td
                 b Category:
-            td
-                {{item.category}}
+            td {{item.category}}
 
 .modal-footer
     button.btn.btn-danger(ng-click="ok()") Delete

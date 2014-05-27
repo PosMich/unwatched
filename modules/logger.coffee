@@ -11,28 +11,28 @@ logger = new (winston.Logger)(transports: [
         colorize: true
     )
     new (winston.transports.File)(
-        filename: config.log.dir+config.log.files.error
+        filename: config.log.dir + config.log.files.error
         name: "errors"
         label: "errors"
         level: "error"
         json: true
     )
     new (winston.transports.File)(
-        filename: config.log.dir+config.log.files.warning
+        filename: config.log.dir + config.log.files.warning
         name: "warnings"
         label: "warnings"
         level: "warn"
         json: true
     )
     new (winston.transports.File)(
-        filename: config.log.dir+config.log.files.info
+        filename: config.log.dir + config.log.files.info
         name: "infos"
         label: "infos"
         level: "info"
         json: true
     )
     new (winston.transports.File)(
-        filename: config.log.dir+config.log.files.silly
+        filename: config.log.dir + config.log.files.silly
         name: "silly"
         label: "silly"
         level: "silly"
@@ -48,7 +48,7 @@ logger = new (winston.Logger)(transports: [
 
 
 logger.handleExceptions new (winston.transports.File)(
-    filename: config.log.dir+config.log.files.exception
+    filename: config.log.dir + config.log.files.exception
     name: "exceptions"
     label: "exceptions"
     handleExceptions: true
