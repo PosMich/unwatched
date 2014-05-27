@@ -109,6 +109,7 @@ class RTCService
                 @DCsend
                     type: "broadcast"
                     message: message
+                    clientId: @roomId
             handleBroadcastMessage: (message) ->
                 @signaller.handleBroadcastMessage message, @id
 
@@ -182,12 +183,11 @@ class RTCService
         sendBroadcastMessage: (message) ->
             console.log "send broadcast message"
             console.log message
+            message.clientId = @roomId
             for client in @signallingClients
-                message.clientId = @roomId
                 client.sendBroadcastMessage( message )
             for listener in @listeners
                 if listener.type is message.type
-                    message.clientId = @roomId
                     listener.onMessage message
         handleBroadcastMessage: (message, sender) ->
             # send to all, except sender!
@@ -197,7 +197,6 @@ class RTCService
                 console.log "from sender: " + sender
             for client in @signallingClients
                 continue if client.id is sender
-                message.clientId = sender
                 if @debug
                     console.log "should send"
                     console.log message
@@ -205,7 +204,6 @@ class RTCService
             # send to listener
             for listener in @listeners
                 if listener.type is message.type
-                    message.clientId = @roomId
                     listener.onMessage message
 
 
@@ -359,9 +357,11 @@ class RTCService
                     console.log "listener found"
                     listener.onMessage message
         sendBroadcastMessage: (message) ->
+            message.clientId = @id
             @DCsend
                 type: "broadcast"
                 message: message
+                clientId: @id
             for listener in @listeners
                 if listener.type is message.type
                     listener.onMessage message
@@ -459,7 +459,8 @@ app.service "ChatService", [
             console.log "ChatService: got message"
             console.log message
             @messages.push new Message(message.clientId, message.message)
-            @$rootScope.$apply()
+
+            @$rootScope.$apply() if !@$rootScope.$$phase
 
 
         sendMessage: (message) ->
