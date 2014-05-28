@@ -20,9 +20,9 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-    "$scope", "$routeParams", "RTCService", "RoomService", "$location", 
+    "$scope", "$routeParams", "RTCService", "RoomService", "$location",
     "$rootScope", "UserService"
-    ($scope, $routeParams, RTCService, RoomService, $location, 
+    ($scope, $routeParams, RTCService, RoomService, $location,
         $rootScope, UserService) ->
 
         window.rtc = RTCService
@@ -36,7 +36,7 @@ app.controller "IndexCtrl", [
         if $routeParams.id
             $scope.joinAttempt = true
             RTCService.setup($routeParams.id)
-            
+
             $scope.$watch ->
                 RTCService.handler.dataChannel
             , (value) ->
@@ -49,7 +49,7 @@ app.controller "IndexCtrl", [
                 RTCService.handler.passwordIsValid
             , (value) ->
                 if value
-                    $location.path("/room")
+                    $location.path "/room"
                 else
                     console.log "auth issue", value
 
@@ -73,23 +73,28 @@ app.controller "IndexCtrl", [
                         RoomService.setName $scope.room.name
                         RoomService.setUrl( "/room/" + $scope.room.id )
                         $rootScope.userId = UserService.addUser("Unnamed", true)
-                        $location.path("/room")
+                        $location.path "/room"
 
                 , true
 
 ]
 
 app.controller "RoomCtrl", [
-    "$scope", "RoomService", "UserService", "SharedItemsService", 
+    "$scope", "RoomService", "UserService", "SharedItemsService",
     "ChatStateService", "$routeParams", "RTCService", "$rootScope",
     "$location"
-    ($scope, RoomService, UserService, SharedItemsService, 
+    ($scope, RoomService, UserService, SharedItemsService,
         ChatStateService, $routeParams, RTCService, $rootScope,
         $location) ->
 
+
         $scope.room = RoomService
-        
+
         $scope.user = UserService.getUser( $rootScope.userId )
+
+        if !$scope.user
+            $location.path "/"
+
         console.log "user", $scope.user
         console.log "User is Master: " + $scope.user.isMaster
         $scope.user.changePic "/images/avatar.png"
@@ -114,7 +119,7 @@ app.controller "RoomCtrl", [
         img = document.createElement("img")
         canvas = document.createElement("canvas")
 
-        $scope.onFileSelect = ($files)->
+        $scope.onFileSelect = ($files) ->
             file = $files[0]
 
             $scope.mime = file.type
@@ -153,7 +158,8 @@ app.controller "RoomCtrl", [
 
                     ctx = canvas.getContext "2d"
                     console.log "processing image: " + coord_x + ", " + coord_y
-                    console.log "source boundaries: " + img_width + ", " + img_height
+                    console.log "source boundaries: " + img_width +
+                        ", " + img_height
 
                     ctx.drawImage( img, coord_x, coord_y, img_width, img_height,
                         0, 0, 400, 400 )
@@ -474,8 +480,8 @@ app.controller "FileCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete($scope.item.id)
-                $location.path("/share")
+                SharedItemsService.delete $scope.item.id
+                $location.path "/share"
             )
 ]
 
@@ -542,8 +548,8 @@ app.controller "NoteCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete($scope.item.id)
-                $location.path("/share")
+                SharedItemsService.delete $scope.item.id
+                $location.path "/share"
             )
 
 ]
@@ -621,13 +627,13 @@ app.controller "CodeCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete($scope.item.id)
-                $location.path("/share")
+                SharedItemsService.delete $scope.item.id
+                $location.path "/share"
             )
 
         if !$routeParams.id?
             # create new code item
-            $scope.item = SharedItemsService.create("code")
+            $scope.item = SharedItemsService.create "code"
 
         else
             # get shared item by given id
@@ -703,7 +709,7 @@ app.controller "ScreenshotCtrl", [
         $scope.item = {}
 
         if $routeParams.id?
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharedItemsService.get $routeParams.id
             $location.path "/404" if !$scope.item?
         else
             console.log "take new screenshot"
@@ -721,8 +727,8 @@ app.controller "ScreenshotCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete($scope.item.id)
-                $location.path("/share")
+                SharedItemsService.delete $scope.item.id
+                $location.path "/share"
             )
 
 ]
@@ -740,7 +746,7 @@ app.controller "ScreenCtrl", [
             $scope.item = SharedItemsService.create("screen")
 
         else
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharedItemsService.get $routeParams.id
             $location.path "/404" if !$scope.item?
 
         $scope.item.name = $scope.item.author + "'s Shared Screen"
@@ -759,7 +765,7 @@ app.controller "ScreenCtrl", [
 
             modalInstance.result.then( ->
                 StreamService.killScreenStream()
-                $location.path("/share")
+                $location.path "/share"
             )
 ]
 
@@ -776,7 +782,7 @@ app.controller "WebcamCtrl", [
             $scope.item = SharedItemsService.create("webcam")
 
         else
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharedItemsService.get $routeParams.id
             $location.path "/404" if !$scope.item?
 
         $scope.item.name = $scope.item.author + "'s Shared Webcam"
@@ -795,7 +801,7 @@ app.controller "WebcamCtrl", [
 
             modalInstance.result.then( ->
                 StreamService.killWebcamStream()
-                $location.path("/share")
+                $location.path "/share"
             )
 ]
 
@@ -849,7 +855,7 @@ app.controller "ChatCtrl", [
             #$scope.chat.messages.push
             #    sender: "Lorem Ipsum"
             #    content: $scope.chat.message
-            ChatService.sendMessage $scope.chat.message
+            ChatService.addMessage $scope.chat.message
             $scope.chat.message = ""
 
         $scope.chat.compress = ->
