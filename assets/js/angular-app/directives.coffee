@@ -365,7 +365,7 @@ app.directive "webcam", [
 ]
 
 app.directive "square", [
-    "$window", "RoomService"
+    "$window", "RoomService",
     ($window, RoomService) ->
         link: (scope, element, attrs) ->
             
@@ -381,14 +381,37 @@ app.directive "square", [
                 ), 1)
             , true
 
-            console.log scope
-
             scope.$watch ->
-                scope.user.profilePic
+                scope.user.pic
             , ->
-                console.log "change now"
                 window.setTimeout( (->
                     element.height element.width()
-                ), 1)
+                ), 0)
+            , true
+
+            scope.$watch ->
+                scope.chat_state
+            , ->
+                window.setTimeout( (->
+                    element.height element.width()
+                ), 0)
             , true
 ]
+
+
+app.directive "inlineEditTextarea", ->
+    link: (scope, element, attrs) ->
+        element.bind "blur", ->
+            if element.val().length is 0
+                scope.description = scope.room.description
+            else
+                scope.room.description = scope.description
+            scope.disabled = true
+            scope.$apply()
+
+        element.parent().find("p").bind "dblclick", (e) ->
+            e.preventDefault()
+            element[0].focus()
+            element[0].select()
+            scope.disabled = false
+            scope.$apply()

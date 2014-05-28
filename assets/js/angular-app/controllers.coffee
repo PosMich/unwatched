@@ -20,46 +20,72 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-    "$scope", "$routeParams", "RTCService", "RoomService" #, "RTC"
-    ($scope, $routeParams, RTCService, RoomService) ->
+    "$scope", "$routeParams", "RTCService", "RoomService", "$location"
+    ($scope, $routeParams, RTCService, RoomService, $location) ->
 
         window.rtc = RTCService
 
-        $scope.room = RoomService.getRoom() || {}
-        $scope.room.id = ""
-        $scope.user = {}
+        $scope.joinAttempt = false
 
         if $routeParams.id
-            RTCService.setup($routeParams.id)
+            $scope.joinAttempt = true
+
+
+        $scope.room = RoomService
+        $scope.room.id = ""
+
+        $scope.joinRoom = ->
+            console.log "fn"
+            if $scope.joinRoomForm.$valid
+                # future password validation
+                console.log "=== setup"
+                RTCService.setup($routeParams.id)
+                console.log "=== location"
+                $location.path("/room")
+
 
         $scope.submitRoom = ->
-            if $scope.createRoom.$invalid
-                return
-            else
+            if $scope.createRoom.$valid
                 RTCService.setup()
                 RTCService.setPassword $scope.room.password
-                $scope.user = {}
-                $scope.user.name = "Unnamed"
-                $scope.user.profilePic = "/images/avatar.png"
-
-                return
 
         $scope.$watch ->
             RoomService.id
         , (value) ->
-            if value?
+            if value? && value isnt ''
                 $scope.room.id = value
                 RoomService.setName $scope.room.name
                 RoomService.setUrl( "/room/" + $scope.room.id )
-                $scope.room = RoomService.getRoom()
+                $location.path("/room")
 
         , true
 
-        $scope.$watch (->
-            RoomService.url
-        ), ((value) ->
-            $scope.room.url = value
-        ), true
+]
+
+app.controller "RoomCtrl", [
+    "$scope", "RoomService", "UserService", "SharedItemsService", 
+    "ChatStateService", "$routeParams", "RTCService"
+    ($scope, RoomService, UserService, SharedItemsService, 
+        ChatStateService, $routeParams, RTCService) ->
+
+        $scope.room = RoomService
+        $scope.user = UserService.addUser("Unnamed")
+        $scope.user.changePic "/images/avatar.png"
+        $scope.user.borderColor = $scope.user.getColorAsRGB()
+
+        $scope.chat_state = ChatStateService.chat_state
+        $scope.disabled = true
+        $scope.description = $scope.room.description
+
+        $scope.$watch ->
+            ChatStateService.chat_state
+        , (new_state, old_state) ->
+            $scope.chat_state = new_state
+        , true
+
+        # room infos
+        $scope.room.usersLength = UserService.users.length
+        $scope.room.filesLength = SharedItemsService.items.length
 
         # image processing
         img = document.createElement("img")
@@ -83,27 +109,33 @@ app.controller "IndexCtrl", [
             reader = new FileReader()
 
             reader.onload = (e) ->
-                # $scope.item.path = e.target.result
-
                 img.src = e.target.result
 
                 img.onload = ->
+                    img_width = img.width
+                    img_height = img.height
 
-                    max_width = 300
-                    width = img.width
-                    height = img.height
+                    coord_x = 0
+                    coord_y = 0
 
-                    if width > max_width
-                        height *= max_width / width
-                        width = max_width
+                    if img_width > img_height
+                        coord_x = (img_width - img_height) / 2
+                        img_width = img_height
+                    else
+                        coord_y = (img_height - img_width) / 2
+                        img_height = img_width
 
-                    canvas.width = width
-                    canvas.height = height
+                    canvas.width = 400
+                    canvas.height = 400
 
                     ctx = canvas.getContext "2d"
-                    ctx.drawImage( img, 0, 0, width, height )
+                    console.log "processing image: " + coord_x + ", " + coord_y
+                    console.log "source boundaries: " + img_width + ", " + img_height
 
-                    $scope.user.profilePic = canvas.toDataURL(
+                    ctx.drawImage( img, coord_x, coord_y, img_width, img_height,
+                        0, 0, 400, 400 )
+
+                    $scope.user.changePic canvas.toDataURL(
                         $scope.mime
                     )
 
@@ -111,20 +143,7 @@ app.controller "IndexCtrl", [
 
             reader.readAsDataURL file
 
-
 ]
-
-app.controller "SpacelabCtrl", ->
-    console.log "spacelab ctrl here"
-
-
-# ***
-# ## Config
-# > contains routing stuff only (atm)
-# >
-# > see
-# > [angular docs](http://docs.angularjs.org/guide/dev_guide.services.$location)
-# > for $locationProvider details
 
 
 # ***
@@ -768,14 +787,13 @@ app.controller "ChatCtrl", [
         $scope.chat.state = ChatStateService.chat_state
         $scope.chat.state_history = ChatStateService.chat_state_history
 
-        #$scope.chat.messages = ChatService.messages
+        $scope.chat.messages = ChatService.messages
 
-        $scope.$watch ->
-            ChatService.messages
-        , (value) ->
-            console.log "blubb"
-            $scope.chat.messages = value
-        , true
+        # $scope.$watch ->
+        #     ChatService.messages
+        # , (value) ->
+        #     $scope.chat.messages = value
+        # , true
         ###
         $scope.chat.messages = [
             # dummy entries

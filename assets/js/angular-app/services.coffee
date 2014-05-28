@@ -453,61 +453,79 @@ class Users
             @color[2].toString(16)
         getColorAsRGB: ->
             "rgb(" +
-            color[0] + "," +
-            color[1] + "," +
-            color[2] + ")"
+            @color[0] + "," +
+            @color[1] + "," +
+            @color[2] + ")"
         getColorWithOpacity: (opacity) ->
             "rgba(" +
-            colors[0] + "," +
-            colors[1] + "," +
-            colors[2] + "," +
+            @color[0] + "," +
+            @color[1] + "," +
+            @color[2] + "," +
             opacity + ")"
         changePic: (@pic) ->
         changeName: (@name) ->
 
-    constructor: (@$rootScope) ->
-    addUser: (name) ->
-        id = @users.length
-        @users.push new User(name, id, @colors[id] )
-        @$rootScope.$apply() if !@$rootScope.$$phase
+    constructor: (@RTCService, @$rootScope) ->
+        @RTCService.registerBroadcastListener
+            type: "user"
+            onMessage: @onUserAdded
 
-    setInactive: (id) ->
+    getUser: (id) ->
         for user in @users
             if user.id is id
-                user.isActive = false
-                @$rootScope.$apply() if !@$rootScope.$$phase
-                break
+                return user
 
-    setActive: (id) ->
-        for user in @users
-            if user.id is id
-                user.isActive = true
-                @$rootScope.$apply() if !@$rootScope.$$phase
-                break
-
-    changeName: (id, newName) ->
-        exists = false
+    nameIsOccupied: (id, name) ->
         for user in @users
             continue if user.id is id
             if user.name is newName
-                exists = true
-                break
+                return true
+        return false
 
-        return if exists
+    addUser: (name) ->
+        id = @users.length
+        occupied = @nameIsOccupied( id, name )
+        counter = 0
+        tmp_name = name
+        while occupied
+            counter++
+            tmp_name = name + " (" + counter + ")"
+            occupied = @nameIsOccupied( id, tmp_name )
+        user = new User( tmp_name, id, @colors[id] )
 
-        for user in @users
-            if user.id is id
-                user.changeName newName
-                @$rootScope.$apply() if !@$rootScope.$$phase
-                break
+        @RTCService.sendBroadcastMessage
+            type: "user"
+            message: user
+
+        console.log "UserService :: sent message"
+        return user
+
+    onUserAdded: (message) =>
+        console.log "UserService :: recieved message"
+        console.log message
+        @users.push message
+        @$rootScope.$apply() if !@$rootScope.$$phase
+
+    setInactive: (id) ->
+        user = @getUser id
+        user.isActive = false
+        @$rootScope.$apply() if !@$rootScope.$$phase
+
+    setActive: (id) ->
+        user = @getUser id
+        user.isActive = true
+        @$rootScope.$apply() if !@$rootScope.$$phase
+
+    changeName: (id, newName) ->
+        return if nameIsOccupied( id, newName )
+        user = @getUser id
+        user.changeName newName
+        @$rootScope.$apply() if !@$rootScope.$$phase
 
     changePic: (id, newPic) ->
-        for user in @users
-            if user.id is id
-                user.changePic newPic
-                @$rootScope.$apply() if !@$rootScope.$$phase
-                break
-
+        user = @getUser id
+        user.changePic newPic
+        @$rootScope.$apply() if !@$rootScope.$$phase
 
 
 app = angular.module "unwatched.services", []
@@ -515,10 +533,9 @@ app = angular.module "unwatched.services", []
 
 app.value "version", "0.1"
 
-app.service "UserService", [ "$rootScope", Users ]
-
-
 app.service "RTCService", RTCService
+
+app.service "UserService", [ "RTCService", "$rootScope", Users ]
 
 app.service "SharesService", class Shares
     @::shares = []
@@ -547,7 +564,6 @@ app.service "ChatService", [
             constructor: (@sender, @message) ->
 
         constructor: (@RTCService, @$rootScope) ->
-            console.log @RTCService
             @RTCService.registerBroadcastListener
                 type: "chat"
                 onMessage: @onMessage
@@ -586,11 +602,7 @@ app.service "RoomService", [
         constructor: (@RTCService, @$filter, @$rootScope, @$http, @SERVER_URL,
             @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
-
-            @usersLength = 10
-            @filesLength = 20
             @description = "Room description"
-
             @RTCService.registerBroadcastListener
                 type: "room"
                 onMessage: @onMessage
@@ -602,7 +614,6 @@ app.service "RoomService", [
 
         setName: (name) ->
             @name = name
-            console.log @name
 
         setUrl: (longUrl) ->
             apiUrl = "https://www.googleapis.com/urlshortener/v1/url?"

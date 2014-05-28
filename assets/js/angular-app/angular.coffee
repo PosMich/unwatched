@@ -56,8 +56,18 @@ app.config [
         # > load IndexCtrl
 
         $routeProvider.when "/room/:id",
-            templateUrl: "/partials/index.html"
             controller: "IndexCtrl"
+            templateUrl: "/partials/index.html"
+
+        # ***
+        # * <h3>route `/index`</h3>
+        # > this is the `/index` route
+        # >
+        # > load IndexCtrl
+        $routeProvider.when "/room",
+            templateUrl: "/partials/room.html"
+            controller: "RoomCtrl"
+
         # ***
         # * <h3>route `/cyborg`</h3>
         # > bla bla route to rule them all
@@ -72,11 +82,11 @@ app.config [
         # > bla bla route to rule them all
         # >
         # > load RoomCtrl
-        $routeProvider.when "/room",
+        # $routeProvider.when "/room",
             #templateUrl: "/partials/room.html"
             #controller: "RoomCtrl"
-            templateUrl: "/partials/index.html"
-            controller: "IndexCtrl"
+            # templateUrl: "/partials/index.html"
+            # controller: "IndexCtrl"
         # ***
         # * <h3>route `/members`</h3>
         # > loads a list of all members of the current room and a maximized chat
@@ -230,7 +240,10 @@ app.run ($rootScope, $location) ->
     $rootScope.video.show.webcam = false
 
     $rootScope.$on "$routeChangeSuccess", ->
-        $rootScope.showChat = $location.path() isnt "/"
-        return
+        
+        if $location.path() isnt "/" and !/\/room\/[a-zA-Z0-9]+/.test $location.path()
+            $rootScope.showChat = true
+        else
+            $rootScope.showChat = false
 
     return
