@@ -14,6 +14,7 @@ class RTCService
             @::id         = null
             @::connection = null
             @::signaller  = null
+            @::dataChannel = null
             @::debug      = false
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
@@ -617,7 +618,7 @@ app.service "RoomService", [
         setUrl: (longUrl) ->
             apiUrl = "https://www.googleapis.com/urlshortener/v1/url?"
             url = @SERVER_URL + ":" + @SERVER_PORT + longUrl
-            
+
             @$http.post(apiUrl, {"longUrl":url}).success( (data) =>
                 @url = data.id
             )
