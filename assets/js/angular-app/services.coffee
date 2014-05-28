@@ -37,6 +37,8 @@ class RTCService
                 @connection.onaddstream = @onAddStream
                 @connection.onremovestream = @onRemoveStream
 
+                @$rootScope = @signaller.$rootScope
+
                 try
                     @dataChannel = @connection.createDataChannel "control",
                         reliable: false
@@ -101,8 +103,9 @@ class RTCService
             DChandleError: (error) ->
                 console.log "got an DC error!" if @debug
                 console.log error if @debug
-            DChandleOpen: ->
+            DChandleOpen: =>
                 console.log "DC is open!" if @debug
+                @$rootScope.$apply() if !@$rootScope.$$phase
             DChandleClose: ->
                 console.log "DC is closed!" if @debug
             DCsend: (message) ->
@@ -115,7 +118,7 @@ class RTCService
             handleBroadcastMessage: (message) ->
                 @signaller.handleBroadcastMessage message, @id
 
-        constructor: ->
+        constructor: (@$rootScope) ->
             console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
@@ -153,11 +156,7 @@ class RTCService
                     console.log "got id: " + parsedMsg.roomId if @debug
                     @roomId = parsedMsg.roomId
                     console.log "created room: " + parsedMsg.roomId
-
-                    @sendBroadcastMessage
-                        type: 'room'
-                        message:
-                            room_id: parsedMsg.roomId
+                    @$rootScope.$apply() if !@$rootScope.$$phase
 
                 when "connect"  # new client
                     console.log "client want's to connect"  if @debug
@@ -218,7 +217,8 @@ class RTCService
         @::connection   = null
         @::listeners    = []
         @::debug        = false
-        constructor: (@roomId) ->
+        @::dataChannel  = null
+        constructor: (@roomId, @$rootScope) ->
             console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
@@ -350,8 +350,9 @@ class RTCService
         DChandleError: (error) ->
             console.log "got an DC error!"
             console.log error
-        DChandleOpen: ->
+        DChandleOpen: =>
             console.log "DC is open!"
+            @$rootScope.$apply() if !@$rootScope.$$phase
         DChandleClose: ->
             console.log "DC is closed!"
         handleBroadcastMessage: (message) ->
@@ -371,16 +372,16 @@ class RTCService
         DCsend: (message) ->
             @dataChannel.send JSON.stringify(message)
 
-    constructor: ->
+    constructor: (@$rootScope)->
 
     setup: (@roomId) ->
         console.log "setup done"
 
         if !@roomId
-            @handler = new Master()
+            @handler = new Master(@$rootScope)
             @handler.listeners = @listeners
         else
-            @handler = new Slave(@roomId)
+            @handler = new Slave(@roomId, @$rootScope)
             @handler.listeners = @listeners
         #@handler.onChatMessage = @onChatMessage
 
@@ -444,7 +445,8 @@ class Users
         @::color    = null
         @::joinedDate = null
         @::isActive   = true
-        constructor: (@name, @id, @color) ->
+        constructor: (@name, @id, @color, @isMaster) ->
+            console.log "new user: " + @name
             @joinedDate = new Date()
         getColorAsHex: ->
             "#" +
@@ -471,7 +473,9 @@ class Users
             onMessage: @onUserAdded
 
     getUser: (id) ->
+        console.log "getUser with id: " + id
         for user in @users
+            console.log user
             if user.id is id
                 return user
 
@@ -482,7 +486,7 @@ class Users
                 return true
         return false
 
-    addUser: (name) ->
+    addUser: (name, isMaster = false) ->
         id = @users.length
         occupied = @nameIsOccupied( id, name )
         counter = 0
@@ -491,19 +495,32 @@ class Users
             counter++
             tmp_name = name + " (" + counter + ")"
             occupied = @nameIsOccupied( id, tmp_name )
-        user = new User( tmp_name, id, @colors[id] )
+
+        for user in @users
+            return if user.isMaster
 
         @RTCService.sendBroadcastMessage
             type: "user"
-            message: user
+            message: {
+                name: tmp_name
+                id: id
+                color: @colors[id]
+                isMaster: isMaster
+            }
 
-        console.log "UserService :: sent message"
-        return user
+        return id
 
     onUserAdded: (message) =>
         console.log "UserService :: recieved message"
         console.log message
-        @users.push message
+        user_data = message.message
+
+        @users.push new User( user_data.name, user_data.id, user_data.color, 
+            user_data.isMaster )
+
+        # if @isMaster
+            # @RTCService
+
         @$rootScope.$apply() if !@$rootScope.$$phase
 
     setInactive: (id) ->
@@ -533,7 +550,7 @@ app = angular.module "unwatched.services", []
 
 app.value "version", "0.1"
 
-app.service "RTCService", RTCService
+app.service "RTCService", [ "$rootScope", RTCService ]
 
 app.service "UserService", [ "RTCService", "$rootScope", Users ]
 
@@ -603,14 +620,6 @@ app.service "RoomService", [
             @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
             @description = "Room description"
-            @RTCService.registerBroadcastListener
-                type: "room"
-                onMessage: @onMessage
-
-        onMessage: (message) =>
-            if message.message.room_id
-                @id = message.message.room_id
-                @$rootScope.$apply()  if !@$rootScope.$$phase
 
         setName: (name) ->
             @name = name

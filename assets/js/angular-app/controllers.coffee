@@ -20,33 +20,38 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "IndexCtrl", [
-    "$scope", "$routeParams", "RTCService", "RoomService", "$location"
-    ($scope, $routeParams, RTCService, RoomService, $location) ->
+    "$scope", "$routeParams", "RTCService", "RoomService", "$location", 
+    "$rootScope", "UserService"
+    ($scope, $routeParams, RTCService, RoomService, $location, 
+        $rootScope, UserService) ->
 
         window.rtc = RTCService
 
         $scope.joinAttempt = false
+        $scope.inputDisabled = true
 
         if $routeParams.id
             $scope.joinAttempt = true
             RTCService.setup($routeParams.id)
+            
+            $scope.$watch ->
+                RTCService.handler.dataChannel
+            , (value) ->
+                console.log value
+                if value
+                    console.log "inputDisabled"
+                    $scope.inputDisabled = false
+            , true
 
         $scope.room = RoomService
         $scope.room.id = ""
 
-        $scope.inputDisabled = true
-
-        $scope.$watch ->
-            RTCService.handler.dataChannel
-        , (value) ->
-            console.log "datachannel changed"
-            console.log value
-        , true
 
         $scope.joinRoom = ->
             console.log "fn"
             if $scope.joinRoomForm.$valid
                 # future password validation
+                $rootScope.userId = UserService.addUser("Unnamed")
                 $location.path("/room")
 
 
@@ -55,27 +60,32 @@ app.controller "IndexCtrl", [
                 RTCService.setup()
                 RTCService.setPassword $scope.room.password
 
-        $scope.$watch ->
-            RoomService.id
-        , (value) ->
-            if value? && value isnt ''
-                $scope.room.id = value
-                RoomService.setName $scope.room.name
-                RoomService.setUrl( "/room/" + $scope.room.id )
-                $location.path("/room")
+                $scope.$watch ->
+                    RTCService.handler.roomId
+                , (value) ->
+                    if value && value isnt ''
+                        $scope.room.id = value
+                        RoomService.setName $scope.room.name
+                        RoomService.setUrl( "/room/" + $scope.room.id )
+                        $rootScope.userId = UserService.addUser("Unnamed", true)
+                        $location.path("/room")
 
-        , true
+                , true
 
 ]
 
 app.controller "RoomCtrl", [
     "$scope", "RoomService", "UserService", "SharedItemsService", 
-    "ChatStateService", "$routeParams", "RTCService"
+    "ChatStateService", "$routeParams", "RTCService", "$rootScope"
     ($scope, RoomService, UserService, SharedItemsService, 
-        ChatStateService, $routeParams, RTCService) ->
+        ChatStateService, $routeParams, RTCService, $rootScope) ->
 
         $scope.room = RoomService
-        $scope.user = UserService.addUser("Unnamed")
+        
+        console.log "userId: " + $rootScope.userId
+        $scope.user = UserService.getUser( $rootScope.userId )
+        console.log "user", $scope.user
+        console.log "User is Master: " + $scope.user.isMaster
         $scope.user.changePic "/images/avatar.png"
         $scope.user.borderColor = $scope.user.getColorAsRGB()
 
@@ -90,7 +100,8 @@ app.controller "RoomCtrl", [
         , true
 
         # room infos
-        $scope.room.usersLength = UserService.users.length
+        $scope.room.users = UserService.users
+        # $scope.room.usersLength = $scope.room.users.length
         $scope.room.filesLength = SharedItemsService.items.length
 
         # image processing
