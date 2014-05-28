@@ -34,6 +34,15 @@ app.controller "IndexCtrl", [
         $scope.room = RoomService
         $scope.room.id = ""
 
+        $scope.inputDisabled = true
+
+        $scope.$watch ->
+            RTCService.handler.dataChannel
+        , (value) ->
+            console.log "datachannel changed"
+            console.log value
+        , true
+
         $scope.joinRoom = ->
             console.log "fn"
             if $scope.joinRoomForm.$valid
