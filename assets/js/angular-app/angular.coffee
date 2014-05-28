@@ -240,10 +240,14 @@ app.run ($rootScope, $location) ->
     $rootScope.video.show.webcam = false
 
     $rootScope.$on "$routeChangeSuccess", ->
-        
+
         if $location.path() isnt "/" and !/\/room\/[a-zA-Z0-9]+/.test $location.path()
             $rootScope.showChat = true
         else
             $rootScope.showChat = false
+
+        if $location.path() is "/room" and !$rootScope.userId?
+            $location.path("/")
+
 
     return

@@ -30,6 +30,9 @@ app.controller "IndexCtrl", [
         $scope.joinAttempt = false
         $scope.inputDisabled = true
 
+        $scope.room = RoomService
+        $scope.room.id = ""
+
         if $routeParams.id
             $scope.joinAttempt = true
             RTCService.setup($routeParams.id)
@@ -43,21 +46,27 @@ app.controller "IndexCtrl", [
                     $scope.inputDisabled = false
             , true
 
-        $scope.room = RoomService
-        $scope.room.id = ""
+            $scope.$watch ->
+                RTCService.handler.passwordIsValid
+            , (value) ->
+                console.log "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                if value
+                    $rootScope.userId = UserService.addUser("Unnamed")
+                    $location.path("/room")
+                else
+                    console.log "auth issue", value
 
 
         $scope.joinRoom = ->
-            console.log "fn"
             if $scope.joinRoomForm.$valid
                 # future password validation
-                $rootScope.userId = UserService.addUser("Unnamed")
-                $location.path("/room")
+                RTCService.checkPassword $scope.room.joinPassword
 
 
         $scope.submitRoom = ->
             if $scope.createRoom.$valid
                 RTCService.setup()
+                console.log "setting password: " + $scope.room.password
                 RTCService.setPassword $scope.room.password
 
                 $scope.$watch ->
@@ -76,9 +85,11 @@ app.controller "IndexCtrl", [
 
 app.controller "RoomCtrl", [
     "$scope", "RoomService", "UserService", "SharedItemsService", 
-    "ChatStateService", "$routeParams", "RTCService", "$rootScope"
+    "ChatStateService", "$routeParams", "RTCService", "$rootScope",
+    "$location"
     ($scope, RoomService, UserService, SharedItemsService, 
-        ChatStateService, $routeParams, RTCService, $rootScope) ->
+        ChatStateService, $routeParams, RTCService, $rootScope,
+        $location) ->
 
         $scope.room = RoomService
         

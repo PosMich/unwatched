@@ -9,13 +9,13 @@ class RTCService
         @::roomId            = null
         @::signallingClients = []
         @::listeners         = []
-        @::password          = ""
+        @::password          = null
         class SlaveRTC
             @::id         = null
             @::connection = null
             @::signaller  = null
             @::dataChannel = null
-            @::debug      = false
+            @::debug      = true
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
                     iceServers: [
@@ -97,6 +97,11 @@ class RTCService
                 switch parsedMsg.type
                     when "broadcast"
                         @handleBroadcastMessage( parsedMsg.message )
+                    when "password"
+                        @DCsend
+                            type: "password"
+                            passwordIsValid: 
+                                (parsedMsg.password is @signaller.password)
                     else
                         console.log "DChandle: unknown msg"
 
@@ -109,6 +114,7 @@ class RTCService
             DChandleClose: ->
                 console.log "DC is closed!" if @debug
             DCsend: (message) ->
+                console.log "DCSEND", message
                 @dataChannel.send JSON.stringify(message)
             sendBroadcastMessage: (message) ->
                 @DCsend
@@ -208,6 +214,7 @@ class RTCService
                 if listener.type is message.type
                     listener.onMessage message
         setPassword: (@password) ->
+            console.log "handler.setPassword"
 
     # only 1 pc to the server
     class Slave
@@ -345,6 +352,9 @@ class RTCService
             switch parsedMsg.type
                 when "broadcast"
                     @handleBroadcastMessage( parsedMsg.message )
+                when "password"
+                    @passwordIsValid = parsedMsg.passwordIsValid
+                    @$rootScope.$apply() if !@$rootScope.$$phase
                 else
                     console.log "DChandle: unknown msg"
         DChandleError: (error) ->
@@ -397,8 +407,15 @@ class RTCService
         console.log message
         @handler.sendBroadcastMessage message
     setPassword: (password) ->
-        if @handler.password
-            @handler.password = password
+        console.log @handler
+        if @handler.password is null
+            @handler.setPassword password
+
+    checkPassword: (password) ->
+        console.log "checkPassword: " + password
+        @handler.DCsend
+            type: "password"
+            password: password
 
 ###
 window.Master = Master
