@@ -16,7 +16,7 @@
         .message-container(update-scroll-position="chat.messages.length")
             div
                 .clearfix.chat-message(
-                    ng-repeat="message in chat.messages")
+                    ng-repeat="message in chat.messages track by $index")
                     span.well.well-sm(ng-class-even="'own'")
                         | <b>{{message.sender}}:</b> {{message.message}}
     .panel-footer.message-control.clearfix

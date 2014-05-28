@@ -42,16 +42,13 @@ app.controller "IndexCtrl", [
             , (value) ->
                 console.log value
                 if value
-                    console.log "inputDisabled"
                     $scope.inputDisabled = false
             , true
 
             $scope.$watch ->
                 RTCService.handler.passwordIsValid
             , (value) ->
-                console.log "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                 if value
-                    $rootScope.userId = UserService.addUser("Unnamed")
                     $location.path("/room")
                 else
                     console.log "auth issue", value
@@ -66,7 +63,6 @@ app.controller "IndexCtrl", [
         $scope.submitRoom = ->
             if $scope.createRoom.$valid
                 RTCService.setup()
-                console.log "setting password: " + $scope.room.password
                 RTCService.setPassword $scope.room.password
 
                 $scope.$watch ->
@@ -93,7 +89,6 @@ app.controller "RoomCtrl", [
 
         $scope.room = RoomService
         
-        console.log "userId: " + $rootScope.userId
         $scope.user = UserService.getUser( $rootScope.userId )
         console.log "user", $scope.user
         console.log "User is Master: " + $scope.user.isMaster

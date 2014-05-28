@@ -10,6 +10,7 @@ class RTCService
         @::signallingClients = []
         @::listeners         = []
         @::password          = null
+        @::id                = 0
         class SlaveRTC
             @::id         = null
             @::connection = null
@@ -37,7 +38,7 @@ class RTCService
                 @connection.onaddstream = @onAddStream
                 @connection.onremovestream = @onRemoveStream
 
-                @$rootScope = @signaller.$rootScope
+                @$rootScope = @signaller.service.$rootScope
 
                 try
                     @dataChannel = @connection.createDataChannel "control",
@@ -96,12 +97,43 @@ class RTCService
 
                 switch parsedMsg.type
                     when "broadcast"
-                        @handleBroadcastMessage( parsedMsg.message )
+                        # type: "broadcast"
+                        # message: {...}
+                        # sender: 0
+                        @handleBroadcastMessage parsedMsg
+
                     when "password"
+                        if parsedMsg.password is not @signaller.password
+
+                            @DCsend
+                                type: "password"
+                                passwordIsValid: false
+                            break
+
+                        @id = @signaller.service.UserService.addUser("Unnamed")
+                        @$rootScope.$apply() if !@$rootScope.$$phase
+
                         @DCsend
                             type: "password"
-                            passwordIsValid: 
-                                (parsedMsg.password is @signaller.password)
+                            passwordIsValid: true
+                            init:
+                                userId: @id
+                                users: @signaller.service.UserService.users
+                                messages: 
+                                    @signaller.service.ChatService.messages
+                                room:
+                                    id: @signaller.roomId
+                                    name: @signaller.service.RoomService.name
+                                    created: 
+                                        @signaller.service.RoomService.created
+                                    description:
+                                        @signaller.service.RoomService.description
+                                    url:
+                                        @signaller.service.RoomService.url
+
+                    when "initRequest"
+                        @signaller.handleInitRequest(@id)
+
                     else
                         console.log "DChandle: unknown msg"
 
@@ -110,21 +142,19 @@ class RTCService
                 console.log error if @debug
             DChandleOpen: =>
                 console.log "DC is open!" if @debug
+                console.log @
                 @$rootScope.$apply() if !@$rootScope.$$phase
             DChandleClose: ->
                 console.log "DC is closed!" if @debug
             DCsend: (message) ->
                 console.log "DCSEND", message
                 @dataChannel.send JSON.stringify(message)
-            sendBroadcastMessage: (message) ->
-                @DCsend
-                    type: "broadcast"
-                    message: message
-                    clientId: @roomId
-            handleBroadcastMessage: (message) ->
-                @signaller.handleBroadcastMessage message, @id
+            sendBroadcastMessage: (broadcast) ->
+                @DCsend broadcast
+            handleBroadcastMessage: (broadcast) ->
+                @signaller.handleBroadcastMessage broadcast
 
-        constructor: (@$rootScope) ->
+        constructor: (@service) ->
             console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
@@ -162,7 +192,8 @@ class RTCService
                     console.log "got id: " + parsedMsg.roomId if @debug
                     @roomId = parsedMsg.roomId
                     console.log "created room: " + parsedMsg.roomId
-                    @$rootScope.$apply() if !@$rootScope.$$phase
+                    window.test = @
+                    @service.$rootScope.$apply() if !@service.$rootScope.$$phase
 
                 when "connect"  # new client
                     console.log "client want's to connect"  if @debug
@@ -186,35 +217,66 @@ class RTCService
         handleSignalError: (event) ->
             console.log "Signalling Channel Error"
             console.log event
+
         handleSignalClose: (event) ->
             console.log "Signalling Channel Closed"
+
         sendBroadcastMessage: (message) ->
+            message = 
+                type: "broadcast"
+                message: message
+                sender: @id
+        
             console.log "send broadcast message"
             console.log message
-            message.clientId = @roomId
+            #message.clientId = @id
+
             for client in @signallingClients
                 client.sendBroadcastMessage( message )
-            for listener in @listeners
-                if listener.type is message.type
-                    listener.onMessage message
-        handleBroadcastMessage: (message, sender) ->
+
+
+
+        handleBroadcastMessage: (broadcast) ->
+            # type: "broadcast"
+            # message: {...}
+            # sender: 0
+
             # send to all, except sender!
             if @debug
                 console.log "handle message"
                 console.log message
                 console.log "from sender: " + sender
+            
             for client in @signallingClients
-                continue if client.id is sender
+                continue if client.id is broadcast.sender
                 if @debug
                     console.log "should send"
                     console.log message
-                client.sendBroadcastMessage( message )
-            # send to listener
-            for listener in @listeners
-                if listener.type is message.type
-                    listener.onMessage message
+                client.sendBroadcastMessage( broadcast )
+
+            switch broadcast.message.type
+                when "chat"
+                    console.log "message is", broadcast.message
+                    console.log "sender is", broadcast.sender
+                    msg = broadcast.message
+                    @service.ChatService.sendMessage msg.message,
+                        broadcast.sender
+                else
+                    console.log "unknown message type."
+
         setPassword: (@password) ->
-            console.log "handler.setPassword"
+
+        handleInitRequest: (clientId) ->
+            for listener in @listeners
+                listener.onMessage
+                    type: "initRequest"
+                    clientId: clientId
+
+        sendMessage: (message, clientId) ->
+            for client in @signallingClients
+                if client.id = clientId
+                    client.DCSend message
+                    break
 
     # only 1 pc to the server
     class Slave
@@ -223,9 +285,9 @@ class RTCService
         @::id           = null
         @::connection   = null
         @::listeners    = []
-        @::debug        = false
+        @::debug        = true
         @::dataChannel  = null
-        constructor: (@roomId, @$rootScope) ->
+        constructor: (@service) ->
             console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
             @signalConnection.onopen    = @handleSignalOpen
@@ -256,7 +318,7 @@ class RTCService
 
             @signalSend
                 type: "connect"
-                roomId: @roomId
+                roomId: @service.roomId
 
         signalSend: (msg) ->
             if @signalConnection.readyState is 1
@@ -351,10 +413,25 @@ class RTCService
             parsedMsg = JSON.parse(msg.data)
             switch parsedMsg.type
                 when "broadcast"
-                    @handleBroadcastMessage( parsedMsg.message )
+                    @handleBroadcastMessage parsedMsg
+
                 when "password"
                     @passwordIsValid = parsedMsg.passwordIsValid
-                    @$rootScope.$apply() if !@$rootScope.$$phase
+                    @service.$rootScope.userId = parsedMsg.init.userId
+                    @id = parsedMsg.init.userId
+                    @service.RoomService.id = parsedMsg.init.room.id
+                    @service.RoomService.name = parsedMsg.init.room.name
+                    @service.RoomService.description = 
+                        parsedMsg.init.room.description
+                    
+                    for user in parsedMsg.init.users
+                        @service.UserService.addInitUser user
+
+                    @service.ChatService.messages = parsedMsg.init.messages
+                    @service.RoomService
+
+                    @service.$rootScope.$apply() if !@service.$rootScope.$$phase
+
                 else
                     console.log "DChandle: unknown msg"
         DChandleError: (error) ->
@@ -362,50 +439,84 @@ class RTCService
             console.log error
         DChandleOpen: =>
             console.log "DC is open!"
-            @$rootScope.$apply() if !@$rootScope.$$phase
+            @service.$rootScope.$apply() if !@service.$rootScope.$$phase
         DChandleClose: ->
             console.log "DC is closed!"
-        handleBroadcastMessage: (message) ->
-            for listener in @listeners
-                if listener.type is message.type
-                    console.log "listener found"
-                    listener.onMessage message
-        sendBroadcastMessage: (message) ->
-            message.clientId = @id
-            @DCsend
-                type: "broadcast"
-                message: message
-                clientId: @id
-            for listener in @listeners
-                if listener.type is message.type
-                    listener.onMessage message
+
         DCsend: (message) ->
             @dataChannel.send JSON.stringify(message)
 
-    constructor: (@$rootScope)->
+        handleBroadcastMessage: (broadcast) ->
+            switch broadcast.message.type
+                when "chat"
+                    msg = broadcast.message
+                    @service.ChatService.sendMessage msg.message, 
+                        broadcast.sender
+
+                else
+                    console.log "Unknown broadcast typ."
+
+        sendBroadcastMessage: (message) ->
+            @DCsend
+                type: "broadcast"
+                message: message
+                sender: @id
+        
+        sendMessage: (message) ->
+            @DCsend message
+
+
+    constructor: (@$rootScope, @UserService, @ChatService, @RoomService) ->
 
     setup: (@roomId) ->
         console.log "setup done"
-
         if !@roomId
-            @handler = new Master(@$rootScope)
+            @handler = new Master(@)
             @handler.listeners = @listeners
+
+            @$rootScope.$watch =>
+                @ChatService.messages
+            , (new_messages, old_messages) =>
+                console.log "new_messages", new_messages
+                console.log "old_messages", old_messages
+                i = old_messages.length
+                while i < new_messages.length
+                    if new_messages[i].sender is @$rootScope.userId
+                        console.log "sending message ", new_messages[i]
+
+                        @handler.sendBroadcastMessage
+                            type: "chat"
+                            message: new_messages[i].message
+                        , 
+                            new_messages[i].sender
+                    ++i
+            , true
+
         else
-            @handler = new Slave(@roomId, @$rootScope)
+            @handler = new Slave(@)
             @handler.listeners = @listeners
+
+            @$rootScope.$watch =>
+                @ChatService.messages
+            , (new_messages, old_messages) =>
+                console.log "new_messages", new_messages
+                console.log "old_messages", old_messages
+                i = old_messages.length
+                while i < new_messages.length
+                    if new_messages[i].sender is @$rootScope.userId
+                        console.log "sending message ", new_messages[i]
+                        @handler.sendBroadcastMessage
+                            type: "chat"
+                            message: new_messages[i].message
+                            
+                    ++i
+            , true
+
+
         #@handler.onChatMessage = @onChatMessage
 
     # type: "blubb", onMessage: function
-    registerBroadcastListener: (listener) ->
-        console.log "register new broadcast listener"
-        if @handler
-            @handler.listeners.push listener
-        else
-            @listeners.push listener
-    sendBroadcastMessage: (message) ->
-        console.log "send broadcast"
-        console.log message
-        @handler.sendBroadcastMessage message
+
     setPassword: (password) ->
         console.log @handler
         if @handler.password is null
@@ -416,6 +527,9 @@ class RTCService
         @handler.DCsend
             type: "password"
             password: password
+
+    sendMessage: (clientId, message) ->
+        @handler.sendMessage(clientId, message)
 
 ###
 window.Master = Master
@@ -462,9 +576,10 @@ class Users
         @::color    = null
         @::joinedDate = null
         @::isActive   = true
-        constructor: (@name, @id, @color, @isMaster) ->
+        constructor: (@name, @id, @color, @isMaster, joinedDate = false) ->
             console.log "new user: " + @name
-            @joinedDate = new Date()
+            @joinedDate = if !joinedDate then new Date() else joinedDate
+
         getColorAsHex: ->
             "#" +
             @color[0].toString(16) +
@@ -484,13 +599,16 @@ class Users
         changePic: (@pic) ->
         changeName: (@name) ->
 
-    constructor: (@RTCService, @$rootScope) ->
-        @RTCService.registerBroadcastListener
-            type: "user"
-            onMessage: @onUserAdded
+    constructor: (@$rootScope) -> #@RTCService, 
+        # @RTCService.registerBroadcastListener
+        #     type: "user"
+        #     onMessage: @onMessage
+
+        # @RTCService.registerBroadcastListener
+        #     type: "initRequest"
+        #     onMessage: @onInitRequest
 
     getUser: (id) ->
-        console.log "getUser with id: " + id
         for user in @users
             console.log user
             if user.id is id
@@ -499,7 +617,7 @@ class Users
     nameIsOccupied: (id, name) ->
         for user in @users
             continue if user.id is id
-            if user.name is newName
+            if user.name is name
                 return true
         return false
 
@@ -513,30 +631,24 @@ class Users
             tmp_name = name + " (" + counter + ")"
             occupied = @nameIsOccupied( id, tmp_name )
 
-        for user in @users
-            return if user.isMaster
+        if isMaster
+            for user in @users
+                return if user.isMaster
 
-        @RTCService.sendBroadcastMessage
-            type: "user"
-            message: {
-                name: tmp_name
-                id: id
-                color: @colors[id]
-                isMaster: isMaster
-            }
+        @users.push new User( tmp_name, id, @colors[id], isMaster )
 
         return id
 
-    onUserAdded: (message) =>
+    addInitUser: (user) ->
+        @users.push new User( user.name, user.id, user.color, 
+            user.isMaster, user.joinedDate )
+
+    onMessage: (message) =>
         console.log "UserService :: recieved message"
         console.log message
         user_data = message.message
-
         @users.push new User( user_data.name, user_data.id, user_data.color, 
             user_data.isMaster )
-
-        # if @isMaster
-            # @RTCService
 
         @$rootScope.$apply() if !@$rootScope.$$phase
 
@@ -567,9 +679,15 @@ app = angular.module "unwatched.services", []
 
 app.value "version", "0.1"
 
-app.service "RTCService", [ "$rootScope", RTCService ]
+app.service "RTCService", [
+    "$rootScope"
+    "UserService"
+    "ChatService"
+    "RoomService"
+    RTCService 
+]
 
-app.service "UserService", [ "RTCService", "$rootScope", Users ]
+app.service "UserService", ["$rootScope", Users ]
 
 app.service "SharesService", class Shares
     @::shares = []
@@ -590,35 +708,22 @@ app.service "SharesService", class Shares
 
 
 app.service "ChatService", [
-    "RTCService",
+    # "RTCService",
     "$rootScope",
     class Messages
         @::messages = []
         class Message
             constructor: (@sender, @message) ->
 
-        constructor: (@RTCService, @$rootScope) ->
-            @RTCService.registerBroadcastListener
-                type: "chat"
-                onMessage: @onMessage
+        constructor: (@$rootScope) ->
 
-        onMessage: (message) =>
-            console.log "ChatService: got message"
-            console.log message
-            @messages.push new Message(message.clientId, message.message)
-
+        sendMessage: (message, sender = @$rootScope.userId) ->
+            @messages.push new Message(sender, message)
             @$rootScope.$apply() if !@$rootScope.$$phase
-
-
-        sendMessage: (message) ->
-            #@messages.push new Message("me", message)
-            @RTCService.sendBroadcastMessage
-                type: "chat"
-                message: message
 ]
 
 app.service "RoomService", [
-    "RTCService"
+    # "RTCService"
     "$filter"
     "$rootScope"
     "$http"
@@ -633,7 +738,7 @@ app.service "RoomService", [
         @::description
         @::url = ""
 
-        constructor: (@RTCService, @$filter, @$rootScope, @$http, @SERVER_URL,
+        constructor: (@$filter, @$rootScope, @$http, @SERVER_URL, #@RTCService, 
             @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
             @description = "Room description"
@@ -648,18 +753,6 @@ app.service "RoomService", [
             @$http.post(apiUrl, {"longUrl":url}).success( (data) =>
                 @url = data.id
             )
-
-
-        getRoom: ->
-            return {
-                id: @id
-                name: @name
-                created: @created
-                usersLength: @usersLength
-                filesLength: @filesLength
-                description: @description
-            }
-
 
 ]
 
