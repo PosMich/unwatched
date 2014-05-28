@@ -29,7 +29,7 @@ app.controller "IndexCtrl", [
 
         if $routeParams.id
             $scope.joinAttempt = true
-
+            RTCService.setup($routeParams.id)
 
         $scope.room = RoomService
         $scope.room.id = ""
@@ -38,9 +38,6 @@ app.controller "IndexCtrl", [
             console.log "fn"
             if $scope.joinRoomForm.$valid
                 # future password validation
-                console.log "=== setup"
-                RTCService.setup($routeParams.id)
-                console.log "=== location"
                 $location.path("/room")
 
 
