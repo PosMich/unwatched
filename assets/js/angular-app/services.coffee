@@ -3,12 +3,132 @@
 
 "use strict"
 class RTCService
+
+    @::ChunkFiles  = []
+    @::isMaster = false
+
+    ab2str: (uint8) ->
+        String.fromCharCode.apply(null, new Uint16Array(uint8.buffer.slice(uint8.byteOffset))).trim()
+
+    #        return String.fromCharCode.apply(null, uint8).trim();
+    str2ab: (str) ->
+        buf = new ArrayBuffer(str.length * 2) # 2 bytes for each char
+        bufView = new Uint16Array(buf)
+        i = 0
+        strLen = str.length
+
+        while i < strLen
+            bufView[i] = str.charCodeAt(i)
+            i++
+
+        #        return buf;
+        new Uint8Array(buf)
+
+    ab2ascii: (buf) ->
+        String.fromCharCode.apply(null, buf).trim()
+
+    # json to binary array, binary array to string
+    ascii2ab: (str, padding) ->
+        buf = new Uint8Array(str.length)
+        i = 0
+
+        while i < str.length
+            buf[i] = str.charCodeAt(i)
+            i++
+        if padding
+            j = str.length
+
+            while j < padding
+                buf[j] = " "
+            j++
+        buf # was return buf
+
+    # JSON --> to String --> binary array --> split --> to String --> send
+    # receive --> concat --> binary array --> string --> json
+
+    createChunks: (msg) ->
+        console.log "createChunks", msg
+        chunks = []
+
+
+        # {"type":"chunk","id":1073741824,"chunkId":1073741824,"length":1073741824,"data":""}
+        # -> without data: 83 chars
+        maxChunkSize = 1000
+
+
+        message = JSON.stringify(msg)
+
+        if message.length < maxChunkSize
+            return [msg]
+
+        index = 0
+        start = 0
+        while index*maxChunkSize < message.length
+            chunks.push message.slice(start, start+maxChunkSize)
+            start += maxChunkSize
+            ++index
+
+
+        sendMessages = []
+        i = 0
+        while i < chunks.length
+            sendMessages.push
+                type: "chunk"
+                id: 0
+                chunkId: i
+                length: chunks.length
+                data: chunks[i]
+            ++i
+
+        console.log "sendMessages", sendMessages
+        sendMessages
+
+    receiveChunk: (chunk, id) ->
+        currentChunkFile = false
+        for chunkFile in @ChunkFiles
+            if chunkFile.id is chunk.id
+                currentChunkFile = chunkFile
+                break
+        #console.log "currentChunkFile", currentChunkFile
+        alltogether = ""
+        if currentChunkFile
+            #console.log "chunk file exists", chunk.data
+            currentChunkFile.chunks.push chunk.data
+
+            if currentChunkFile.chunks.length is chunk.length
+                for chunk in currentChunkFile.chunks
+                    console.log chunk.chunkId
+                    alltogether += chunk
+
+                if @isMaster
+                    for client in @handler.signallingClients
+                        if client.id is id
+                            client.DChandleMessage alltogether
+                else
+                    @handler.DChandleMessage
+                        data: alltogether
+
+                #complete, put together
+        else
+            console.log "push chunk file"
+            @ChunkFiles.push
+                id: chunk.id
+                chunks: [chunk.data]
+            # add to Chunkfiles
+
+
     class Master
         @::signalServer      = "wss://localhost:3001"
         @::roomId            = null
         @::signallingClients = []
         @::password          = null
         @::id                = 0
+        @::sdpConstraints =
+            optional: []
+            mandatory:
+                OfferToReceiveAudio: false
+                OfferToReceiveVideo: false
+
 
         # this is a slaves upstream to the master
         class SlaveRTC
@@ -18,17 +138,19 @@ class RTCService
             @::dataChannel = null
             @::debug      = true
             @::loginAttempts = 3
+
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
                     iceServers: [
                         url: "stun:stun.l.google.com:19302"
                     ]
                 ,
-                    optional: [
-                            DtlsSrtpKeyAgreement: true
-                        ,
-                            RtpDataChannels: true
-                    ]
+                    null
+                    #optional: [
+                    #        DtlsSrtpKeyAgreement: true
+                    #    ,
+                    #        RtpDataChannels: true
+                    #]
                 )
                 @connection.onicecandidate = @handleOwnIce
 
@@ -66,7 +188,7 @@ class RTCService
                     @connection.setLocalDescription description
                     description.clientId = @id
                     @signaller.signalSend description
-
+                , null, @signaller.sdpConstraints
             handleAnswer: (answer) -> # recieved from client
                 console.log "handle answer", answer if @debug
                 @connection.setRemoteDescription new RTCSessionDescription(
@@ -89,11 +211,16 @@ class RTCService
 
             # DataChannel Handlers
             DChandleMessage: (msg) =>
-                console.log "got a message from DC", msg if @debug
+                console.log "got a message from DC",
+                console.log msg
+
 
                 parsedMsg = JSON.parse(msg.data)
-
+                console.log "parsed"
+                console.log parsedMsg
                 switch parsedMsg.type
+                    when "chunk"
+                        @signaller.service.receiveChunk(parsedMsg, @id)
                     when "chat"
                         @signaller.service.ChatService.addMessage(
                             parsedMsg.message, parsedMsg.sender
@@ -116,7 +243,8 @@ class RTCService
                             @id = @signaller.service.UserService.addUser("Unnamed")
                             room = @signaller.service.RoomService
                             # if password is true, send back the init data
-                            @DCsend
+
+                            initData =
                                 type: "password"
                                 passwordIsValid: true
                                 init:
@@ -133,6 +261,11 @@ class RTCService
                                             room.description
                                         url:
                                             room.url
+
+                            messages = @signaller.service.createChunks(initData)
+
+                            for message in messages
+                                @DCsend message
 
                     else
                         console.log "DChandle: unknown msg"
@@ -152,9 +285,10 @@ class RTCService
                 console.log "DC is closed!" if @debug
 
             DCsend: (message) ->
-                console.log "DCSEND", message
+                console.log "DCsend" + JSON.stringify(message)
+                console.log message
                 @dataChannel.send JSON.stringify(message)
-
+                console.log "sent?"
 
         constructor: (@service) ->
             console.log "setup" if @debug
@@ -240,6 +374,12 @@ class RTCService
         @::connection   = null
         @::debug        = true
         @::dataChannel  = null
+        @::sdpConstraints =
+            optional: []
+            mandatory:
+                OfferToReceiveAudio: false
+                OfferToReceiveVideo: false
+
         constructor: (@service) ->
             console.log "setup" if @debug
             @signalConnection = new WebSocket(@signalServer)
@@ -253,11 +393,12 @@ class RTCService
                     url: "stun:stun.l.google.com:19302"
                 ]
             ,
-                optional: [
-                        DtlsSrtpKeyAgreement: true
-                    ,
-                        RtpDataChannels: true
-                ]
+                null
+                #optional: [
+                #        DtlsSrtpKeyAgreement: true
+                #    ,
+                #        RtpDataChannels: true
+                #]
             )
             @connection.onicecandidate = @handleOwnIce
 
@@ -343,6 +484,7 @@ class RTCService
                 console.log @id if @debug
                 console.log "answer sent?" if @debug
                 @signalSend description
+            , null, @sdpConstraints
         handleNegotiation: ->
             console.log "handleNegotiation"
         handleStateChange: ->
@@ -360,11 +502,17 @@ class RTCService
             @dataChannel.onclose   = @DChandleClose
 
         DChandleMessage: (msg) =>
-            console.log "got a message from DC", msg if @debug
+            console.log "got a message from DC",
+            console.log msg
+
 
             parsedMsg = JSON.parse(msg.data)
-
-            switch parsedMsg.type
+            console.log "parsed"
+            console.log parsedMsg
+            switch parsedMsg.type#
+                when "chunk"
+                    console.log "received chunk"
+                    @service.receiveChunk(parsedMsg, @id)
                 when "chat"
                     # message
                     # sender
@@ -397,7 +545,10 @@ class RTCService
             @service.$rootScope.$apply() if !@service.$rootScope.$$phase
         DChandleClose: ->
             console.log "DC is closed!"
+
         DCsend: (message) ->
+            console.log "DCsend", message
+
             @dataChannel.send JSON.stringify(message)
 
 
@@ -407,6 +558,7 @@ class RTCService
         console.log "setup done"
         if !@roomId # this is a master
             @handler = new Master(@)
+            @isMaster = true
             @handler.listeners = @listeners
 
             @$rootScope.$watch =>
