@@ -532,9 +532,13 @@ class Users
         @::frontendColor = null
         @::joinedDate = null
         @::isActive   = true
-        constructor: (@name, @id, @color, @isMaster, joinedDate = false) ->
+        constructor: (@name, @id, @color, @isMaster, @pic = false, joinedDate = false) ->
             console.log "new user: " + @name
             @joinedDate = if !joinedDate then new Date() else joinedDate
+            if !pic
+                @pic = "/images/avatar.png"
+                if Math.round(Math.random()) is 0
+                    @pic = "/images/avatar_inverted.png"
             @frontendColor = @getColorAsHex()
 
         getColorAsHex: ->
@@ -598,7 +602,7 @@ class Users
 
     addInitUser: (user) ->
         @users.push new User( user.name, user.id, user.color,
-            user.isMaster, user.joinedDate )
+            user.isMaster, user.pic, user.joinedDate )
 
     onMessage: (message) =>
         console.log "UserService :: recieved message"
@@ -665,12 +669,13 @@ app.service "SharesService", class Shares
 
 
 app.service "ChatService", [
-    # "RTCService",
     "$rootScope",
     class Messages
         @::messages = []
         class Message
+            @::sent_at
             constructor: (@sender, @message) ->
+                @sent_at = new Date()
 
         constructor: (@$rootScope) ->
 
@@ -687,7 +692,7 @@ app.service "RoomService", [
     "SERVER_URL"
     "SERVER_PORT"
     class Room
-        @::id
+        @::id = ""
         @::name
         @::created
         @::usersLength

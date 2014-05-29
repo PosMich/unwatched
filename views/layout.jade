@@ -7,7 +7,7 @@ html(ng-app="unwatched")
     meta(name="fragment" content="!")
     link(type='text/css', rel='stylesheet', href='/css/app.css')
   body
-    .sidenav-container(onmousedown="return false")
+    .sidenav-container(onmousedown="return false", ng-controller="SideCtrl")
       .sidenav
         .icon-align
           .icon-container
@@ -36,7 +36,7 @@ html(ng-app="unwatched")
                     .side-popover
                       .arrow
                       .content create a room
-                .subicon-container.bottom2
+                .subicon-container.bottom2(ng-if="isInRoom")
                   a.menu-leave-room.subicon(href="/leaveRoom").side-tooltip
                     .stack-align.clearfix
                       span.fa-stack
@@ -46,12 +46,12 @@ html(ng-app="unwatched")
                       .arrow
                       .content leave room
             .clearfix
-          .icon-container
-            a.menu-user.side-icon(href="/members").side-tooltip
-              .notification 10
+          .icon-container(ng-if="isInRoom")
+            a.menu-user.side-icon(href="/users").side-tooltip
+              .notification(ng-show="usersNotification!=0") {{usersNotification}}
               .side-popover
                 .arrow
-                .content show/invite members
+                .content show/invite users
             .subicons-container
               .subicons
                 .subicon-container.top2
@@ -78,18 +78,9 @@ html(ng-app="unwatched")
                       .arrow
                       .content chat history
                     .history-align
-                      .history-entry
-                        img(src="http://png-1.findicons.com/files/icons/1072/face_avatars/300/i04.png")
-                        span bla bla blaasd aaaa f....
-                      .history-entry
-                        img(src="https://cdn1.iconfinder.com/data/icons/iconshock_guys/512/matthew.png")
-                        span bla blaasd aaaa f....
-                      .history-entry
-                        img(src="http://icons.iconarchive.com/icons/hopstarter/superhero-avatar/256/Avengers-Black-Widow-icon.png")
-                        span bla bla blaasd aaaa f....
-                      .history-entry
-                        img(src="http://png-4.findicons.com/files/icons/175/halloween_avatar/256/jack_skellington.png")
-                        span bla bla bla....
+                      .history-entry(ng-repeat="message in messages | orderBy:'sent_at':true")
+                        img(ng-src="{{users[message.sender].pic}}")
+                        span {{message.message | shorten}}
           .icon-container
             a.menu-share.side-icon(href="/share").side-tooltip
               .notification 5

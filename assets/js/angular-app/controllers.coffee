@@ -6,8 +6,8 @@
 app = angular.module "unwatched.controllers", []
 
 app.controller "AppCtrl", [
-    "$scope", "SharedItemsService", "StreamService"
-    ($scope, SharedItemsService, StreamService) ->
+    "$scope", "SharedItemsService", "StreamService", "ChatService"
+    ($scope, SharedItemsService, StreamService, ChatService) ->
 
         SharedItemsService.initItems( dummy_items )
 
@@ -16,6 +16,49 @@ app.controller "AppCtrl", [
                 StreamService.killScreenStream()
             else
                 StreamService.killWebcamStream()
+
+]
+
+app.controller "SideCtrl", [
+    "$scope", "UserService", "SharedItemsService", "ChatService", "$location", 
+    "RoomService"
+    ($scope, UserService, SharedItemsService, ChatService, $location, RoomService) ->
+
+        $scope.isInRoom = RoomService.id != ""
+
+        $scope.$watch ->
+            RoomService.id
+        , (value) ->
+            $scope.isInRoom = RoomService.id != ""            
+
+        $scope.messages = []
+        $scope.users = UserService.users
+        $scope.usersNotification = 0
+
+        $scope.$watch ->
+            ChatService.messages
+        , (messages) ->
+            if $location.path() isnt "/users"
+                max_messages = messages.length
+                max_messages = 4 if messages.length >= 4
+                $scope.messages = messages.slice(messages.length-max_messages, messages.length)
+        , true
+
+        $scope.$watch ->
+            UserService.users
+        , (new_users, old_users) ->
+            if new_users.length != old_users.length
+                $scope.usersNotification++
+        , true
+
+        $scope.$watch ->
+            $location.path()
+        , (path) ->
+            if path is "/users" or path is "/room"
+                $scope.usersNotification = 0
+        , true
+
+
 
 ]
 
@@ -87,6 +130,9 @@ app.controller "RoomCtrl", [
         ChatStateService, $routeParams, RTCService, $rootScope,
         $location) ->
 
+        $scope.isInRoom = RoomService.id isnt ""
+        if !$scope.isInRoom
+            return
 
         $scope.room = RoomService
 
@@ -97,7 +143,6 @@ app.controller "RoomCtrl", [
 
         console.log "user", $scope.user
         console.log "User is Master: " + $scope.user.isMaster
-        $scope.user.changePic "/images/avatar.png"
         $scope.user.borderColor = $scope.user.getColorAsRGB()
 
         $scope.chat_state = ChatStateService.chat_state
@@ -173,12 +218,17 @@ app.controller "RoomCtrl", [
 
 
 # ***
-# * <h3>Member Controller</h3>
+# * <h3>Users Controller</h3>
 # >
-app.controller "MembersCtrl", [
-    "$scope", "ChatStateService", "LayoutService"
-    ($scope, ChatStateService, LayoutService) ->
-        $scope.members = []
+app.controller "UsersCtrl", [
+    "$scope", "ChatStateService", "LayoutService", "RoomService", "UserService"
+    ($scope, ChatStateService, LayoutService, RoomService, UserService) ->
+
+        $scope.isInRoom = RoomService.id isnt ""
+        if !$scope.isInRoom
+            return
+
+        $scope.users = UserService.users
 
         $scope.$watch ->
             ChatStateService.chat_state
@@ -186,13 +236,6 @@ app.controller "MembersCtrl", [
             $scope.chat_state = new_state
         , true
 
-        membersAmount = Math.floor(Math.random() * 10 + 1) + 6
-        while membersAmount -= 1
-            $scope.members.push
-                name: "Lorem Ipsum"
-                avatar:
-                    if Math.round(Math.random()) is 0 then "/images/avatar.png"
-                    else "/images/avatar_inverted.png"
 ]
 
 # ***

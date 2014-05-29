@@ -88,14 +88,14 @@ app.config [
             # templateUrl: "/partials/index.html"
             # controller: "IndexCtrl"
         # ***
-        # * <h3>route `/members`</h3>
-        # > loads a list of all members of the current room and a maximized chat
+        # * <h3>route `/users`</h3>
+        # > loads a list of all users of the current room and a maximized chat
         # > window.
         # >
-        # > load MembersCtrl
-        $routeProvider.when "/members",
-            templateUrl: "/partials/members.html"
-            controller: "MembersCtrl"
+        # > load UsersCtrl
+        $routeProvider.when "/users",
+            templateUrl: "/partials/users.html"
+            controller: "UsersCtrl"
 
         # ***
         # * <h3>route `/share`</h3>
@@ -247,7 +247,8 @@ app.run ($rootScope, $location) ->
         else
             $rootScope.showChat = false
 
-        if $location.path() is "/room" and !$rootScope.userId?
+        if ($location.path() is "/room" and !$rootScope.userId?) or 
+                ($location.path() is "/users" and !$rootScope.userId?)
             $location.path("/")
 
 

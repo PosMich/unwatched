@@ -44,3 +44,7 @@ app.filter "noHtml", ->
         if text?
             text.replace(/&/g, '&amp;').replace(/>/g, '&gt;')
                 .replace(/</g, '&lt;')
+
+app.filter "shorten", ->
+    (text) ->
+        text.substr(0, 25) + "..."

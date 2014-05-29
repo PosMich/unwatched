@@ -1,0 +1,56 @@
+@import "nib"
+
+.user-container
+    width 90%
+    margin 30px auto
+
+.user
+    position relative
+    text-align center
+    cursor pointer
+    opacity 0.7
+    transition opacity .5s ease-in-out
+
+    .user-inner
+        position relative
+        width 100%
+
+        img
+            height 100%
+            width 100%
+            box-shadow 0 0 5px 5px #888
+            
+
+        .info
+            height 0%
+            absolute bottom left
+            opacity 0.7
+            transition opacity .5s ease-in-out, height .5s ease-in-out
+            width 100%
+
+        .controls
+            height 0%
+            absolute top left
+            opacity 0.7
+            transition opacity .5s ease-in-out, height .5s ease-in-out
+            width 100%
+
+
+    &:hover    
+
+        .user-inner
+            .info
+                height 20%
+
+                &:hover
+                    opacity 1
+
+            .controls
+                height 20%
+                &:hover
+                    opacity 1
+
+
+
+.col 
+    margin 0

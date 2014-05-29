@@ -54,7 +54,8 @@
                         text-decoration none
                         box-shadow 0px 0px 175px rgba(0,0,0,1), inset 0px 0px 1px rgba(0,0,0,0.7)
                         .notification
-                            font-size 20px
+                            font-size 15px
+                            padding 4px
                             left 51px
                         + .subicons-container
                             display table
@@ -226,11 +227,13 @@
                 &.menu-tutorial
                     &:before
                         content "\f19d"
-                        padding-left 1px
-                        font-size 30px
+                        padding-left 3px
+                        font-size 26px
                         transition font-size 300ms ease-in-out
                     &:hover:before
-                        font-size 40px
+                        padding-top 3px
+                        padding-left 1px
+                        font-size 36px
 
                 &.menu-create-room
                     display table 
@@ -353,20 +356,23 @@
                 &.menu-share-screen
                     &:before
                         content "\f108"
-                        padding-left 0px
-                        font-size 30px
+                        padding-left 2px
+                        padding-top 5px
+                        font-size 24px
                         transition font-size 300ms ease-in-out
                     &:hover:before
-                        font-size 40px
+                        padding-left 0
+                        font-size 34px
                 
                 &.menu-share-note
                     &:before
                         content "\f0f6"
-                        padding-left 1px
-                        font-size 30px
+                        padding-left 2px
+                        padding-top 0
+                        font-size 26px
                         transition font-size 300ms ease-in-out
                     &:hover:before
-                        font-size 40px
+                        font-size 36px
 
                 &.menu-share-code
                     &:before
@@ -381,10 +387,11 @@
                     &:before
                         content "\f03e"
                         padding-left 1px
-                        font-size 30px
+                        padding-top 1px
+                        font-size 26px
                         transition font-size 300ms ease-in-out
                     &:hover:before
-                        font-size 40px
+                        font-size 36px
                 
                 &.menu-share-file
                     &:before
@@ -449,6 +456,7 @@
                             max-height 30px
                             width 30px
                             height 30px
+                            border-radius 15px
                             margin-right 2px
                             transition box-shadow 300ms ease-in-out
                         span
@@ -497,49 +505,40 @@ a
         position absolute
         left 40px
         top -3px
-        border-radius 2px
-        padding 1px
-        font-size 14px
+        border-radius 1px
+        padding 3px 2px 2px
+        font-size 10px
         display table
         vertical-align middle
         border 1px solid red
         background red
-        font-weight bold
+        font-weight normal
         font-family sans-serif
         box-shadow 1px 1px 1px 0px black,-1px -1px 1px 0px white
-        transition left 300ms ease-in-out, font-size 300ms ease-in-out
-
+        transition left 300ms ease-in-out, font-size 300ms ease-in-out, padding 300ms ease-in-out
 
 a.side-tooltip
     .side-popover
         -webkit-background-clip padding-box
         background-clip padding-box
-        
-
         background-color rgb(48, 48, 48)
         border-radius 6px
         border 1px solid rgb(48, 48, 48) 
-        
         box-shadow 0px 0px 10px 0px rgba(0, 0, 0, 1)
-        
         box-sizing border-box
-
         color rgb(255, 255, 255)
-        font-size 16px
+        font-size 12px
         margin-left 10px
         padding 1px
-        
         position absolute
         top 15px
         left 75px
-
-        width 200px
+        white-space nowrap
+        width auto
         z-index 100010
         visibility hidden
         opacity 0
-
         font-family Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif
-            
 
         transition-property opacity, margin-top, visibility, margin-left
         transition-duration 0.4s, 0.3s, 0.4s, 0.3s

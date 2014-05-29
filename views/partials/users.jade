@@ -1,0 +1,9 @@
+.row(ng-if="isInRoom")
+    .user-container.clearfix
+        .user(ng-repeat="user in users", ng-class="{'col-lg-2 col-md-3 col-sm-4 col-xs-6':chat_state!='expanded', 'col-lg-3 col-md-4 col-sm-6':chat_state=='expanded'}")
+            .user-inner
+                img(ng-src="{{user.pic}}", ng-style="{'box-shadow':'0 0 5px 5px {{user.getColorAsHex()}}'}")
+                .controls(ng-style="{'background-color':'{{user.getColorAsHex()}}'}")
+                    | Controls
+                .info(ng-style="{'background-color':'{{user.getColorAsHex()}}'}")
+                    {{user.name}}
