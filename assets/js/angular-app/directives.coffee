@@ -415,3 +415,37 @@ app.directive "inlineEditTextarea", ->
             element[0].select()
             scope.disabled = false
             scope.$apply()
+
+app.directive "editInPlace", ->
+    restrict: "E"
+    scope:
+        value: "="
+    link: (scope, element, attrs) ->
+
+        inputRepresentation = angular.element element.children()[0]
+        inputElement = angular.element element.children()[1]
+
+        inputElement.css("font-size", inputRepresentation.css("font-size"))
+        inputElement.css("height", "auto")
+
+        element.addClass 'edit-in-place'
+        console.log element
+        scope.editing = false
+
+        inputRepresentation.on "click", ->
+            inputRepresentation.addClass 'representation-inactive'
+            scope.old_value = scope.value
+            scope.editing = true
+            element.addClass "active"
+            inputElement[0].focus()
+
+        inputElement.on "blur", ->
+            inputRepresentation.removeClass 'representation-active'
+            scope.editing = false
+            element.removeClass "active"
+
+            if !scope.value? || scope.value.length is 0 || scope.value is null
+                console.log "resetting value to: ", scope.old_value
+                scope.value = scope.old_value
+                scope.$apply()
+

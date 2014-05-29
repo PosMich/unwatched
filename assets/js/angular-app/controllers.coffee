@@ -101,8 +101,6 @@ app.controller "RoomCtrl", [
         $scope.user.borderColor = $scope.user.getColorAsRGB()
 
         $scope.chat_state = ChatStateService.chat_state
-        $scope.disabled = true
-        $scope.description = $scope.room.description
 
         $scope.$watch ->
             ChatStateService.chat_state
@@ -112,7 +110,6 @@ app.controller "RoomCtrl", [
 
         # room infos
         $scope.room.users = UserService.users
-        # $scope.room.usersLength = $scope.room.users.length
         $scope.room.filesLength = SharedItemsService.items.length
 
         # image processing
@@ -809,52 +806,18 @@ app.controller "WebcamCtrl", [
 # * <h3>Chat Controller</h3>
 # >
 app.controller "ChatCtrl", [
-    "$scope", "ChatStateService", "ChatService"
-    ($scope, ChatStateService, ChatService) ->
+    "$scope", "$rootScope", "ChatStateService", "ChatService", "UserService"
+    ($scope, $rootScope, ChatStateService, ChatService, UserService) ->
         window.chat = ChatService
         $scope.chat = {}
         $scope.chat.state = ChatStateService.chat_state
         $scope.chat.state_history = ChatStateService.chat_state_history
 
+        $scope.users = UserService.users
         $scope.chat.messages = ChatService.messages
-
-        # $scope.$watch ->
-        #     ChatService.messages
-        # , (value) ->
-        #     $scope.chat.messages = value
-        # , true
-        ###
-        $scope.chat.messages = [
-            # dummy entries
-            {
-                sender: "Lorem Ipsum",
-                content: "Lorem ipsum dolor sit amet, consetetur sadipscing el"+
-                "itr, sed diam nonumy eirmod tempor invidunt ut labore et dolo"+
-                "re magna aliquyam erat, sed diam voluptua. At vero eos et acc"+
-                "usam et justo duo dolores et ea rebum. Stet clita kasd guberg"+
-                "ren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-            }
-            {
-                sender: "Lorem Ipsum",
-                content: "Lorem ipsum dolor sit amet, consetetur sadipscing el"+
-                "itr, sed diam nonumy eirmod tempor invidunt ut labore et dolo"+
-                "re magna aliquyam erat, sed diam voluptua."
-            }
-            {
-                sender: "Lorem Ipsum",
-                content: "Lorem ipsum dolor sit amet, consetetur sadipscing el"+
-                "itr, sed diam nonumy eirmod tempor invidunt ut labore et dolo"+
-                "re magna aliquyam erat, sed diam voluptua. At vero eos et acc"+
-                "usam et justo duo dolores et ea rebum."
-            }
-
-        ]
-        ###
+        $scope.userId = $rootScope.userId
 
         $scope.submitChatMessage = ->
-            #$scope.chat.messages.push
-            #    sender: "Lorem Ipsum"
-            #    content: $scope.chat.message
             ChatService.addMessage $scope.chat.message
             $scope.chat.message = ""
 

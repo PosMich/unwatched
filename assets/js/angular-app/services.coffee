@@ -373,6 +373,13 @@ class RTCService
                 when "user"
                     # user
                     @service.UserService.addInitUser parsedMsg.user
+
+                when "roomNameHasChanged"
+                    @service.RoomService.name = parsedMsg.roomName
+
+                when "roomDescriptionHasChanged"
+                    @service.RoomService.description = parsedMsg.roomDescription
+
                 when "password"
                     if parsedMsg.passwordIsValid
                         @passwordIsValid = parsedMsg.passwordIsValid
@@ -436,6 +443,24 @@ class RTCService
                     ++i
             , true
 
+            @$rootScope.$watch =>
+                @RoomService.name
+            , (new_room_name) =>
+                for client in @handler.signallingClients
+                    client.DCsend
+                        type: "roomNameHasChanged"
+                        roomName: new_room_name
+            , true
+
+            @$rootScope.$watch =>
+                @RoomService.description
+            , (new_room_description) =>
+                for client in @handler.signallingClients
+                    client.DCsend
+                        type: "roomDescriptionHasChanged"
+                        roomDescription: new_room_description
+            , true
+
         else # this is a slave
             @handler = new Slave(@)
             @handler.listeners = @listeners
@@ -456,7 +481,6 @@ class RTCService
 
                     ++i
             , true
-
 
 
     setPassword: (password) ->
@@ -505,11 +529,13 @@ class Users
         @::pic      = ""
         @::id       = -1
         @::color    = null
+        @::frontendColor = null
         @::joinedDate = null
         @::isActive   = true
         constructor: (@name, @id, @color, @isMaster, joinedDate = false) ->
             console.log "new user: " + @name
             @joinedDate = if !joinedDate then new Date() else joinedDate
+            @frontendColor = @getColorAsHex()
 
         getColorAsHex: ->
             "#" +

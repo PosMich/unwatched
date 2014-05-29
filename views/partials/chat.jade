@@ -17,8 +17,12 @@
             div
                 .clearfix.chat-message(
                     ng-repeat="message in chat.messages track by $index")
-                    span.well.well-sm(ng-class-even="'own'")
-                        | <b>{{message.sender}}:</b> {{message.message}}
+                    span.well.well-sm(ng-class="{'own':message.sender==userId}")
+                        img(ng-if="chat.state=='expanded'", 
+                            ng-src="{{users[message.sender].pic}}")
+                        b(style="color: {{users[message.sender].getColorAsHex()}}")
+                            {{users[message.sender].name}}: 
+                        | {{message.message}}
     .panel-footer.message-control.clearfix
         form(name="chatMessage", no-validate, 
             ng-submit="submitChatMessage()")
