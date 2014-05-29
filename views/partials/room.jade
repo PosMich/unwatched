@@ -1,12 +1,16 @@
-.row.dashboard
+.row.dashboard(ng-if="isInRoom")
     .col-xs-offset-1.col-xs-10.col-xs-offset-1(ng-class="{'col-md-offset-1 col-md-5':chat_state!='expanded'}")
         .well
-            h1 {{room.name}}
+            edit-in-place(value="room.name", ng-if="user.isMaster")
+                h1 {{room.name}}
+                input.form-control(type="text", ng-model="room.name")
+            h1(ng-if="!user.isMaster") {{room.name}}
 
-            textarea.form-control(ng-model="description", ng-hide="disabled",
-                inline-edit-textarea, row="4")
-            p(ng-show="disabled")
-                | {{room.description}}
+            edit-in-place(value="room.description", ng-if="user.isMaster")
+                p {{room.description}}
+                textarea.form-control(ng-model="room.description", row="4")
+            p(ng-if="!user.isMaster") {{room.description}}
+
             dl.dl-horizontal
                 dt Users
                 dd {{room.users.length}}
@@ -43,4 +47,4 @@
                         .img-container
                             .img(ng-file-drop="onFileSelect($files)", square,
                                 ng-file-drag-over-class="drag-over-class",
-                                style="background-image: url({{user.pic}}); border: 15px solid {{user.borderColor}}")
+                                ng-style="{'background-image':'url({{user.pic}})', 'border': '15px solid {{user.borderColor}}'}")

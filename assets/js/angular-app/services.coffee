@@ -521,6 +521,13 @@ class RTCService
                 when "user"
                     # user
                     @service.UserService.addInitUser parsedMsg.user
+
+                when "roomNameHasChanged"
+                    @service.RoomService.name = parsedMsg.roomName
+
+                when "roomDescriptionHasChanged"
+                    @service.RoomService.description = parsedMsg.roomDescription
+
                 when "password"
                     if parsedMsg.passwordIsValid
                         @passwordIsValid = parsedMsg.passwordIsValid
@@ -588,6 +595,24 @@ class RTCService
                     ++i
             , true
 
+            @$rootScope.$watch =>
+                @RoomService.name
+            , (new_room_name) =>
+                for client in @handler.signallingClients
+                    client.DCsend
+                        type: "roomNameHasChanged"
+                        roomName: new_room_name
+            , true
+
+            @$rootScope.$watch =>
+                @RoomService.description
+            , (new_room_description) =>
+                for client in @handler.signallingClients
+                    client.DCsend
+                        type: "roomDescriptionHasChanged"
+                        roomDescription: new_room_description
+            , true
+
         else # this is a slave
             @handler = new Slave(@)
             @handler.listeners = @listeners
@@ -608,7 +633,6 @@ class RTCService
 
                     ++i
             , true
-
 
 
     setPassword: (password) ->
@@ -657,11 +681,17 @@ class Users
         @::pic      = ""
         @::id       = -1
         @::color    = null
+        @::frontendColor = null
         @::joinedDate = null
         @::isActive   = true
-        constructor: (@name, @id, @color, @isMaster, joinedDate = false) ->
+        constructor: (@name, @id, @color, @isMaster, @pic = false, joinedDate = false) ->
             console.log "new user: " + @name
             @joinedDate = if !joinedDate then new Date() else joinedDate
+            if !pic
+                @pic = "/images/avatar.png"
+                if Math.round(Math.random()) is 0
+                    @pic = "/images/avatar_inverted.png"
+            @frontendColor = @getColorAsHex()
 
         getColorAsHex: ->
             "#" +
@@ -724,7 +754,7 @@ class Users
 
     addInitUser: (user) ->
         @users.push new User( user.name, user.id, user.color,
-            user.isMaster, user.joinedDate )
+            user.isMaster, user.pic, user.joinedDate )
 
     onMessage: (message) =>
         console.log "UserService :: recieved message"
@@ -791,12 +821,13 @@ app.service "SharesService", class Shares
 
 
 app.service "ChatService", [
-    # "RTCService",
     "$rootScope",
     class Messages
         @::messages = []
         class Message
+            @::sent_at
             constructor: (@sender, @message) ->
+                @sent_at = new Date()
 
         constructor: (@$rootScope) ->
 
@@ -813,7 +844,7 @@ app.service "RoomService", [
     "SERVER_URL"
     "SERVER_PORT"
     class Room
-        @::id
+        @::id = ""
         @::name
         @::created
         @::usersLength
