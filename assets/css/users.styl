@@ -7,9 +7,7 @@
 .user
     position relative
     text-align center
-    cursor pointer
-    opacity 0.7
-    transition opacity .5s ease-in-out
+    opacity 1
 
     .user-inner
         position relative
@@ -18,39 +16,65 @@
         img
             height 100%
             width 100%
-            box-shadow 0 0 5px 5px #888
+            border-radius 25px
             
 
-        .info
+        .info, .controls
+            background rgba(27,27,27, 0.9)
             height 0%
-            absolute bottom left
-            opacity 0.7
-            transition opacity .5s ease-in-out, height .5s ease-in-out
+            opacity 0
+            transition opacity .4s ease-in-out, height .4s ease-in-out
             width 100%
+        .info
+            absolute top left
+            font-size 24px
+            font-weight bold
+            color white
+            padding-top 10px
+            border-radius 25px 25px 0 0
+
+            .joined
+                absolute bottom right
+                font-size 11px
+                padding 5px
 
         .controls
-            height 0%
-            absolute top left
-            opacity 0.7
-            transition opacity .5s ease-in-out, height .5s ease-in-out
-            width 100%
+            absolute bottom left
+            border-radius 0 0 25px 25px
+            color white
 
+            .controls-inner
+                display table
+                margin auto
+                padding-top 6px
+
+                a
+                    color white
+                    text-decoration none
+                    font-size 22px
+                    padding 10px
+                    transition font-size .3s ease-in-out
+                    display block
+                    float left
 
     &:hover    
 
         .user-inner
-            .info
-                height 20%
+            .info, .controls
+                opacity 0.8
 
                 &:hover
                     opacity 1
+
+            .info
+                height 25%
 
             .controls
                 height 20%
+
                 &:hover
-                    opacity 1
-
-
+                    a:hover
+                        font-size 26px
 
 .col 
     margin 0

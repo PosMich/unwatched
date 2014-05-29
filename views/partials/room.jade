@@ -23,7 +23,7 @@
                     a(ng-href="{{room.url}}" target="_blank") {{room.url}}
 
     .col-xs-offset-1.col-xs-10.col-xs-offset-1(ng-class="{'col-md-offset-1 col-md-4 col-md-offset-1':chat_state!='expanded'}")
-        .well
+        .well(style="box-shadow:0 0 150px 0 {{user.getColorAsHex()}}")
             form.form-horizontal(name="userForm", role="form")
                 .form-group
                     label.col-xs-4.control-label(for="inputUserName")
@@ -47,4 +47,4 @@
                         .img-container
                             .img(ng-file-drop="onFileSelect($files)", square,
                                 ng-file-drag-over-class="drag-over-class",
-                                style="background-image:url({{user.pic}}); border: 15px solid {{user.borderColor}}")
+                                style="background-image:url({{user.pic}});")

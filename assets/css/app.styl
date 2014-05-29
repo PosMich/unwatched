@@ -7,6 +7,7 @@
 @require "mixins.styl"
 @require "animations.styl"
 @require "forms.styl"
+@require "room.styl"
 @require "users.styl"
 @require "chat.styl"
 @require "share.styl"
@@ -161,31 +162,3 @@ body:after
     .video.ng-hide-add,
     .video.ng-hide-remove
       transition all ease-in-out .5s
-
-.dashboard
-    margin-top 50px
-    
-    .well
-        font-size 13px
-        box-shadow 0 0 15px rgba(53,53,53,1)
-
-        dl
-            dd, dt
-                padding 10px
-
-        h1
-            border-bottom 1px solid black
-
-        .img-container
-            padding 30px            
-            .img
-                border-radius 50%
-                width 100%
-                border 1px dashed grey
-                background-size 100%
-                background-repeat no-repeat
-                background-position center
-
-                &.drag-over-class
-                    box-shadow 0 0 15px rgba(53,53,53,1)
-                    border 1px solid grey

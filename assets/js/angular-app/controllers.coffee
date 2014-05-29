@@ -25,11 +25,14 @@ app.controller "SideCtrl", [
     ($scope, UserService, SharedItemsService, ChatService, $location, RoomService) ->
 
         $scope.isInRoom = RoomService.id != ""
+        $scope.roomUrl = "/"
 
         $scope.$watch ->
             RoomService.id
         , (value) ->
-            $scope.isInRoom = RoomService.id != ""            
+            $scope.isInRoom = RoomService.id != ""
+            $scope.roomUrl = "/"            
+            $scope.roomUrl = "/room" if $scope.isInRoom
 
         $scope.messages = []
         $scope.users = UserService.users
