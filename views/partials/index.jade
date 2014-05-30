@@ -45,7 +45,7 @@
                             button.btn.btn-primary.pull-right(ng-click="submitRoom()",
                                 ng-disabled="createRoom.$invalid") Create
 
-            form.form-horizontal(novalidate, name="joinRoomForm", ng-show="joinAttempt")
+            form.form-horizontal.joinRoomForm(novalidate, name="joinRoomForm", ng-show="joinAttempt")
                 fieldset
                     legend Join Room
                     .form-group
