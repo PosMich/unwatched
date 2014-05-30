@@ -163,6 +163,7 @@ app.controller "RoomCtrl", [
         $scope.room.filesLength = SharedItemsService.items.length
 
         # image processing
+        $scope.avatar_ready = false
         img = document.createElement("img")
         canvas = document.createElement("canvas")
 
@@ -185,6 +186,7 @@ app.controller "RoomCtrl", [
 
             reader.onload = (e) ->
                 img.src = e.target.result
+                $scope.avatar_ready = false
 
                 img.onload = ->
                     img_width = img.width
@@ -215,8 +217,6 @@ app.controller "RoomCtrl", [
                         $scope.mime
                     )
 
-                    $scope.$apply()
-
                     message =
                         userId: $scope.user.id
                         userPic: $scope.user.pic
@@ -229,6 +229,9 @@ app.controller "RoomCtrl", [
                         RTCService.broadcastUserChanges(
                             "userPicHasChanged", message
                         )
+
+                    $scope.avatar_ready = true
+                    $scope.$apply()
 
             reader.readAsDataURL file
 
@@ -289,6 +292,33 @@ app.controller "UsersCtrl", [
             $scope.chat_state = new_state
         , true
 
+        $scope.$watch (->
+            LayoutService.layout
+        ), ((layout) ->
+            $scope.controls.layout = layout
+        ), true
+
+        $scope.controls = {}
+        $scope.controls.sorting = {}
+        $scope.controls.sorting.state = ""
+        $scope.controls.sorting.ascending = false
+        $scope.controls.layout = LayoutService.layout
+
+        $scope.setSortingState = (state) ->
+            if $scope.controls.sorting.state is state
+                # reset sorting
+                if $scope.controls.sorting.ascending
+                    $scope.controls.sorting.state = ""
+                # switch sorting direction descending/ascending
+                $scope.controls.sorting.ascending =
+                    !$scope.controls.sorting.ascending
+            else
+                $scope.controls.sorting.ascending = false
+                $scope.controls.sorting.state = state
+
+        $scope.setLayout = (layout) ->
+            LayoutService.setLayout(layout)
+
 ]
 
 # ***
@@ -308,14 +338,14 @@ app.controller "ShareCtrl", [
         ), true
 
         $scope.$watch (->
-            return LayoutService.layout
+            LayoutService.layout
         ), ((layout) ->
             $scope.controls.layout = layout
         ), true
 
         $scope.controls = {}
         $scope.controls.sorting = {}
-        $scope.controls.sorting.state = "name"
+        $scope.controls.sorting.state = ""
         $scope.controls.sorting.ascending = false
         $scope.controls.layout = LayoutService.layout
 
@@ -323,6 +353,10 @@ app.controller "ShareCtrl", [
 
         $scope.setSortingState = (state) ->
             if $scope.controls.sorting.state is state
+                # reset sorting
+                if $scope.controls.sorting.ascending
+                    $scope.controls.sorting.state = ""
+                # switch sorting direction descending/ascending
                 $scope.controls.sorting.ascending =
                     !$scope.controls.sorting.ascending
             else

@@ -1,7 +1,36 @@
+.heading.clearfix.controls
+    .row
+        .sorting.clearfix.col-xs-6(ng-class="{'ascending':controls.sorting.ascending}")
+            span Sort by:
+            div(ng-class="{'active':controls.sorting.state=='name'}", 
+                ng-click="setSortingState('name')") Name
+            div(ng-class="{'active':controls.sorting.state=='created'}", 
+                ng-click="setSortingState('created')") Date
+
+        .layout.col-xs-6
+            form(name="controlSearch", no-validate)
+                .control-input
+                    input#searchString.form-control(type="text", 
+                        required, ng-model="controls.searchString",
+                        placeholder="Type to search...")
+            span(ng-click="setLayout('layout-icons')",
+                ng-class="{'active':controls.layout=='layout-icons'}",
+                popover-placement="bottom", popover="Set Layout: Icons",
+                popover-trigger="mouseenter", popover-popup-delay="750",
+                ng-if="chat_state=='expanded'")
+                i.fa.fa-th
+            span(ng-click="setLayout('layout-list')",
+                ng-class="{'active':controls.layout=='layout-list'}",
+                popover-placement="bottom", popover="Set Layout: List",
+                popover-trigger="mouseenter",popover-popup-delay="750",
+                ng-if="chat_state=='expanded'")
+                i.fa.fa-list-ul
+
 .row(ng-if="isInRoom")
-    .user-container.clearfix
-        .user(ng-repeat="user in users", ng-class="{'col-lg-3 col-md-4 col-sm-6 col-xs-12':chat_state!='expanded', 'col-lg-6 col-md-6 col-sm-12':chat_state=='expanded'}")
-            .user-inner
+    ul.user-container.clearfix(class="{{controls.layout}}")
+        li.user(ng-repeat="user in users | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending", 
+            ng-class="{'col-lg-3 col-md-4 col-sm-6 col-xs-12':chat_state!='expanded'&&controls.layout=='layout-icons', 'col-lg-6 col-md-6 col-sm-12':chat_state=='expanded'&&controls.layout=='layout-icons', 'col-xs-12':controls.layout=='layout-list'}",)
+            .user-inner(ng-class="{'clearfix':controls.layout=='layout-list'}")
                 img(src="{{user.pic}}", style="box-shadow:0 0 150px 0 {{user.getColorAsHex()}}")
                 .info
                     {{user.name}}
