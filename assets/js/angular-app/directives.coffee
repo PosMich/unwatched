@@ -45,7 +45,6 @@ app.directive "updateScrollPosition", [
 
             scope.$watch attrs.updateScrollPosition, ->
                 window.setTimeout((->
-                    console.log "blaaaa"
                     elem.scrollTop elem.find("> div").height()
                 ), 0)
 
@@ -354,56 +353,39 @@ app.directive "webcam", [
 ]
 
 app.directive "square", [
-    "$window", "RoomService",
-    ($window, RoomService) ->
+    "$window", "RoomService", "$location"
+    ($window, RoomService, $location) ->
         link: (scope, element, attrs) ->
-            
-            angular.element($window).bind "resize", ->
-                element.height element.width()
 
+            scope.getElementDimensions = ->
+                { 'width': element.width() }
 
             scope.$watch ->
-                RoomService.id
-            , ->
-                window.setTimeout( (->
-                    element.height element.width()
-                ), 1)
+                scope.getElementDimensions()
+            , (dimensions) ->
+                element.height dimensions.width
             , true
+
+            element.bind "resize", ->
+                scope.$apply() if !scope.$$phase
+
+            angular.element($window).bind "resize", ->
+                scope.$apply() if !scope.$$phase
 
             scope.$watch ->
                 scope.user.pic
             , ->
-                window.setTimeout( (->
-                    element.height element.width()
-                ), 0)
-            , true
+                scope.$apply() if !scope.$$phase
 
             scope.$watch ->
-                scope.chat_state
-            , ->
-                window.setTimeout( (->
-                    element.height element.width()
-                ), 0)
-            , true
+                $location.path()
+            , (path) ->
+                if path is "/room"
+                    window.setTimeout ->
+                        element.height scope.getElementDimensions().width
+                    , 500
+
 ]
-
-
-app.directive "inlineEditTextarea", ->
-    link: (scope, element, attrs) ->
-        element.bind "blur", ->
-            if element.val().length is 0
-                scope.description = scope.room.description
-            else
-                scope.room.description = scope.description
-            scope.disabled = true
-            scope.$apply()
-
-        element.parent().find("p").bind "dblclick", (e) ->
-            e.preventDefault()
-            element[0].focus()
-            element[0].select()
-            scope.disabled = false
-            scope.$apply()
 
 app.directive "editInPlace", ->
     restrict: "E"
@@ -418,7 +400,6 @@ app.directive "editInPlace", ->
         inputElement.css("height", "auto")
 
         element.addClass 'edit-in-place'
-        console.log element
         scope.editing = false
 
         inputRepresentation.on "click", ->
@@ -434,7 +415,6 @@ app.directive "editInPlace", ->
             element.removeClass "active"
 
             if !scope.value? || scope.value.length is 0 || scope.value is null
-                console.log "resetting value to: ", scope.old_value
                 scope.value = scope.old_value
                 scope.$apply()
 

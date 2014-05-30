@@ -247,7 +247,7 @@ app.run ($rootScope, $location) ->
         else
             $rootScope.showChat = false
 
-        if ($location.path() is "/room" and !$rootScope.userId?) or 
+        if ($location.path() is "/room" and !$rootScope.userId?) or
                 ($location.path() is "/users" and !$rootScope.userId?)
             $location.path("/")
 

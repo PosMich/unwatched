@@ -20,9 +20,10 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "SideCtrl", [
-    "$scope", "UserService", "SharedItemsService", "ChatService", "$location", 
+    "$scope", "UserService", "SharedItemsService", "ChatService", "$location",
     "RoomService"
-    ($scope, UserService, SharedItemsService, ChatService, $location, RoomService) ->
+    ($scope, UserService, SharedItemsService, ChatService, $location,
+        RoomService) ->
 
         $scope.isInRoom = RoomService.id != ""
         $scope.roomUrl = "/"
@@ -31,7 +32,7 @@ app.controller "SideCtrl", [
             RoomService.id
         , (value) ->
             $scope.isInRoom = RoomService.id != ""
-            $scope.roomUrl = "/"            
+            $scope.roomUrl = "/"
             $scope.roomUrl = "/room" if $scope.isInRoom
 
         $scope.messages = []
@@ -41,10 +42,11 @@ app.controller "SideCtrl", [
         $scope.$watch ->
             ChatService.messages
         , (messages) ->
-            if $location.path() isnt "/users"
-                max_messages = messages.length
-                max_messages = 4 if messages.length >= 4
-                $scope.messages = messages.slice(messages.length-max_messages, messages.length)
+            max_messages = messages.length
+            max_messages = 4 if messages.length >= 4
+            $scope.messages = messages.slice(
+                messages.length - max_messages, messages.length
+            )
         , true
 
         $scope.$watch ->
@@ -215,7 +217,55 @@ app.controller "RoomCtrl", [
 
                     $scope.$apply()
 
+                    message =
+                        userId: $scope.user.id
+                        userPic: $scope.user.pic
+
+                    if !$scope.user.isMaster
+                        RTCService.sendUserChanges(
+                            "userPicHasChanged", message
+                        )
+                    else
+                        RTCService.broadcastUserChanges(
+                            "userPicHasChanged", message
+                        )
+
             reader.readAsDataURL file
+
+        $scope.checkName = (uName) ->
+            # is userName valid?
+            if uName.$error.required
+                # user name is empty, setting to default
+                name = "Unnamed"
+            else if uName.$error.minlength
+                # user name is too short, fill up with '_'
+                name = uName.$viewValue
+                i = name.length
+                while i < 5
+                    name = name += "_"
+                    i++
+            else
+                name = $scope.user.name
+
+            first_free_name = UserService.getFirstFreeName($scope.user.id, name)
+
+            # resetting username if the name was occupied
+            $scope.user.name = first_free_name
+
+            message =
+                userId: $scope.user.id
+                userName: first_free_name
+
+            if !$scope.user.isMaster
+                # send new user name
+                RTCService.sendUserChanges("userNameHasChanged", message)
+
+            else
+                # broadcast new user name
+                RTCService.broadcastUserChanges("userNameHasChanged", message)
+
+
+            
 
 ]
 

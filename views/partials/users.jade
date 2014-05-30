@@ -2,7 +2,7 @@
     .user-container.clearfix
         .user(ng-repeat="user in users", ng-class="{'col-lg-3 col-md-4 col-sm-6 col-xs-12':chat_state!='expanded', 'col-lg-6 col-md-6 col-sm-12':chat_state=='expanded'}")
             .user-inner
-                img(ng-src="{{user.pic}}", style="box-shadow:0 0 150px 0 {{user.getColorAsHex()}}")
+                img(src="{{user.pic}}", style="box-shadow:0 0 150px 0 {{user.getColorAsHex()}}")
                 .info
                     {{user.name}}
                     .joined

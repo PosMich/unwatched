@@ -47,7 +47,8 @@ exports.connect = (server) ->
 
                     # client --> server --> master
                     when "connect"
-                        logger.info "ws: got 'connect' msg from: " + wsConnection.clientId
+                        logger.info "ws: got 'connect' msg from: " +
+                            wsConnection.clientId
                         for client in wss.clients
                             if client.isMaster and client.clientId is parsedMsg.roomId
                                 console.log "master found"

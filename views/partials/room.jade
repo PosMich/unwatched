@@ -28,9 +28,15 @@
                 .form-group
                     label.col-xs-4.control-label(for="inputUserName")
                         | Your name:
-                    .col-xs-8
+                    .col-xs-8.user-form-input(ng-class="{'has-error': userForm.uName.$invalid}")
                         input#inputUserName.form-control(type="text",
-                            ng-model="user.name")
+                            ng-model="user.name", name="uName",
+                            ng-minlength="5", required, ng-blur="checkName(userForm.uName)")
+                        span.help-block(ng-show="userForm.uName.$error.required")
+                            | *Required field.
+                        span.help-block(ng-show="userForm.uName.$error.minlength")
+                            | *Type in at least 5 characters.
+
 
                 .form-group(ng-class="{'has-error': user.avatar_error}")
                     label.col-xs-4.control-label(for="inputUserAvatar")

@@ -8,7 +8,8 @@ class RTCService
     @::isMaster = false
 
     ab2str: (uint8) ->
-        String.fromCharCode.apply(null, new Uint16Array(uint8.buffer.slice(uint8.byteOffset))).trim()
+        String.fromCharCode.apply(null,
+            new Uint16Array(uint8.buffer.slice(uint8.byteOffset))).trim()
 
     #        return String.fromCharCode.apply(null, uint8).trim();
     str2ab: (str) ->
@@ -51,7 +52,13 @@ class RTCService
         chunks = []
 
 
-        # {"type":"chunk","id":1073741824,"chunkId":1073741824,"length":1073741824,"data":""}
+        #   {
+        #       "type":"chunk",
+        #       "id":1073741824,
+        #       "chunkId":1073741824,
+        #       "length":1073741824,
+        #       "data":""
+        #   }
         # -> without data: 83 chars
         maxChunkSize = 1000
 
@@ -63,8 +70,8 @@ class RTCService
 
         index = 0
         start = 0
-        while index*maxChunkSize < message.length
-            chunks.push message.slice(start, start+maxChunkSize)
+        while index * maxChunkSize < message.length
+            chunks.push message.slice(start, start + maxChunkSize)
             start += maxChunkSize
             ++index
 
@@ -92,28 +99,31 @@ class RTCService
         #console.log "currentChunkFile", currentChunkFile
         alltogether = ""
         if currentChunkFile
-            #console.log "chunk file exists", chunk.data
+            console.log "chunk file exists", chunk.data
             currentChunkFile.chunks.push chunk.data
 
             if currentChunkFile.chunks.length is chunk.length
                 for chunk in currentChunkFile.chunks
-                    console.log chunk.chunkId
+                    console.log chunk.id
                     alltogether += chunk
 
                 if @isMaster
                     for client in @handler.signallingClients
                         if client.id is id
-                            client.DChandleMessage alltogether
+                            client.DChandleMessage
+                                data: alltogether
                 else
                     @handler.DChandleMessage
                         data: alltogether
 
-                #complete, put together
+                #complete, put together, reset ChunkFiles storage
+                @ChunkFiles = []
         else
             console.log "push chunk file"
             @ChunkFiles.push
                 id: chunk.id
                 chunks: [chunk.data]
+
             # add to Chunkfiles
 
 
@@ -189,7 +199,7 @@ class RTCService
                     description.clientId = @id
                     @signaller.signalSend description
                 , null, @signaller.sdpConstraints
-            handleAnswer: (answer) -> # recieved from client
+            handleAnswer: (answer) -> # received from client
                 console.log "handle answer", answer if @debug
                 @connection.setRemoteDescription new RTCSessionDescription(
                     answer
@@ -211,13 +221,12 @@ class RTCService
 
             # DataChannel Handlers
             DChandleMessage: (msg) =>
-                console.log "got a message from DC",
-                console.log msg
-
+                # console.log "got a message from DC", msg
 
                 parsedMsg = JSON.parse(msg.data)
-                console.log "parsed"
-                console.log parsedMsg
+                console.log parsedMsg.type
+                # console.log "parsed"
+                # console.log parsedMsg
                 switch parsedMsg.type
                     when "chunk"
                         @signaller.service.receiveChunk(parsedMsg, @id)
@@ -240,7 +249,8 @@ class RTCService
 
                             @signaller.removeSlave(@id)
                         else
-                            @id = @signaller.service.UserService.addUser("Unnamed")
+                            @id = @signaller.service.UserService
+                                .addUser("Unnamed")
                             room = @signaller.service.RoomService
                             # if password is true, send back the init data
 
@@ -266,6 +276,35 @@ class RTCService
 
                             for message in messages
                                 @DCsend message
+
+                    when "userNameHasChanged"
+                        @signaller.service.UserService.changeName(
+                            parsedMsg.message.userId, parsedMsg.message.userName
+                        )
+
+                        for client in @signaller.signallingClients
+                            if client.id isnt parsedMsg.message.userId
+                                client.DCsend
+                                    type: "userNameHasChanged"
+                                    message: parsedMsg.message
+
+                    when "userPicHasChanged"
+                        @signaller.service.UserService.changePic(
+                            parsedMsg.message.userId, parsedMsg.message.userPic
+                        )
+
+                        message =
+                            type: "userPicHasChanged"
+                            message: parsedMsg.message
+
+                        messages = @signaller.service.createChunks(message)
+
+                        for client in @signaller.signallingClients
+                            for msg in messages
+                                if client.id isnt parsedMsg.message.userId
+                                    client.DCsend msg
+                                    
+
 
                     else
                         console.log "DChandle: unknown msg"
@@ -528,6 +567,17 @@ class RTCService
                 when "roomDescriptionHasChanged"
                     @service.RoomService.description = parsedMsg.roomDescription
 
+                when "userNameHasChanged"
+                    @service.UserService.changeName(
+                        parsedMsg.message.userId, parsedMsg.message.userName
+                    )
+
+                when "userPicHasChanged"
+                    @service.UserService.changePic(
+                        parsedMsg.message.userId, parsedMsg.message.userPic
+                    )
+
+
                 when "password"
                     if parsedMsg.passwordIsValid
                         @passwordIsValid = parsedMsg.passwordIsValid
@@ -554,8 +604,7 @@ class RTCService
             console.log "DC is closed!"
 
         DCsend: (message) ->
-            console.log "DCsend", message
-
+            # console.log "DCsend", message
             @dataChannel.send JSON.stringify(message)
 
 
@@ -620,8 +669,6 @@ class RTCService
             @$rootScope.$watch =>
                 @ChatService.messages
             , (new_messages, old_messages) =>
-                console.log "new_messages", new_messages
-                console.log "old_messages", old_messages
                 i = old_messages.length
                 while i < new_messages.length
                     if new_messages[i].sender is @$rootScope.userId
@@ -645,6 +692,35 @@ class RTCService
             type: "password"
             password: password
 
+    sendUserChanges: (type, message) ->
+        dataChannelMessage =
+            type: type
+            message: message
+
+        if type is "userNameHasChanged"
+            @handler.DCsend dataChannelMessage
+
+        else if type is "userPicHasChanged"
+            messages = @createChunks(dataChannelMessage)
+
+            for msg in messages
+                @handler.DCsend msg
+
+    broadcastUserChanges: (type, message) ->
+        broadcastMessage =
+            type: type
+            message: message
+
+        if type is "userNameHasChanged"
+            for client in @handler.signallingClients
+                client.DCsend broadcastMessage
+
+        else if type is "userPicHasChanged"
+            messages = @createChunks(broadcastMessage)
+
+            for client in @handler.signallingClients
+                for msg in messages
+                    client.DCsend msg
 
 class Users
     @::users = []
@@ -684,7 +760,8 @@ class Users
         @::frontendColor = null
         @::joinedDate = null
         @::isActive   = true
-        constructor: (@name, @id, @color, @isMaster, @pic = false, joinedDate = false) ->
+        constructor: (@name, @id, @color, @isMaster, @pic = false,
+            joinedDate = false) ->
             console.log "new user: " + @name
             @joinedDate = if !joinedDate then new Date() else joinedDate
             if !pic
@@ -712,14 +789,7 @@ class Users
         changePic: (@pic) ->
         changeName: (@name) ->
 
-    constructor: (@$rootScope) -> #@RTCService,
-        # @RTCService.registerBroadcastListener
-        #     type: "user"
-        #     onMessage: @onMessage
-
-        # @RTCService.registerBroadcastListener
-        #     type: "initRequest"
-        #     onMessage: @onInitRequest
+    constructor: (@$rootScope) ->
 
     getUser: (id) ->
         for user in @users
@@ -736,13 +806,7 @@ class Users
 
     addUser: (name, isMaster = false) ->
         id = @users.length
-        occupied = @nameIsOccupied( id, name )
-        counter = 0
-        tmp_name = name
-        while occupied
-            counter++
-            tmp_name = name + " (" + counter + ")"
-            occupied = @nameIsOccupied( id, tmp_name )
+        tmp_name = @getFirstFreeName(id, name)
 
         if isMaster
             for user in @users
@@ -757,7 +821,7 @@ class Users
             user.isMaster, user.pic, user.joinedDate )
 
     onMessage: (message) =>
-        console.log "UserService :: recieved message"
+        console.log "UserService :: received message"
         console.log message
         user_data = message.message
         @users.push new User( user_data.name, user_data.id, user_data.color,
@@ -776,7 +840,7 @@ class Users
         @$rootScope.$apply() if !@$rootScope.$$phase
 
     changeName: (id, newName) ->
-        return if nameIsOccupied( id, newName )
+        return if @nameIsOccupied( id, newName )
         user = @getUser id
         user.changeName newName
         @$rootScope.$apply() if !@$rootScope.$$phase
@@ -786,11 +850,19 @@ class Users
         user.changePic newPic
         @$rootScope.$apply() if !@$rootScope.$$phase
 
+    getFirstFreeName: (id, name) ->
+        occupied = @nameIsOccupied( id, name )
+        counter = 0
+        tmp_name = name
+        while occupied
+            counter++
+            tmp_name = name + " (" + counter + ")"
+            occupied = @nameIsOccupied( id, tmp_name )
+
+        return tmp_name
+
 
 app = angular.module "unwatched.services", []
-
-
-app.value "version", "0.1"
 
 app.service "RTCService", [
     "$rootScope"
@@ -837,7 +909,6 @@ app.service "ChatService", [
 ]
 
 app.service "RoomService", [
-    # "RTCService"
     "$filter"
     "$rootScope"
     "$http"
@@ -852,7 +923,7 @@ app.service "RoomService", [
         @::description
         @::url = ""
 
-        constructor: (@$filter, @$rootScope, @$http, @SERVER_URL, #@RTCService,
+        constructor: (@$filter, @$rootScope, @$http, @SERVER_URL,
             @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
             @description = "Room description"
