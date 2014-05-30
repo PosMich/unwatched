@@ -1,75 +1,69 @@
-.info-container(center-vertical)
-    .info
-        | Chat with others
-    .info
-        | Share anything
+.row
+    .col-xs-12.index-container(fit-window-height)
+        h1
+            | Unwatched <br/>
+            small Pretty Close Collaboration
+        .form-container
+        #create-room-container.well
+            form.form-horizontal(novalidate, name="createRoom", ng-hide="joinAttempt")
+                fieldset
+                    legend Create Room
+                    .form-group
+                        .col-xs-offset-1.col-xs-10.col-xs-offset-1(
+                            ng-class="{'has-error': createRoom.rName.$invalid && createRoom.rName.$dirty}")
+                            input#roomName.form-control(type='text', name="rName"
+                                ng-model="room.name", placeholder='Room Name',
+                                ng-minlength="5", required)
+                            span.help-block(ng-show="createRoom.rName.$error.required && createRoom.rName.$dirty")
+                                | *Required field.
+                            span.help-block(ng-show="createRoom.rName.$error.minlength && createRoom.rName.$dirty")
+                                | *Type in at least 5 characters.
 
-#create-room-container.well(center-vertical)
-    form.form-horizontal(novalidate, name="createRoom", ng-hide="joinAttempt")
-        fieldset
-            legend Create Room
-            .form-group
-                .col-xs-1
-                label.col-xs-4.control-label(for='roomName') Room Name
-                .col-xs-6.col-offset-xs-1(ng-class="{'has-error': createRoom.rName.$invalid && createRoom.rName.$dirty}")
-                    input#roomName.form-control(type='text', name="rName"
-                        ng-model="room.name", placeholder='Room Name',
-                        ng-minlength="5", required)
-                    span.help-block(ng-show="createRoom.rName.$error.required && createRoom.rName.$dirty")
-                        | *Required field.
-                    span.help-block(ng-show="createRoom.rName.$error.minlength && createRoom.rName.$dirty")
-                        | *Type in at least 5 characters.
+                    .form-group
+                        .col-xs-offset-1.col-xs-10.col-xs-offset-1(
+                            ng-class="{'has-error': createRoom.rPassword.$invalid && createRoom.rPassword.$dirty}")
+                            input#roomPassword.form-control(type='password',
+                                name="rPassword" ng-model="room.password",
+                                placeholder='Password', ng-minlength="5", required)
+                            span.help-block(ng-show="createRoom.rPassword.$error.required && createRoom.rPassword.$dirty")
+                                | *Required field.
+                            span.help-block(ng-show="createRoom.rPassword.$error.minlength && createRoom.rPassword.$dirty")
+                                | *Type in at least 5 characters.
+                    .form-group
+                        .col-xs-offset-1.col-xs-10.col-xs-offset-1(ng-class="{'has-error': createRoom.rPasswordRepeat.$invalid && createRoom.rPasswordRepeat.$dirty}")
+                            input#roomPasswordRepeat.form-control(type='password',
+                                name="rPasswordRepeat", ng-model="room.passwordRepeat",
+                                placeholder='Repeat Password', 
+                                input-match="roomPassword", required)
+                            span.help-block(ng-show="createRoom.rPasswordRepeat.$error.required && createRoom.rPasswordRepeat.$dirty")
+                                | *Required field.
+                            span.help-block(ng-show="createRoom.rPasswordRepeat.$error.inputMatch && createRoom.rPasswordRepeat.$dirty && !createRoom.rPasswordRepeat.$error.required")
+                                | Passwords don't match.
+                            
+                    .form-group
+                        .col-xs-11
+                            button.btn.btn-primary.pull-right(ng-click="submitRoom()",
+                                ng-disabled="createRoom.$invalid") Create
 
-            .form-group
-                .col-xs-1
-                label.col-xs-4.control-label(for='roomPassword')
-                    | Password
-                .col-xs-6.col-offset-xs-1(ng-class="{'has-error': createRoom.rPassword.$invalid && createRoom.rPassword.$dirty}")
-                    input#roomPassword.form-control(type='password',
-                        name="rPassword" ng-model="room.password",
-                        placeholder='Password', ng-minlength="5", required)
-                    span.help-block(ng-show="createRoom.rPassword.$error.required && createRoom.rPassword.$dirty")
-                        | *Required field.
-                    span.help-block(ng-show="createRoom.rPassword.$error.minlength && createRoom.rPassword.$dirty")
-                        | *Type in at least 5 characters.
-            .form-group
-                .col-xs-1
-                label.col-xs-4.control-label(for='roomPasswordRepeat')
-                    | Repeat Password
-                .col-xs-6.col-offset-xs-1(ng-class="{'has-error': createRoom.rPasswordRepeat.$invalid && createRoom.rPasswordRepeat.$dirty}")
-                    input#roomPasswordRepeat.form-control(type='password',
-                        name="rPasswordRepeat", ng-model="room.passwordRepeat",
-                        placeholder='Repeat Password', 
-                        input-match="roomPassword", required)
-                    span.help-block(ng-show="createRoom.rPasswordRepeat.$error.required && createRoom.rPasswordRepeat.$dirty")
-                        | *Required field.
-                    span.help-block(ng-show="createRoom.rPasswordRepeat.$error.inputMatch && createRoom.rPasswordRepeat.$dirty && !createRoom.rPasswordRepeat.$error.required")
-                        | Passwords don't match.
-                    
-            .form-group
-                .col-xs-11.col-offset-xs-1
-                    button.btn.btn-primary.pull-right(ng-click="submitRoom()",
-                        ng-disabled="createRoom.$invalid") Create
-
-    form.form-horizontal(novalidate, name="joinRoomForm", ng-show="joinAttempt")
-        fieldset
-            legend Join Room
-            .form-group
-                .col-xs-1
-                label.col-xs-4.control-label(for='roomPassword')
-                    | Password
-                .col-xs-6.col-offset-xs-1(ng-class="{'has-error': joinRoomForm.jPassword.$invalid && joinRoomForm.jPassword.$dirty}")
-                    input#jPassword.form-control(type='password',
-                        name="jPassword" ng-model="room.joinPassword",
-                        placeholder='Password', ng-minlength="5",
-                        ng-disabled="inputDisabled", required)
-                    span.help-block(ng-show="joinRoomForm.jPassword.$error.required && joinRoomForm.jPassword.$dirty")
-                        | *Required field.
-                    span.help-block(ng-show="joinRoomForm.jPassword.$error.minlength && joinRoomForm.jPassword.$dirty")
-                        | *Type in at least 5 characters.
-                    
-            .form-group
-                .col-xs-11.col-offset-xs-1
-                    button.btn.btn-primary.pull-right(ng-click="joinRoom()",
-                        ng-disabled="joinRoomForm.$invalid") Join
+            form.form-horizontal(novalidate, name="joinRoomForm", ng-show="joinAttempt")
+                fieldset
+                    legend Join Room
+                    .form-group
+                        .col-xs-1
+                        label.col-xs-4.control-label(for='roomPassword')
+                            | Password
+                        .col-xs-6.col-offset-xs-1(ng-class="{'has-error': joinRoomForm.jPassword.$invalid && joinRoomForm.jPassword.$dirty}")
+                            input#jPassword.form-control(type='password',
+                                name="jPassword" ng-model="room.joinPassword",
+                                placeholder='Password', ng-minlength="5",
+                                ng-disabled="inputDisabled", required)
+                            span.help-block(ng-show="joinRoomForm.jPassword.$error.required && joinRoomForm.jPassword.$dirty")
+                                | *Required field.
+                            span.help-block(ng-show="joinRoomForm.jPassword.$error.minlength && joinRoomForm.jPassword.$dirty")
+                                | *Type in at least 5 characters.
+                            
+                    .form-group
+                        .col-xs-11.col-offset-xs-1
+                            button.btn.btn-primary.pull-right(ng-click="joinRoom()",
+                                ng-disabled="joinRoomForm.$invalid") Join
 

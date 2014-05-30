@@ -23,6 +23,29 @@ app.directive "inputMatch", [ ->
         return
 ]
 
+app.directive "fitWindowHeight", [
+    "$window"
+    ($window) ->
+        link: (scope, element, attrs) ->
+
+            wElement = angular.element($window)
+
+            scope.getElementDimensions = ->
+                { 'height': wElement.height() }
+
+            scope.$watch ->
+                scope.getElementDimensions()
+            , (dimensions) ->
+                console.log dimensions
+                element.height dimensions.height
+            , true
+
+            wElement.bind "resize", ->
+                scope.$apply() if !scope.$$phase
+
+
+]
+
 # * <h3>chat</h3>
 # > Loads the template for a chat window
 
