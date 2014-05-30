@@ -297,24 +297,28 @@
     
     .heading
         .controls
-            padding-left 70px
 
-            div
+            a
+                display block
                 float left
-                padding 7px 12px
-                color white
-                transition background .3s ease-in-out
-                border-radius 5px
-                margin 0 5px
+                text-decoration none
+                margin-top 3px
 
-                i
-                    padding 0 10px 0 0
+                div
+                    padding 7px 12px
+                    color white
+                    transition background .3s ease-in-out
+                    border-radius 5px
+                    margin 0 5px
 
-                span
-                    width 0
+                    &:hover
+                        background rgba(27,27,27, 0.9)
+                    i
+                        padding 0 10px 0 0
 
-                &:hover
-                    background rgba(27,27,27, 0.9)
+                    span
+                        width 0
+
     
     .jumbotron
         margin-bottom 0

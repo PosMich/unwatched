@@ -1,13 +1,17 @@
 .heading.clearfix.controls
     .row
-        .sorting.clearfix.col-xs-6(ng-class="{'ascending':controls.sorting.ascending}")
+        .col-xs-1(ng-class="{'col-xs-5':chat_state=='expanded', 'col-xs-1':chat_state!='expanded'}")
+            .brand
+                | Unwatched
+        .sorting.clearfix.col-xs-6.ng-hide(ng-hide="chat_state=='expanded'",
+            ng-class="{'ascending':controls.sorting.ascending}")
             span Sort by:
             div(ng-class="{'active':controls.sorting.state=='name'}", 
                 ng-click="setSortingState('name')") Name
             div(ng-class="{'active':controls.sorting.state=='created'}", 
                 ng-click="setSortingState('created')") Date
 
-        .layout.col-xs-6
+        .layout(ng-class="{'col-xs-7':chat_state=='expanded', 'col-xs-5':chat_state!='expanded'}")
             form(name="controlSearch", no-validate)
                 .control-input
                     input#searchString.form-control(type="text", 
@@ -16,14 +20,12 @@
             span(ng-click="setLayout('layout-icons')",
                 ng-class="{'active':controls.layout=='layout-icons'}",
                 popover-placement="bottom", popover="Set Layout: Icons",
-                popover-trigger="mouseenter", popover-popup-delay="750",
-                ng-if="chat_state=='expanded'")
+                popover-trigger="mouseenter", popover-popup-delay="750")
                 i.fa.fa-th
             span(ng-click="setLayout('layout-list')",
                 ng-class="{'active':controls.layout=='layout-list'}",
                 popover-placement="bottom", popover="Set Layout: List",
-                popover-trigger="mouseenter",popover-popup-delay="750",
-                ng-if="chat_state=='expanded'")
+                popover-trigger="mouseenter",popover-popup-delay="750")
                 i.fa.fa-list-ul
 
 .row(ng-if="isInRoom")
@@ -40,10 +42,6 @@
                     .controls-inner.clearfix
                         a(href="/share/screen")
                             i.fa.fa-desktop
-                        a(href="/share/note")
-                            i.fa.fa-file-text-o
-                        a(href="/share/code")
-                            i.fa.fa-code
                         a(href="/share/file")
                             i.fa.fa-floppy-o
                         a(href="/share/webcam")
