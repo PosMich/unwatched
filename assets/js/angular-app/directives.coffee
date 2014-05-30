@@ -352,41 +352,6 @@ app.directive "webcam", [
 
 ]
 
-app.directive "square", [
-    "$window", "RoomService", "$location"
-    ($window, RoomService, $location) ->
-        link: (scope, element, attrs) ->
-
-            scope.getElementDimensions = ->
-                { 'width': element.width() }
-
-            scope.$watch ->
-                scope.getElementDimensions()
-            , (dimensions) ->
-                element.height dimensions.width
-            , true
-
-            element.bind "resize", ->
-                scope.$apply() if !scope.$$phase
-
-            angular.element($window).bind "resize", ->
-                scope.$apply() if !scope.$$phase
-
-            scope.$watch ->
-                scope.user.pic
-            , ->
-                scope.$apply() if !scope.$$phase
-
-            scope.$watch ->
-                $location.path()
-            , (path) ->
-                if path is "/room"
-                    window.setTimeout ->
-                        element.height scope.getElementDimensions().width
-                    , 500
-
-]
-
 app.directive "editInPlace", ->
     restrict: "E"
     scope:
