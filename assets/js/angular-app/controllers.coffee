@@ -20,7 +20,7 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "SideCtrl", [
-    "$scope", "UserService", "SharedItemsService", "ChatService", "$location", 
+    "$scope", "UserService", "SharedItemsService", "ChatService", "$location",
     "RoomService"
     ($scope, UserService, SharedItemsService, ChatService, $location, RoomService) ->
 
@@ -29,7 +29,7 @@ app.controller "SideCtrl", [
         $scope.$watch ->
             RoomService.id
         , (value) ->
-            $scope.isInRoom = RoomService.id != ""            
+            $scope.isInRoom = RoomService.id != ""
 
         $scope.messages = []
         $scope.users = UserService.users
@@ -68,7 +68,9 @@ app.controller "IndexCtrl", [
     ($scope, $routeParams, RTCService, RoomService, $location,
         $rootScope, UserService) ->
 
-        window.rtc = RTCService
+        window.rtcService = RTCService
+        window.userService = UserService
+        window.shareService = ShareService
 
         $scope.joinAttempt = false
         $scope.inputDisabled = true
