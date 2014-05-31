@@ -3,7 +3,7 @@
         .row
             .col-xs-12.controls.clearfix
                 .brand
-                    | Unwatched
+                    a(href="/") Unwatched
                 a(href="/share")
                     .back
                         i.fa.fa-arrow-left
@@ -31,40 +31,40 @@
                     span.help-block(ng-show="fileForm.fName.$error.required")
                         | *Required field. Name won't be saved.
             h1(ng-hide="!disabled")
-                | {{item.name}} 
+                | {{item.name}}
         .infos-container
             .info
-                b Size: 
+                b Size:
                 | {{item.size | humanReadableFileSize}}
             .info
-                b Author: 
+                b Author:
                 | {{item.author}}
             .info
-                b Created: 
+                b Created:
                 | {{item.created}}
             .info
-                b Uploaded: 
+                b Uploaded:
                 | {{item.uploaded}}
             .info(ng-show="item.mime_type!=''")
-                b MIME-Type: 
+                b MIME-Type:
                 | {{item.mime_type}}
             .info
-                b Category: 
+                b Category:
                 | {{item.category}}
 
         .settings-container.file(ng-hide="file.ready")
             h4 Choose a file from you drive
             form.form-inline(role="form")
                 .form-group
-                    input.form-control(type="file", 
+                    input.form-control(type="file",
                         ng-file-select="onFileSelect($files)")
 
         .file-container(ng-hide="file.ready")
-            .drop-box(ng-file-drop="onFileSelect($files)", 
+            .drop-box(ng-file-drop="onFileSelect($files)",
                 ng-file-drag-over-class="drag-over-class")
                 | or drop files here
             .progress-container(ng-show="file.show_progress")
-                progressbar.progress-striped.active(max="100", type="info", 
+                progressbar.progress-striped.active(max="100", type="info",
                     value="file.progress")
                     i {{file.progress}}%
         .alert.alert-success(ng-show="file.ready")

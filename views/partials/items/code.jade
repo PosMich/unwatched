@@ -3,7 +3,7 @@
         .row
             .col-xs-12.controls.clearfix
                 .brand
-                    | Unwatched
+                    a(href="/") Unwatched
                 a(href="/share")
                     .back
                         i.fa.fa-arrow-left
@@ -22,18 +22,10 @@
                         span Remove
 
     .jumbotron
-        .detail-heading(inline-edit="h1")
-            form(name="codeForm", ng-hide="disabled")
-                .input-container(ng-class="{'has-error': codeForm.cName.$invalid}")
-                    input#codeName.form-control(type='text', name="cName"
-                        ng-model="item_name", required, ng-disabled="disabled"
-                        ng-class="{'input-disabled':disabled}")
-                    span.help-block(ng-show="codeForm.cName.$error.required")
-                        | *Required field. Name won't be saved.
-            h1(ng-hide="!disabled")
-                | {{item.name}}
-                span(ng-if="item.extension!=''")
-                    | .{{item.extension}}
+        .detail-heading
+            edit-in-place(value="item.name")
+                h1 {{item.name}}.{{item.extension}}
+                input.form-control(type="text", ng-model="item.name")
 
         .infos-container
             .info
@@ -41,16 +33,17 @@
                 | {{item.size | humanReadableFileSize}}
             .info
                 b Author:
-                | {{item.author}}
+                | {{users[item.author].name}}
+            .info
+                b Contributors:
+                span(ng-repeat="contributor in item.contributors")
+                    | {{users[contributor.id].name}}
             .info
                 b Created:
                 | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
             .info(ng-show="item.last_edited")
                 b Last edited:
                 | {{item.last_edited | date: 'dd.MM.yyyy - HH:mm'}}
-            .info
-                b Path:
-                | {{item.path}}
             .info
                 b Category:
                 | {{item.category}}
@@ -72,3 +65,7 @@
         .code-container(resizable, on-resize="containerResize()",
             resize-detail-view)
             #editor
+
+        .code-container(resizable, on-resize="containerResize()",
+            resize-detail-view)
+            #editor2
