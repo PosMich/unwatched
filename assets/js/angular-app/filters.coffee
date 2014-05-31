@@ -41,7 +41,7 @@ app.filter "breakFilter", ->
 
 app.filter "noHtml", ->
     (text) ->
-        if text?
+        if text? and text.length isnt 0
             text.replace(/&/g, '&amp;').replace(/>/g, '&gt;')
                 .replace(/</g, '&lt;')
 

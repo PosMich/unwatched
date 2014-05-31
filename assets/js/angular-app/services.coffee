@@ -167,6 +167,7 @@ class RTCService
             @::dataChannel = null
             @::debug      = true
             @::loginAttempts = 3
+            @::authenticated = false
 
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
@@ -268,6 +269,7 @@ class RTCService
 
                             @signaller.removeSlave(@id)
                         else
+                            @authenticated = true
                             @id = @signaller.service.UserService
                                 .addUser("Unnamed")
                             room = @signaller.service.RoomService
@@ -281,6 +283,8 @@ class RTCService
                                     users: @signaller.service.UserService.users
                                     messages:
                                         @signaller.service.ChatService.messages
+                                    shares:
+                                        @signaller.service.SharesService.shares
                                     room:
                                         id: @signaller.roomId
                                         name: room.name
@@ -302,6 +306,8 @@ class RTCService
                         )
 
                         for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
                             if client.id isnt parsedMsg.message.userId
                                 client.DCsend
                                     type: "userNameHasChanged"
@@ -319,11 +325,77 @@ class RTCService
                         messages = @signaller.service.createChunks(message)
 
                         for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
                             for msg in messages
                                 if client.id isnt parsedMsg.message.userId
                                     client.DCsend msg
 
+                    when "newCodeItem"
+                        @signaller.service.SharesService.shares.push(
+                            parsedMsg.codeItem )
 
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.codeItem.author
+                                client.DCsend parsedMsg
+
+                    when "codeItemHasChanged"
+                        @signaller.service.SharesService.updateItem(
+                            parsedMsg.itemId, parsedMsg.change
+                        )
+
+                        item = @signaller.service.SharesService.get(
+                            parsedMsg.itemId
+                        )
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                if client.id isnt item.author
+                                    client.DCsend parsedMsg
+
+                    when "codeDocumentHasChanged"
+                        item = @signaller.service.SharesService.get(
+                            parsedMsg.itemId )
+                        item.deltas = parsedMsg.change
+
+                        active_contributors = []
+
+                        for contributor in item.contributors
+                            if contributor.active
+                                active_contributors.push contributor.id
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if active_contributors.indexOf( client.id ) isnt -1
+                                if client.id isnt parsedMsg.userId
+                                    console.log "sending code to client with id", client.id
+                                    client.DCsend parsedMsg
+
+                    when "cursorHasChanged"
+                        item = @signaller.service.SharesService.get(
+                            parsedMsg.itemId )
+
+                        @signaller.service.$rootScope.markersChanged = true
+                        for marker in @signaller.service.$rootScope.markers
+                            if marker.contributorId is parsedMsg.userId
+                                marker.cursor = parsedMsg.change
+                                console.log "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+
+                        active_contributors = []
+
+                        for contributor in item.contributors
+                            if contributor.active
+                                active_contributors.push contributor.id
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if active_contributors.indexOf( client.id ) isnt -1
+                                if client.id isnt parsedMsg.userId
+                                    client.DCsend parsedMsg
 
                     else
                         console.log "DChandle: unknown msg"
@@ -596,6 +668,25 @@ class RTCService
                         parsedMsg.message.userId, parsedMsg.message.userPic
                     )
 
+                when "newCodeItem"
+                    console.log "got new code item: ", parsedMsg.codeItem
+                    @service.SharesService.shares.push parsedMsg.codeItem
+
+                when "codeItemHasChanged"
+                    @service.SharesService.updateItem( parsedMsg.itemId,
+                        parsedMsg.change )
+
+                when "codeDocumentHasChanged"
+                    item = @service.SharesService.get(parsedMsg.itemId)
+                    item.deltas = parsedMsg.change
+
+                when "cursorHasChanged"
+                    console.log "markers", @service.$rootScope.markers
+                    @service.$rootScope.markersChanged = true
+                    for marker in @service.$rootScope.markers
+                        if marker.contributorId is parsedMsg.userId
+                            marker.cursor = parsedMsg.change
+                            console.log "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBLUBB"
 
                 when "password"
                     if parsedMsg.passwordIsValid
@@ -610,6 +701,7 @@ class RTCService
                             @service.UserService.addInitUser user
 
                         @service.ChatService.messages = parsedMsg.init.messages
+                        @service.SharesService.shares = parsedMsg.init.shares
                 else
                     console.log "DChandle: unknown msg"
 
@@ -627,7 +719,7 @@ class RTCService
             @dataChannel.send JSON.stringify(message)
 
 
-    constructor: (@$rootScope, @UserService, @ChatService, @RoomService) ->
+    constructor: (@$rootScope, @UserService, @ChatService, @RoomService, @SharesService) ->
 
     setup: (@roomId) ->
         console.log "setup done"
@@ -656,10 +748,11 @@ class RTCService
                 i = old_users.length
                 while i < new_users.length
                     for client in @handler.signallingClients
-                        if new_users[i].id isnt client.id
-                            client.DCsend
-                                type: "user"
-                                user: new_users[i]
+                        if client.authenticated
+                            if new_users[i].id isnt client.id
+                                client.DCsend
+                                    type: "user"
+                                    user: new_users[i]
                     ++i
             , true
 
@@ -732,14 +825,93 @@ class RTCService
 
         if type is "userNameHasChanged"
             for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
                 client.DCsend broadcastMessage
 
         else if type is "userPicHasChanged"
             messages = @createChunks(broadcastMessage)
 
             for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
                 for msg in messages
                     client.DCsend msg
+
+    sendNewCodeItem: (codeItem, isMaster) ->
+        if !isMaster
+            @handler.DCsend
+                type: "newCodeItem"
+                codeItem: codeItem
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend
+                    type: "newCodeItem"
+                    codeItem: codeItem
+
+    sendCodeItemHasChanged: (change, itemId, isMaster) ->
+        if !isMaster
+            @handler.DCsend
+                type: "codeItemHasChanged"
+                change: change
+                itemId: itemId
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend
+                    type: "codeItemHasChanged"
+                    change: change
+                    itemId: itemId
+
+    broadcastCodeDocumentHasChanged: (change, itemId, user) ->
+        if !user.isMaster
+            @handler.DCsend
+                type: "codeDocumentHasChanged"
+                itemId: itemId
+                change: change
+                userId: user.id
+        else
+            active_contributors = []
+            for contributor in @SharesService.get(itemId).contributors
+                if contributor.active
+                    active_contributors.push contributor.id
+
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                if active_contributors.indexOf( client.id ) isnt -1
+                    console.log "sending code to client with id", client.id
+                    client.DCsend
+                        type: "codeDocumentHasChanged"
+                        itemId: itemId
+                        change: change
+                        userId: user.id
+
+    broadcastCursorHasChanged: (cursor, user, itemId) ->
+        if !user.isMaster
+            @handler.DCsend
+                type: "cursorHasChanged"
+                change: cursor
+                userId: user.id
+                itemId: itemId
+        else
+            active_contributors = []
+            for contributor in @SharesService.get(itemId).contributors
+                if contributor.active
+                    active_contributors.push contributor.id
+
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                if active_contributors.indexOf( client.id ) isnt -1
+                    client.DCsend
+                        type: "cursorHasChanged"
+                        change: cursor
+                        userId: user.id
+                        itemId: itemId
 
 class Users
     @::users = []
@@ -789,6 +961,8 @@ class Users
                     @pic = "/images/avatar_inverted.png"
             @frontendColor = @getColorAsHex()
 
+
+
         getColorAsHex: ->
             "#" +
             @color[0].toString(16) +
@@ -809,6 +983,20 @@ class Users
         changeName: (@name) ->
 
     constructor: (@$rootScope) ->
+        style = document.createElement "style"
+        style.type = "text/css"
+        style.innerHTML = ""
+        classes = ""
+        for color, index in @colors
+            style.innerHTML += ".marker#{index}.ace_start {" +
+                "position: absolute;" +
+                "z-index: 5;" +
+                "border-left: 2px solid rgb(" +
+                "#{color[0]},#{color[1]},#{color[2]});" +
+                "background-color: rgba(#{color[0]}," +
+                "#{color[1]},#{color[2]}, 0.5)}"
+
+        document.getElementsByTagName("head")[0].appendChild style
 
     getUser: (id) ->
         for user in @users
@@ -839,14 +1027,14 @@ class Users
         @users.push new User( user.name, user.id, user.color,
             user.isMaster, user.pic, user.joinedDate )
 
-    onMessage: (message) =>
-        console.log "UserService :: received message"
-        console.log message
-        user_data = message.message
-        @users.push new User( user_data.name, user_data.id, user_data.color,
-            user_data.isMaster )
-
-        @$rootScope.$apply() if !@$rootScope.$$phase
+    # onMessage: (message) =>
+    #     console.log "UserService :: received message"
+    #     console.log message
+    #     user_data = message.message
+    #     @users.push new User( user_data.name, user_data.id, user_data.color,
+    #         user_data.isMaster )
+    #
+    #     @$rootScope.$apply() if !@$rootScope.$$phase
 
     setInactive: (id) ->
         user = @getUser id
@@ -1087,6 +1275,7 @@ app.service "RTCService", [
     "UserService"
     "ChatService"
     "RoomService"
+    "SharesService"
     RTCService
 ]
 
@@ -1102,18 +1291,27 @@ class Shares
         @::last_edited = undefined
         @::category = ""
         @::thumbnail = []
-        @::content = []
+        @::content = ""
         @::path = ""
         @::extension = ""
         @::templateUrl = ""
+        @::contributors = undefined
+        @::deltas = undefined
         constructor: (@id, @name, @author, @category) ->
             @templateUrl = "/partials/items/thumbnails/" +
                 category + ".html"
+            @size = 0
 
             if @category isnt "file" and @category isnt "image"
                 @created = new Date()
             else
                 @uploaded = new Date()
+
+            if @category is "code" or @category is "note"
+                @contributors = []
+                @contributors.push
+                    id: @author
+                    active: true
 
             @extension = ""
 
@@ -1127,89 +1325,13 @@ class Shares
             @content = content
             if @category isnt "code" and @category isnt "note"
                 return
-
             @last_edited = new Date()
-
-            # keep thumb up-to-date
-            @updateThumbnail()
 
         setPath: (@path) ->
 
         setExtension: (@extension) ->
 
         setCreated: (@created) ->
-
-        insertContentAt: (start, end, content_to_insert) ->
-            if start.row != end.row
-                # new line
-                @insertRow end.row
-            else
-                if end.row >= @content.length
-                    @insertRow end.row
-
-                @content[start.row] = [
-                    @content[start.row].slice(0, start.column)
-                    content_to_insert
-                    @content[start.row].slice(end.column)
-                ].join ""
-
-            @last_edited = new Date()
-            if start.row < 5 or end.row < 5
-                @updateThumbnail()
-
-        deleteContentAtRow: (start_row, end_row, start_col, end_col) ->
-            if start_row isnt end_row
-                if end_row isnt @content.length
-                    # shift content from end_row at the end of the start_row
-                    @content[start_row] += @content[end_row]
-                @deleteRows end_row, 1
-            else
-                tmp_content = @content[start_row].slice(0, start_col)
-                tmp_content += @content[start_row].slice(
-                    end_col, @content[start_row].length)
-                @content[start_row] = tmp_content
-
-            @last_edited = new Date()
-            if start_row < 5 or end_row < 5
-                @updateThumbnail()
-
-        deleteRows: (row, amount) ->
-            @content.splice row, amount
-            if @content.length is 0
-                @content[0] = ""
-
-        insertRow: (position) ->
-            @content.splice position, 0, ""
-
-        insertRows: (rows, position) ->
-            i = position
-            for row in rows
-                @insertRow i
-                @content[i] = row
-                i++
-
-        updateThumbnail: ->
-            thumbnail = ""
-            i = 0
-            max = 5
-            max = @content.length if @content.length < max
-            while i < max
-                thumbnail += @content[i] + "\n"
-                i++
-
-            @setThumbnail thumbnail
-
-        getContent: ->
-            content = ""
-            if @category is "code"
-                for row of @content
-                    content += @content[row] + "\n"
-
-            else if @category is "note"
-                for row of @content
-                    content += @content[row]
-
-            return content
 
 
     constructor: (@rootScope) ->
@@ -1251,7 +1373,25 @@ class Shares
         @shares.push new Item( id, name, author, category )
         return id
 
+    updateItem: (itemId, change) ->
+        console.log "change is", change
+        console.log "keys are", Object.keys(change)
 
+        item = @get(itemId)
+        keys = Object.keys(change)
+
+        item[keys[0]] = change[keys[0]]
+
+        console.log "item has changed", item
+
+    getContributor: (itemId, contributorId) ->
+        item = @get(itemId)
+
+        for contributor in item.contributors
+            if contributor.id is contributorId
+                return contributor
+
+        return false
 
 
 app.service "UserService", ["$rootScope", Users ]

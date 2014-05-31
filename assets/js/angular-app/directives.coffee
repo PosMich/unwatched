@@ -184,6 +184,14 @@ app.directive "fitItemHeight", [
                     return
 
             scope.$watch ->
+                scope.shared_items
+            , (items) ->
+                window.setTimeout((->
+                    fitHeight(elem, attrs)
+                ), 0)
+            , true
+
+            scope.$watch ->
                 scope.controls.layout
             , (value) ->
                 window.setTimeout((->
@@ -405,4 +413,3 @@ app.directive "editInPlace", ->
             if !scope.value? || scope.value.length is 0 || scope.value is null
                 scope.value = scope.old_value
                 scope.$apply()
-

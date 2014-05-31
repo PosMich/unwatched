@@ -3,7 +3,7 @@
         .row
             .col-xs-12.controls.clearfix
                 .brand
-                    | Unwatched
+                    a(href="/") Unwatched
                 a(href="/share")
                     .back
                         i.fa.fa-arrow-left
@@ -20,21 +20,21 @@
     .jumbotron
         .detail-heading
             h1
-                | {{item.name}} 
+                | {{item.name}}
         .infos-container
             .info
-                b Author: 
+                b Author:
                 | {{item.author}}
             .info
-                b Created: 
+                b Created:
                 | {{item.created}}
             .info
-                b Category: 
+                b Category:
                 | {{item.category}}
 
         button.btn.btn-primary(ng-href="#", screen, ng-hide="video.show.screen")
             | Share my screen
-        button.btn.btn-danger(ng-href="#", ng-show="video.show.screen", 
+        button.btn.btn-danger(ng-href="#", ng-show="video.show.screen",
             ng-click="delete('screen')")
             | Stop sharing
 

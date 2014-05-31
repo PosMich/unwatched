@@ -272,18 +272,33 @@ app.controller "RoomCtrl", [
 
 
         # init dummy shares if master
-        # if $scope.user.isMaster and !$rootScope.sharesInit
-            # $rootScope.sharesInit = true
+        if $scope.user.isMaster and !$rootScope.sharesInit
+            $rootScope.sharesInit = true
 
-            # sharedId = SharesService.create( dummy_items[0].category,
-            #     $scope.user.id )
-            #
-            # sharedItem = SharesService.get sharedId
-            # sharedItem.setName dummy_items[0].name
-            # sharedItem.setSize dummy_items[0].size
-            # sharedItem.setThumbnail dummy_items[0].thumbnail
-            # sharedItem.setPath dummy_items[0].path
+            sharedId = undefined
+            sharedItem = undefined
 
+            for dummy in dummy_items
+
+                sharedId = SharesService.create( $scope.user.id, dummy.category )
+                sharedItem = SharesService.get sharedId
+
+                sharedItem.setName dummy.name
+                sharedItem.setSize dummy.size
+                sharedItem.setPath dummy.path
+
+                if dummy.extension
+                    sharedItem.setExtension dummy.extension
+
+                if dummy.category is "image" or dummy.category is "file"
+                    sharedItem.setCreated new Date()
+
+                if dummy.category isnt "code" and dummy.category isnt "note"
+                    sharedItem.setThumbnail dummy.thumbnail
+                else
+                    sharedItem.setContent dummy.content
+
+                console.log sharedItem
 
 ]
 
@@ -346,32 +361,6 @@ app.controller "ShareCtrl", [
         StreamService) ->
 
         $scope.shared_items = SharesService.getItems()
-
-        # sharedId = SharesService.create( dummy_items[0].category,
-        #     $scope.user.id )
-
-        sharedId = undefined
-        sharedItem = undefined
-
-        for dummy in dummy_items
-
-            sharedId = SharesService.create( 0, dummy.category )
-            sharedItem = SharesService.get sharedId
-
-            sharedItem.setName dummy.name
-            sharedItem.setSize dummy.size
-            sharedItem.setPath dummy.path
-
-            if dummy.extension
-                sharedItem.setExtension dummy.extension
-
-            if dummy.category is "image" or dummy.category is "file"
-                sharedItem.setCreated new Date()
-
-            if dummy.category isnt "code" and dummy.category isnt "note"
-                sharedItem.setThumbnail dummy.thumbnail
-            else
-                sharedItem.setContent dummy.content
 
         $scope.$watch (->
             return ChatStateService.chat_state
@@ -669,7 +658,7 @@ app.controller "NoteCtrl", [
             $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
 
-        $scope.text = $scope.item.getContent()
+        $scope.text = $scope.item.content
 
         # tinymce options
         $scope.tinymceOptions = {
@@ -716,15 +705,24 @@ app.controller "NoteCtrl", [
 app.controller "CodeCtrl", [
     "$scope", "$routeParams", "SharesService", "ChatStateService",
     "available_extensions", "font_sizes", "ace_themes", "$location",
-    "AceSettingsService", "$modal"
+    "AceSettingsService", "$modal", "UserService", "RTCService",
+    "$rootScope"
     ($scope, $routeParams, SharesService, ChatStateService,
         available_extensions, font_sizes, ace_themes, $location,
-        AceSettingsService, $modal) ->
+        AceSettingsService, $modal, UserService, RTCService,
+        $rootScope) ->
 
         # init ace editor
         $scope.editor = ace.edit("editor")
+
+        # testing
+        # $scope.editor2 = ace.edit("editor2")
+
         $scope.editor.getSession().setUseWorker(false)
         $scope.editor.session.setNewLineMode("unix")
+
+        # $scope.editor2.getSession().setUseWorker(false)
+        # $scope.editor2.session.setNewLineMode("unix")
 
         # init settings for ace editor
         $scope.settings = {}
@@ -737,6 +735,7 @@ app.controller "CodeCtrl", [
         # helper functions
         $scope.containerResize = ->
             $scope.editor.resize()
+            # $scope.editor2.resize()
 
         $scope.setEditorExtension = (extension) ->
             return if extension is ""
@@ -745,13 +744,16 @@ app.controller "CodeCtrl", [
             ace_ext = "ruby" if extension is "rb"
             ace_ext = "python" if extension is "py"
             $scope.editor.getSession().setMode("ace/mode/" + ace_ext)
+            # $scope.editor2.getSession().setMode("ace/mode/" + ace_ext)
 
         $scope.setEditorFontSize = (font_size) ->
             $scope.editor.setFontSize(font_size)
+            # $scope.editor2.setFontSize(font_size)
             return
 
         $scope.setEditorTheme = (theme) ->
             $scope.editor.setTheme("ace/theme/" + theme)
+            # $scope.editor2.setTheme("ace/theme/" + theme)
             return
 
         $scope.getExtensionId = (value) ->
@@ -761,18 +763,18 @@ app.controller "CodeCtrl", [
                 if value is extension.value
                     return i
 
-        $scope.getThumbnail = ->
-            thumbnail = ""
-            lines = $scope.editor.session.doc.getAllLines()
+        $scope.updateThumbnail = ->
+
+            lines = $scope.editor.session.doc.getLines(0, 4)
             i = 0
-            while i < 5
-                if lines[i]?
-                    line_string = lines[i]
-                    thumbnail += line_string
-                    thumbnail += "\n" if i < 4
+            thumbnail = ""
+            while i < lines.length
+                thumbnail += lines[i] + "\n"
                 i++
 
-            thumbnail
+            $scope.item.thumbnail = thumbnail
+            console.log "updated thumbnail", @thumbnail
+
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -790,27 +792,72 @@ app.controller "CodeCtrl", [
                 $location.path "/share"
             )
 
+        $scope.users = UserService.users
+        $scope.user = $scope.users[$rootScope.userId]
+
         if !$routeParams.id?
             # create new code item
             # $scope.item = SharesService.create($rootScope.userId, "code")
-            $scope.item = SharesService.get( SharesService.create(0, "code") )
+            sharedItemId = SharesService.create( $rootScope.userId, "code" )
+            $scope.item = SharesService.get( sharedItemId )
+
+            RTCService.sendNewCodeItem $scope.item, $scope.user.isMaster
+
+            contributor = SharesService.getContributor(
+                $scope.item.id, $scope.user.id )
 
         else
             # get shared item by given id
             $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
 
-            $scope.item_name = $scope.item.name
+            contributor = SharesService.getContributor(
+                $scope.item.id, $scope.user.id )
 
-            # set init value of code and clear predefined selection
-            $scope.editor.setValue($scope.item.getContent())
-            $scope.editor.clearSelection()
+            if !contributor
+                $scope.item.contributors.push
+                    id: $scope.user.id
+                    active: true
+
+
+        contributor.active = true
+
+        change =
+            contributors: $scope.item.contributors
+        RTCService.sendCodeItemHasChanged(
+            change, $scope.item.id, $scope.user.isMaster )
+
+
+        Range = ace.require("ace/range").Range
+        $rootScope.markers = []
+
+        for contributor in $scope.item.contributors
+            if contributor.active
+                if contributor.id isnt $scope.user.id
+                    $rootScope.markers.push
+                        contributorId: contributor.id
+                        marker: $scope.editor.session.addMarker(
+                            new Range(), "marker" + contributor.id, "text", true
+                        )
+                        cursor:
+                            row: 0
+                            col: 0
+                    console.log "pushed marker"
+
+        console.log "MARKER", $rootScope.markers
+        console.log "ITEM", $scope.item
+
+        # set init value of code and clear predefined selection
+        $scope.editor.setValue($scope.item.content)
+        $scope.editor.clearSelection()
+
+        # $scope.editor2.setValue($scope.item.getContent())
+        # $scope.editor2.clearSelection()
 
         # for inline editing
         $scope.disabled = true
 
         # set init coding language, font size and theme
-        # $scope.item.extension = ""
         extension_id = $scope.getExtensionId( $scope.item.extension )
 
         $scope.settings.extension =
@@ -824,32 +871,41 @@ app.controller "CodeCtrl", [
 
         # observe 'change' event
         # TODO: implement change emitter to other viewers
-        $scope.editor.on 'change', (e) ->
-            console.log e
 
-            if e.data.action is "insertText"
-                $scope.item.insertContentAt(
-                    e.data.range.start,
-                    e.data.range.end,
-                    e.data.text
+        $scope.editor.session.doc.on 'change', (e) ->
+
+            console.log "document has changed", e
+
+            if !$scope.block
+
+                RTCService.broadcastCodeDocumentHasChanged(
+                    e.data,
+                    $scope.item.id,
+                    $scope.user
                 )
 
-            else if e.data.action is "removeText"
-                start_row = e.data.range.start.row
-                end_row = e.data.range.end.row
-                start_col = e.data.range.start.column
-                end_col = e.data.range.end.column
-                $scope.item.deleteContentAtRow start_row, end_row, start_col,
-                    end_col
+            else
+                $scope.block = false
 
-            else if e.data.action is "removeLines"
-                $scope.item.deleteRows e.data.range.start.row,
-                    e.data.lines.length
+            # $scope.editor2.session.doc.applyDeltas [e.data]
+            $scope.block = false
 
-            else if e.data.action is "insertLines"
-                $scope.item.insertRows e.data.lines, e.data.range.start.row
+            # update model
+            $scope.item.content = $scope.editor.getValue()
+            $scope.item.last_edited = new Date()
 
-            $scope.$apply() if !$scope.$$phase
+            if e.data.range.start.row <= 5 or e.data.range.end.row <= 5
+                $scope.updateThumbnail()
+                change =
+                    thumbnail: $scope.item.thumbnail
+                RTCService.sendCodeItemHasChanged(
+                    change, $scope.item.id, $scope.user.isMaster )
+
+        $scope.editor.selection.on "changeCursor", ->
+            RTCService.broadcastCursorHasChanged(
+                $scope.editor.selection.getCursor(), $scope.user, $scope.item.id
+            )
+
 
         # watch changes on coding language and update editor
         $scope.$watch "settings.extension", (option, old_option) ->
@@ -858,6 +914,10 @@ app.controller "CodeCtrl", [
                 return
             $scope.setEditorExtension( option.value )
             $scope.item.extension = option.extension
+            change =
+                extension: option.extension
+            RTCService.sendCodeItemHasChanged(
+                change, $scope.item.id, $scope.user.isMaster )
             return
 
         # watch changes on font size and update editor
@@ -871,6 +931,55 @@ app.controller "CodeCtrl", [
             $scope.setEditorTheme(option.value)
 
         $scope.$watch (->
+            return $scope.item.name
+        ), ((name) ->
+            change =
+                name: name
+            RTCService.sendCodeItemHasChanged(
+                change, $scope.item.id, $scope.user.isMaster )
+        ), true
+
+        $scope.$watch (->
+            return $scope.item.extension
+        ), ((extension) ->
+            if $scope.item.extension is $scope.settings.extension.value
+                return
+            if extension? and extension.length isnt 0
+                extension_id = $scope.getExtensionId( $scope.item.extension )
+
+                $scope.settings.extension =
+                    $scope.settings.available_extensions[extension_id]
+        ), true
+
+        $scope.$watch (->
+            return $scope.item.contributors
+        ), ((contributors) ->
+            for contributor in contributors
+                continue if contributor.id is $scope.user.id
+                found = false
+                for marker, index in $rootScope.markers
+                    if marker.contributorId is contributor.id
+                        console.log "FOUND"
+                        found = true
+                        if !contributor.active
+                            $rootScope.splice(index, 1) # remove inactive marker
+
+                if !found and contributor.active
+                    $rootScope.markers.push
+                        contributorId: contributor.id
+                        marker: $scope.editor.session.addMarker(
+                            new Range(), "marker" + contributor.id, "text", true
+                        )
+                        cursor:
+                            row: 0
+                            col: 0
+                    console.log "pushed marker"
+                    console.log "MARKERS", $rootScope.markers
+
+
+        )
+
+        $scope.$watch (->
             return AceSettingsService.font_size
         ), ((font_size) ->
             $scope.settings.font_size = font_size
@@ -881,6 +990,45 @@ app.controller "CodeCtrl", [
         ), ((theme) ->
             $scope.settings.theme = theme
         ), true
+
+        $scope.$watch (->
+            return $scope.item.deltas
+        ), ((deltas) ->
+            console.log "got new deltas, apply: ", deltas
+            if deltas? and deltas.length isnt 0
+                $scope.block = true
+                $scope.editor.session.doc.applyDeltas [deltas]
+                $scope.item.deltas = ""
+        ), true
+
+        $rootScope.markersChanged = false
+
+        $scope.$watch (->
+            return $rootScope.markers
+        ), ((markers) ->
+            if $rootScope.markersChanged
+                for marker in markers
+                    console.log "setting marker"
+                    console.log "MAAARKER", marker
+                    $scope.editor.session.removeMarker( marker.marker )
+
+                    row = marker.cursor.row
+                    col = marker.cursor.column
+                    marker.marker = $scope.editor.session.addMarker(
+                        new Range(row, col, row, col + 1),
+                        "marker" + marker.contributorId, "text", true
+                    )
+                $rootScope.markersChanged = false
+        ), true
+
+        # set contributor to false
+        $scope.$on "$routeChangeStart", (scope, next, current) ->
+            contributor = SharesService.getContributor(
+                current.scope.item.id, current.scope.user.id )
+            contributor.active = false
+
+            RTCService.sendCodeItemHasChanged(
+                change, current.scope.item.id, current.scope.user.isMaster )
 
 ]
 
@@ -1047,24 +1195,20 @@ dummy_items = [
         name: "style"
         size: 876432
         category: "code"
-        content: [
-            '.newspaper {'
-            '\t-webkit-column-count:3; /* Chrome, Safari, Opera */'
-            '\t-moz-column-count:3; /* Firefox */'
-            '\tcolumn-count:3;'
-            ''
-            ''
-            '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */'
-            '\t-moz-column-gap:40px; /* Firefox */'
-            '\tcolumn-gap:40px;'
-            ''
-            ''
-            '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari,Opera */'
-            '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */'
-            '\tcolumn-rule:4px outset #ff00ff;'
-            '}'
-        ]
-
+        content:
+            '.newspaper {\n' +
+            '\t-webkit-column-count:3; /* Chrome, Safari, Opera */\n' +
+            '\t-moz-column-count:3; /* Firefox */\n' +
+            '\tcolumn-count:3;\n' +
+            '\n' +
+            '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */\n' +
+            '\t-moz-column-gap:40px; /* Firefox */\n' +
+            '\tcolumn-gap:40px;\n' +
+            '\n' +
+            '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari,Opera */\n' +
+            '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */\n' +
+            '\tcolumn-rule:4px outset #ff00ff;\n' +
+            '}\n'
         path: "/future/path/to/file"
         extension: "css"
     }
@@ -1072,17 +1216,16 @@ dummy_items = [
         name: "HelloWorld"
         size: 346432
         category: "code"
-        content: [
-            'import java.io.IOException'
-            'import java.util.Map'
-            ''
-            'public class MyFirstJavaProgram {'
-            '\tpublic static void main(String[] args) {'
-            '\t\tSystem.out.println("Hello World");'
-            '\t}'
-            '}'
-            ''
-        ]
+        content:
+            'import java.io.IOException\n' +
+            'import java.util.Map\n' +
+            '\n' +
+            'public class MyFirstJavaProgram {\n' +
+            '\tpublic static void main(String[] args) {\n' +
+            '\t\tSystem.out.println("Hello World");\n' +
+            '\t}\n' +
+            '}\n' +
+            '\n'
         path: "/future/path/to/file"
         extension: "java"
     }
@@ -1090,12 +1233,11 @@ dummy_items = [
         name: "main"
         size: 832
         category: "code"
-        content: [
-            'var x = myFunction(4, 3); // Function is called, return value will end up in x'
-            'function myFunction(a, b) {'
-            '\treturn a * b; // Function returns the product of a and b'
-            '}'
-        ]
+        content:
+            'var x = myFunction(4, 3); // Function is called, return value will end up in x\n' +
+            'function myFunction(a, b) {\n' +
+            '\treturn a * b; // Function returns the product of a and b\n' +
+            '}\n'
         path: "/future/path/to/file"
         extension: "js"
     }
@@ -1103,21 +1245,20 @@ dummy_items = [
         name: "index"
         size: 876432
         category: "code"
-        content: [
-            '!doctype html>'
-            '<html lang="en">'
-            '\t<head>'
-            '\t\t<meta charset="utf-8">'
-            '\t\t<title>The HTML5 Herald</title>'
-            '\t\t<meta name="description" content="The HTML5 Herald">'
-            '\t\t<meta name="author" content="SitePoint">'
-            '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0">'
-            '\t</head>'
-            '\t<body>'
-            '\t\t<script src="js/scripts.js"></script>'
-            '\t</body>'
-            '</html>'
-        ]
+        content:
+            '!doctype html>\n' +
+            '<html lang="en">\n' +
+            '\t<head>\n' +
+            '\t\t<meta charset="utf-8">\n' +
+            '\t\t<title>The HTML5 Herald</title>\n' +
+            '\t\t<meta name="description" content="The HTML5 Herald">\n' +
+            '\t\t<meta name="author" content="SitePoint">\n' +
+            '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0">\n' +
+            '\t</head>\n' +
+            '\t<body>\n' +
+            '\t\t<script src="js/scripts.js"></script>\n' +
+            '\t</body>\n' +
+            '</html>\n'
         path: "/future/path/to/file"
         extension: "html"
     }
@@ -1125,13 +1266,12 @@ dummy_items = [
         name: "script"
         size: 1024
         category: "code"
-        content: [
-            "parents, babies = (1, 1)"
-            ""
-            "while babies < 100:"
-            "\tprint 'This generation has {0} babies'.format(babies)"
-            "\tparents, babies = (babies, parents + babies)'"
-        ]
+        content:
+            "parents, babies = (1, 1)\n" +
+            "\n" +
+            "while babies < 100:\n" +
+            "\tprint 'This generation has {0} babies'.format(babies)\n" +
+            "\tparents, babies = (babies, parents + babies)'\n"
         path: "/future/path/to/file"
         extension: "py"
     }
@@ -1139,14 +1279,13 @@ dummy_items = [
         name: "spec"
         size: 90123
         category: "code"
-        content: [
-            'for j in 1..5 do'
-            '\tfor i in 1..5 do'
-            '\t\tprint i,  " "'
-            '\t\tbreak if i == 2'
-            '\tend'
-            'end'
-        ]
+        content:
+            'for j in 1..5 do\n' +
+            '\tfor i in 1..5 do\n' +
+            '\t\tprint i,  " "\n' +
+            '\t\tbreak if i == 2\n' +
+            '\tend\n' +
+            'end\n'
         path: "/future/path/to/file"
         extension: "rb"
     }
@@ -1154,11 +1293,10 @@ dummy_items = [
         name: "Protocol"
         size: 90123
         category: "note"
-        content: [
-            "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "
-            "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "
+        content:
+            "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, " +
+            "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem " +
             "agnaaliquy amerat, seddiamvoluptua.</p>"
-        ]
         path: "/future/path/to/file"
     }
     {
