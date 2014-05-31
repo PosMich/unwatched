@@ -1,7 +1,7 @@
 .item(class="{{item.category}}")
     .item-thumbnail
-        h3 {{item.thumbnail.title}}
-        .content(ng-bind-html="item.thumbnail.content")
+        h3 {{item.name}}
+        .content(ng-bind-html="item.thumbnail")
     .item-infos
         table
             tr
@@ -19,11 +19,11 @@
             tr
                 td
                     b Created
-                td {{item.created}}
+                td {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
             tr
                 td
                     b Edited
-                td {{item.last_edited}}
+                td {{item.last_edited | date: 'dd.MM.yyyy - HH:mm'}}
         .item-controls.clearfix
             a(ng-click="delete(item.id)", popover="Delete",
                 popover-trigger="mouseenter", popover-placement="bottom",

@@ -6,15 +6,15 @@
         .sorting.clearfix.col-xs-6.ng-hide(ng-hide="chat_state=='expanded'",
             ng-class="{'ascending':controls.sorting.ascending}")
             span Sort by:
-            div(ng-class="{'active':controls.sorting.state=='name'}", 
+            div(ng-class="{'active':controls.sorting.state=='name'}",
                 ng-click="setSortingState('name')") Name
-            div(ng-class="{'active':controls.sorting.state=='created'}", 
+            div(ng-class="{'active':controls.sorting.state=='created'}",
                 ng-click="setSortingState('created')") Date
 
         .layout(ng-class="{'col-xs-7':chat_state=='expanded', 'col-xs-5':chat_state!='expanded'}")
             form(name="controlSearch", no-validate)
                 .control-input
-                    input#searchString.form-control(type="text", 
+                    input#searchString.form-control(type="text",
                         required, ng-model="controls.searchString",
                         placeholder="Type to search...")
             span(ng-click="setLayout('layout-icons')",
@@ -30,14 +30,14 @@
 
 .row(ng-if="isInRoom")
     ul.user-container.clearfix(class="{{controls.layout}}")
-        li.user(ng-repeat="user in users | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending", 
+        li.user(ng-repeat="user in users | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending",
             ng-class="{'col-lg-3 col-md-4 col-sm-6 col-xs-12':chat_state!='expanded'&&controls.layout=='layout-icons', 'col-lg-6 col-md-6 col-sm-12':chat_state=='expanded'&&controls.layout=='layout-icons', 'col-xs-12':controls.layout=='layout-list'}",)
             .user-inner(ng-class="{'clearfix':controls.layout=='layout-list'}")
                 img(src="{{user.pic}}", style="box-shadow:0 0 150px 0 {{user.getColorAsHex()}}")
                 .info
                     {{user.name}}
                     .joined
-                        |Joined at: {{user.joinedDate | date: 'dd:MM:yyyy - HH:mm'}}
+                        |Joined at: {{user.joinedDate | date: 'dd.MM.yyyy - HH:mm'}}
                 .controls
                     .controls-inner.clearfix
                         a(href="/share/screen")
@@ -46,4 +46,3 @@
                             i.fa.fa-floppy-o
                         a(href="/share/webcam")
                             i.fa.fa-video-camera
-

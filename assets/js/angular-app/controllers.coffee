@@ -6,10 +6,11 @@
 app = angular.module "unwatched.controllers", []
 
 app.controller "AppCtrl", [
-    "$scope", "SharedItemsService", "StreamService", "ChatService"
-    ($scope, SharedItemsService, StreamService, ChatService) ->
+    "$scope", "$rootScope", "SharesService", "StreamService", "ChatService"
+    ($scope, $rootScope, SharesService, StreamService, ChatService) ->
 
-        SharedItemsService.initItems( dummy_items )
+        # SharedItemsService.initItems( dummy_items )
+        $rootScope.sharesInit = false
 
         $scope.killStream = (type) ->
             if type is 'screen'
@@ -20,9 +21,9 @@ app.controller "AppCtrl", [
 ]
 
 app.controller "SideCtrl", [
-    "$scope", "UserService", "SharedItemsService", "ChatService", "$location",
+    "$scope", "UserService", "SharesService", "ChatService", "$location",
     "RoomService"
-    ($scope, UserService, SharedItemsService, ChatService, $location,
+    ($scope, UserService, SharesService, ChatService, $location,
         RoomService) ->
 
         $scope.isInRoom = RoomService.id != ""
@@ -128,10 +129,10 @@ app.controller "IndexCtrl", [
 ]
 
 app.controller "RoomCtrl", [
-    "$scope", "RoomService", "UserService", "SharedItemsService",
+    "$scope", "RoomService", "UserService", "SharesService",
     "ChatStateService", "$routeParams", "RTCService", "$rootScope",
     "$location"
-    ($scope, RoomService, UserService, SharedItemsService,
+    ($scope, RoomService, UserService, SharesService,
         ChatStateService, $routeParams, RTCService, $rootScope,
         $location) ->
 
@@ -160,7 +161,7 @@ app.controller "RoomCtrl", [
 
         # room infos
         $scope.room.users = UserService.users
-        $scope.room.filesLength = SharedItemsService.items.length
+        $scope.room.filesLength = SharesService.items.length
 
         # image processing
         $scope.avatar_ready = false
@@ -268,7 +269,19 @@ app.controller "RoomCtrl", [
                 RTCService.broadcastUserChanges("userNameHasChanged", message)
 
 
-            
+        # init dummy shares if master
+        # if $scope.user.isMaster and !$rootScope.sharesInit
+            # $rootScope.sharesInit = true
+
+            # sharedId = SharesService.create( dummy_items[0].category,
+            #     $scope.user.id )
+            #
+            # sharedItem = SharesService.get sharedId
+            # sharedItem.setName dummy_items[0].name
+            # sharedItem.setSize dummy_items[0].size
+            # sharedItem.setThumbnail dummy_items[0].thumbnail
+            # sharedItem.setPath dummy_items[0].path
+
 
 ]
 
@@ -325,11 +338,38 @@ app.controller "UsersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "ChatStateService", "SharedItemsService", "LayoutService",
+    "$scope", "ChatStateService", "SharesService", "LayoutService",
     "$modal", "StreamService"
-    ($scope, ChatStateService, SharedItemsService, LayoutService, $modal,
+    ($scope, ChatStateService, SharesService, LayoutService, $modal,
         StreamService) ->
-        $scope.shared_items = []
+
+        $scope.shared_items = SharesService.getItems()
+
+        # sharedId = SharesService.create( dummy_items[0].category,
+        #     $scope.user.id )
+
+        sharedId = undefined
+        sharedItem = undefined
+
+        for dummy in dummy_items
+
+            sharedId = SharesService.create( 0, dummy.category )
+            sharedItem = SharesService.get sharedId
+
+            sharedItem.setName dummy.name
+            sharedItem.setSize dummy.size
+            sharedItem.setPath dummy.path
+
+            if dummy.extension
+                sharedItem.setExtension dummy.extension
+
+            if dummy.category is "image" or dummy.category is "file"
+                sharedItem.setCreated new Date()
+
+            if dummy.category isnt "code" and dummy.category isnt "note"
+                sharedItem.setThumbnail dummy.thumbnail
+            else
+                sharedItem.setContent dummy.content
 
         $scope.$watch (->
             return ChatStateService.chat_state
@@ -348,8 +388,6 @@ app.controller "ShareCtrl", [
         $scope.controls.sorting.state = ""
         $scope.controls.sorting.ascending = false
         $scope.controls.layout = LayoutService.layout
-
-        $scope.shared_items = SharedItemsService.getItems()
 
         $scope.setSortingState = (state) ->
             if $scope.controls.sorting.state is state
@@ -371,18 +409,18 @@ app.controller "ShareCtrl", [
                 size: "lg"
                 resolve: {
                     item: ->
-                        SharedItemsService.get(item_id)
+                        SharesService.get(item_id)
                 }
             )
 
             modalInstance.result.then( ->
-                category = SharedItemsService.get(item_id).category
+                category = SharesService.get(item_id).category
                 if category is "screen"
                     StreamService.killScreenStream(category)
                 else if category is "webcam"
                     StreamService.killWebcamStream(category)
                 else
-                    SharedItemsService.delete(item_id)
+                    SharesService.delete(item_id)
             )
 
         $scope.setLayout = (layout) ->
@@ -404,16 +442,16 @@ app.controller "DeleteModalInstanceCtrl", [
 ]
 
 app.controller "ImageCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$scope", "$routeParams", "SharesService", "$location", "$filter",
     "$modal"
-    ($scope, $routeParams, SharedItemsService, $location, $filter
+    ($scope, $routeParams, SharesService, $location, $filter
         $modal) ->
 
         $scope.item = {}
 
         if !$routeParams.id?
             # create new image item
-            $scope.item = SharedItemsService.create("image")
+            $scope.item = SharesService.create("image", $rootScope.userId)
             $scope.image_error = ""
             $scope.item.mime_type = ""
 
@@ -474,7 +512,7 @@ app.controller "ImageCtrl", [
 
 
         else
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
 
         # for inline editing
@@ -495,22 +533,22 @@ app.controller "ImageCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete($scope.item.id)
+                SharesService.delete($scope.item.id)
                 $location.path("/share")
             )
 ]
 
 app.controller "FileCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$scope", "$routeParams", "SharesService", "$location", "$filter",
     "$modal"
-    ($scope, $routeParams, SharedItemsService, $location, $filter
+    ($scope, $routeParams, SharesService, $location, $filter
         $modal) ->
 
         $scope.item = {}
 
         if !$routeParams.id?
             # create new image item
-            $scope.item = SharedItemsService.create("file")
+            $scope.item = SharesService.create("file", $rootScope.userId)
             $scope.item.mime_type = ""
 
             $scope.onFileSelect = ($files) ->
@@ -586,7 +624,7 @@ app.controller "FileCtrl", [
 
 
         else
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
 
         # for inline editing
@@ -607,30 +645,29 @@ app.controller "FileCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete $scope.item.id
+                SharesService.delete $scope.item.id
                 $location.path "/share"
             )
 ]
 
 app.controller "NoteCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$location", "$modal",
+    "$scope", "$routeParams", "SharesService", "$location", "$modal",
     "$filter"
-    ($scope, $routeParams, SharedItemsService, $location, $modal
+    ($scope, $routeParams, SharesService, $location, $modal
         $filter) ->
 
         $scope.item = {}
 
         if !$routeParams.id?
             # create new note item
-            $scope.item = SharedItemsService.create("note")
-            $scope.item.thumbnail = {}
-            $scope.item.thumbnail.title = ""
-            $scope.item.thumbnail.content = ""
-            $scope.item.content = ""
+            # $scope.item = SharesService.create($rootScope.userId, "note")
+            $scope.item = SharesService.get SharesService.create(0, "note")
 
         else
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
+
+        $scope.text = $scope.item.getContent()
 
         # tinymce options
         $scope.tinymceOptions = {
@@ -645,13 +682,6 @@ app.controller "NoteCtrl", [
                     console.log e
                     col = e.level.bookmark.start[0]
                     row = e.level.bookmark.start[2]
-                    # update thumbnail
-                    $scope.item.thumbnail.content =
-                        e.level.content.substr(0, 300)
-                    # update last edited date
-                    $scope.item.last_edited =
-                        $filter("date")(new Date(), "dd.MM.yyyy H:mm")
-
         }
 
         # for inline editing
@@ -675,17 +705,17 @@ app.controller "NoteCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete $scope.item.id
+                SharesService.delete $scope.item.id
                 $location.path "/share"
             )
 
 ]
 
 app.controller "CodeCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "ChatStateService",
+    "$scope", "$routeParams", "SharesService", "ChatStateService",
     "available_extensions", "font_sizes", "ace_themes", "$location",
     "AceSettingsService", "$modal"
-    ($scope, $routeParams, SharedItemsService, ChatStateService,
+    ($scope, $routeParams, SharesService, ChatStateService,
         available_extensions, font_sizes, ace_themes, $location,
         AceSettingsService, $modal) ->
 
@@ -754,29 +784,31 @@ app.controller "CodeCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete $scope.item.id
+                SharesService.delete $scope.item.id
                 $location.path "/share"
             )
 
         if !$routeParams.id?
             # create new code item
-            $scope.item = SharedItemsService.create "code"
+            # $scope.item = SharesService.create($rootScope.userId, "code")
+            $scope.item = SharesService.get( SharesService.create(0, "code") )
 
         else
             # get shared item by given id
-            $scope.item = SharedItemsService.get($routeParams.id)
+            $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
 
             $scope.item_name = $scope.item.name
 
             # set init value of code and clear predefined selection
-            $scope.editor.setValue($scope.item.content)
+            $scope.editor.setValue($scope.item.getContent())
             $scope.editor.clearSelection()
 
         # for inline editing
         $scope.disabled = true
 
         # set init coding language, font size and theme
+        # $scope.item.extension = ""
         extension_id = $scope.getExtensionId( $scope.item.extension )
 
         $scope.settings.extension =
@@ -791,10 +823,31 @@ app.controller "CodeCtrl", [
         # observe 'change' event
         # TODO: implement change emitter to other viewers
         $scope.editor.on 'change', (e) ->
-            $scope.item.content = $scope.editor.getSession().getValue()
+            console.log e
 
-            if e.data.range.start.row <= 5 || e.data.range.end.row <= 5
-                $scope.item.thumbnail = $scope.getThumbnail()
+            if e.data.action is "insertText"
+                $scope.item.insertContentAt(
+                    e.data.range.start,
+                    e.data.range.end,
+                    e.data.text
+                )
+
+            else if e.data.action is "removeText"
+                start_row = e.data.range.start.row
+                end_row = e.data.range.end.row
+                start_col = e.data.range.start.column
+                end_col = e.data.range.end.column
+                $scope.item.deleteContentAtRow start_row, end_row, start_col,
+                    end_col
+
+            else if e.data.action is "removeLines"
+                $scope.item.deleteRows e.data.range.start.row,
+                    e.data.lines.length
+
+            else if e.data.action is "insertLines"
+                $scope.item.insertRows e.data.lines, e.data.range.start.row
+
+            $scope.$apply() if !$scope.$$phase
 
         # watch changes on coding language and update editor
         $scope.$watch "settings.extension", (option, old_option) ->
@@ -830,13 +883,13 @@ app.controller "CodeCtrl", [
 ]
 
 app.controller "ScreenshotCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$modal", "$location"
-    ($scope, $routeParams, SharedItemsService, $modal, $location) ->
+    "$scope", "$routeParams", "SharesService", "$modal", "$location"
+    ($scope, $routeParams, SharesService, $modal, $location) ->
 
         $scope.item = {}
 
         if $routeParams.id?
-            $scope.item = SharedItemsService.get $routeParams.id
+            $scope.item = SharesService.get $routeParams.id
             $location.path "/404" if !$scope.item?
         else
             console.log "take new screenshot"
@@ -854,26 +907,26 @@ app.controller "ScreenshotCtrl", [
             )
 
             modalInstance.result.then( ->
-                SharedItemsService.delete $scope.item.id
+                SharesService.delete $scope.item.id
                 $location.path "/share"
             )
 
 ]
 
 app.controller "ScreenCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$scope", "$routeParams", "SharesService", "$location", "$filter",
     "$modal", "StreamService"
-    ($scope, $routeParams, SharedItemsService, $location, $filter
+    ($scope, $routeParams, SharesService, $location, $filter
         $modal, StreamService) ->
 
         $scope.item = {}
 
         if !$routeParams.id?
             # create new image item
-            $scope.item = SharedItemsService.create("screen")
+            $scope.item = SharesService.create("screen", $rootScope.userId)
 
         else
-            $scope.item = SharedItemsService.get $routeParams.id
+            $scope.item = SharesService.get $routeParams.id
             $location.path "/404" if !$scope.item?
 
         $scope.item.name = $scope.item.author + "'s Shared Screen"
@@ -897,19 +950,19 @@ app.controller "ScreenCtrl", [
 ]
 
 app.controller "WebcamCtrl", [
-    "$scope", "$routeParams", "SharedItemsService", "$location", "$filter",
+    "$scope", "$routeParams", "SharesService", "$location", "$filter",
     "$modal", "StreamService"
-    ($scope, $routeParams, SharedItemsService, $location, $filter
+    ($scope, $routeParams, SharesService, $location, $filter
         $modal, StreamService) ->
 
         $scope.item = {}
 
         if !$routeParams.id?
             # create new image item
-            $scope.item = SharedItemsService.create("webcam")
+            $scope.item = SharesService.create("webcam", $rootScope.userId)
 
         else
-            $scope.item = SharedItemsService.get $routeParams.id
+            $scope.item = SharesService.get $routeParams.id
             $location.path "/404" if !$scope.item?
 
         $scope.item.name = $scope.item.author + "'s Shared Webcam"
@@ -974,224 +1027,156 @@ app.controller "ChatCtrl", [
 
 dummy_items = [
     {
-        id: 1
         category: "screenshot"
         name: "Sophia"
         size: 1036463
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         thumbnail: "images/screenshot.png"
         path: "/images/screenshot.png"
-        templateUrl: "/partials/items/thumbnails/screenshot.html"
     }
     {
-        id: 2,
         name: "Steffen"
         size: 43696
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
-        uploaded: "14.05.2014-15:10"
         category: "file"
         thumbnail: "icon"
         path: "/future/path/to/file"
-        extension: ".pdf"
-        templateUrl: "/partials/items/thumbnails/file.html"
+        extension: "pdf"
     }
     {
-        id: 3,
         name: "style"
         size: 876432
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: ".newspaper {\n" +
-            "    -webkit-column-count:3; /* Chrome, Safari, " +
-                "Opera */"
-        content: '.newspaper {\n' +
-            '\t-webkit-column-count:3; /* Chrome, Safari, Opera */\n' +
-            '\t-moz-column-count:3; /* Firefox */\n' +
-            '\tcolumn-count:3;\n' +
-            '\n\n' +
-            '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */\n' +
-            '\t-moz-column-gap:40px; /* Firefox */\n' +
-            '\tcolumn-gap:40px;\n' +
-            '\n\n' +
-            '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari, Ope' +
-                'ra */\n' +
-            '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */\n' +
-            '\tcolumn-rule:4px outset #ff00ff;\n' +
+        content: [
+            '.newspaper {'
+            '\t-webkit-column-count:3; /* Chrome, Safari, Opera */'
+            '\t-moz-column-count:3; /* Firefox */'
+            '\tcolumn-count:3;'
+            ''
+            ''
+            '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */'
+            '\t-moz-column-gap:40px; /* Firefox */'
+            '\tcolumn-gap:40px;'
+            ''
+            ''
+            '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari,Opera */'
+            '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */'
+            '\tcolumn-rule:4px outset #ff00ff;'
             '}'
+        ]
+
         path: "/future/path/to/file"
         extension: "css"
-        templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
-        id: 4,
         name: "HelloWorld"
         size: 346432
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "import java.io.IOException\n" +
-            "import java.util.Map\n\n" +
-            "public class MyFirstJavaProgram {\n\n" +
-            "     public static void main(String[] args){\n"
-
-        content: 'import java.io.IOException\n' +
-            'import java.util.Map\n\n' +
-            'public class MyFirstJavaProgram {\n\n' +
-                '\tpublic static void main(String[] args) {\n' +
-                   '\t\tSystem.out.println("Hello World");\n' +
-                '\t}\n' +
-            '}\n'
+        content: [
+            'import java.io.IOException'
+            'import java.util.Map'
+            ''
+            'public class MyFirstJavaProgram {'
+            '\tpublic static void main(String[] args) {'
+            '\t\tSystem.out.println("Hello World");'
+            '\t}'
+            '}'
+            ''
+        ]
         path: "/future/path/to/file"
         extension: "java"
-        templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
-        id: 5,
         name: "main"
         size: 832
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "var x = myFunction(4, 3) // Function is called,\n\n" +
-            "function myFunction(a, b) {\n" +
-            "    return a * b; // Fucntion returns the " +
-            "product of a and b \n" +
-            "}"
-        content: 'var x = myFunction(4, 3); // Function is called, return val' +
-            'ue will end up in x\n\n' +
-            'function myFunction(a, b) {\n' +
-            '\treturn a * b; // Function returns the product of a and b\n' +
+        content: [
+            'var x = myFunction(4, 3); // Function is called, return value will end up in x'
+            'function myFunction(a, b) {'
+            '\treturn a * b; // Function returns the product of a and b'
             '}'
+        ]
         path: "/future/path/to/file"
         extension: "js"
-        templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
-        id: 6,
         name: "index"
         size: 876432
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "<!doctype html>\n     <html " +
-            "lang=\"en\">"
-        content:
-            '!doctype html>\n' +
-                '<html lang="en">\n' +
-                    '\t<head>\n' +
-                        '\t\t<meta charset="utf-8">\n' +
-                        '\t\t<title>The HTML5 Herald</title>\n' +
-                        '\t\t<meta name="description" content="The HTML5 Heral'+
-                            'd">\n' +
-                        '\t\t<meta name="author" content="SitePoint">\n' +
-                        '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0'+
-                            '">\n' +
-                    '\t</head>\n' +
-                    '\t<body>\n' +
-                        '\t\t<script src="js/scripts.js"></script>\n' +
-                    '\t</body>\n' +
-                '</html>\n'
+        content: [
+            '!doctype html>'
+            '<html lang="en">'
+            '\t<head>'
+            '\t\t<meta charset="utf-8">'
+            '\t\t<title>The HTML5 Herald</title>'
+            '\t\t<meta name="description" content="The HTML5 Herald">'
+            '\t\t<meta name="author" content="SitePoint">'
+            '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0">'
+            '\t</head>'
+            '\t<body>'
+            '\t\t<script src="js/scripts.js"></script>'
+            '\t</body>'
+            '</html>'
+        ]
         path: "/future/path/to/file"
         extension: "html"
-        templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
-        id: 7,
         name: "script"
         size: 1024
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "testparents, babies = (1, 1)\n" +
-            "while babies < 100:\n" +
-            "     print 'This generation has {0} babies'." +
-            "format(babies)\n" +
-            "     parents, babies = (babies, parents + " +
-            "babies)'\n"
-        content: "parents, babies = (1, 1)\n\n" +
-            "while babies < 100:\n" +
-            "\tprint 'This generation has {0} babies'.format(babies)\n" +
-            "\tparents, babies = (babies, parents + babies)'\n"
+        content: [
+            "parents, babies = (1, 1)"
+            ""
+            "while babies < 100:"
+            "\tprint 'This generation has {0} babies'.format(babies)"
+            "\tparents, babies = (babies, parents + babies)'"
+        ]
         path: "/future/path/to/file"
         extension: "py"
-        templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
-        id: 8,
         name: "spec"
         size: 90123
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "code"
-        thumbnail: "for j in 1..5 do\n" +
-            "     for i in 1..5 do\n" +
-            "         print i, \" \"\n" +
-            "         break if i == 2\n" +
-            "     end\n" +
-            "end"
-        content: 'for j in 1..5 do\n' +
-            '\tfor i in 1..5 do\n' +
-            '\t\tprint i,  " "\n' +
-            '\t\tbreak if i == 2\n' +
-            '\tend\n' +
+        content: [
+            'for j in 1..5 do'
+            '\tfor i in 1..5 do'
+            '\t\tprint i,  " "'
+            '\t\tbreak if i == 2'
+            '\tend'
             'end'
+        ]
         path: "/future/path/to/file"
         extension: "rb"
-        templateUrl: "/partials/items/thumbnails/code.html"
     }
     {
-        id: 9,
         name: "Protocol"
         size: 90123
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "note"
-        thumbnail:
-            title: "Protocol",
-            content: "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "+
-                "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "+
-                "agnaaliquy amerat, seddiamvoluptua.</p>"
-        content: "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "+
-            "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "+
+        content: [
+            "<p>Loremipsumdolorsitamet, consetetursadipscingelitr, "
+            "seddiamnonumyeirmod.</p><p>temporinvidun tutlaboreet dolorem "
             "agnaaliquy amerat, seddiamvoluptua.</p>"
+        ]
         path: "/future/path/to/file"
-        last_edited: "20.05.2014-20:25"
-        templateUrl: "/partials/items/thumbnails/note.html"
     }
     {
-        id: 10,
         name: "How to photoshop"
         size: 0
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "screen"
         thumbnail: "screenshot-screen.png"
-        templateUrl: "/partials/items/thumbnails/screen.html"
     }
     {
-        id: 11,
         name: "See me cooking"
         size: 0
-        author: "Max Mustermann"
-        created: "14.05.2014-15:10"
         category: "webcam"
         thumbnail: "screenshot-webcam.jpg"
-        templateUrl: "/partials/items/thumbnails/webcam.html"
     }
     {
-        id: 12,
         name: "Cute Cat Picture"
         size: 190123
-        author: "Hermine"
         thumbnail: "images/image.jpg"
-        created: "14.05.2014-15:10"
-        uploaded: "14.05.2014-15:15"
         category: "image"
         path: "/images/image.jpg"
-        templateUrl: "/partials/items/thumbnails/image.html"
     }
 
 ]

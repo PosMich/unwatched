@@ -303,7 +303,7 @@ class RTCService
                             for msg in messages
                                 if client.id isnt parsedMsg.message.userId
                                     client.DCsend msg
-                                    
+
 
 
                     else
@@ -872,25 +872,173 @@ app.service "RTCService", [
     RTCService
 ]
 
-app.service "UserService", ["$rootScope", Users ]
-
-app.service "SharesService", class Shares
+class Shares
     @::shares = []
     class Item
-        id: 0
-        name: ""
-        size: 0
-        author: ""
-        created: ""
-        category: ""
-        thumbnail: ""
-        content: ""
-        path: ""
-        extension: ""
-        templateUrl: ""
+        @::id = 0
+        @::name = ""
+        @::size = 0
+        @::author = ""
+        @::created = undefined
+        @::uploaded = undefined
+        @::last_edited = undefined
+        @::category = ""
+        @::thumbnail = []
+        @::content = []
+        @::path = ""
+        @::extension = ""
+        @::templateUrl = ""
+        constructor: (@id, @name, @author, @category) ->
+            @templateUrl = "/partials/items/thumbnails/" +
+                category + ".html"
+
+            if @category isnt "file" and @category isnt "image"
+                @created = new Date()
+            else
+                @uploaded = new Date()
+
+            @extension = ""
+
+        setName: (@name) ->
+
+        setSize: (@size) ->
+
+        setThumbnail: (@thumbnail) ->
+
+        setContent: (content) ->
+            @content = content
+            if @category isnt "code" and @category isnt "note"
+                return
+
+            @last_edited = new Date()
+
+            # keep thumb up-to-date
+            @updateThumbnail()
+
+        setPath: (@path) ->
+
+        setExtension: (@extension) ->
+
+        setCreated: (@created) ->
+
+        insertContentAt: (start, end, content_to_insert) ->
+            if start.row != end.row
+                # new line
+                @insertRow end.row
+            else
+                if end.row >= @content.length
+                    @insertRow end.row
+
+                @content[start.row] = [
+                    @content[start.row].slice(0, start.column)
+                    content_to_insert
+                    @content[start.row].slice(end.column)
+                ].join ""
+
+            @last_edited = new Date()
+            if start.row < 5 or end.row < 5
+                @updateThumbnail()
+
+        deleteContentAtRow: (start_row, end_row, start_col, end_col) ->
+            if start_row isnt end_row
+                if end_row isnt @content.length
+                    # shift content from end_row at the end of the start_row
+                    @content[start_row] += @content[end_row]
+                @deleteRows end_row, 1
+            else
+                tmp_content = @content[start_row].slice(0, start_col)
+                tmp_content += @content[start_row].slice(
+                    end_col, @content[start_row].length)
+                @content[start_row] = tmp_content
+
+            @last_edited = new Date()
+            if start_row < 5 or end_row < 5
+                @updateThumbnail()
+
+        deleteRows: (row, amount) ->
+            @content.splice row, amount
+            if @content.length is 0
+                @content[0] = ""
+
+        insertRow: (position) ->
+            @content.splice position, 0, ""
+
+        insertRows: (rows, position) ->
+            i = position
+            for row in rows
+                @insertRow i
+                @content[i] = row
+                i++
+
+        updateThumbnail: ->
+            thumbnail = ""
+            i = 0
+            max = 5
+            max = @content.length if @content.length < max
+            while i < max
+                thumbnail += @content[i] + "\n"
+                i++
+
+            @setThumbnail thumbnail
+
+        getContent: ->
+            content = ""
+            if @category is "code"
+                for row of @content
+                    content += @content[row] + "\n"
+
+            else if @category is "note"
+                for row of @content
+                    content += @content[row]
+
+            return content
+
+
+    constructor: (@rootScope) ->
+
+    getItemIndex: (item_id) =>
+        item = {}
+        for i of @shares
+            item = @shares[i]
+            if item.id is parseInt(item_id)
+                return i
+
+    getFirstFreeId: =>
+        ids = []
+        freeId = 0
+        for i of @shares
+            ids.push @shares[i].id
+
+        while true
+            if ids.indexOf(freeId) isnt -1
+                freeId++
+            else
+                return freeId
+
+        return freeId
+
+    getItems: ->
+        @shares
+
+    get: (id) ->
+        @shares[ @getItemIndex(id) ]
+
+    delete: (id) ->
+        @shares.splice( @getItemIndex(id), 1 )
+
+
+    create: (author, category) ->
+        id = @getFirstFreeId()
+        name = "Untitled " + category + " item"
+        @shares.push new Item( id, name, author, category )
+        return id
 
 
 
+
+app.service "UserService", ["$rootScope", Users ]
+
+app.service "SharesService", ["$rootScope", Shares ]
 
 app.service "ChatService", [
     "$rootScope",
@@ -966,7 +1114,7 @@ app.service "AceSettingsService", [
     "font_sizes", "ace_themes"
     (font_sizes, ace_themes) ->
 
-        @font_size = font_sizes[0]
+        @font_size = font_sizes[1]
         @theme = ace_themes[0]
 
         @setFontSize = (font_size) ->
@@ -979,72 +1127,9 @@ app.service "AceSettingsService", [
         return
 ]
 
-app.service "SharedItemsService", [
-    "item_template", "dummy_authors", "$filter"
-    (item_template, dummy_authors, $filter) ->
-
-        @items = []
-
-        getItemIndex = (id) =>
-            item = {}
-            for i of @items
-                item = @items[i]
-                if item.id is parseInt(id)
-                    return i
-
-        getFirstFreeId = =>
-            ids = []
-            freeId = 0
-            for i of @items
-                ids.push @items[i].id
-
-            while true
-                if ids.indexOf(freeId) isnt -1
-                    freeId++
-                else
-                    return freeId
-
-        @initItems = (items_arr) ->
-            @items = items_arr
-
-        @getItems = ->
-            @items
-
-        @get = (id) ->
-            @items[ getItemIndex(id) ]
-
-        @delete = (id) ->
-            @items.splice( getItemIndex(id), 1 )
-
-
-        @create = (category) ->
-            item = {}
-            angular.copy item_template, item
-            # item = new
-            item.id = getFirstFreeId()
-
-            item.name = "Untitled " + category + " item"
-
-            author_id = Math.floor(Math.random() * dummy_authors.length)
-            item.author = dummy_authors[author_id]
-
-            item.created = $filter("date")(new Date(), "dd.MM.yyyy H:mm")
-            item.category = category
-            item.templateUrl = "/partials/items/thumbnails/" +
-                category + ".html"
-
-            @items.push item
-
-
-            return item
-
-        return
-
-]
-
 app.service "StreamService", [
-    "$rootScope", "SharedItemsService"
-    ($rootScope, SharedItemsService) ->
+    "$rootScope", "SharesService"
+    ($rootScope, SharesService) ->
 
         @screenStream = undefined
         @screenVideo = undefined
@@ -1093,7 +1178,7 @@ app.service "StreamService", [
                 if @screenStream?
                     @screenStream.stop()
                     @screenStream = undefined
-                    SharedItemsService.delete(@screen_item_id)
+                    SharesService.delete(@screen_item_id)
 
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)
@@ -1106,7 +1191,7 @@ app.service "StreamService", [
                 if @webcamStream?
                     @webcamStream.stop()
                     @webcamStream = undefined
-                    SharedItemsService.delete(@webcam_item_id)
+                    SharesService.delete(@webcam_item_id)
 
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)
@@ -1140,33 +1225,6 @@ app.constant "ace_themes", [
     { value: "mono_industrial", name: "Mono Industrial"}
     { value: "terminal", name: "Terminal"}
 ]
-
-app.constant "dummy_authors", [
-    "Antoinette Dean"
-    "Rex Vargas"
-    "Pearl Carr"
-    "Clark Miller"
-    "Clinton Richardson"
-    "Donna Norman"
-    "Laurie Bowen"
-    "Kristi Saunders"
-    "Amanda Swanson"
-    "Brandy Glover"
-]
-
-app.constant "item_template", {
-    id: 0
-    name: ""
-    size: 0
-    author: ""
-    created: ""
-    category: ""
-    thumbnail: ""
-    content: ""
-    path: ""
-    extension: ""
-    templateUrl: ""
-}
 
 app.constant "SERVER_URL", "https://localhost"
 app.constant "SERVER_PORT", "3001"

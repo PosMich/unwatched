@@ -9,7 +9,7 @@
             tr
                 td
                     b Published
-                td {{item.created}}
+                td {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
         .item-controls.clearfix
             a(ng-click="delete(item.id)", popover="Delete",
                 popover-trigger="mouseenter", popover-placement="bottom",
