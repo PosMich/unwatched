@@ -18,7 +18,8 @@
     "serve-static": "^1.1.0",
     "uglify-js": "^2.4.13",
     "winston": "^0.7.3",
-    "winston-logio": "PosMich/winston-logio",
+    "winston-logio": "git+https://github.com/PosMich/winston-logio",
+    "jade": "latest",
     "ws": "^0.4.31"
   },
   "devDependencies": {

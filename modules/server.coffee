@@ -1,5 +1,5 @@
 express = require "express"
-assets  = require "connect-assets"
+#assets  = require "connect-assets"
 http    = require "http"
 https   = require "https"
 fs      = require "fs"

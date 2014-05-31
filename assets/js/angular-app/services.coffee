@@ -134,6 +134,7 @@ class RTCService
         @::signalServer      = "wss://localhost:3001"
         @::roomId            = null
         @::signallingClients = []
+        @::p2pClients        = []
         @::password          = null
         @::id                = 0
         @::sdpConstraints =
@@ -142,6 +143,21 @@ class RTCService
                 OfferToReceiveAudio: false
                 OfferToReceiveVideo: false
 
+        class P2pPairs
+            @::idCounter = 0
+            @::p2pPairs  = []
+            class P2pClient
+                constructor: (@id, @client1Id, @client2Id) ->
+            add: (client1Id, client2Id) ->
+                @p2pPairs.push new P2pClient(++@idCounter, client1Id, client2Id)
+            getClient1: (id) ->
+                for pair in @p2pPairs
+                    return pair.client1Id if pair.id is id
+                return false
+            getClient2: (id) ->
+                for pair in @p2pPairs
+                    return pair.client2Id if pair.id is id
+                return false
 
         # this is a slaves upstream to the master
         class SlaveRTC
@@ -912,7 +928,7 @@ window.getP2P = ->
             ]
             constructor: () ->
 
-            setup: -> (@signaller, @id, @isOfferer = true, @dataOnly) ->
+            setup: -> (@signaller, @requestUserId, @fileId, @isOfferer = true, @dataOnly = true) ->
                 console.log "P2P setup" if @debug
 
                 if @dataOnly

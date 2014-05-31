@@ -70,13 +70,13 @@ app.controller "SideCtrl", [
 
 app.controller "IndexCtrl", [
     "$scope", "$routeParams", "RTCService", "RoomService", "$location",
-    "$rootScope", "UserService"
+    "$rootScope", "UserService", "SharesService",
     ($scope, $routeParams, RTCService, RoomService, $location,
-        $rootScope, UserService) ->
+        $rootScope, UserService, SharesService) ->
 
         window.rtcService = RTCService
         window.userService = UserService
-        window.shareService = ShareService
+        window.sharesService = SharesService
 
         $scope.joinAttempt = false
         $scope.inputDisabled = true
@@ -163,7 +163,7 @@ app.controller "RoomCtrl", [
 
         # room infos
         $scope.room.users = UserService.users
-        $scope.room.filesLength = SharesService.items.length
+        $scope.room.filesLength = SharesService.shares.length
 
         # image processing
         $scope.avatar_ready = false
