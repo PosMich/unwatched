@@ -1,3 +1,9 @@
+.heading.clearfix.controls
+    .row
+        .col-xs-12
+            .brand
+                | Unwatched
+
 .row.dashboard(ng-if="isInRoom")
     .col-xs-offset-1.col-xs-10.col-xs-offset-1(ng-class="{'col-md-offset-1 col-md-5':chat_state!='expanded'}")
         .well
@@ -23,14 +29,20 @@
                     a(ng-href="{{room.url}}" target="_blank") {{room.url}}
 
     .col-xs-offset-1.col-xs-10.col-xs-offset-1(ng-class="{'col-md-offset-1 col-md-4 col-md-offset-1':chat_state!='expanded'}")
-        .well
+        .well(style="box-shadow:0 0 150px 0 {{user.getColorAsHex()}}")
             form.form-horizontal(name="userForm", role="form")
                 .form-group
                     label.col-xs-4.control-label(for="inputUserName")
                         | Your name:
-                    .col-xs-8
+                    .col-xs-8.user-form-input(ng-class="{'has-error': userForm.uName.$invalid}")
                         input#inputUserName.form-control(type="text",
-                            ng-model="user.name")
+                            ng-model="user.name", name="uName",
+                            ng-minlength="5", required, ng-blur="checkName(userForm.uName)")
+                        span.help-block(ng-show="userForm.uName.$error.required")
+                            | *Required field.
+                        span.help-block(ng-show="userForm.uName.$error.minlength")
+                            | *Type in at least 5 characters.
+
 
                 .form-group(ng-class="{'has-error': user.avatar_error}")
                     label.col-xs-4.control-label(for="inputUserAvatar")
@@ -47,4 +59,4 @@
                         .img-container
                             .img(ng-file-drop="onFileSelect($files)", square,
                                 ng-file-drag-over-class="drag-over-class",
-                                ng-style="{'background-image':'url({{user.pic}})', 'border': '15px solid {{user.borderColor}}'}")
+                                style="background-image:url({{user.pic}});")

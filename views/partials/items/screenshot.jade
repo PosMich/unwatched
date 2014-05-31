@@ -1,7 +1,9 @@
 .detail-view.shared-screenshot-container
     .heading.clearfix.controls
         .row
-            .col-xs-12.controls
+            .col-xs-12.controls.clearfix
+                .brand
+                    | Unwatched
                 a(href="/share")
                     .back
                         i.fa.fa-arrow-left
@@ -23,19 +25,19 @@
         h1 {{item.name}}
         .infos-container
             .info
-                b Size: 
+                b Size:
                 | {{item.size | humanReadableFileSize}}
             .info
-                b Author: 
+                b Author:
                 | {{item.author}}
             .info
-                b Created: 
-                | {{item.created}}
+                b Created:
+                | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
             .info
-                b Path: 
+                b Path:
                 | {{item.path}}
             .info
-                b Category: 
+                b Category:
                 | {{item.category}}
 
         .image-container

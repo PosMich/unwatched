@@ -11,7 +11,7 @@ html(ng-app="unwatched")
       .sidenav
         .icon-align
           .icon-container
-            a.menu-home.side-icon(href="/").side-tooltip
+            a.menu-home.side-icon(ng-href="{{roomUrl}}").side-tooltip
               .side-popover
                 .arrow
                 .content home
@@ -46,9 +46,9 @@ html(ng-app="unwatched")
                       .arrow
                       .content leave room
             .clearfix
-          .icon-container(ng-if="isInRoom")
+          .icon-container.ng-hide(ng-show="isInRoom")
             a.menu-user.side-icon(href="/users").side-tooltip
-              .notification(ng-show="usersNotification!=0") {{usersNotification}}
+              .notification.ng-hide(ng-show="usersNotification!=0") {{usersNotification}}
               .side-popover
                 .arrow
                 .content show/invite users

@@ -16,11 +16,7 @@
             tr
                 td
                     b Name
-                td {{item.name}}
-                tr
-                    td
-                        b Extension
-                    td {{item.extension}}
+                td {{item.name}}.{{item.extension}}
             tr
                 td
                     b Size
@@ -32,7 +28,12 @@
             tr
                 td
                     b Created
-                td {{item.created}}
+                td {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
+
+            tr
+                td
+                    b Uploaded
+                td {{item.uploaded | date: 'dd.MM.yyyy - HH:mm'}}
 
         .item-controls.clearfix
             a(ng-click="delete(item.id)", popover="Delete",

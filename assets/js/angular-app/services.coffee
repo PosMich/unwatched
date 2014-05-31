@@ -11,7 +11,8 @@ class RTCService
     @::isMaster = false
 
     ab2str: (uint8) ->
-        String.fromCharCode.apply(null, new Uint16Array(uint8.buffer.slice(uint8.byteOffset))).trim()
+        String.fromCharCode.apply(null,
+            new Uint16Array(uint8.buffer.slice(uint8.byteOffset))).trim()
 
     #        return String.fromCharCode.apply(null, uint8).trim();
     str2ab: (str) ->
@@ -54,7 +55,13 @@ class RTCService
         chunks = []
 
 
-        # {"type":"chunk","id":1073741824,"chunkId":1073741824,"length":1073741824,"data":""}
+        #   {
+        #       "type":"chunk",
+        #       "id":1073741824,
+        #       "chunkId":1073741824,
+        #       "length":1073741824,
+        #       "data":""
+        #   }
         # -> without data: 83 chars
         maxChunkSize = 1000
 
@@ -66,8 +73,8 @@ class RTCService
 
         index = 0
         start = 0
-        while index*maxChunkSize < message.length
-            chunks.push message.slice(start, start+maxChunkSize)
+        while index * maxChunkSize < message.length
+            chunks.push message.slice(start, start + maxChunkSize)
             start += maxChunkSize
             ++index
 
@@ -95,28 +102,31 @@ class RTCService
         #console.log "currentChunkFile", currentChunkFile
         alltogether = ""
         if currentChunkFile
-            #console.log "chunk file exists", chunk.data
+            console.log "chunk file exists", chunk.data
             currentChunkFile.chunks.push chunk.data
 
             if currentChunkFile.chunks.length is chunk.length
                 for chunk in currentChunkFile.chunks
-                    console.log chunk.chunkId
+                    console.log chunk.id
                     alltogether += chunk
 
                 if @isMaster
                     for client in @handler.signallingClients
                         if client.id is id
-                            client.DChandleMessage alltogether
+                            client.DChandleMessage
+                                data: alltogether
                 else
                     @handler.DChandleMessage
                         data: alltogether
 
-                #complete, put together
+                #complete, put together, reset ChunkFiles storage
+                @ChunkFiles = []
         else
             console.log "push chunk file"
             @ChunkFiles.push
                 id: chunk.id
                 chunks: [chunk.data]
+
             # add to Chunkfiles
 
 
@@ -192,7 +202,7 @@ class RTCService
                     description.clientId = @id
                     @signaller.signalSend description
                 , null, @signaller.sdpConstraints
-            handleAnswer: (answer) -> # recieved from client
+            handleAnswer: (answer) -> # received from client
                 console.log "handle answer", answer if @debug
                 @connection.setRemoteDescription new RTCSessionDescription(
                     answer
@@ -214,13 +224,12 @@ class RTCService
 
             # DataChannel Handlers
             DChandleMessage: (msg) =>
-                console.log "got a message from DC",
-                console.log msg
-
+                # console.log "got a message from DC", msg
 
                 parsedMsg = JSON.parse(msg.data)
-                console.log "parsed"
-                console.log parsedMsg
+                console.log parsedMsg.type
+                # console.log "parsed"
+                # console.log parsedMsg
                 switch parsedMsg.type
                     when "chunk"
                         @signaller.service.receiveChunk(parsedMsg, @id)
@@ -243,7 +252,8 @@ class RTCService
 
                             @signaller.removeSlave(@id)
                         else
-                            @id = @signaller.service.UserService.addUser("Unnamed")
+                            @id = @signaller.service.UserService
+                                .addUser("Unnamed")
                             room = @signaller.service.RoomService
                             # if password is true, send back the init data
 
@@ -269,6 +279,35 @@ class RTCService
 
                             for message in messages
                                 @DCsend message
+
+                    when "userNameHasChanged"
+                        @signaller.service.UserService.changeName(
+                            parsedMsg.message.userId, parsedMsg.message.userName
+                        )
+
+                        for client in @signaller.signallingClients
+                            if client.id isnt parsedMsg.message.userId
+                                client.DCsend
+                                    type: "userNameHasChanged"
+                                    message: parsedMsg.message
+
+                    when "userPicHasChanged"
+                        @signaller.service.UserService.changePic(
+                            parsedMsg.message.userId, parsedMsg.message.userPic
+                        )
+
+                        message =
+                            type: "userPicHasChanged"
+                            message: parsedMsg.message
+
+                        messages = @signaller.service.createChunks(message)
+
+                        for client in @signaller.signallingClients
+                            for msg in messages
+                                if client.id isnt parsedMsg.message.userId
+                                    client.DCsend msg
+
+
 
                     else
                         console.log "DChandle: unknown msg"
@@ -531,6 +570,17 @@ class RTCService
                 when "roomDescriptionHasChanged"
                     @service.RoomService.description = parsedMsg.roomDescription
 
+                when "userNameHasChanged"
+                    @service.UserService.changeName(
+                        parsedMsg.message.userId, parsedMsg.message.userName
+                    )
+
+                when "userPicHasChanged"
+                    @service.UserService.changePic(
+                        parsedMsg.message.userId, parsedMsg.message.userPic
+                    )
+
+
                 when "password"
                     if parsedMsg.passwordIsValid
                         @passwordIsValid = parsedMsg.passwordIsValid
@@ -557,8 +607,7 @@ class RTCService
             console.log "DC is closed!"
 
         DCsend: (message) ->
-            console.log "DCsend", message
-
+            # console.log "DCsend", message
             @dataChannel.send JSON.stringify(message)
 
 
@@ -623,8 +672,6 @@ class RTCService
             @$rootScope.$watch =>
                 @ChatService.messages
             , (new_messages, old_messages) =>
-                console.log "new_messages", new_messages
-                console.log "old_messages", old_messages
                 i = old_messages.length
                 while i < new_messages.length
                     if new_messages[i].sender is @$rootScope.userId
@@ -648,6 +695,35 @@ class RTCService
             type: "password"
             password: password
 
+    sendUserChanges: (type, message) ->
+        dataChannelMessage =
+            type: type
+            message: message
+
+        if type is "userNameHasChanged"
+            @handler.DCsend dataChannelMessage
+
+        else if type is "userPicHasChanged"
+            messages = @createChunks(dataChannelMessage)
+
+            for msg in messages
+                @handler.DCsend msg
+
+    broadcastUserChanges: (type, message) ->
+        broadcastMessage =
+            type: type
+            message: message
+
+        if type is "userNameHasChanged"
+            for client in @handler.signallingClients
+                client.DCsend broadcastMessage
+
+        else if type is "userPicHasChanged"
+            messages = @createChunks(broadcastMessage)
+
+            for client in @handler.signallingClients
+                for msg in messages
+                    client.DCsend msg
 
 class Users
     @::users = []
@@ -687,7 +763,8 @@ class Users
         @::frontendColor = null
         @::joinedDate = null
         @::isActive   = true
-        constructor: (@name, @id, @color, @isMaster, @pic = false, joinedDate = false) ->
+        constructor: (@name, @id, @color, @isMaster, @pic = false,
+            joinedDate = false) ->
             console.log "new user: " + @name
             @joinedDate = if !joinedDate then new Date() else joinedDate
             if !pic
@@ -715,14 +792,7 @@ class Users
         changePic: (@pic) ->
         changeName: (@name) ->
 
-    constructor: (@$rootScope) -> #@RTCService,
-        # @RTCService.registerBroadcastListener
-        #     type: "user"
-        #     onMessage: @onMessage
-
-        # @RTCService.registerBroadcastListener
-        #     type: "initRequest"
-        #     onMessage: @onInitRequest
+    constructor: (@$rootScope) ->
 
     getUser: (id) ->
         for user in @users
@@ -739,13 +809,7 @@ class Users
 
     addUser: (name, isMaster = false) ->
         id = @users.length
-        occupied = @nameIsOccupied( id, name )
-        counter = 0
-        tmp_name = name
-        while occupied
-            counter++
-            tmp_name = name + " (" + counter + ")"
-            occupied = @nameIsOccupied( id, tmp_name )
+        tmp_name = @getFirstFreeName(id, name)
 
         if isMaster
             for user in @users
@@ -760,7 +824,7 @@ class Users
             user.isMaster, user.pic, user.joinedDate )
 
     onMessage: (message) =>
-        console.log "UserService :: recieved message"
+        console.log "UserService :: received message"
         console.log message
         user_data = message.message
         @users.push new User( user_data.name, user_data.id, user_data.color,
@@ -779,7 +843,7 @@ class Users
         @$rootScope.$apply() if !@$rootScope.$$phase
 
     changeName: (id, newName) ->
-        return if nameIsOccupied( id, newName )
+        return if @nameIsOccupied( id, newName )
         user = @getUser id
         user.changeName newName
         @$rootScope.$apply() if !@$rootScope.$$phase
@@ -789,11 +853,19 @@ class Users
         user.changePic newPic
         @$rootScope.$apply() if !@$rootScope.$$phase
 
+    getFirstFreeName: (id, name) ->
+        occupied = @nameIsOccupied( id, name )
+        counter = 0
+        tmp_name = name
+        while occupied
+            counter++
+            tmp_name = name + " (" + counter + ")"
+            occupied = @nameIsOccupied( id, tmp_name )
+
+        return tmp_name
+
 
 app = angular.module "unwatched.services", []
-
-
-app.value "version", "0.1"
 
 ###
 app.factory "P2PFactory", [
@@ -1002,25 +1074,173 @@ app.service "RTCService", [
     RTCService
 ]
 
-app.service "UserService", ["$rootScope", Users ]
-
-app.service "SharesService", class Shares
+class Shares
     @::shares = []
     class Item
-        id: 0
-        name: ""
-        size: 0
-        author: ""
-        created: ""
-        category: ""
-        thumbnail: ""
-        content: ""
-        path: ""
-        extension: ""
-        templateUrl: ""
+        @::id = 0
+        @::name = ""
+        @::size = 0
+        @::author = ""
+        @::created = undefined
+        @::uploaded = undefined
+        @::last_edited = undefined
+        @::category = ""
+        @::thumbnail = []
+        @::content = []
+        @::path = ""
+        @::extension = ""
+        @::templateUrl = ""
+        constructor: (@id, @name, @author, @category) ->
+            @templateUrl = "/partials/items/thumbnails/" +
+                category + ".html"
+
+            if @category isnt "file" and @category isnt "image"
+                @created = new Date()
+            else
+                @uploaded = new Date()
+
+            @extension = ""
+
+        setName: (@name) ->
+
+        setSize: (@size) ->
+
+        setThumbnail: (@thumbnail) ->
+
+        setContent: (content) ->
+            @content = content
+            if @category isnt "code" and @category isnt "note"
+                return
+
+            @last_edited = new Date()
+
+            # keep thumb up-to-date
+            @updateThumbnail()
+
+        setPath: (@path) ->
+
+        setExtension: (@extension) ->
+
+        setCreated: (@created) ->
+
+        insertContentAt: (start, end, content_to_insert) ->
+            if start.row != end.row
+                # new line
+                @insertRow end.row
+            else
+                if end.row >= @content.length
+                    @insertRow end.row
+
+                @content[start.row] = [
+                    @content[start.row].slice(0, start.column)
+                    content_to_insert
+                    @content[start.row].slice(end.column)
+                ].join ""
+
+            @last_edited = new Date()
+            if start.row < 5 or end.row < 5
+                @updateThumbnail()
+
+        deleteContentAtRow: (start_row, end_row, start_col, end_col) ->
+            if start_row isnt end_row
+                if end_row isnt @content.length
+                    # shift content from end_row at the end of the start_row
+                    @content[start_row] += @content[end_row]
+                @deleteRows end_row, 1
+            else
+                tmp_content = @content[start_row].slice(0, start_col)
+                tmp_content += @content[start_row].slice(
+                    end_col, @content[start_row].length)
+                @content[start_row] = tmp_content
+
+            @last_edited = new Date()
+            if start_row < 5 or end_row < 5
+                @updateThumbnail()
+
+        deleteRows: (row, amount) ->
+            @content.splice row, amount
+            if @content.length is 0
+                @content[0] = ""
+
+        insertRow: (position) ->
+            @content.splice position, 0, ""
+
+        insertRows: (rows, position) ->
+            i = position
+            for row in rows
+                @insertRow i
+                @content[i] = row
+                i++
+
+        updateThumbnail: ->
+            thumbnail = ""
+            i = 0
+            max = 5
+            max = @content.length if @content.length < max
+            while i < max
+                thumbnail += @content[i] + "\n"
+                i++
+
+            @setThumbnail thumbnail
+
+        getContent: ->
+            content = ""
+            if @category is "code"
+                for row of @content
+                    content += @content[row] + "\n"
+
+            else if @category is "note"
+                for row of @content
+                    content += @content[row]
+
+            return content
+
+
+    constructor: (@rootScope) ->
+
+    getItemIndex: (item_id) =>
+        item = {}
+        for i of @shares
+            item = @shares[i]
+            if item.id is parseInt(item_id)
+                return i
+
+    getFirstFreeId: =>
+        ids = []
+        freeId = 0
+        for i of @shares
+            ids.push @shares[i].id
+
+        while true
+            if ids.indexOf(freeId) isnt -1
+                freeId++
+            else
+                return freeId
+
+        return freeId
+
+    getItems: ->
+        @shares
+
+    get: (id) ->
+        @shares[ @getItemIndex(id) ]
+
+    delete: (id) ->
+        @shares.splice( @getItemIndex(id), 1 )
+
+
+    create: (author, category) ->
+        id = @getFirstFreeId()
+        name = "Untitled " + category + " item"
+        @shares.push new Item( id, name, author, category )
+        return id
 
 
 
+
+app.service "UserService", ["$rootScope", Users ]
+
+app.service "SharesService", ["$rootScope", Shares ]
 
 app.service "ChatService", [
     "$rootScope",
@@ -1039,7 +1259,6 @@ app.service "ChatService", [
 ]
 
 app.service "RoomService", [
-    # "RTCService"
     "$filter"
     "$rootScope"
     "$http"
@@ -1054,7 +1273,7 @@ app.service "RoomService", [
         @::description
         @::url = ""
 
-        constructor: (@$filter, @$rootScope, @$http, @SERVER_URL, #@RTCService,
+        constructor: (@$filter, @$rootScope, @$http, @SERVER_URL,
             @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
             @description = "Room description"
@@ -1097,7 +1316,7 @@ app.service "AceSettingsService", [
     "font_sizes", "ace_themes"
     (font_sizes, ace_themes) ->
 
-        @font_size = font_sizes[0]
+        @font_size = font_sizes[1]
         @theme = ace_themes[0]
 
         @setFontSize = (font_size) ->
@@ -1110,72 +1329,9 @@ app.service "AceSettingsService", [
         return
 ]
 
-app.service "SharedItemsService", [
-    "item_template", "dummy_authors", "$filter"
-    (item_template, dummy_authors, $filter) ->
-
-        @items = []
-
-        getItemIndex = (id) =>
-            item = {}
-            for i of @items
-                item = @items[i]
-                if item.id is parseInt(id)
-                    return i
-
-        getFirstFreeId = =>
-            ids = []
-            freeId = 0
-            for i of @items
-                ids.push @items[i].id
-
-            while true
-                if ids.indexOf(freeId) isnt -1
-                    freeId++
-                else
-                    return freeId
-
-        @initItems = (items_arr) ->
-            @items = items_arr
-
-        @getItems = ->
-            @items
-
-        @get = (id) ->
-            @items[ getItemIndex(id) ]
-
-        @delete = (id) ->
-            @items.splice( getItemIndex(id), 1 )
-
-
-        @create = (category) ->
-            item = {}
-            angular.copy item_template, item
-            # item = new
-            item.id = getFirstFreeId()
-
-            item.name = "Untitled " + category + " item"
-
-            author_id = Math.floor(Math.random() * dummy_authors.length)
-            item.author = dummy_authors[author_id]
-
-            item.created = $filter("date")(new Date(), "dd.MM.yyyy H:mm")
-            item.category = category
-            item.templateUrl = "/partials/items/thumbnails/" +
-                category + ".html"
-
-            @items.push item
-
-
-            return item
-
-        return
-
-]
-
 app.service "StreamService", [
-    "$rootScope", "SharedItemsService"
-    ($rootScope, SharedItemsService) ->
+    "$rootScope", "SharesService"
+    ($rootScope, SharesService) ->
 
         @screenStream = undefined
         @screenVideo = undefined
@@ -1224,7 +1380,7 @@ app.service "StreamService", [
                 if @screenStream?
                     @screenStream.stop()
                     @screenStream = undefined
-                    SharedItemsService.delete(@screen_item_id)
+                    SharesService.delete(@screen_item_id)
 
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)
@@ -1237,7 +1393,7 @@ app.service "StreamService", [
                 if @webcamStream?
                     @webcamStream.stop()
                     @webcamStream = undefined
-                    SharedItemsService.delete(@webcam_item_id)
+                    SharesService.delete(@webcam_item_id)
 
                 $rootScope.$apply()  if !$rootScope.$$phase
             ), 500)
@@ -1271,33 +1427,6 @@ app.constant "ace_themes", [
     { value: "mono_industrial", name: "Mono Industrial"}
     { value: "terminal", name: "Terminal"}
 ]
-
-app.constant "dummy_authors", [
-    "Antoinette Dean"
-    "Rex Vargas"
-    "Pearl Carr"
-    "Clark Miller"
-    "Clinton Richardson"
-    "Donna Norman"
-    "Laurie Bowen"
-    "Kristi Saunders"
-    "Amanda Swanson"
-    "Brandy Glover"
-]
-
-app.constant "item_template", {
-    id: 0
-    name: ""
-    size: 0
-    author: ""
-    created: ""
-    category: ""
-    thumbnail: ""
-    content: ""
-    path: ""
-    extension: ""
-    templateUrl: ""
-}
 
 app.constant "SERVER_URL", "https://localhost"
 app.constant "SERVER_PORT", "3001"

@@ -104,9 +104,9 @@ module.exports = (grunt) ->
 
         angularAppCoffeeFilesDir: "assets/js/angular-app"
         angularAppCoffeeFiles: [
+            "services.coffee"
             "controllers.coffee"
             "filters.coffee"
-            "services.coffee"
             "directives.coffee"
             "angular.coffee"
         ]

@@ -1,7 +1,9 @@
 .detail-view.shared-screenshot-container
     .heading.clearfix.controls
         .row
-            .col-xs-12.controls
+            .col-xs-12.controls.clearfix
+                .brand
+                    | Unwatched
                 a(href="/share")
                     .back
                         i.fa.fa-arrow-left
@@ -29,28 +31,28 @@
                     span.help-block(ng-show="note.nName.$error.required")
                         | *Required field. Name won't be saved.
             h1(ng-hide="!disabled")
-                | {{item.name}} 
+                | {{item.name}}
 
         .infos-container
             .info
-                b Size: 
+                b Size:
                 | {{item.size | humanReadableFileSize}}
             .info
-                b Author: 
+                b Author:
                 | {{item.author}}
             .info
-                b Created: 
-                | {{item.created}}
+                b Created:
+                | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
+            .info(ng-show="item.last_edited")
+                b Last edited:
+                | {{item.last_edited | date: 'dd.MM.yyyy - HH:mm'}}
             .info
-                b Last edited: 
-                | {{item.last_edited}}
-            .info
-                b Path: 
+                b Path:
                 | {{item.path}}
             .info
-                b Category: 
+                b Category:
                 | {{item.category}}
 
         .note-container
             form
-                textarea#editor(ui-tinymce="tinymceOptions", ng-model="item.content")
+                textarea#editor(ui-tinymce="tinymceOptions", ng-model="text")
