@@ -74,7 +74,9 @@ app.controller "IndexCtrl", [
     ($scope, $routeParams, RTCService, RoomService, $location,
         $rootScope, UserService) ->
 
-        window.rtc = RTCService
+        window.rtcService = RTCService
+        window.userService = UserService
+        window.shareService = ShareService
 
         $scope.joinAttempt = false
         $scope.inputDisabled = true
