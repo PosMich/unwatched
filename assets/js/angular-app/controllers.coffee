@@ -565,48 +565,79 @@ app.controller "ImageCtrl", [
 ]
 
 app.controller "FileCtrl", [
-    "$scope", "$routeParams", "SharesService", "$location", "$filter",
-    "$modal"
-    ($scope, $routeParams, SharesService, $location, $filter
-        $modal) ->
+    "$scope", "$routeParams", "SharesService", "$location", "$modal",
+    "UserService", "$rootScope"
+    ($scope, $routeParams, SharesService, $location, $modal, UserService,
+        $rootScope) ->
 
-        $scope.item = {}
+        $scope.createThumbnail = ->
+
+            img = document.createElement("img")
+            canvas = document.createElement("canvas")
+
+            if $scope.item.category is "image"
+                img.src = $scope.target_result
+                img.onload = ->
+
+                    max_width = 300
+                    width = img.width
+                    height = img.height
+
+                    if width > max_width
+                        height *= max_width / width
+                        width = max_width
+
+                    canvas.width = width
+                    canvas.height = height
+
+                    ctx = canvas.getContext "2d"
+                    ctx.drawImage( img, 0, 0, width, height )
+
+                    $scope.item.thumbnail = canvas.toDataURL(
+                        $scope.item.mime_type
+                    )
+
+                $scope.$apply() if !$scope.$$phase
+
+        $scope.users = UserService.users
 
         if !$routeParams.id?
             # create new image item
-            $scope.item = SharesService.create("file", $rootScope.userId)
+
+            sharedItemId = SharesService.create( $rootScope.userId, "file" )
+            $scope.item = SharesService.get( sharedItemId )
             $scope.item.mime_type = ""
 
-            $scope.onFileSelect = ($files) ->
-                $scope.file = {}
-                $scope.file.progress = 0
-                $scope.file.show_progress = false
-                $scope.file.ready = false
+            $scope.file = {}
 
+            $scope.onFileSelect = ($files) ->
                 $scope.file.source = $files[0]
 
-                $scope.item.size = $scope.file.source.size
-                $scope.item.created = $filter("date")(
-                    $scope.file.source.lastModifiedDate, "dd.MM.yyyy H:mm")
-                $scope.item.uploaded = $filter("date")(new Date(),
-                    "dd.MM.yyyy H:mm")
-
                 $scope.item.name = $scope.file.source.name
-                $scope.item_name = $scope.file.source.name
                 $scope.item.mime_type = $scope.file.source.type
+                $scope.item.size = $scope.file.source.size
+                $scope.item.created = $scope.file.source.lastModifiedDate
+                $scope.item.uploaded = new Date()
 
+                if $scope.item.size < 30000000
+                    $scope.file.progress = 100
+
+                if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
+                    $scope.item.category = "image"
 
                 # read file
                 reader = new FileReader()
 
                 reader.onload = (e) ->
+
+                    if $scope.item.category is "image"
+                        $scope.target_result = e.target.result
+
                     window.setTimeout((->
                         $scope.file.show_progress = false
                         $scope.file.ready = true
                         $scope.$apply()
                     ), 2000)
-
-                    # console.log file
 
                     window.requestFileSystem  = window.requestFileSystem ||
                         window.webkitRequestFileSystem
@@ -616,8 +647,8 @@ app.controller "FileCtrl", [
                         onInitFs,
                         onErrorFs,
 
-
                 reader.onprogress = (e) ->
+                    console.log "progress"
                     $scope.file.show_progress = true
                     $scope.$apply()
                     percentLoaded = Math.round((e.loaded / e.total) * 100)
@@ -648,16 +679,18 @@ app.controller "FileCtrl", [
             onErrorCreateFile = (error) ->
                 console.log error
 
+            $scope.$watch ->
+                $scope.file.ready
+            , (ready) ->
+                console.log ready
+                if ready
+                    $scope.item.content = $scope.target_result
+                    $scope.createThumbnail()
+            , true
 
         else
             $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
-
-        # for inline editing
-        $scope.disabled = true
-
-        $scope.item_name = $scope.item.name
-
 
         $scope.delete = ->
             modalInstance = $modal.open(

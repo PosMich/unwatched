@@ -1484,7 +1484,7 @@ class Shares
 
     create: (author, category) ->
         id = @getFirstFreeId()
-        name = "Untitled " + category + " item"
+        name = "Untitled " + category
         @shares.push new Item( id, name, author, category )
         return id
 
