@@ -1,5 +1,7 @@
 .item(class="{{item.category}}")
-    .item-thumbnail
+    .item-thumbnail(style="background-image: url({{item.thumbnail}})",
+        ng-if="item.category=='image'")
+    .item-thumbnail(ng-if="item.category=='file'")
         .infos
             table
                 tr
@@ -16,7 +18,7 @@
             tr
                 td
                     b Name
-                td {{item.name}}.{{item.extension}}
+                td {{item.name}}
             tr
                 td
                     b Size
@@ -44,7 +46,13 @@
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
                 i.fa.fa-clipboard
-            a(ng-href="{{item.path}}", popover="Download",
+            //- a(ng-if="item.content!=''", ng-href="{{item.path}}",
+            //-     popover="Download", popover-trigger="mouseenter",
+            //-     popover-placement="bottom", popover-popup-delay="750",
+            //-     ng-download="'item.name'", content="file_source",
+            //-     mime-type="'item.mime_type'")
+            //-     i.fa.fa-download
+            a(ng-href="/share/file/{{item.id}}", popover="Edit",
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
-                i.fa.fa-download
+                i.fa.fa-pencil

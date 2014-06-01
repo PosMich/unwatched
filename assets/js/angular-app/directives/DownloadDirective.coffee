@@ -32,8 +32,6 @@ class DownloadDirective
             filename or= 'file'
             mimeType or= 'text/plain'
 
-            console.log mimeType
-
             if url?
                 @setupUrlDownload a, url, filename, mimeType
             else if content?
@@ -56,7 +54,6 @@ class DownloadDirective
     setupDataDownload: (a, data, filename, mimeType) =>
         blob = new @Blob [data], type: mimeType
         url = @URL.createObjectURL blob
-        console.log "URL", url
         @setupUrlDownload a, url, filename, mimeType
 
 buildDirectiveFactory = (ctor) ->

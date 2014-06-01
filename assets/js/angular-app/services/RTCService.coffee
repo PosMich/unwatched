@@ -575,10 +575,6 @@ class RTCService
                             parsedMsg.itemId, parsedMsg.change
                         )
 
-                        item = @signaller.service.SharesService.get(
-                            parsedMsg.itemId
-                        )
-
                         for client in @signaller.signallingClients
                             if !client.authenticated
                                 continue
@@ -612,7 +608,6 @@ class RTCService
                         for marker in @signaller.service.$rootScope.markers
                             if marker.contributorId is parsedMsg.userId
                                 marker.cursor = parsedMsg.change
-                                console.log "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 
                         active_contributors = []
 
@@ -627,7 +622,7 @@ class RTCService
                                 if client.id isnt parsedMsg.userId
                                     client.DCsend parsedMsg
 
-                    when "codeItemDeleted"
+                    when "itemDeleted"
                         @signaller.service.SharesService.delete parsedMsg.itemId
 
                         for client in @signaller.signallingClients
@@ -636,6 +631,26 @@ class RTCService
                             if client.id isnt parsedMsg.userId
                                 client.DCsend parsedMsg
 
+                    when "newFile"
+                        @signaller.service.SharesService.shares.push(
+                            parsedMsg.file )
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.file.author
+                                client.DCsend parsedMsg
+
+                    when "fileHasChanged"
+                        @signaller.service.SharesService.updateItem(
+                            parsedMsg.itemId, parsedMsg.change
+                        )
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.id
+                                client.DCsend parsedMsg
 
                     else
                         console.log "DChandle: unknown msg"
@@ -914,7 +929,6 @@ class RTCService
                     @service.RoomService.isClosed = true
 
                 when "newCodeItem"
-                    console.log "got new code item: ", parsedMsg.codeItem
                     @service.SharesService.shares.push parsedMsg.codeItem
 
                 when "codeItemHasChanged"
@@ -931,7 +945,7 @@ class RTCService
                         if marker.contributorId is parsedMsg.userId
                             marker.cursor = parsedMsg.change
 
-                when "codeItemDeleted"
+                when "itemDeleted"
                     @service.SharesService.delete parsedMsg.itemId
 
                 when "password"
@@ -948,6 +962,14 @@ class RTCService
 
                         @service.ChatService.messages = parsedMsg.init.messages
                         @service.SharesService.shares = parsedMsg.init.shares
+
+                when "newFile"
+                    @service.SharesService.shares.push parsedMsg.file
+
+                when "fileHasChanged"
+                    @service.SharesService.updateItem( parsedMsg.itemId,
+                        parsedMsg.change )
+
                 else
                     console.log "DChandle: unknown msg"
 
@@ -1068,8 +1090,6 @@ class RTCService
                 type: type
                 message: message
 
-
-
     sendUserDeleted: (user) ->
         if !user.isMaster
             @handler.DCsend
@@ -1162,10 +1182,10 @@ class RTCService
                 if active_contributors.indexOf( client.id ) isnt -1
                     client.DCsend dataChannelMessage
 
-    sendCodeItemDeleted: (user, itemId) ->
+    sendItemDeleted: (user, itemId) ->
 
         dataChannelMessage =
-            type: "codeItemDeleted"
+            type: "itemDeleted"
             userId: user.id
             itemId: itemId
 
@@ -1177,6 +1197,36 @@ class RTCService
                 if !client.authenticated
                     continue
                 client.DCsend dataChannelMessage
+
+    sendNewFile: (file, isMaster) ->
+
+        dataChannelMessage =
+            type: "newFile"
+            file: file
+
+        if !isMaster
+            @handler.DCsend dataChannelMessage
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend dataChannelMessage
+
+    sendFileHasChanged: (change, itemId, user) ->
+        dataChannelMessage =
+            type: "fileHasChanged"
+            change: change
+            userId: user.id
+            itemId: itemId
+
+        if !user.isMaster
+            @handler.DCsend dataChannelMessage
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend dataChannelMessage
+
 
 app.service "RTCService", [
     "$rootScope"

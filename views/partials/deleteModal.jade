@@ -22,7 +22,7 @@
                 b Author:
             td {{users[item.author].name}}
 
-        tr(ng-if="item.contributors.length!=0")
+        tr(ng-if="item.contributors!=''")
             td
                 b Contributors:
             td
