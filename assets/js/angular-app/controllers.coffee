@@ -9,7 +9,6 @@ app.controller "AppCtrl", [
     "$scope", "$rootScope", "SharesService", "StreamService", "ChatService"
     ($scope, $rootScope, SharesService, StreamService, ChatService) ->
 
-        # SharedItemsService.initItems( dummy_items )
         $rootScope.sharesInit = false
 
         $scope.killStream = (type) ->
@@ -163,7 +162,7 @@ app.controller "RoomCtrl", [
 
         # room infos
         $scope.room.users = UserService.users
-        $scope.room.filesLength = SharesService.shares.length
+        $scope.room.files = SharesService.shares
 
         # image processing
         $scope.avatar_ready = false
@@ -870,12 +869,7 @@ app.controller "CodeCtrl", [
         $scope.setEditorTheme( $scope.settings.theme.value )
 
         # observe 'change' event
-        # TODO: implement change emitter to other viewers
-
         $scope.editor.session.doc.on 'change', (e) ->
-
-            console.log "document has changed", e
-
             if !$scope.block
 
                 RTCService.broadcastCodeDocumentHasChanged(
@@ -884,20 +878,20 @@ app.controller "CodeCtrl", [
                     $scope.user
                 )
 
-            else
-                $scope.block = false
-
-            # $scope.editor2.session.doc.applyDeltas [e.data]
             $scope.block = false
 
             # update model
             $scope.item.content = $scope.editor.getValue()
+            $scope.item.size = $scope.editor.session.getLength()
+            $scope.$apply() if !$scope.$$phase
+            console.log "set size to", $scope.item.size
             $scope.item.last_edited = new Date()
 
             if e.data.range.start.row <= 5 or e.data.range.end.row <= 5
                 $scope.updateThumbnail()
                 change =
                     thumbnail: $scope.item.thumbnail
+                    content: $scope.item.content
                 RTCService.sendCodeItemHasChanged(
                     change, $scope.item.id, $scope.user.isMaster )
 
@@ -962,7 +956,8 @@ app.controller "CodeCtrl", [
                         console.log "FOUND"
                         found = true
                         if !contributor.active
-                            $rootScope.splice(index, 1) # remove inactive marker
+                            $scope.editor.session.removeMarker marker.marker
+                            $rootScope.markers.splice(index, 1) # remove inactive marker
 
                 if !found and contributor.active
                     $rootScope.markers.push
@@ -1023,9 +1018,13 @@ app.controller "CodeCtrl", [
 
         # set contributor to false
         $scope.$on "$routeChangeStart", (scope, next, current) ->
-            contributor = SharesService.getContributor(
-                current.scope.item.id, current.scope.user.id )
-            contributor.active = false
+
+            $rootScope.markers = []
+
+            SharesService.setContributorInactive(current.scope.item.id,
+                current.scope.user.id)
+            change =
+                contributors: current.scope.item.contributors
 
             RTCService.sendCodeItemHasChanged(
                 change, current.scope.item.id, current.scope.user.isMaster )
@@ -1191,104 +1190,104 @@ dummy_items = [
         path: "/future/path/to/file"
         extension: "pdf"
     }
-    {
-        name: "style"
-        size: 876432
-        category: "code"
-        content:
-            '.newspaper {\n' +
-            '\t-webkit-column-count:3; /* Chrome, Safari, Opera */\n' +
-            '\t-moz-column-count:3; /* Firefox */\n' +
-            '\tcolumn-count:3;\n' +
-            '\n' +
-            '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */\n' +
-            '\t-moz-column-gap:40px; /* Firefox */\n' +
-            '\tcolumn-gap:40px;\n' +
-            '\n' +
-            '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari,Opera */\n' +
-            '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */\n' +
-            '\tcolumn-rule:4px outset #ff00ff;\n' +
-            '}\n'
-        path: "/future/path/to/file"
-        extension: "css"
-    }
-    {
-        name: "HelloWorld"
-        size: 346432
-        category: "code"
-        content:
-            'import java.io.IOException\n' +
-            'import java.util.Map\n' +
-            '\n' +
-            'public class MyFirstJavaProgram {\n' +
-            '\tpublic static void main(String[] args) {\n' +
-            '\t\tSystem.out.println("Hello World");\n' +
-            '\t}\n' +
-            '}\n' +
-            '\n'
-        path: "/future/path/to/file"
-        extension: "java"
-    }
-    {
-        name: "main"
-        size: 832
-        category: "code"
-        content:
-            'var x = myFunction(4, 3); // Function is called, return value will end up in x\n' +
-            'function myFunction(a, b) {\n' +
-            '\treturn a * b; // Function returns the product of a and b\n' +
-            '}\n'
-        path: "/future/path/to/file"
-        extension: "js"
-    }
-    {
-        name: "index"
-        size: 876432
-        category: "code"
-        content:
-            '!doctype html>\n' +
-            '<html lang="en">\n' +
-            '\t<head>\n' +
-            '\t\t<meta charset="utf-8">\n' +
-            '\t\t<title>The HTML5 Herald</title>\n' +
-            '\t\t<meta name="description" content="The HTML5 Herald">\n' +
-            '\t\t<meta name="author" content="SitePoint">\n' +
-            '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0">\n' +
-            '\t</head>\n' +
-            '\t<body>\n' +
-            '\t\t<script src="js/scripts.js"></script>\n' +
-            '\t</body>\n' +
-            '</html>\n'
-        path: "/future/path/to/file"
-        extension: "html"
-    }
-    {
-        name: "script"
-        size: 1024
-        category: "code"
-        content:
-            "parents, babies = (1, 1)\n" +
-            "\n" +
-            "while babies < 100:\n" +
-            "\tprint 'This generation has {0} babies'.format(babies)\n" +
-            "\tparents, babies = (babies, parents + babies)'\n"
-        path: "/future/path/to/file"
-        extension: "py"
-    }
-    {
-        name: "spec"
-        size: 90123
-        category: "code"
-        content:
-            'for j in 1..5 do\n' +
-            '\tfor i in 1..5 do\n' +
-            '\t\tprint i,  " "\n' +
-            '\t\tbreak if i == 2\n' +
-            '\tend\n' +
-            'end\n'
-        path: "/future/path/to/file"
-        extension: "rb"
-    }
+    # {
+    #     name: "style"
+    #     size: 876432
+    #     category: "code"
+    #     content:
+    #         '.newspaper {\n' +
+    #         '\t-webkit-column-count:3; /* Chrome, Safari, Opera */\n' +
+    #         '\t-moz-column-count:3; /* Firefox */\n' +
+    #         '\tcolumn-count:3;\n' +
+    #         '\n' +
+    #         '\t-webkit-column-gap:40px; /* Chrome, Safari, Opera */\n' +
+    #         '\t-moz-column-gap:40px; /* Firefox */\n' +
+    #         '\tcolumn-gap:40px;\n' +
+    #         '\n' +
+    #         '\t-webkit-column-rule:4px outset #ff00ff; /* Chrome, Safari,Opera */\n' +
+    #         '\t-moz-column-rule:4px outset #ff00ff; /* Firefox */\n' +
+    #         '\tcolumn-rule:4px outset #ff00ff;\n' +
+    #         '}\n'
+    #     path: "/future/path/to/file"
+    #     extension: "css"
+    # }
+    # {
+    #     name: "HelloWorld"
+    #     size: 346432
+    #     category: "code"
+    #     content:
+    #         'import java.io.IOException\n' +
+    #         'import java.util.Map\n' +
+    #         '\n' +
+    #         'public class MyFirstJavaProgram {\n' +
+    #         '\tpublic static void main(String[] args) {\n' +
+    #         '\t\tSystem.out.println("Hello World");\n' +
+    #         '\t}\n' +
+    #         '}\n' +
+    #         '\n'
+    #     path: "/future/path/to/file"
+    #     extension: "java"
+    # }
+    # {
+    #     name: "main"
+    #     size: 832
+    #     category: "code"
+    #     content:
+    #         'var x = myFunction(4, 3); // Function is called, return value will end up in x\n' +
+    #         'function myFunction(a, b) {\n' +
+    #         '\treturn a * b; // Function returns the product of a and b\n' +
+    #         '}\n'
+    #     path: "/future/path/to/file"
+    #     extension: "js"
+    # }
+    # {
+    #     name: "index"
+    #     size: 876432
+    #     category: "code"
+    #     content:
+    #         '!doctype html>\n' +
+    #         '<html lang="en">\n' +
+    #         '\t<head>\n' +
+    #         '\t\t<meta charset="utf-8">\n' +
+    #         '\t\t<title>The HTML5 Herald</title>\n' +
+    #         '\t\t<meta name="description" content="The HTML5 Herald">\n' +
+    #         '\t\t<meta name="author" content="SitePoint">\n' +
+    #         '\t\t<link rel="stylesheet" href="css/styles.css?v=1.0">\n' +
+    #         '\t</head>\n' +
+    #         '\t<body>\n' +
+    #         '\t\t<script src="js/scripts.js"></script>\n' +
+    #         '\t</body>\n' +
+    #         '</html>\n'
+    #     path: "/future/path/to/file"
+    #     extension: "html"
+    # }
+    # {
+    #     name: "script"
+    #     size: 1024
+    #     category: "code"
+    #     content:
+    #         "parents, babies = (1, 1)\n" +
+    #         "\n" +
+    #         "while babies < 100:\n" +
+    #         "\tprint 'This generation has {0} babies'.format(babies)\n" +
+    #         "\tparents, babies = (babies, parents + babies)'\n"
+    #     path: "/future/path/to/file"
+    #     extension: "py"
+    # }
+    # {
+    #     name: "spec"
+    #     size: 90123
+    #     category: "code"
+    #     content:
+    #         'for j in 1..5 do\n' +
+    #         '\tfor i in 1..5 do\n' +
+    #         '\t\tprint i,  " "\n' +
+    #         '\t\tbreak if i == 2\n' +
+    #         '\tend\n' +
+    #         'end\n'
+    #     path: "/future/path/to/file"
+    #     extension: "rb"
+    # }
     {
         name: "Protocol"
         size: 90123
