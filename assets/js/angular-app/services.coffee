@@ -423,8 +423,9 @@ class RTCService
 
                         for client in @signaller.signallingClients
                             if !client.authenticated
-                                if client.id isnt item.author
-                                    client.DCsend parsedMsg
+                                continue
+                            if client.id isnt parsedMsg.id
+                                client.DCsend parsedMsg
 
                     when "codeDocumentHasChanged"
                         item = @signaller.service.SharesService.get(
@@ -1547,7 +1548,7 @@ class Shares
         setCreated: (@created) ->
 
 
-    constructor: (@rootScope) ->
+    constructor: (@$rootScope) ->
 
     getItemIndex: (item_id) =>
         item = {}
@@ -1587,15 +1588,13 @@ class Shares
         return id
 
     updateItem: (itemId, change) ->
-        console.log "change is", change
-        console.log "keys are", Object.keys(change)
-
         item = @get(itemId)
-        keys = Object.keys(change)
+        changeKeys = Object.keys(change)
 
-        item[keys[0]] = change[keys[0]]
+        for changeKey of changeKeys
+            item[changeKeys[changeKey]] = change[changeKeys[changeKey]]
 
-        console.log "item has changed", item
+        # @$rootScope.$apply() if !@$rootScope.$$phase
 
     getContributor: (itemId, contributorId) ->
         item = @get(itemId)
@@ -1606,6 +1605,12 @@ class Shares
 
         return false
 
+    setContributorInactive: (itemId, contributorId) ->
+        item = @get(itemId)
+
+        for contributor in item.contributors
+            if contributor.id is contributorId
+                contributor.active = false
 
 app.service "UserService", ["$rootScope", Users ]
 
