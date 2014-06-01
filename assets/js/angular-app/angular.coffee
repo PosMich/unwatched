@@ -242,14 +242,19 @@ app.run ($rootScope, $location) ->
 
     $rootScope.$on "$routeChangeSuccess", ->
 
-        if $location.path() isnt "/"
+        path = $location.path()
+
+        if path isnt "/"
             if !/\/room\/[a-f0-9]+/.test $location.path()
                 $rootScope.showChat = true
         else
             $rootScope.showChat = false
 
-        if ($location.path() is "/room" and !$rootScope.userId?) or
-                ($location.path() is "/users" and !$rootScope.userId?)
+
+        if (path is "/room" and !$rootScope.userId?) or
+                (path is "/users" and !$rootScope.userId?) or
+                (path.indexOf("/share") > -1 and !$rootScope.userId?)
+
             $location.path("/")
 
 
