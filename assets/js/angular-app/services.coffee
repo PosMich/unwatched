@@ -404,6 +404,17 @@ class RTCService
                                     type: "userPicHasChanged"
                                     message: parsedMsg.message
 
+                    when "userDeleted"
+                        @signaller.service.UserService.delete parsedMsg.userId
+                        @dataChannel.close()
+                        @signaller.removeSlave(@id)
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.userId
+                                client.DCsend parsedMsg
+
                     when "newCodeItem"
                         @signaller.service.SharesService.shares.push(
                             parsedMsg.codeItem )
@@ -471,7 +482,15 @@ class RTCService
                                 if client.id isnt parsedMsg.userId
                                     client.DCsend parsedMsg
 
-                    when "p2p"
+                    when "codeItemDeleted"
+                        @signaller.service.SharesService.delete parsedMsg.itemId
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.userId
+                                client.DCsend parsedMsg
+
 
                     else
                         console.log "DChandle: unknown msg"
@@ -746,6 +765,9 @@ class RTCService
                         parsedMsg.message.userId, parsedMsg.message.userPic
                     )
 
+                when "roomClosed"
+                    @service.RoomService.isClosed = true
+
                 when "newCodeItem"
                     console.log "got new code item: ", parsedMsg.codeItem
                     @service.SharesService.shares.push parsedMsg.codeItem
@@ -755,16 +777,17 @@ class RTCService
                         parsedMsg.change )
 
                 when "codeDocumentHasChanged"
-                    item = @service.SharesService.get(parsedMsg.itemId)
+                    item = @service.SharesService.get parsedMsg.itemId
                     item.deltas = parsedMsg.change
 
                 when "cursorHasChanged"
-                    console.log "markers", @service.$rootScope.markers
                     @service.$rootScope.markersChanged = true
                     for marker in @service.$rootScope.markers
                         if marker.contributorId is parsedMsg.userId
                             marker.cursor = parsedMsg.change
-                            console.log "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBLUBB"
+
+                when "codeItemDeleted"
+                    @service.SharesService.delete parsedMsg.itemId
 
                 when "password"
                     if parsedMsg.passwordIsValid
@@ -902,41 +925,63 @@ class RTCService
 
 
 
-    sendNewCodeItem: (codeItem, isMaster) ->
-        if !isMaster
+    sendUserDeleted: (user) ->
+        if !user.isMaster
             @handler.DCsend
-                type: "newCodeItem"
-                codeItem: codeItem
+                type: "userDeleted"
+                userId: user.id
         else
             for client in @handler.signallingClients
                 if !client.authenticated
                     continue
                 client.DCsend
-                    type: "newCodeItem"
-                    codeItem: codeItem
+                    type: "roomClosed"
+
+            window.setTimeout((->
+                window.location "/"
+            ), 5000)
+
+    sendNewCodeItem: (codeItem, isMaster) ->
+
+        dataChannelMessage =
+            type: "newCodeItem"
+            codeItem: codeItem
+
+        if !isMaster
+            @handler.DCsend dataChannelMessage
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend dataChannelMessage
 
     sendCodeItemHasChanged: (change, itemId, isMaster) ->
+
+        dataChannelMessage =
+            type: "codeItemHasChanged"
+            change: change
+            itemId: itemId
+
         if !isMaster
-            @handler.DCsend
-                type: "codeItemHasChanged"
-                change: change
-                itemId: itemId
+            @handler.DCsend dataChannelMessage
+
         else
             for client in @handler.signallingClients
                 if !client.authenticated
                     continue
-                client.DCsend
-                    type: "codeItemHasChanged"
-                    change: change
-                    itemId: itemId
+                client.DCsend dataChannelMessage
 
     broadcastCodeDocumentHasChanged: (change, itemId, user) ->
+
+        dataChannelMessage =
+            type: "codeDocumentHasChanged"
+            itemId: itemId
+            change: change
+            userId: user.id
+
         if !user.isMaster
-            @handler.DCsend
-                type: "codeDocumentHasChanged"
-                itemId: itemId
-                change: change
-                userId: user.id
+            @handler.DCsend dataChannelMessage
+
         else
             active_contributors = []
             for contributor in @SharesService.get(itemId).contributors
@@ -947,20 +992,19 @@ class RTCService
                 if !client.authenticated
                     continue
                 if active_contributors.indexOf( client.id ) isnt -1
-                    console.log "sending code to client with id", client.id
-                    client.DCsend
-                        type: "codeDocumentHasChanged"
-                        itemId: itemId
-                        change: change
-                        userId: user.id
+                    client.DCsend dataChannelMessage
 
     broadcastCursorHasChanged: (cursor, user, itemId) ->
+
+        dataChannelMessage =
+            type: "cursorHasChanged"
+            change: cursor
+            userId: user.id
+            itemId: itemId
+
         if !user.isMaster
-            @handler.DCsend
-                type: "cursorHasChanged"
-                change: cursor
-                userId: user.id
-                itemId: itemId
+            @handler.DCsend dataChannelMessage
+
         else
             active_contributors = []
             for contributor in @SharesService.get(itemId).contributors
@@ -971,11 +1015,23 @@ class RTCService
                 if !client.authenticated
                     continue
                 if active_contributors.indexOf( client.id ) isnt -1
-                    client.DCsend
-                        type: "cursorHasChanged"
-                        change: cursor
-                        userId: user.id
-                        itemId: itemId
+                    client.DCsend dataChannelMessage
+
+    sendCodeItemDeleted: (user, itemId) ->
+
+        dataChannelMessage =
+            type: "codeItemDeleted"
+            userId: user.id
+            itemId: itemId
+
+        if !user.isMaster
+            @handler.DCsend dataChannelMessage
+
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend dataChannelMessage
 
 class Users
     @::users = []
@@ -1064,9 +1120,13 @@ class Users
 
     getUser: (id) ->
         for user in @users
-            console.log user
             if user.id is id
                 return user
+
+    delete: (id) ->
+        for user, index in @users
+            if user.id is id
+                @users.splice(id, 1)
 
     nameIsOccupied: (id, name) ->
         for user in @users
@@ -1090,15 +1150,6 @@ class Users
     addInitUser: (user) ->
         @users.push new User( user.name, user.id, user.color,
             user.isMaster, user.pic, user.joinedDate )
-
-    # onMessage: (message) =>
-    #     console.log "UserService :: received message"
-    #     console.log message
-    #     user_data = message.message
-    #     @users.push new User( user_data.name, user_data.id, user_data.color,
-    #         user_data.isMaster )
-    #
-    #     @$rootScope.$apply() if !@$rootScope.$$phase
 
     setInactive: (id) ->
         user = @getUser id
@@ -1432,7 +1483,7 @@ class Shares
 
     create: (author, category) ->
         id = @getFirstFreeId()
-        name = "Untitled " + category + " item"
+        name = "Untitled " + category
         @shares.push new Item( id, name, author, category )
         return id
 
@@ -1495,11 +1546,13 @@ app.service "RoomService", [
         @::filesLength
         @::description
         @::url = ""
+        @::isClosed = false
 
         constructor: (@$filter, @$rootScope, @$http, @SERVER_URL,
             @SERVER_PORT) ->
             @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
             @description = "Room description"
+            isClose = false
 
         setName: (name) ->
             @name = name

@@ -37,7 +37,7 @@ html(ng-app="unwatched")
                       .arrow
                       .content create a room
                 .subicon-container.bottom2(ng-if="isInRoom")
-                  a.menu-leave-room.subicon(href="/leaveRoom").side-tooltip
+                  a.menu-leave-room.subicon(href="#", ng-click="leaveRoom()").side-tooltip
                     .stack-align.clearfix
                       span.fa-stack
                         i.fa.fa-building.fa-stack-1x
@@ -83,7 +83,7 @@ html(ng-app="unwatched")
                         span {{message.message | shorten}}
           .icon-container
             a.menu-share.side-icon(href="/share").side-tooltip
-              .notification 5
+              .notification.ng-hide(ng-show="sharesNotification!=0") {{sharesNotification}}
               .side-popover
                 .arrow
                 .content share overview
@@ -119,8 +119,8 @@ html(ng-app="unwatched")
                     .side-popover
                       .arrow
                       .content  share your webcam
-    
-    //-          .icon 
+
+    //-          .icon
                 .fa.fa-file.fa-inverse
                 .subicon-container
                   .subicons
@@ -137,7 +137,9 @@ html(ng-app="unwatched")
 
 
     .view-container(ng-controller="AppCtrl")
-      .clearfix.view-frame.container-fluid(ng-view)
+        .alert.alert-danger.shutdown.ng-hide(ng-show="isClosed")
+            | Your room is going to <strong>shut down</strong>...
+        .clearfix.view-frame.container-fluid(ng-view)
 
     .chat(chat, ng-if="showChat")
     div(ng-controller="StreamCtrl")

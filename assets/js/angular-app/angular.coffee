@@ -189,7 +189,7 @@ app.config [
             controller: "WebcamCtrl"
 
         # ***
-        # * <h3>route `/share/file/:id`</h3>
+        # * <h3>route `/share/file`</h3>
         # > loads an empty file item to share it
         # >
         # > load FileCtrl

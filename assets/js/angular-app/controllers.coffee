@@ -6,10 +6,13 @@
 app = angular.module "unwatched.controllers", []
 
 app.controller "AppCtrl", [
-    "$scope", "$rootScope", "SharesService", "StreamService", "ChatService"
-    ($scope, $rootScope, SharesService, StreamService, ChatService) ->
+    "$scope", "$rootScope", "SharesService", "StreamService", "ChatService",
+    "RoomService"
+    ($scope, $rootScope, SharesService, StreamService, ChatService,
+        RoomService) ->
 
         $rootScope.sharesInit = false
+        $scope.isClosed = false
 
         $scope.killStream = (type) ->
             if type is 'screen'
@@ -17,13 +20,22 @@ app.controller "AppCtrl", [
             else
                 StreamService.killWebcamStream()
 
+        $scope.$watch ->
+            RoomService.isClosed
+        , (isClosed) ->
+            if isClosed
+                $scope.isClosed = isClosed
+                window.setTimeout((->
+                    window.location = "/"
+                ), 5000)
+
 ]
 
 app.controller "SideCtrl", [
     "$scope", "UserService", "SharesService", "ChatService", "$location",
-    "RoomService"
+    "RoomService", "RTCService", "$rootScope"
     ($scope, UserService, SharesService, ChatService, $location,
-        RoomService) ->
+        RoomService, RTCService, $rootScope) ->
 
         $scope.isInRoom = RoomService.id != ""
         $scope.roomUrl = "/"
@@ -38,6 +50,8 @@ app.controller "SideCtrl", [
         $scope.messages = []
         $scope.users = UserService.users
         $scope.usersNotification = 0
+        $scope.shares = SharesService.shares
+        $scope.sharesNotification = 0
 
         $scope.$watch ->
             ChatService.messages
@@ -52,8 +66,17 @@ app.controller "SideCtrl", [
         $scope.$watch ->
             UserService.users
         , (new_users, old_users) ->
-            if new_users.length != old_users.length
-                $scope.usersNotification++
+            if new_users.length isnt old_users.length
+                if $location.path() isnt "/users"
+                    $scope.usersNotification++
+        , true
+
+        $scope.$watch ->
+            SharesService.shares
+        , (new_shares, old_shares) ->
+            if new_shares.length isnt old_shares.length
+                if $location.path() isnt "/share"
+                    $scope.sharesNotification++
         , true
 
         $scope.$watch ->
@@ -61,9 +84,17 @@ app.controller "SideCtrl", [
         , (path) ->
             if path is "/users" or path is "/room"
                 $scope.usersNotification = 0
+            if path is "/share"
+                $scope.sharesNotification = 0
         , true
 
+        $scope.leaveRoom = ->
+            RTCService.sendUserDeleted( UserService.getUser($rootScope.userId) )
+            UserService.delete()
+            $rootScope.userId = undefined
+            $rootScope.roomId = undefined
 
+            window.location = "/"
 
 ]
 
@@ -354,12 +385,14 @@ app.controller "UsersCtrl", [
 # * <h3>Share Controller</h3>
 # >
 app.controller "ShareCtrl", [
-    "$scope", "ChatStateService", "SharesService", "LayoutService",
-    "$modal", "StreamService"
+    "$scope", "ChatStateService", "SharesService", "LayoutService", "$modal",
+    "StreamService", "UserService", "$rootScope", "RTCService"
     ($scope, ChatStateService, SharesService, LayoutService, $modal,
-        StreamService) ->
+        StreamService, UserService, $rootScope, RTCService) ->
 
         $scope.shared_items = SharesService.getItems()
+        $scope.users = UserService.users
+        $scope.user = $scope.users[$rootScope.userId]
 
         $scope.$watch (->
             return ChatStateService.chat_state
@@ -411,6 +444,8 @@ app.controller "ShareCtrl", [
                     StreamService.killWebcamStream(category)
                 else
                     SharesService.delete(item_id)
+
+                RTCService.sendCodeItemDeleted($scope.user, item_id)
             )
 
         $scope.setLayout = (layout) ->
@@ -419,9 +454,10 @@ app.controller "ShareCtrl", [
 ]
 
 app.controller "DeleteModalInstanceCtrl", [
-    "$scope", "$modalInstance", "item"
-    ($scope, $modalInstance, item) ->
+    "$scope", "$modalInstance", "item", "UserService"
+    ($scope, $modalInstance, item, UserService) ->
         $scope.item = item
+        $scope.users = UserService.users
 
         $scope.ok = ->
             $modalInstance.close()
@@ -529,48 +565,79 @@ app.controller "ImageCtrl", [
 ]
 
 app.controller "FileCtrl", [
-    "$scope", "$routeParams", "SharesService", "$location", "$filter",
-    "$modal"
-    ($scope, $routeParams, SharesService, $location, $filter
-        $modal) ->
+    "$scope", "$routeParams", "SharesService", "$location", "$modal",
+    "UserService", "$rootScope"
+    ($scope, $routeParams, SharesService, $location, $modal, UserService,
+        $rootScope) ->
 
-        $scope.item = {}
+        $scope.createThumbnail = ->
+
+            img = document.createElement("img")
+            canvas = document.createElement("canvas")
+
+            if $scope.item.category is "image"
+                img.src = $scope.target_result
+                img.onload = ->
+
+                    max_width = 300
+                    width = img.width
+                    height = img.height
+
+                    if width > max_width
+                        height *= max_width / width
+                        width = max_width
+
+                    canvas.width = width
+                    canvas.height = height
+
+                    ctx = canvas.getContext "2d"
+                    ctx.drawImage( img, 0, 0, width, height )
+
+                    $scope.item.thumbnail = canvas.toDataURL(
+                        $scope.item.mime_type
+                    )
+
+                $scope.$apply() if !$scope.$$phase
+
+        $scope.users = UserService.users
 
         if !$routeParams.id?
             # create new image item
-            $scope.item = SharesService.create("file", $rootScope.userId)
+
+            sharedItemId = SharesService.create( $rootScope.userId, "file" )
+            $scope.item = SharesService.get( sharedItemId )
             $scope.item.mime_type = ""
 
-            $scope.onFileSelect = ($files) ->
-                $scope.file = {}
-                $scope.file.progress = 0
-                $scope.file.show_progress = false
-                $scope.file.ready = false
+            $scope.file = {}
 
+            $scope.onFileSelect = ($files) ->
                 $scope.file.source = $files[0]
 
-                $scope.item.size = $scope.file.source.size
-                $scope.item.created = $filter("date")(
-                    $scope.file.source.lastModifiedDate, "dd.MM.yyyy H:mm")
-                $scope.item.uploaded = $filter("date")(new Date(),
-                    "dd.MM.yyyy H:mm")
-
                 $scope.item.name = $scope.file.source.name
-                $scope.item_name = $scope.file.source.name
                 $scope.item.mime_type = $scope.file.source.type
+                $scope.item.size = $scope.file.source.size
+                $scope.item.created = $scope.file.source.lastModifiedDate
+                $scope.item.uploaded = new Date()
 
+                if $scope.item.size < 30000000
+                    $scope.file.progress = 100
+
+                if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
+                    $scope.item.category = "image"
 
                 # read file
                 reader = new FileReader()
 
                 reader.onload = (e) ->
+
+                    if $scope.item.category is "image"
+                        $scope.target_result = e.target.result
+
                     window.setTimeout((->
                         $scope.file.show_progress = false
                         $scope.file.ready = true
                         $scope.$apply()
                     ), 2000)
-
-                    # console.log file
 
                     window.requestFileSystem  = window.requestFileSystem ||
                         window.webkitRequestFileSystem
@@ -580,8 +647,8 @@ app.controller "FileCtrl", [
                         onInitFs,
                         onErrorFs,
 
-
                 reader.onprogress = (e) ->
+                    console.log "progress"
                     $scope.file.show_progress = true
                     $scope.$apply()
                     percentLoaded = Math.round((e.loaded / e.total) * 100)
@@ -612,16 +679,18 @@ app.controller "FileCtrl", [
             onErrorCreateFile = (error) ->
                 console.log error
 
+            $scope.$watch ->
+                $scope.file.ready
+            , (ready) ->
+                console.log ready
+                if ready
+                    $scope.item.content = $scope.target_result
+                    $scope.createThumbnail()
+            , true
 
         else
             $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
-
-        # for inline editing
-        $scope.disabled = true
-
-        $scope.item_name = $scope.item.name
-
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -731,6 +800,9 @@ app.controller "CodeCtrl", [
         $scope.settings.available_font_sizes = font_sizes
         $scope.settings.available_themes = ace_themes
 
+        # dataUrl to download code file
+        $scope.dataUrl = ""
+
         # helper functions
         $scope.containerResize = ->
             $scope.editor.resize()
@@ -763,7 +835,6 @@ app.controller "CodeCtrl", [
                     return i
 
         $scope.updateThumbnail = ->
-
             lines = $scope.editor.session.doc.getLines(0, 4)
             i = 0
             thumbnail = ""
@@ -772,7 +843,6 @@ app.controller "CodeCtrl", [
                 i++
 
             $scope.item.thumbnail = thumbnail
-            console.log "updated thumbnail", @thumbnail
 
 
         $scope.delete = ->
@@ -787,6 +857,7 @@ app.controller "CodeCtrl", [
             )
 
             modalInstance.result.then( ->
+                RTCService.sendCodeItemDeleted( $scope.user, $scope.item.id )
                 SharesService.delete $scope.item.id
                 $location.path "/share"
             )
@@ -884,8 +955,10 @@ app.controller "CodeCtrl", [
             $scope.item.content = $scope.editor.getValue()
             $scope.item.size = $scope.editor.session.getLength()
             $scope.$apply() if !$scope.$$phase
-            console.log "set size to", $scope.item.size
             $scope.item.last_edited = new Date()
+
+            # console.log $scope.item.content
+            # $scope.dataUrl = window.btoa $scope.item.content
 
             if e.data.range.start.row <= 5 or e.data.range.end.row <= 5
                 $scope.updateThumbnail()
@@ -1020,14 +1093,14 @@ app.controller "CodeCtrl", [
         $scope.$on "$routeChangeStart", (scope, next, current) ->
 
             $rootScope.markers = []
+            if current.scope.item.id?
+                SharesService.setContributorInactive(current.scope.item.id,
+                    current.scope.user.id)
+                change =
+                    contributors: current.scope.item.contributors
 
-            SharesService.setContributorInactive(current.scope.item.id,
-                current.scope.user.id)
-            change =
-                contributors: current.scope.item.contributors
-
-            RTCService.sendCodeItemHasChanged(
-                change, current.scope.item.id, current.scope.user.isMaster )
+                RTCService.sendCodeItemHasChanged(
+                    change, current.scope.item.id, current.scope.user.isMaster )
 
 ]
 

@@ -8,7 +8,8 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                a(ng-href="{{item.path}}")
+                a( ng-download="'{{item.name}}'",
+                    content="file.source", mime-type="'{{item.mime_type}}'" )
                     .download
                         i.fa.fa-download
                         span Download
@@ -22,29 +23,24 @@
                         span Remove
 
     .jumbotron
-        .detail-heading(inline-edit="h1")
-            form(name="fileForm", ng-hide="disabled")
-                .input-container(ng-class="{'has-error': fileForm.fName.$invalid}")
-                    input#fileName.form-control(type='text', name="fName"
-                        ng-model="item_name", required, ng-disabled="disabled"
-                        ng-class="{'input-disabled':disabled}")
-                    span.help-block(ng-show="fileForm.fName.$error.required")
-                        | *Required field. Name won't be saved.
-            h1(ng-hide="!disabled")
-                | {{item.name}}
+        .detail-heading
+            edit-in-place(value="item.name")
+                h1 {{item.name}}
+                input.form-control(type="text", ng-model="item.name")
+
         .infos-container
             .info
                 b Size:
                 | {{item.size | humanReadableFileSize}}
             .info
                 b Author:
-                | {{item.author}}
-            .info
+                | {{users[item.author].name}}
+            .info(ng-show="item.created!=''")
                 b Created:
-                | {{item.created}}
-            .info
+                | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
+            .info(ng-show="item.uploaded!=''")
                 b Uploaded:
-                | {{item.uploaded}}
+                | {{item.uploaded | date: 'dd.MM.yyyy - HH:mm'}}
             .info(ng-show="item.mime_type!=''")
                 b MIME-Type:
                 | {{item.mime_type}}
@@ -52,7 +48,7 @@
                 b Category:
                 | {{item.category}}
 
-        .settings-container.file(ng-hide="file.ready")
+        .settings-container.image(ng-hide="file.ready")
             h4 Choose a file from you drive
             form.form-inline(role="form")
                 .form-group
@@ -68,4 +64,7 @@
                     value="file.progress")
                     i {{file.progress}}%
         .alert.alert-success(ng-show="file.ready")
-            | You have successfully shared an item.
+            | You have <strong>successfully</strong> shared an item.
+        .image-container.ng-hide(ng-show="item.category=='image'")
+            .img.ng-hide(ng-show="file.ready")
+                img.thumbnail(ng-src="{{item.content}}")
