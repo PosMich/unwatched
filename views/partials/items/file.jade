@@ -8,8 +8,13 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                a( ng-download="'{{item.name}}'",
+                a(ng-if="newItem" ng-download="'{{item.name}}'",
                     content="file.source", mime-type="'{{item.mime_type}}'" )
+                    .download
+                        i.fa.fa-download
+                        span Download
+                a(ng-if="!newItem" ng-download="'{{item.name}}'",
+                    content="file_source", mime-type="'{{item.mime_type}}'" )
                     .download
                         i.fa.fa-download
                         span Download
@@ -48,14 +53,14 @@
                 b Category:
                 | {{item.category}}
 
-        .settings-container.image(ng-hide="file.ready")
+        .settings-container.image(ng-hide="file.ready", ng-if="newFile")
             h4 Choose a file from you drive
             form.form-inline(role="form")
                 .form-group
                     input.form-control(type="file",
                         ng-file-select="onFileSelect($files)")
 
-        .file-container(ng-hide="file.ready")
+        .file-container(ng-hide="file.ready", ng-if="newFile")
             .drop-box(ng-file-drop="onFileSelect($files)",
                 ng-file-drag-over-class="drag-over-class")
                 | or drop files here
@@ -64,7 +69,7 @@
                     value="file.progress")
                     i {{file.progress}}%
         .alert.alert-success(ng-show="file.ready")
-            | You have <strong>successfully</strong> shared an item.
+            | You have <strong>successfully</strong> shared a file.
         .image-container.ng-hide(ng-show="item.category=='image'")
-            .img.ng-hide(ng-show="file.ready")
+            .img.ng-hide(ng-show="file.ready || !newItem")
                 img.thumbnail(ng-src="{{item.content}}")

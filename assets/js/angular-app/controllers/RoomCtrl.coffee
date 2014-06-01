@@ -220,6 +220,6 @@ dummy_items = [
         size: 190123
         thumbnail: "images/image.jpg"
         category: "image"
-        path: "/images/image.jpg"
+        content: "/images/image.jpg"
     }
 ]

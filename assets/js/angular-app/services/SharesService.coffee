@@ -24,8 +24,11 @@ class Shares
         @::contributors = undefined
         @::deltas = undefined
         constructor: (@id, @name, @author, @category) ->
-            @templateUrl = "/partials/items/thumbnails/" +
-                category + ".html"
+            if @category isnt "image"
+                @templateUrl = "/partials/items/thumbnails/" +
+                    category + ".html"
+            else
+                @templateUrl = "/partials/items/thumbnails/file.html"
             @size = 0
 
             if @category isnt "file" and @category isnt "image"
@@ -105,8 +108,10 @@ class Shares
 
         for changeKey of changeKeys
             item[changeKeys[changeKey]] = change[changeKeys[changeKey]]
+            console.log "changing " + changeKeys[changeKey] + " to:",
+                change[changeKeys[changeKey]]
 
-        # @$rootScope.$apply() if !@$rootScope.$$phase
+
 
     getContributor: (itemId, contributorId) ->
         item = @get(itemId)

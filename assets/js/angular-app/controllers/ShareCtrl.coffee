@@ -66,7 +66,7 @@ app.controller "ShareCtrl", [
                 else
                     SharesService.delete(item_id)
 
-                RTCService.sendCodeItemDeleted($scope.user, item_id)
+                RTCService.sendItemDeleted($scope.user, item_id)
             )
 
         $scope.setLayout = (layout) ->
