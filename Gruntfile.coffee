@@ -84,7 +84,7 @@ module.exports = (grunt) ->
         key: grunt.file.read config.ssl.key
         cert: grunt.file.read config.ssl.cert
 
-    files = 
+    files =
         libDir: "assets/js/lib"
         libs: [
             "jquery-1.11.1.js"
@@ -104,10 +104,11 @@ module.exports = (grunt) ->
 
         angularAppCoffeeFilesDir: "assets/js/angular-app"
         angularAppCoffeeFiles: [
-            "services.coffee"
-            "controllers.coffee"
+            "initDeps.coffee"
+            "services/*.coffee"
+            "controllers/*.coffee"
+            "directives/*.coffee"
             "filters.coffee"
-            "directives.coffee"
             "angular.coffee"
         ]
         angularJsOutput: "public/js/app.js"
@@ -133,14 +134,14 @@ module.exports = (grunt) ->
             server: files.serverFiles
             app: files.getAngularAppCoffeeFiles()
             options:
-                configFile: "coffeelint.json" 
+                configFile: "coffeelint.json"
         coffee:
             server:
-                files: [      
+                files: [
                     expand: true
                     flatten: true
                     src: files.serverFiles
-                    dest: ".app/"   
+                    dest: ".app/"
                     ext: ".js"
                     extDot: "last"
                 ]
@@ -158,7 +159,7 @@ module.exports = (grunt) ->
 
         concat:
             app:
-                src:  files.getAppFiles() 
+                src:  files.getAppFiles()
                 dest: files.angularJsOutput
 
         cssmin:
@@ -204,7 +205,7 @@ module.exports = (grunt) ->
                     "stylus"
                     "concat"
                 ]
-            debug:          
+            debug:
                 taskList: [
                     "jade"
                     "ngtemplates"
@@ -228,13 +229,13 @@ module.exports = (grunt) ->
                     "build:dev"
                     "concurrent:dev"
                 ]
-            debug:          
+            debug:
                 taskList: [
                     "build:debug"
                     "concurrent:debug"
                 ]
 
-        watch: 
+        watch:
             options:
                 spawn: false
                 livereload: LIVERELOAD
@@ -251,19 +252,19 @@ module.exports = (grunt) ->
                 files: "modules/*.*"
                 tasks: ["coffeelint:server", "coffee:server"]
             APITests:
-                files: ["spec/backend/**/*.*", "modules/**/*.*"] 
+                files: ["spec/backend/**/*.*", "modules/**/*.*"]
                 tasks: ["delayAPITests"]
-            
+
 
         "node-inspector":
             debug:
                 options:
                     hidden: ["node_modules"]
-        
+
         concurrent:
             options:
-                logConcurrentOutput: true   
-            debug: 
+                logConcurrentOutput: true
+            debug:
                 tasks: [
                     "nodemon:debug"
                     "node-inspector:debug"
@@ -273,18 +274,18 @@ module.exports = (grunt) ->
                 tasks: [
                     "nodemon:dev"
                     "watch"
-                ]   
+                ]
             testAll:
                 tasks: [
                     "nodemon:testing"
                     "delayAllTests"
-                ] 
+                ]
             testAPI:
                 tasks: [
                     "nodemon:testing"
                     "delayAPITests"
                     "watch:APITests"
-                ] 
+                ]
             testFrontend_e2e:
                 tasks: [
                     "nodemon:testing"
@@ -301,16 +302,16 @@ module.exports = (grunt) ->
                 callback:  (nodemon) ->
                     nodemon.on "log", (event) ->
                         console.log event.colour
-                    
+
 
                     nodemon.on "config:update", ->
-                        setTimeout -> 
+                        setTimeout ->
                             require("open")("http://localhost:#{config.port.http}")
                         , 2000
 
                     nodemon.on "restart", ->
                         console.log nodemon
-                    
+
             debug:
                 script: "app.js"
                 options:
@@ -318,10 +319,10 @@ module.exports = (grunt) ->
                     callback: (nodemon) ->
                         #nodemon.on "log", (event) ->
                         #    console.log event.colour
-                        
+
                         nodemon.on "config:update", ->
                             setTimeout ->
-                                open = require("open") 
+                                open = require("open")
                                 open("http://localhost:#{config.port.http}")
                                 open("http://localhost:8080/debug?port=5858")
                             , 1000
@@ -329,7 +330,7 @@ module.exports = (grunt) ->
 
                         nodemon.on "restart", ->
                             setTimeout ->
-                                require("fs").writeFileSync( ".rebooted", "rebooted" )      
+                                require("fs").writeFileSync( ".rebooted", "rebooted" )
                             , 1000
                             return
             dev:
@@ -345,12 +346,12 @@ module.exports = (grunt) ->
                 options:
                     callback: (nodemon) =>
 
-    
+
         groc:
             all: [ "./modules/*.coffee", "./assets/js/**/*.coffee", "README.md" ]
-            options: 
+            options:
                 out: "public/docs/"
-        
+
         jasmine_node:
             options:
                 coffee: true
@@ -372,7 +373,7 @@ module.exports = (grunt) ->
                 ["concurrent:testAll"]
             api:
                 ["concurrent:testAPI"]
-            frontend: 
+            frontend:
                 ["test:frontend_unit", "test:frontend_e2e"]
             frontend_unit:
                 ["concurrent:testFrontend_unit"]
@@ -416,7 +417,7 @@ module.exports = (grunt) ->
 
 
 
-    grunt.registerTask "docs", ["coffeelint", "groc"]          
+    grunt.registerTask "docs", ["coffeelint", "groc"]
 
     grunt.registerTask "default", [ "serve:dev" ]
 
@@ -433,5 +434,3 @@ module.exports = (grunt) ->
             grunt.task.run "serve:"+env
         else
             grunt.task.run "serve"
-
-
