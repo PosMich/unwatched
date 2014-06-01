@@ -69,5 +69,24 @@ app.controller "SideCtrl", [
             $rootScope.roomId = undefined
 
             window.location = "/"
-
-]
+        $scope.IntroOptions =
+          steps: [
+            {
+              element: "#step1"
+              intro: "This is the main Menu. <br>Hover to show the tooltips."
+              position: "right"
+            }
+            {
+              element: "#step2"
+              intro: "Create a room if you want to share something."
+              position: "left"
+            }
+          ]
+          showStepNumbers: false
+          exitOnOverlayClick: true
+          exitOnEsc: true
+          nextLabel: "<span style=\"color:green\">Next</span>"
+          prevLabel: "<span style=\"color:green\">Previous</span>"
+          skipLabel: "Exit"
+          doneLabel: "Thanks"
+        ]

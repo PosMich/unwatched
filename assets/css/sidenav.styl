@@ -5,6 +5,10 @@
         -webkit-user-drag: none;
         -moz-user-drag: none;
         user-drag: none;
+    &.introjs-fixParent
+        z-index 99999999999 !important
+        opactiy 1 !important
+        left 0
     position fixed
     left -20px
     top 0
@@ -13,7 +17,7 @@
     z-index 2000000
 
     background linear-gradient(
-        right, 
+        right,
         rgba(63,63,63,1) 0%,
         rgba(13,13,13,1) 47%,
         rgba(1,1,1,1) 50%,
@@ -21,7 +25,7 @@
         rgba(56,56,56,1) 100%
     )
     box-shadow 0px 0px 19px 0px rgba(50, 50, 50, 0.75)
-    
+
     transition left 300ms ease-in-out
 
     &:hover
@@ -61,7 +65,7 @@
                             display table
                             visibility visible
                             opacity 1
-                            .subicons 
+                            .subicons
                                 .subicon, .history-entry
                                     visibility visible
                                     opacity 1
@@ -79,7 +83,7 @@
                     height 50px
 
                     display table
-                    
+
                     transition width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
 
                     color #ffffff
@@ -88,12 +92,12 @@
                         left,
                         #6b6b6b 0%,
                         #454545)
-                    
+
                     border-radius 25px
 
                     box-shadow: 0px 1px 20px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(0,0,0,0.7);
                     text-shadow: 0px -1px 0px rgba(0,0,0,0.4), 0px 1px 0px rgba(0,0,0,0.3);
-                    
+
                     font-family FontAwesome
                     font-style normal
                     font-weight normal
@@ -150,16 +154,16 @@
     &:hover
         visibility visible
         opacity 1
-        .subicons 
+        .subicons
             .subicon-container
                 .subicon
                     visibility visible
                     opacity 1
-    
+
     .subicons
         display table-cell
         vertical-align middle
-        
+
         .subicon-container
             padding 5px
             &:hover
@@ -189,7 +193,7 @@
 
                 box-shadow: 0px 1px 75px rgba(0,0,0,0.5), inset 0px 0px 1px rgba(0,0,0,0.7);
                 text-shadow: 0px -1px 0px rgba(0,000,000,0.4), 0px 1px 0px rgba(0,0,0,0.3);
-                
+
                 color white
 
                 font-family FontAwesome
@@ -198,7 +202,7 @@
                 line-height 1
                 -webkit-font-smoothing antialised
                 -mos-osx-font-smoothing antialised
-                    
+
                 text-decoration none
 
                 background linear-gradient(top, #42aaff, #003366)
@@ -215,7 +219,7 @@
                     height 65px
                     border-radius(33px)
                     box-shadow: 0px 0px 30px rgba(0,0,0,1), inset 0px 0px 1px rgba(0,0,0,0.7);
-                    
+
                 &.menu-about
                     &:before
                         content "\f128"
@@ -236,7 +240,7 @@
                         font-size 36px
 
                 &.menu-create-room
-                    display table 
+                    display table
                     .stack-align
                         display table-cell
                         vertical-align middle
@@ -265,7 +269,7 @@
                                     font-size 29px
 
                 &.menu-leave-room
-                    display table 
+                    display table
                     .stack-align
                         display table-cell
                         vertical-align middle
@@ -295,7 +299,7 @@
 
 
                 &.menu-user-settings
-                    display table 
+                    display table
                     .stack-align
                         display table-cell
                         vertical-align middle
@@ -325,7 +329,7 @@
                                     font-size 29px
 
                 &.menu-user-add
-                    display table 
+                    display table
                     .stack-align
                         display table-cell
                         vertical-align middle
@@ -363,7 +367,7 @@
                     &:hover:before
                         padding-left 0
                         font-size 34px
-                
+
                 &.menu-share-note
                     &:before
                         content "\f0f6"
@@ -382,7 +386,7 @@
                         transition font-size 300ms ease-in-out
                     &:hover:before
                         font-size 40px
-                    
+
                 &.menu-share-image
                     &:before
                         content "\f03e"
@@ -392,7 +396,7 @@
                         transition font-size 300ms ease-in-out
                     &:hover:before
                         font-size 36px
-                
+
                 &.menu-share-file
                     &:before
                         content "\f0c7"
@@ -401,7 +405,7 @@
                         transition font-size 300ms ease-in-out
                     &:hover:before
                         font-size 40px
-                
+
                 &.menu-share-webcam
                     &:before
                         content "\f03d"
@@ -410,7 +414,7 @@
                         transition font-size 300ms ease-in-out
                     &:hover:before
                         font-size 40px
-                         
+
 
             a.menu-user-history
                 position relative
@@ -425,29 +429,29 @@
 
                     &:hover
                         .history-entry
-                            img 
+                            img
                                 background rgba(0,0,0,0.2)
-                                box-shadow: 
+                                box-shadow:
                                     0px 0px 5px rgba(0,0,0,1),
                                     0px 0px 10px rgba(0,0,0,1)
                             span
-                                text-shadow: 
+                                text-shadow:
                                     0px 0px 5px rgba(0,0,0,1),
                                     0px 0px 10px rgba(0,0,0,1),
                                     0px 0px 15px rgba(0,0,0,1),
                                     0px 0px 20px rgba(0,0,0,1),
                                     0px 0px 25px rgba(0,0,0,1),
                                     0px 0px 30px rgba(0,0,0,1)
-                            
+
                     .history-entry
                         opacity 0
                         visibility hidden
                         width 200px
-                        
+
                         padding 5px
                         margin 5px
-                        
-                        text-align left                       
+
+                        text-align left
                         img
                             float left
                             min-width 30px
@@ -460,7 +464,7 @@
                             margin-right 10px
                             transition box-shadow 300ms ease-in-out
                         span
-                            text-shadow:  
+                            text-shadow:
                                 0px 0px 5px rgba(0,0,0,1),
                                 0px 0px 10px rgba(0,0,0,1),
                                 0px 0px 15px rgba(0,0,0,1)
@@ -472,35 +476,35 @@
                             color white
                             vertical-align middle
                             padding-left 5px
-                        
+
                 &:hover
                     text-decoration none
                     box-shadow 0px 0px 20px 0px black
 
 
-                                
+
             for delay in 1 2 3 4 5 6
                 &:nth-child({delay})
                     .subicon
                         transition visibility 300ms ease-in-out 0.1s*delay, opacity 300ms ease-in-out 0.1s*delay, width 300ms ease-in-out, height 300ms ease-in-out, border-radius 300ms ease-in-out, box-shadow 300ms ease-in-out
                     .menu-user-history
-                        for delay2 in 1 2 3 4 
+                        for delay2 in 1 2 3 4
                             .history-entry:nth-child({delay2})
                                 transition visibility 300ms ease-in-out (0.1s*delay)+0.05s*delay2, opacity 300ms ease-in-out (0.1s*delay)+0.05s*delay2, box-shadow 300ms ease-in-out
-                    
+
 .notification-inactive
     .notification
         position absolute
         visibility hidden
         opacity 0
-        
+
 .side-tooltip-inactive
-    a.side-tooltip:hover 
+    a.side-tooltip:hover
         .side-popover
             visibility hidden
             opacity 0
-            position absolute              
-a   
+            position absolute
+a
     .notification
         position absolute
         left 40px
@@ -523,7 +527,7 @@ a.side-tooltip
         background-clip padding-box
         background-color rgb(48, 48, 48)
         border-radius 6px
-        border 1px solid rgb(48, 48, 48) 
+        border 1px solid rgb(48, 48, 48)
         box-shadow 0px 0px 10px 0px rgba(0, 0, 0, 1)
         box-sizing border-box
         color rgb(255, 255, 255)
@@ -545,7 +549,7 @@ a.side-tooltip
         transition-timing-function ease-in-out, ease-in-out, ease-in-out, ease-in-out
         transition-delay 0s, 0s, 0s, 0s
         .arrow
-            
+
             border-bottom 10px solid rgba(0, 0, 0, 0)
             border-left 0px solid rgba(0, 0, 0, 0)
             border-right 10px solid rgba(0, 0, 0, 0.25)
@@ -585,4 +589,3 @@ a.side-tooltip
             transition-timing-function ease-in-out, ease-in-out
             transition-delay 0.5s, 0.5s
             z-index 200000
-            

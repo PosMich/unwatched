@@ -7,6 +7,7 @@ app = angular.module "unwatched", [
     "ngRoute"
     "ngAnimate"
     "ngSanitize"
+    "angular-intro"
     "unwatched.services"
     "unwatched.directives"
     "unwatched.filters"

@@ -188,7 +188,7 @@ class RTCService
 
             # add to Chunkfiles
 
-    new class P2P
+    class P2P
         @::debug          = true
         @::signaller      = null
         @::isOfferer      = true
@@ -651,7 +651,8 @@ class RTCService
                                 continue
                             if client.id isnt parsedMsg.id
                                 client.DCsend parsedMsg
-
+                    when "p2p"
+                        console.log "p2p"
                     else
                         console.log "DChandle: unknown msg"
 
@@ -969,7 +970,8 @@ class RTCService
                 when "fileHasChanged"
                     @service.SharesService.updateItem( parsedMsg.itemId,
                         parsedMsg.change )
-
+                when "p2p"
+                    console.log "p2p"
                 else
                     console.log "DChandle: unknown msg"
 
