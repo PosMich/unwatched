@@ -1,9 +1,8 @@
 .row
     .col-xs-12.index-container(fit-window-height)
-        h1
-            | Unwatched <br/>
-            small Pretty Close Collaboration
-        .form-container
+        h1 Unwatched
+        small pretty close collaboration
+
         #create-room-container.well
             form.form-horizontal(novalidate, name="createRoom", ng-hide="joinAttempt")
                 fieldset
@@ -33,13 +32,13 @@
                         .col-xs-offset-1.col-xs-10.col-xs-offset-1(ng-class="{'has-error': createRoom.rPasswordRepeat.$invalid && createRoom.rPasswordRepeat.$dirty}")
                             input#roomPasswordRepeat.form-control(type='password',
                                 name="rPasswordRepeat", ng-model="room.passwordRepeat",
-                                placeholder='Repeat Password', 
+                                placeholder='Repeat Password',
                                 input-match="roomPassword", required)
                             span.help-block(ng-show="createRoom.rPasswordRepeat.$error.required && createRoom.rPasswordRepeat.$dirty")
                                 | *Required field.
                             span.help-block(ng-show="createRoom.rPasswordRepeat.$error.inputMatch && createRoom.rPasswordRepeat.$dirty && !createRoom.rPasswordRepeat.$error.required")
                                 | Passwords don't match.
-                            
+
                     .form-group
                         .col-xs-11
                             button.btn.btn-primary.pull-right(ng-click="submitRoom()",
@@ -61,7 +60,7 @@
                                 | *Required field.
                             span.help-block(ng-show="joinRoomForm.jPassword.$error.minlength && joinRoomForm.jPassword.$dirty")
                                 | *Type in at least 5 characters.
-                            
+
                     .form-group
                         .col-xs-11.col-offset-xs-1
                             button.btn.btn-primary.pull-right(ng-click="joinRoom()",
