@@ -172,7 +172,7 @@ class RTCService
             constructor: (@signaller, @id) ->
                 @connection = new RTCPeerConnection(
                     iceServers: a = [
-                      {
+                      ###{
                         url: "stun:stun01.sipphone.com"
                       }
                       {
@@ -193,6 +193,7 @@ class RTCService
                       {
                         url: "stun:stun.schlund.de"
                       }
+                      ###
                       {
                         url: "stun:stun.l.google.com:19302"
                       }
@@ -592,7 +593,7 @@ class RTCService
 
             @connection = new RTCPeerConnection(
                 iceServers: a = [
-                  {
+                  ### {
                     url: "stun:stun01.sipphone.com"
                   }
                   {
@@ -613,6 +614,7 @@ class RTCService
                   {
                     url: "stun:stun.schlund.de"
                   }
+                  ###
                   {
                     url: "stun:stun.l.google.com:19302"
                   }
@@ -1269,7 +1271,7 @@ window.getP2P = ->
 
                 @connection = new RTCPeerConnection(
                     iceServers: a = [
-                      {
+                      ### {
                         url: "stun:stun01.sipphone.com"
                       }
                       {
@@ -1290,6 +1292,7 @@ window.getP2P = ->
                       {
                         url: "stun:stun.schlund.de"
                       }
+                      ###
                       {
                         url: "stun:stun.l.google.com:19302"
                       }
