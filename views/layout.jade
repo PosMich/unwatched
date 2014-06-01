@@ -7,118 +7,119 @@ html(ng-app="unwatched")
     meta(name="fragment" content="!")
     link(type='text/css', rel='stylesheet', href='/css/app.css')
   body
-    .sidenav-container(onmousedown="return false", ng-controller="SideCtrl")
+    .sidenav-container(onmousedown="return false", ng-controller="SideCtrl", ng-intro-autostart="false", ng-intro-options="IntroOptions", ng-intro-method="tutorial")
       .sidenav
         .icon-align
-          .icon-container
-            a.menu-home.side-icon(ng-href="{{roomUrl}}").side-tooltip
-              .side-popover
-                .arrow
-                .content home
-            .subicons-container
-              .subicons
-                .subicon-container.top2
-                  a.menu-about.subicon(href="/about").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content about
-                .subicon-container.top1
-                  a.menu-tutorial.subicon(href="/tutorial").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content Tutorial
-                .subicon-container.bottom1
-                  a.menu-create-room.subicon(href="/createRoom").side-tooltip
-                    .stack-align
-                      span.fa-stack
-                        i.fa.fa-building.fa-stack-1x
-                        i.fa.fa-plus.fa-stack-1x
-                    .side-popover
-                      .arrow
-                      .content create a room
-                .subicon-container.bottom2(ng-if="isInRoom")
-                  a.menu-leave-room.subicon(href="#", ng-click="leaveRoom()").side-tooltip
-                    .stack-align.clearfix
-                      span.fa-stack
-                        i.fa.fa-building.fa-stack-1x
-                        i.fa.fa-arrow-right.fa-stack-1x
-                    .side-popover
-                      .arrow
-                      .content leave room
-            .clearfix
-          .icon-container.ng-hide(ng-show="isInRoom")
-            a.menu-user.side-icon(href="/users").side-tooltip
-              .notification.ng-hide(ng-show="usersNotification!=0") {{usersNotification}}
-              .side-popover
-                .arrow
-                .content show/invite users
-            .subicons-container
-              .subicons
-                .subicon-container.top2
-                  a.menu-user-settings.subicon(href="/settings").side-tooltip
-                    .stack-align
-                      span.fa-stack
-                        i.fa.fa-user.fa-stack-1x
-                        i.fa.fa-gear.fa-stack-1x
-                    .side-popover
-                      .arrow
-                      .content settings
-                .subicon-container.top1
-                  a.menu-user-add.subicon(href="/addUser").side-tooltip
-                    .stack-align
-                      span.fa-stack
-                        i.fa.fa-user.fa-stack-1x
-                        i.fa.fa-plus.fa-stack-1x
-                    .side-popover
-                      .arrow
-                      .content add a user
-                .subicon-container.bottom2
-                  a.menu-user-history(href="/history").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content chat history
-                    .history-align
-                      .history-entry(ng-repeat="message in messages | orderBy:'sent_at':true")
-                        img(ng-src="{{users[message.sender].pic}}")
-                        span {{message.message | shorten}}
-          .icon-container
-            a.menu-share.side-icon(href="/share").side-tooltip
-              .notification.ng-hide(ng-show="sharesNotification!=0") {{sharesNotification}}
-              .side-popover
-                .arrow
-                .content share overview
-            .subicons-container
-              .subicons
-                .subicon-container.top2
-                  a.menu-share-screen.subicon(href="/share/screen").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content share your screen
-                .subicon-container.top1
-                  a.menu-share-note.subicon(href="/share/note").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content edit and share a textfile
-                .subicon-container.middle
-                  a.menu-share-code.subicon(href="/share/code").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content edit and share some code
-                .subicon-container.middle
-                  a.menu-share-image.subicon(href="/share/image").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content share a picture
-                .subicon-container.bottom1
-                  a.menu-share-file.subicon(href="/share/file").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content share a file
-                .subicon-container.bottom2
-                  a.menu-share-webcam.subicon(href="/share/webcam").side-tooltip
-                    .side-popover
-                      .arrow
-                      .content  share your webcam
+          .dummy(id="step1")
+            .icon-container
+              a.menu-home.side-icon(ng-href="{{roomUrl}}").side-tooltip
+                .side-popover
+                  .arrow
+                  .content home
+              .subicons-container
+                .subicons
+                  .subicon-container.top2
+                    a.menu-about.subicon(href="#about").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content about
+                  .subicon-container.top1
+                    a.menu-tutorial.subicon(href="#", ng-click="tutorial()").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content Tutorial
+                  .subicon-container.bottom1
+                    a.menu-create-room.subicon(href="/createRoom").side-tooltip
+                      .stack-align
+                        span.fa-stack
+                          i.fa.fa-building.fa-stack-1x
+                          i.fa.fa-plus.fa-stack-1x
+                      .side-popover
+                        .arrow
+                        .content create a room
+                  .subicon-container.bottom2(ng-if="isInRoom")
+                    a.menu-leave-room.subicon(href="#", ng-click="leaveRoom()").side-tooltip
+                      .stack-align.clearfix
+                        span.fa-stack
+                          i.fa.fa-building.fa-stack-1x
+                          i.fa.fa-arrow-right.fa-stack-1x
+                      .side-popover
+                        .arrow
+                        .content leave room
+              .clearfix
+            .icon-container.ng-hide(ng-show="isInRoom")
+              a.menu-user.side-icon(href="/users").side-tooltip
+                .notification.ng-hide(ng-show="usersNotification!=0") {{usersNotification}}
+                .side-popover
+                  .arrow
+                  .content show/invite users
+              .subicons-container
+                .subicons
+                  .subicon-container.top2
+                    a.menu-user-settings.subicon(href="/settings").side-tooltip
+                      .stack-align
+                        span.fa-stack
+                          i.fa.fa-user.fa-stack-1x
+                          i.fa.fa-gear.fa-stack-1x
+                      .side-popover
+                        .arrow
+                        .content settings
+                  .subicon-container.top1
+                    a.menu-user-add.subicon(href="/addUser").side-tooltip
+                      .stack-align
+                        span.fa-stack
+                          i.fa.fa-user.fa-stack-1x
+                          i.fa.fa-plus.fa-stack-1x
+                      .side-popover
+                        .arrow
+                        .content add a user
+                  .subicon-container.bottom2
+                    a.menu-user-history(href="/history").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content chat history
+                      .history-align
+                        .history-entry(ng-repeat="message in messages | orderBy:'sent_at':true")
+                          img(ng-src="{{users[message.sender].pic}}")
+                          span {{message.message | shorten}}
+            .icon-container
+              a.menu-share.side-icon(href="/share").side-tooltip
+                .notification.ng-hide(ng-show="sharesNotification!=0") {{sharesNotification}}
+                .side-popover
+                  .arrow
+                  .content share overview
+              .subicons-container
+                .subicons
+                  .subicon-container.top2
+                    a.menu-share-screen.subicon(href="/share/screen").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content share your screen
+                  .subicon-container.top1
+                    a.menu-share-note.subicon(href="/share/note").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content edit and share a textfile
+                  .subicon-container.middle
+                    a.menu-share-code.subicon(href="/share/code").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content edit and share some code
+                  .subicon-container.middle
+                    a.menu-share-image.subicon(href="/share/image").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content share a picture
+                  .subicon-container.bottom1
+                    a.menu-share-file.subicon(href="/share/file").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content share a file
+                  .subicon-container.bottom2
+                    a.menu-share-webcam.subicon(href="/share/webcam").side-tooltip
+                      .side-popover
+                        .arrow
+                        .content  share your webcam
 
     //-          .icon
                 .fa.fa-file.fa-inverse
