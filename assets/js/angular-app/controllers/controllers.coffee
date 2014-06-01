@@ -29,6 +29,9 @@ app.controller "AppCtrl", [
                     window.location = "/"
                 ), 5000)
 
+        window.onbeforeunload = ->
+            return "All your data will get lost if you leave this room."
+
 ]
 
 app.controller "DeleteModalInstanceCtrl", [
