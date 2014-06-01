@@ -37,7 +37,7 @@ exports.connect = (server) ->
                 switch parsedMsg.type
                     # master --> server
                     when "new"
-                        logger.info "ws: got 'new' msg"
+                        logger.info "ws: got 'new' msg from ", wsConnection.clientId
                         wsConnection.isMaster = true
 
                         wsConnection.send JSON.stringify(
@@ -47,8 +47,7 @@ exports.connect = (server) ->
 
                     # client --> server --> master
                     when "connect"
-                        logger.info "ws: got 'connect' msg from: " +
-                            wsConnection.clientId
+                        logger.info "ws: got 'connect' msg from ", wsConnection.clientId
                         for client in wss.clients
                             if client.isMaster and client.clientId is parsedMsg.roomId
                                 console.log "master found"
@@ -87,13 +86,17 @@ exports.connect = (server) ->
                     when "candidate"
                         logger.info "ws: got 'candidate' msg"
                         if wsConnection.isMaster
+                            console.log "from master"
                             for client in wss.clients
                                 if client.clientId is parsedMsg.clientId
                                     client.send msg
+                                    logger.info "sent to client"
                         else
+                            console.log "from client"
                             for client in wss.clients
                                 if client.clientId is wsConnection.roomId
                                     client.send msg
+                                    logger.info "sent to master"
                     else
                         logger.warn "type?"
             catch error
