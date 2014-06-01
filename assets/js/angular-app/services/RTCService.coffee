@@ -49,6 +49,21 @@ class RTCService
         }
     ]
     ###
+
+    @::iceServers = iceServers: [
+        {urls:"stun:stun.l.google.com:19302"}
+        {
+            urls: [
+                "turn:23.251.129.121:3478?transport=udp"
+                "turn:23.251.129.121:3478?transport=tcp"
+                "turn:23.251.129.121:3479?transport=udp"
+                "turn:23.251.129.121:3479?transport=tcp"
+            ]
+            "credential":"2JFi7SIVPMo9qLlog6uUu8dg4zA="
+            "username":"1401737730:15282694"
+        }
+    ]
+    ###
     @::iceServers = [
         { url: "stun:stun.l.google.com:19302" }
         { url: "stun:stun1.l.google.com:19302" }
@@ -78,47 +93,9 @@ class RTCService
             username: "28224511:1379330808"
         }
     ]
+    ###
     @::signalServer = "wss://localhost:3001"
 
-    ab2str: (uint8) ->
-        String.fromCharCode.apply(null,
-            new Uint16Array(uint8.buffer.slice(uint8.byteOffset))).trim()
-
-    #        return String.fromCharCode.apply(null, uint8).trim();
-    str2ab: (str) ->
-        buf = new ArrayBuffer(str.length * 2) # 2 bytes for each char
-        bufView = new Uint16Array(buf)
-        i = 0
-        strLen = str.length
-
-        while i < strLen
-            bufView[i] = str.charCodeAt(i)
-            i++
-
-        #        return buf;
-        new Uint8Array(buf)
-
-    ab2ascii: (buf) ->
-        String.fromCharCode.apply(null, buf).trim()
-
-    # json to binary array, binary array to string
-    ascii2ab: (str, padding) ->
-        buf = new Uint8Array(str.length)
-        i = 0
-
-        while i < str.length
-            buf[i] = str.charCodeAt(i)
-            i++
-        if padding
-            j = str.length
-
-            while j < padding
-                buf[j] = " "
-            j++
-        buf # was return buf
-
-    # JSON --> to String --> binary array --> split --> to String --> send
-    # receive --> concat --> binary array --> string --> json
 
     createChunks: (msg, userId) ->
         console.log "createChunks", msg
@@ -210,6 +187,174 @@ class RTCService
                 userId: userId
 
             # add to Chunkfiles
+
+    new class P2P
+        @::debug          = true
+        @::signaller      = null
+        @::isOfferer      = true
+        @::connection     = null
+        @::id             = null
+        @::sdpConstraints =
+            optional: []
+            mandatory:
+                OfferToReceiveAudio: true
+                OfferToReceiveVideo: true
+        @::streamOptions = [
+            RtpDataChannels: true
+        ]
+        constructor: () ->
+
+        setup: -> (@signaller, @requestUserId, @fileId, @isOfferer = true, @dataOnly = true) ->
+            console.log "P2P setup" if @debug
+
+            if @dataOnly
+                @streamOptions = null
+                @sdpConstraints = null
+
+
+            @connection = new RTCPeerConnection(
+                iceServers:  @signaller.iceServers
+            ,
+                @streamOptions
+            )
+            @connection.onicecandidate = @handleOwnIce
+
+            @connection.onnegotiationneeded = @handleNegotiation
+            @connection.onsignalingstatechange = @handleStateChange
+
+            @connection.onaddstream = @onAddStream
+            @connection.onremovestream = @onRemoveStream
+
+            @connection.ondatachannel = @gotDataChannel
+
+        signalSend: (msg) ->
+            if @signalConnection.readyState is 1
+                @signalConnection.send JSON.stringify(msg)
+            else
+                console.log "Signalling Channel isn't ready"
+                setTimeout =>
+                    @signalSend msg
+                , 25
+        handleSignalOpen: (event) ->
+            console.log "Signalling Channel Opened"
+        handleSignalMessage: (event) =>
+            console.log "got message!", event.data if @debug
+            try
+                parsedMsg = JSON.parse(event.data)
+
+                if !parsedMsg.type
+                    throw new Error("message Type not defined")
+
+                switch parsedMsg.type
+                    when "offer"
+                        @handleOffer( parsedMsg )
+                    when "answer"
+                        @handleAnswer( parsedMsg )
+                    when "candidate"
+                        @handleIce( parsedMsg )
+                    else
+                        console.log "other message"
+                        console.log parsedMsg
+            catch e
+                console.log "wasn't able to parse message"
+                console.log e.message
+        handleSignalError: (event) ->
+            console.log "Signalling Channel Error"
+            console.log event
+        handleSignalClose: (event) ->
+            console.log "Signalling Channel Closed"
+        handleOwnIce: (event) =>
+            console.log "handleOwnIce" if @debug
+            if event.candidate
+                @signalSend
+                    type: "candidate"
+                    label: event.candidate.sdpMLineIndex
+                    id: event.candidate.sdpMid
+                    candidate: event.candidate.candidate
+                    shareId: @id
+            else
+                console.log "end of candidates"
+        handleIce: (ice) ->
+            console.log "handleIce" if @debug
+            @connection.addIceCandidate new RTCIceCandidate(
+                sdpMLineIndex: ice.label
+                candidate: ice.candidate
+            )
+        handleOffer: (offer) =>
+            console.log "handle offer" if @debug
+            @connection.setRemoteDescription new RTCSessionDescription(offer)
+            @createAnswer()
+        createAnswer: ->
+            console.log "create answer" if @debug
+            @connection.createAnswer (description) =>
+                @connection.setLocalDescription description
+                description.clientId = @id
+                console.log @id if @debug
+                console.log "answer sent?" if @debug
+                @signalSend description
+            , null, @sdpConstraints
+        createOffer: ->
+            console.log "create offer" if @debug
+            @connection.createOffer (description) =>
+                @connection.setLocalDescription description
+                description.clientId = @id
+                @signalSend description
+            , null, @sdpConstraints
+        handleAnswer: (answer) ->
+            console.log "handle answer", answer if @debug
+            @connection.setRemoteDescription new RTCSessionDescription(
+                answer
+            )
+        handleNegotiation: ->
+            console.log "handleNegotiation"
+            if @isOfferer
+                createoffer()
+                try
+                    @dataChannel = @connection.createDataChannel "control",
+                        reliable: false
+                    @dataChannel.onmessage = @DChandleMessage
+                    @dataChannel.onerror   = @DChandleError
+                    @dataChannel.onopen    = @DChandleOpen
+                    @dataChannel.onclose   = @DChandleClose
+                catch error
+                    console.log "error creating Data Channel", error.message
+        handleStateChange: ->
+            console.log "stateChange"
+        onAddStream: ->
+            console.log "stream added"
+        onRemoveStream: ->
+            console.log "stream removed"
+        gotDataChannel: (event) =>
+            console.log "RTConnection gotDataChannel"
+            @dataChannel = event.channel
+            @dataChannel.onmessage = @DChandleMessage
+            @dataChannel.onerror   = @DChandleError
+            @dataChannel.onopen    = @DChandleOpen
+            @dataChannel.onclose   = @DChandleClose
+
+        DChandleMessage: (msg) =>
+            console.log "got a message from DC",
+            console.log msg
+
+
+            parsedMsg = JSON.parse(msg.data)
+            console.log "parsed"
+            console.log parsedMsg
+            switch parsedMsg.type#
+                when ""
+                else
+                    console.log "DChandle: unknown msg"
+        DChandleError: (error) ->
+            console.log "got an DC error!", error
+        DChandleOpen: =>
+            console.log "DC is open!"
+        DChandleClose: ->
+            console.log "DC is closed!"
+        DCsend: (message) ->
+            #messages =
+            console.log "DCsend", message
+            @dataChannel.send JSON.stringify(message)
+
 
 
     class Master
