@@ -7,7 +7,9 @@
 "use strict"
 class RTCService
 
-    @::ChunkFiles  = []
+    @::ReceiveChunkFiles  = []
+    @::sendChunkFileCounter = 0
+    # chunkFileId: 123, chunks: []
     @::isMaster = false
     ###
     @::iceServers = [
@@ -118,19 +120,19 @@ class RTCService
     # JSON --> to String --> binary array --> split --> to String --> send
     # receive --> concat --> binary array --> string --> json
 
-    createChunks: (msg) ->
+    createChunks: (msg, userId) ->
         console.log "createChunks", msg
         chunks = []
 
 
         #   {
         #       "type":"chunk",
+        #       "userId": 12345,
         #       "id":1073741824,
         #       "chunkId":1073741824,
         #       "length":1073741824,
         #       "data":""
         #   }
-        # -> without data: 83 chars
         maxChunkSize = 1000
 
 
@@ -146,25 +148,34 @@ class RTCService
             start += maxChunkSize
             ++index
 
-
+        id = ++@sendChunkFileCounter
         sendMessages = []
         i = 0
         while i < chunks.length
             sendMessages.push
                 type: "chunk"
-                id: 0
+                userId: userId
+                id: id
                 chunkId: i
                 length: chunks.length
                 data: chunks[i]
             ++i
 
-        console.log "sendMessages", sendMessages
+        console.log "sendMessages =", sendMessages
         sendMessages
 
-    receiveChunk: (chunk, id) ->
+    #   {
+    #       "type":"chunk",
+    #       "userId": 12345,
+    #       "id":1073741824, <-- user dependend
+    #       "chunkId":1073741824,
+    #       "length":1073741824,
+    #       "data":""
+    #   }
+    receiveChunk: (chunk, userId) ->
         currentChunkFile = false
-        for chunkFile in @ChunkFiles
-            if chunkFile.id is chunk.id
+        for chunkFile in @ReceiveChunkFiles
+            if chunkFile.id is chunk.id and chunkFile.userId is userId
                 currentChunkFile = chunkFile
                 break
         #console.log "currentChunkFile", currentChunkFile
@@ -180,7 +191,7 @@ class RTCService
 
                 if @isMaster
                     for client in @handler.signallingClients
-                        if client.id is id
+                        if client.id is userId
                             client.DChandleMessage
                                 data: alltogether
                 else
@@ -188,12 +199,15 @@ class RTCService
                         data: alltogether
 
                 #complete, put together, reset ChunkFiles storage
-                @ChunkFiles = []
+                for chunkFile, index in @ReceiveChunkFiles
+                    if chunkFile.id is chunk.id and chunkFile.userId is userId
+                        @ReceiveChunkFiles.splice index, 1
         else
             console.log "push chunk file"
-            @ChunkFiles.push
+            @ReceiveChunkFiles.push
                 id: chunk.id
                 chunks: [chunk.data]
+                userId: userId
 
             # add to Chunkfiles
 
@@ -360,10 +374,7 @@ class RTCService
                                         url:
                                             room.url
 
-                            messages = @signaller.service.createChunks(initData)
-
-                            for message in messages
-                                @DCsend message
+                            @DCsend initData
 
                     when "userNameHasChanged"
                         @signaller.service.UserService.changeName(
@@ -383,18 +394,15 @@ class RTCService
                             parsedMsg.message.userId, parsedMsg.message.userPic
                         )
 
-                        message =
-                            type: "userPicHasChanged"
-                            message: parsedMsg.message
-
-                        messages = @signaller.service.createChunks(message)
 
                         for client in @signaller.signallingClients
                             if !client.authenticated
                                 continue
-                            for msg in messages
-                                if client.id isnt parsedMsg.message.userId
-                                    client.DCsend msg
+
+                            if client.id isnt parsedMsg.message.userId
+                                client.DCsend
+                                    type: "userPicHasChanged"
+                                    message: parsedMsg.message
 
                     when "newCodeItem"
                         @signaller.service.SharesService.shares.push(
@@ -463,6 +471,8 @@ class RTCService
                                 if client.id isnt parsedMsg.userId
                                     client.DCsend parsedMsg
 
+                    when "p2p"
+
                     else
                         console.log "DChandle: unknown msg"
 
@@ -481,10 +491,14 @@ class RTCService
                 console.log "DC is closed!" if @debug
 
             DCsend: (message) ->
-                console.log "DCsend" + JSON.stringify(message)
-                console.log message
-                @dataChannel.send JSON.stringify(message)
-                console.log "sent?"
+                messages = @signaller.service.createChunks(message, @id)
+                #console.log "DCsend" + JSON.stringify(message)
+                #console.log message
+                #@dataChannel.send JSON.stringify(message)
+                #console.log "sent?"
+                for message in messages
+                    @dataChannel.send JSON.stringify(message)
+                    console.log "sent?", message
 
         constructor: (@service) ->
             console.log "setup" if @debug
@@ -779,8 +793,12 @@ class RTCService
             console.log "DC is closed!"
 
         DCsend: (message) ->
-            # console.log "DCsend", message
-            @dataChannel.send JSON.stringify(message)
+            messages = @service.createChunks(message, @id)
+
+            for message in messages
+                @dataChannel.send JSON.stringify(message)
+                console.log "DCsend", message
+            #@dataChannel.send JSON.stringify(message)
 
 
     constructor: (@$rootScope, @UserService, @ChatService, @RoomService, @SharesService) ->
@@ -869,38 +887,20 @@ class RTCService
             password: password
 
     sendUserChanges: (type, message) ->
-        dataChannelMessage =
+        @handler.DCsend
             type: type
             message: message
 
-        if type is "userNameHasChanged"
-            @handler.DCsend dataChannelMessage
-
-        else if type is "userPicHasChanged"
-            messages = @createChunks(dataChannelMessage)
-
-            for msg in messages
-                @handler.DCsend msg
 
     broadcastUserChanges: (type, message) ->
-        broadcastMessage =
-            type: type
-            message: message
+        for client in @handler.signallingClients
+            if !client.authenticated
+                continue
+            client.DCsend
+                type: type
+                message: message
 
-        if type is "userNameHasChanged"
-            for client in @handler.signallingClients
-                if !client.authenticated
-                    continue
-                client.DCsend broadcastMessage
 
-        else if type is "userPicHasChanged"
-            messages = @createChunks(broadcastMessage)
-
-            for client in @handler.signallingClients
-                if !client.authenticated
-                    continue
-                for msg in messages
-                    client.DCsend msg
 
     sendNewCodeItem: (codeItem, isMaster) ->
         if !isMaster
@@ -1135,7 +1135,7 @@ class Users
 
 app = angular.module "unwatched.services", []
 
-###
+
 app.factory "P2PFactory", [
     "SharesService",
     "RTCService",
@@ -1161,8 +1161,8 @@ app.factory "P2PFactory", [
         #
         # after this, both peers talk to each other via datachannel and handle the request
         # everthing should happen automaticaly, cause
-###
-window.getP2P = ->
+
+    #window.getP2P = ->
         new class P2P
             @::debug          = true
             @::signaller      = null
@@ -1327,11 +1327,12 @@ window.getP2P = ->
             DChandleClose: ->
                 console.log "DC is closed!"
             DCsend: (message) ->
+                #messages =
                 console.log "DCsend", message
                 @dataChannel.send JSON.stringify(message)
-###
+
 ]
-###
+
 app.service "RTCService", [
     "$rootScope"
     "UserService"
