@@ -9,25 +9,50 @@
                 b Name:
             td {{item.name}}
         tr(ng-if="item.size!=0 && item.size!=''")
-            td
+            td(ng-if="item.category=='code'")
+                b Lines:
+            td(ng-if="item.category=='code'")
+                | {{item.size}}
+            td(ng-if="item.category!='code'")
                 b Size:
-            td {{item.size | humanReadableFileSize}}
+            td(ng-if="item.category!='code'")
+                | {{item.size | humanReadableFileSize}}
         tr
             td
                 b Author:
-            td {{item.author}}
+            td {{users[item.author].name}}
+
+        tr(ng-if="item.contributors.length!=0")
+            td
+                b Contributors:
+            td
+                span(ng-repeat="contributor in item.contributors")
+                    | {{users[contributor.id].name}}
         tr
             td
                 b Created:
-            td {{item.created}}
+            td {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
+
         tr(ng-if="item.uploaded")
             td
                 b Uploaded:
-            td {{item.uploaded}}
+            td {{item.uploaded | date: 'dd.MM.yyyy - HH:mm'}}
+
+        tr(ng-if="item.last_edited")
+            td
+                b Last edited:
+            td {{item.last_edited | date: 'dd.MM.yyyy - HH:mm'}}
+
         tr(ng-if="item.mime_type")
             td
                 b MIME-Type:
             td {{item.mime_type}}
+
+        tr(ng-if="item.extension!=''")
+            td
+                b Extension:
+            td {{item.extension}}
+
         tr
             td
                 b Category:

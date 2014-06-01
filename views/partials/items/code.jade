@@ -8,7 +8,8 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                a(ng-href="{{item.path}}")
+                a( ng-download="'{{item.name}}.{{item.extension}}'",
+                    content="item.content" )
                     .download
                         i.fa.fa-download
                         span Download
