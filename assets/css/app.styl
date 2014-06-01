@@ -71,18 +71,27 @@ body:after
 
 #create-room-container
     width 450px
-    height 325px
-    border none
-    background transparent
+    height 305px
     absolute top 10% left 50%
     margin-top 75px
     margin-left -232.5px
+    background-color rgba(245, 245, 245, 0.75)
+    border 1px solid black
+    box-shadow 0 0 15px rgba(53,53,53,1)
 
     legend
         text-align center
+        border-bottom-color black
 
     form.joinRoomForm
         margin-top 50px
+
+    .form-group:last-child
+        margin-bottom 0
+        padding-bottom 0
+
+    input
+        border-color black
 
 .info-container
     position relative
@@ -169,19 +178,30 @@ body:after
       transition all ease-in-out .5s
 
 .index-container
-    background: url("/images/collaboration.jpg")
-    background-size 100%
-    background-position center
-    background-repeat no-repeat
+    background: url("img/3.jpg") center center no-repeat
     width 100%
 
     h1
-        font-size 50px
+        position absolute
+        bottom 100px
+        right 30px
+        font-size 120px
         font-weight bold
         padding-left 40px
         padding-top 20px
+        color white
+        text-shadow 0px 0px 25px rgba(0, 0, 0, 1),0px 0px 25px rgba(0, 0, 0, 1)
 
-    .form-container
+    small
+        bottom 10px
+        right 30px
+        position absolute
+        padding-left 80px
+        font-size 70px
+        color white
+        text-shadow 0px 0px 15px rgba(0, 0, 0, 1),0px 0px 15px rgba(0, 0, 0, 1)
+        opacity 0.3
+    /*.form-container
         width 450px
         height 450px
         overflow hidden
@@ -192,7 +212,7 @@ body:after
         absolute top 10% left 50%
         margin-left -225px
         transform rotate(45deg)  skew(-5deg, -5deg)
-
+    */
 .mce-menubar .mce-container-body .mce-menubtn button
     margin-top 0
 
