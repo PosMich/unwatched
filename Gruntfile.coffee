@@ -97,7 +97,8 @@ module.exports = (grunt) ->
             "angular-file-upload.js"
             "tinymce.full.min.js"
             "ui-bootstrap-tpls-0.10.0.js"
-            "ng-FitText.js"
+            "zero-clipboard.js"
+            "angular-ng-clip.js"
             "ui-tinymce.js"
             "jquery-ui-1.10.4.custom.js"
         ]

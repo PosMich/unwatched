@@ -72,4 +72,8 @@ app.controller "ShareCtrl", [
         $scope.setLayout = (layout) ->
             LayoutService.setLayout(layout)
 
+        $scope.copyClipboard = (itemId) ->
+            item = SharesService(itemId)
+            return "ngClip is awesome!";
+
 ]

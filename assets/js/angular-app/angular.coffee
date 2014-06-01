@@ -14,6 +14,7 @@ app = angular.module "unwatched", [
     "ui.tinymce"
     "ui.bootstrap"
     "angularFileUpload"
+    "ngClipboard"
 ]
 
 
@@ -231,6 +232,12 @@ app.config [
         # >
         # > redirect to `/`
         $routeProvider.otherwise redirectTo: "/"
+]
+
+app.config [
+    "ngClipProvider"
+    (ngClipProvider) ->
+        ngClipProvider.setPath "swf/ZeroClipboard.swf"
 ]
 
 app.run ($rootScope, $location) ->
