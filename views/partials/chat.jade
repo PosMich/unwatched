@@ -2,35 +2,37 @@
     ng-class="chat.state",
     rearange-container="chat.state")
 
-    .panel-heading(ng-click="chat.maximize()")
+    .panel-heading.clearfix(ng-click="chat.maximize()")
         | Roomname - Chat
+        span.badge.ng-hide.pull-right(ng-show="chatNotifications!=0",
+             ng-bind="chatNotifications")
     .controls.pull-right
         i.fa.fa-compress(ng-click="chat.compress()",
             ng-show="chat.state == 'expanded'")
         i.fa.fa-expand(ng-click="chat.expand()",
             ng-show="chat.state == 'compressed'")
-        i.fa.fa-minus(ng-hide="chat.state == 'minimized'", 
+        i.fa.fa-minus(ng-hide="chat.state == 'minimized'",
             ng-click="chat.minimize()")
 
-    .panel-body 
+    .panel-body
         .message-container(update-scroll-position="chat.messages.length")
             div
                 .clearfix.chat-message(
                     ng-repeat="message in chat.messages track by $index")
                     span.well.well-sm(ng-class="{'own':message.sender==userId}")
-                        img(ng-if="chat.state=='expanded'", 
+                        img(ng-if="chat.state=='expanded'",
                             ng-src="{{users[message.sender].pic}}")
                         b(style="color: {{users[message.sender].getColorAsHex()}}")
-                            {{users[message.sender].name}}: 
+                            {{users[message.sender].name}}:
                         | {{message.message}}
     .panel-footer.message-control.clearfix
-        form(name="chatMessage", no-validate, 
+        form(name="chatMessage", no-validate,
             ng-submit="submitChatMessage()")
             .control-input
-                input#inputChatMessage.form-control(type="text", 
+                input#inputChatMessage.form-control(type="text",
                     required, ng-model="chat.message")
             .control-button
-                a.btn.btn-default(ng-disabled="chatMessage.$invalid", 
+                a.btn.btn-default(ng-disabled="chatMessage.$invalid",
                     focus-on-click="input-chat-message", ng-href="#",
                     ng-click="submitChatMessage()")
                     i.fa.fa-share

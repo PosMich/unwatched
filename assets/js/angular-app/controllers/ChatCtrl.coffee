@@ -16,6 +16,22 @@ app.controller "ChatCtrl", [
         $scope.users = UserService.users
         $scope.chat.messages = ChatService.messages
         $scope.userId = $rootScope.userId
+        $scope.chatNotifications = 0
+
+        $scope.$watch ->
+            $scope.chat.messages
+        , (new_messages, old_messages) ->
+            if new_messages.length > old_messages.length
+                if $scope.chat.state is "minimized"
+                    $scope.chatNotifications++
+        , true
+
+        $scope.$watch ->
+            $scope.chat.state
+        , (new_state, old_state) ->
+            if old_state is "minimized" and new_state isnt "minimized"
+                $scope.chatNotifications = 0
+        , true
 
         $scope.submitChatMessage = ->
             ChatService.addMessage $scope.chat.message
