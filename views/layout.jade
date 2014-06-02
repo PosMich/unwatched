@@ -140,5 +140,8 @@ html(ng-app="unwatched")
               i.fa.fa-times-circle
           video#webcam(autoplay, stream="webcam")
 
+    .screenshot-overlay.ng-hide(ng-show="screenshotCountdown!=-1")
+        div(ng-bind="screenshotCountdown")
+
 
     script(src='/js/app.js')

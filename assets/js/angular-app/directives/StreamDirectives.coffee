@@ -10,7 +10,8 @@ app.directive "stream", [
     "RTCService"
     "$rootScope"
     "UserService"
-    (SharesService, RTCService, $rootScope, UserService) ->
+    "$location"
+    (SharesService, RTCService, $rootScope, UserService, $location) ->
         restrict: 'A'
         link: (scope, element, attrs) ->
             scope.$watch ->
@@ -32,6 +33,12 @@ app.directive "stream", [
                         $rootScope.streamId[attrs.stream] = share.id
             , true
 
+            element.on "click", ->
+                console.log "click"
+                $location.path "/share/stream/" +
+                    $rootScope.streamId[attrs.stream]
+
+                $rootScope.$apply() if !$rootScope.$$phase
 ]
 
 app.directive "killStream", [
@@ -59,7 +66,9 @@ app.directive "showStream", [
     "RTCService"
     "$rootScope"
     "$location"
-    (SharesService, UserService, RTCService, $rootScope, $location) ->
+    "$interval"
+    (SharesService, UserService, RTCService, $rootScope, $location,
+        $interval) ->
         restrict: 'A'
         link: (scope, element, attrs) ->
 
@@ -73,13 +82,24 @@ app.directive "showStream", [
             , true
 
             element.on "click", ->
+                if $rootScope.userId is scope.item.author
+                    $rootScope.screenshotCountdown = 5
+                    $scope.countdown = $interval(->
+                        if $rootScope.screenshotCountdown <= 0
+                            console.log "ASDFASDF"
+                            $interval.cancel $scope.countdown
+                            $scope.countdown = undefined
+                            takeScreenshot()
+                            # $rootScope.screenshotCountdown = -1
+                        --$rootScope.screenshotCountdown
+                        console.log $rootScope.screenshotCountdown
+                    , 1000)
+
+            takeScreenshot = ->
+                user = UserService.getUser $rootScope.userId
                 canvas = document.createElement("canvas")
                 canvas_thumbnail = document.createElement("canvas")
 
-                console.log element.width()
-                console.log element.height()
-
-                console.log element
                 canvas.width = element.width()
                 canvas.height = element.height()
 
@@ -87,7 +107,6 @@ app.directive "showStream", [
                 ctx.drawImage(element[0], 0, 0)
 
                 author = UserService.getUser scope.item.author
-                user = UserService.getUser $rootScope.userId
 
                 screenshotId =
                     SharesService.create($rootScope.userId, "screenshot")

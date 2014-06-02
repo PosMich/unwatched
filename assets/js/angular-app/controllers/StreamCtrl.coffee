@@ -26,6 +26,12 @@ app.controller "StreamCtrl", [
         if !$routeParams.id?
 
             $scope.startSharing = (category) ->
+                if $rootScope.isStreaming[category]
+                    $location.path "/share/stream/" +
+                        $rootScope.streamId[category]
+                    $scope.item =
+                        category: category
+                    return
                 # create item
                 $scope.item = SharesService.get(
                     SharesService.create $rootScope.userId, category
@@ -107,6 +113,12 @@ app.controller "StreamCtrl", [
                     $scope.user)
 
                 $rootScope.$apply() if $rootScope.$$phase
+
+        $scope.snapshot = ->
+            console.log "lkjkl"
+            do ->
+                angular.element("video").first().click()
+                console.log "asdf"
 
         $scope.delete = ->
             modalInstance = $modal.open(
