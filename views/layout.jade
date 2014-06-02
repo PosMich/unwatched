@@ -27,7 +27,7 @@ html(ng-app="unwatched")
                     a.menu-tutorial.subicon(href="#", ng-click="tutorial()").side-tooltip
                       .side-popover
                         .arrow
-                        .content Tutorial
+                        .content tutorial
                   .subicon-container.bottom1
                     a.menu-create-room.subicon(href="/createRoom").side-tooltip
                       .stack-align
@@ -49,7 +49,7 @@ html(ng-app="unwatched")
               .clearfix
             .icon-container.ng-hide(ng-show="isInRoom")
               a.menu-user.side-icon(href="/users").side-tooltip
-                .notification.ng-hide(ng-show="usersNotification!=0") {{usersNotification}}
+                .notification.ng-hide(ng-show="usersNotification!=0", ng-bind="usersNotification")
                 .side-popover
                   .arrow
                   .content show/invite users
@@ -84,14 +84,14 @@ html(ng-app="unwatched")
                           span {{message.message | shorten}}
             .icon-container
               a.menu-share.side-icon(href="/share").side-tooltip
-                .notification.ng-hide(ng-show="sharesNotification!=0") {{sharesNotification}}
+                .notification.ng-hide(ng-show="sharesNotification!=0", ng-bind="sharesNotification")
                 .side-popover
                   .arrow
                   .content share overview
               .subicons-container
                 .subicons
                   .subicon-container.top2
-                    a.menu-share-screen.subicon(href="/share/screen").side-tooltip
+                    a.menu-share-screen.subicon(href="/share/stream").side-tooltip
                       .side-popover
                         .arrow
                         .content share your screen
@@ -121,40 +121,24 @@ html(ng-app="unwatched")
                         .arrow
                         .content  share your webcam
 
-    //-          .icon
-                .fa.fa-file.fa-inverse
-                .subicon-container
-                  .subicons
-                    .subicon.top2
-                      .fa.fa-desktop
-                    .subicon.top1
-                      .fa.fa-file-text-o
-                    .subicon.middle
-                      .fa.fa-picture-o
-                    .subicon.bottom1
-                      .fa.fa-floppy-o
-                    .subicon.bottom2
-                      .fa.fa-camera
-
-
     .view-container(ng-controller="AppCtrl")
-        .alert.alert-danger.shutdown.ng-hide(ng-show="isClosed")
-            | Your room is going to <strong>shut down</strong>...
+        .alert.alert-danger.shutdown.ng-hide(ng-show="isClosed",
+            ng-bind-html="'Your room is going to <strong>shut down</strong>...'")
         .clearfix.view-frame.container-fluid(ng-view)
 
     .chat(chat, ng-if="showChat")
-    div(ng-controller="StreamCtrl")
+    div
       .video-container.clearfix
-        .video.screen.ng-hide(ng-show="video.show.screen")
+        .video.screen.ng-hide(ng-show="isStreaming['screen']")
           .video-controls
-            a(ng-href="#", ng-click="killStream('screen')")
+            a(ng-href="#", kill-stream="screen")
               i.fa.fa-times-circle
-          video#screen(autoplay)
-        .video.webcam.ng-hide(ng-show="video.show.webcam")
+          video#screen(autoplay, stream="screen")
+        .video.webcam.ng-hide(ng-show="isStreaming['webcam']")
           .video-controls
-            a(ng-href="#", ng-click="killStream('webcam')")
+            a(ng-href="#", kill-stream="webcam")
               i.fa.fa-times-circle
-          video#webcam(autoplay)
+          video#webcam(autoplay, stream="webcam")
 
 
     script(src='/js/app.js')

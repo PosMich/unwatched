@@ -117,7 +117,7 @@ app.config [
         # > load ScreenshotCtrl
         $routeProvider.when "/share/screenshot/:id",
             templateUrl: "/partials/items/screenshot.html"
-            controller: "ScreenshotCtrl"
+            controller: "StreamCtrl"
 
         # ***
         # * <h3>route `/share/note`</h3>
@@ -159,37 +159,37 @@ app.config [
         # * <h3>route `/share/screen/:id`</h3>
         # > loads an empty screen item to share it
         # >
-        # > load SharedScreenCtrl
-        $routeProvider.when "/share/screen",
-            templateUrl: "/partials/items/screen.html"
-            controller: "ScreenCtrl"
+        # > load StreamCtrl
+        $routeProvider.when "/share/stream",
+            templateUrl: "/partials/items/stream.html"
+            controller: "StreamCtrl"
 
         # ***
         # * <h3>route `/share/screen/:id`</h3>
         # > loads a specific shared screen by the given id
         # >
-        # > load SharedScreenCtrl
-        $routeProvider.when "/share/screen/:id",
-            templateUrl: "/partials/items/screen.html"
-            controller: "ScreenCtrl"
+        # > load StreamCtrl
+        $routeProvider.when "/share/share/:id",
+            templateUrl: "/partials/items/stream.html"
+            controller: "StreamCtrl"
 
         # ***
         # * <h3>route `/share/webcam`</h3>
         # > loads an empty webcam item to share it
         # >
-        # > load WebcamCtrl
-        $routeProvider.when "/share/webcam",
-            templateUrl: "/partials/items/webcam.html"
-            controller: "WebcamCtrl"
+        # > load StreamCtrl
+        # $routeProvider.when "/share/webcam",
+            # templateUrl: "/partials/items/webcam.html"
+            # controller: "StreamCtrl"
 
         # ***
         # * <h3>route `/share/webcam/:id`</h3>
         # > loads a specific shared webcam by the given id
         # >
-        # > load WebcamCtrl
-        $routeProvider.when "/share/webcam/:id",
-            templateUrl: "/partials/items/webcam.html"
-            controller: "WebcamCtrl"
+        # > load StreamCtrl
+        # $routeProvider.when "/share/webcam/:id",
+            # templateUrl: "/partials/items/webcam.html"
+            # controller: "StreamCtrl"
 
         # ***
         # * <h3>route `/share/file`</h3>

@@ -14,6 +14,15 @@ app.controller "AppCtrl", [
         $rootScope.sharesInit = false
         $scope.isClosed = false
 
+        # init stream
+        $rootScope.isStreaming =
+            webcam: false
+            screen: false
+
+        $rootScope.streamId =
+            webcam: -1
+            screen: -1
+
         $scope.killStream = (type) ->
             if type is 'screen'
                 StreamService.killScreenStream()

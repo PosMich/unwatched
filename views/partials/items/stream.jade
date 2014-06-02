@@ -19,24 +19,23 @@
 
     .jumbotron
         .detail-heading
-            h1
-                | {{item.name}}
+            h1(ng-show="item", ng-bind="item.name")
+            h1(ng-hide="item", ng-bind="'Share a stream'")
         .infos-container
             .info
                 b Author:
-                | {{item.author}}
+                | {{users[item.author].name}}
             .info
                 b Created:
-                | {{item.created}}
-            .info
+                | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
+            .info(ng-show="item.category!=''")
                 b Category:
                 | {{item.category}}
 
-        button.btn.btn-primary(ng-href="#", screen, ng-hide="video.show.screen")
-            | Share my screen
-        button.btn.btn-danger(ng-href="#", ng-show="video.show.screen",
-            ng-click="delete('screen')")
-            | Stop sharing
+        button.btn.btn-primary(ng-href="#", ng-click="startSharing('webcam')"
+            ng-hide="item", ng-bind="'Share my webcam'")
+        button.btn.btn-primary(ng-href="#", ng-click="startSharing('screen')"
+            ng-hide="item", ng-bind="'Share my screen'")
 
-        .video-container
-            video(autoplay)
+        button.btn.btn-danger(ng-href="#", ng-show="item",
+            kill-stream="{{item.category}}", ng-bind="'Stop sharing'")

@@ -93,6 +93,12 @@ class Shares
         @shares[ @getItemIndex(id) ]
 
     delete: (id) ->
+
+        item = @get id
+
+        if item.category is "screen" or item.category is "webcam"
+            item.content.stop()
+
         @shares.splice( @getItemIndex(id), 1 )
 
 
