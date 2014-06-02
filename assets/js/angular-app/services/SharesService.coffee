@@ -97,7 +97,8 @@ class Shares
         item = @get id
 
         if item.category is "screen" or item.category is "webcam"
-            item.content.stop()
+            item.content.stop() if item.content isnt ""
+
 
         @shares.splice( @getItemIndex(id), 1 )
 

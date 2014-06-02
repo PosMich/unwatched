@@ -82,7 +82,7 @@ html(ng-app="unwatched")
                         .history-entry(ng-repeat="message in messages | orderBy:'sent_at':true")
                           img(ng-src="{{users[message.sender].pic}}")
                           span {{message.message | shorten}}
-            .icon-container
+            .icon-container.ng-hide(ng-show="isInRoom")
               a.menu-share.side-icon(href="/share").side-tooltip
                 .notification.ng-hide(ng-show="sharesNotification!=0", ng-bind="sharesNotification")
                 .side-popover
@@ -91,35 +91,25 @@ html(ng-app="unwatched")
               .subicons-container
                 .subicons
                   .subicon-container.top2
-                    a.menu-share-screen.subicon(href="/share/stream").side-tooltip
-                      .side-popover
-                        .arrow
-                        .content share your screen
-                  .subicon-container.top1
                     a.menu-share-note.subicon(href="/share/note").side-tooltip
                       .side-popover
                         .arrow
                         .content edit and share a textfile
-                  .subicon-container.middle
+                  .subicon-container.top1
                     a.menu-share-code.subicon(href="/share/code").side-tooltip
                       .side-popover
                         .arrow
                         .content edit and share some code
-                  .subicon-container.middle
-                    a.menu-share-image.subicon(href="/share/image").side-tooltip
-                      .side-popover
-                        .arrow
-                        .content share a picture
                   .subicon-container.bottom1
                     a.menu-share-file.subicon(href="/share/file").side-tooltip
                       .side-popover
                         .arrow
-                        .content share a file
+                        .content share a file/picture
                   .subicon-container.bottom2
-                    a.menu-share-webcam.subicon(href="/share/webcam").side-tooltip
+                    a.menu-share-webcam.subicon(href="/share/stream").side-tooltip
                       .side-popover
                         .arrow
-                        .content  share your webcam
+                        .content  share your webcam/screen
 
     .view-container(ng-controller="AppCtrl")
         .alert.alert-danger.shutdown.ng-hide(ng-show="isClosed",

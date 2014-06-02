@@ -59,10 +59,8 @@ app.controller "ShareCtrl", [
 
             modalInstance.result.then( ->
                 category = SharesService.get(item_id).category
-                if category is "screen"
-                    StreamService.killScreenStream(category)
-                else if category is "webcam"
-                    StreamService.killWebcamStream(category)
+                if category is "screen" or category is "webcam"
+                    $scope.deleteStream item_id
                 else
                     SharesService.delete(item_id)
 
@@ -76,4 +74,21 @@ app.controller "ShareCtrl", [
             item = SharesService(itemId)
             return "ngClip is awesome!";
 
+        $scope.deleteStream = (itemId) ->
+
+            item = SharesService.get itemId
+
+            id = item.id
+            category = item.category
+
+            SharesService.delete id
+
+            $rootScope.isStreaming[category] = false
+            $rootScope.streamId[category] = -1
+
+            angular.element("#" + category).src = null
+
+            RTCService.sendItemDeleted( $scope.user, $scope.item.id )
+
+            $rootScope.$apply() if !$rootScope.$$phase
 ]

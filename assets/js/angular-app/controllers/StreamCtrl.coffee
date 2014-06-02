@@ -60,12 +60,18 @@ app.controller "StreamCtrl", [
 
                 successCallback = (stream) =>
                     $scope.item.content = stream
+                    stream.onended = ->
+                        console.log "blubb"
+                        $scope.killstream()
                     RTCService.sendNewStream($scope.item, $scope.user.isMaster)
                     $location.path("/share/stream/" + $scope.item.id)
                     $rootScope.$apply() if !$rootScope.$$phase
 
                 errorCallback = (error) ->
-                    console.log('Failed.', error)
+                    SharesService.delete $scope.item.id
+                    $location.path "/share"
+                    $rootScope.$apply() if !$rootScope.$$phase
+
 
                 getUserMedia(userMediaOptions,
                     successCallback, errorCallback)
@@ -115,10 +121,8 @@ app.controller "StreamCtrl", [
                 $rootScope.$apply() if $rootScope.$$phase
 
         $scope.snapshot = ->
-            console.log "lkjkl"
             do ->
                 angular.element("video").first().click()
-                console.log "asdf"
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -130,17 +134,30 @@ app.controller "StreamCtrl", [
                         $scope.item
                 }
             )
-
             modalInstance.result.then( ->
-                StreamService.killWebcamStream()
-                $location.path "/share"
+                $scope.killstream()
             )
 
-        $scope.killStream = (type) ->
-            if type is 'screen'
-                StreamService.killScreenStream()
-            else
-                StreamService.killWebcamStream()
+        $scope.killstream = ->
+            console.log "blabb"
+            id = $scope.item.id
+            category = $scope.item.category
+
+            return if !$rootScope.isStreaming[category]
+
+            SharesService.delete id
+
+            $rootScope.isStreaming[category] = false
+            $rootScope.streamId[category] = -1
+
+            angular.element("#" + category).src = null
+
+            if $location.path() is "/share/stream/" + id
+                $location.path "/share"
+
+            RTCService.sendItemDeleted( $scope.user, $scope.item.id )
+
+            $rootScope.$apply() if !$rootScope.$$phase
 
 
         $scope.$on "$routeChangeStart", (scope, next, current) ->

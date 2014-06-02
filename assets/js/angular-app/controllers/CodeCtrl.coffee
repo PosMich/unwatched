@@ -92,7 +92,7 @@ app.controller "CodeCtrl", [
             )
 
             modalInstance.result.then( ->
-                RTCService.sendCodeItemDeleted( $scope.user, $scope.item.id )
+                RTCService.sendItemDeleted( $scope.user, $scope.item.id )
                 SharesService.delete $scope.item.id
                 $location.path "/share"
             )

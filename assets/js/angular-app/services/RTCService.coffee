@@ -642,7 +642,7 @@ class RTCService
                                 client.DCsend parsedMsg
 
                     when "newStream"
-                        @signaller.service.SharesService.push parsedMsg.stream
+                        @signaller.service.SharesService.shares.push parsedMsg.stream
 
                         for client in @signaller.signallingClients
                             if !client.authenticated

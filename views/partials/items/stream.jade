@@ -8,11 +8,11 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                a(ng-href="#", ng-click="save()")
+                a(ng-href="#", ng-click="save()", ng-show="item")
                     .copy-clipboard
                         i.fa.fa-clipboard
                         span Copy infos to clipboard
-                a(ng-href="#", ng-click="delete()")
+                a(ng-href="#", ng-click="delete()", ng-show="item")
                     .copy-clipboard
                         i.fa.fa-trash-o
                         span Remove

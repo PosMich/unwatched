@@ -11,7 +11,6 @@ app.controller "AppCtrl", [
     ($scope, $rootScope, SharesService, StreamService, ChatService,
         RoomService) ->
 
-        $rootScope.sharesInit = false
         $scope.isClosed = false
 
         # init stream
