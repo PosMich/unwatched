@@ -641,6 +641,16 @@ class RTCService
                             if client.id isnt parsedMsg.file.author
                                 client.DCsend parsedMsg
 
+                    when "newStream"
+                        @signaller.service.SharesService.push parsedMsg.stream
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.stream.author
+                                client.DCsend parsedMsg
+
+
                     when "fileHasChanged"
                         @signaller.service.SharesService.updateItem(
                             parsedMsg.itemId, parsedMsg.change
@@ -967,6 +977,9 @@ class RTCService
                 when "newFile"
                     @service.SharesService.shares.push parsedMsg.file
 
+                when "newStream"
+                    @service.SharesService.shares.push parsedMsg.stream
+
                 when "fileHasChanged"
                     @service.SharesService.updateItem( parsedMsg.itemId,
                         parsedMsg.change )
@@ -1222,6 +1235,23 @@ class RTCService
             itemId: itemId
 
         if !user.isMaster
+            @handler.DCsend dataChannelMessage
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend dataChannelMessage
+
+    sendNewStream: (stream, isMaster) ->
+
+        streamCopy = angular.copy(stream)
+        streamCopy.content = ""
+
+        dataChannelMessage =
+            type: "newStream"
+            stream: streamCopy
+
+        if !isMaster
             @handler.DCsend dataChannelMessage
         else
             for client in @handler.signallingClients

@@ -32,10 +32,12 @@
                 b Category:
                 | {{item.category}}
 
-        button.btn.btn-primary(ng-href="#", ng-click="startSharing('webcam')"
-            ng-hide="item", ng-bind="'Share my webcam'")
-        button.btn.btn-primary(ng-href="#", ng-click="startSharing('screen')"
-            ng-hide="item", ng-bind="'Share my screen'")
-
-        button.btn.btn-danger(ng-href="#", ng-show="item",
-            kill-stream="{{item.category}}", ng-bind="'Stop sharing'")
+        .infos-container
+            button.btn.btn-primary(ng-href="#", ng-click="startSharing('webcam')"
+                ng-hide="item", ng-bind="'Share my webcam'")
+            button.btn.btn-primary(ng-href="#", ng-click="startSharing('screen')"
+                ng-hide="item", ng-bind="'Share my screen'")
+            button.btn.btn-danger(ng-href="#", ng-show="item",
+                kill-stream="{{item.category}}", ng-bind="'Stop sharing'")
+        .infos-container
+            video(autoplay, show-stream, ng-if="item")

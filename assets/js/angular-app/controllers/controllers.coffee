@@ -23,6 +23,10 @@ app.controller "AppCtrl", [
             webcam: -1
             screen: -1
 
+        $rootScope.disableStream =
+            webcam: false
+            screen: false
+
         $scope.killStream = (type) ->
             if type is 'screen'
                 StreamService.killScreenStream()

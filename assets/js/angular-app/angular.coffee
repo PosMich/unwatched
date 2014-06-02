@@ -169,7 +169,7 @@ app.config [
         # > loads a specific shared screen by the given id
         # >
         # > load StreamCtrl
-        $routeProvider.when "/share/share/:id",
+        $routeProvider.when "/share/stream/:id",
             templateUrl: "/partials/items/stream.html"
             controller: "StreamCtrl"
 

@@ -6,10 +6,19 @@
 app = angular.module "unwatched.controllers"
 
 app.controller "StreamCtrl", [
-    "$scope", "$routeParams", "SharesService", "$location", "$filter",
-    "$modal", "StreamService", "$rootScope", "UserService"
+    "$scope"
+    "$routeParams"
+    "SharesService"
+    "$location"
+    "$filter"
+    "$modal"
+    "StreamService"
+    "$rootScope"
+    "UserService"
+    "RTCService"
+    "$timeout"
     ($scope, $routeParams, SharesService, $location, $filter
-        $modal, StreamService, $rootScope, UserService) ->
+        $modal, StreamService, $rootScope, UserService, RTCService, $timeout) ->
 
         $scope.users = UserService.users
         $scope.user = $scope.users[$rootScope.userId]
@@ -29,9 +38,14 @@ app.controller "StreamCtrl", [
                     video =
                         mandatory:
                             chromeMediaSource: 'screen'
+                            maxWidth: 1280,
+                            maxHeight: 720
                     audio = false
                 else
-                    video = true
+                    video =
+                        mandatory:
+                            minWidth: 1280,
+                            minHeight: 720
                     audio = true
 
                 userMediaOptions =
@@ -39,13 +53,10 @@ app.controller "StreamCtrl", [
                     video: video
 
                 successCallback = (stream) =>
-                    console.log "scope is in succesCb", $scope
-                    console.log "item is before stream", $scope.item
-                    console.log "successCallback, stream is ", stream
                     $scope.item.content = stream
-                    console.log "successCallback, content is ", $scope.item.content
+                    RTCService.sendNewStream($scope.item, $scope.user.isMaster)
+                    $location.path("/share/stream/" + $scope.item.id)
                     $rootScope.$apply() if !$rootScope.$$phase
-                    console.log "item is after stream", $scope.item
 
                 errorCallback = (error) ->
                     console.log('Failed.', error)
@@ -53,13 +64,49 @@ app.controller "StreamCtrl", [
                 getUserMedia(userMediaOptions,
                     successCallback, errorCallback)
 
-                # item.content = stream
 
         else
             $scope.item = SharesService.get $routeParams.id
             $location.path "/404" if !$scope.item?
 
+            if $location.path() is "/share/stream/" + $rootScope.streamId[$scope.item.category]
+                $rootScope.disableStream[$scope.item.category] = true
 
+
+            angular.element("video").first().on "loadeddata", ->
+                # create thumbnail
+                element = angular.element("video").first()
+                canvas = document.createElement("canvas")
+
+                console.log "element width is", element.width()
+
+                max_width = 300
+                width = 1280
+                height = 720
+
+                if width > max_width
+                    height *= max_width / width
+                    width = max_width
+
+                canvas.width = width
+                canvas.height = height
+
+                console.log "canvas is", canvas
+
+                ctx_thumbnail = canvas.getContext "2d"
+                ctx_thumbnail.drawImage( element[0], 0, 0, width, height )
+
+                $scope.item.thumbnail = canvas.toDataURL("image/png")
+
+                console.log "dataUrl", $scope.item.thumbnail
+
+                updates =
+                    thumbnail: $scope.item.thumbnail
+
+                RTCService.sendFileHasChanged(updates, $scope.item.id,
+                    $scope.user)
+
+                $rootScope.$apply() if $rootScope.$$phase
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -82,5 +129,9 @@ app.controller "StreamCtrl", [
                 StreamService.killScreenStream()
             else
                 StreamService.killWebcamStream()
+
+
+        $scope.$on "$routeChangeStart", (scope, next, current) ->
+            $rootScope.disableStream[current.scope.item.category] = false
 
 ]

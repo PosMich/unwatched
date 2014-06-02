@@ -129,12 +129,12 @@ html(ng-app="unwatched")
     .chat(chat, ng-if="showChat")
     div
       .video-container.clearfix
-        .video.screen.ng-hide(ng-show="isStreaming['screen']")
+        .video.screen.ng-hide(ng-show="isStreaming['screen']&&!disableStream['screen']")
           .video-controls
             a(ng-href="#", kill-stream="screen")
               i.fa.fa-times-circle
           video#screen(autoplay, stream="screen")
-        .video.webcam.ng-hide(ng-show="isStreaming['webcam']")
+        .video.webcam.ng-hide(ng-show="isStreaming['webcam']&&!disableStream['webcam']")
           .video-controls
             a(ng-href="#", kill-stream="webcam")
               i.fa.fa-times-circle

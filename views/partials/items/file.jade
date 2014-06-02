@@ -34,7 +34,7 @@
                 input.form-control(type="text", ng-model="item.name")
 
         .infos-container
-            .info
+            .info(ng-show="item.size!=0")
                 b Size:
                 | {{item.size | humanReadableFileSize}}
             .info
@@ -43,7 +43,7 @@
             .info(ng-show="item.created!=''")
                 b Created:
                 | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
-            .info(ng-show="item.uploaded!=''")
+            .info(ng-show="item.uploaded")
                 b Uploaded:
                 | {{item.uploaded | date: 'dd.MM.yyyy - HH:mm'}}
             .info(ng-show="item.mime_type!=''")
@@ -70,6 +70,6 @@
                     i {{file.progress}}%
         .alert.alert-success(ng-show="file.ready")
             | You have <strong>successfully</strong> shared a file.
-        .image-container.ng-hide(ng-show="item.category=='image'")
+        .image-container.ng-hide(ng-show="item.category=='image'||item.category=='screenshot'")
             .img.ng-hide(ng-show="file.ready || !newItem")
                 img.thumbnail(ng-src="{{item.content}}")
