@@ -22,52 +22,28 @@ app.controller "FileCtrl", [
             $scope.file = {}
 
             $scope.newFile = true
+            $scope.item.progress = -1
 
             $scope.onFileSelect = ($files) ->
-                
+
                 $scope.file.source = $files[0]
                 $scope.item.size = 0
                 $scope.item.name = "Untitled"
-                
 
                 # RTCService.sendNewFile( $scope.item, $scope.user.isMaster )
 
-
                 $scope.item.name = $scope.file.source.name
+                $scope.item.originalName = $scope.file.source.name
                 $scope.item.mime_type = $scope.file.source.type
                 $scope.item.size = $scope.file.source.size
                 $scope.item.created = $scope.file.source.lastModifiedDate
                 $scope.item.uploaded = new Date()
-
-                console.log $scope.item
-
-                if $scope.item.size < 30000000
-                    $scope.file.progress = 100
+                #
+                # if $scope.item.size < 30000000
+                #     $scope.item.progress = 100
 
                 if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
                     $scope.item.category = "image"
-
-
-                # read file
-                # reader = new FileReader()
-
-                # reader.onload = (e) ->
-                #     console.log "onload event", e
-                #     console.log e.target.result
-
-                    # if $scope.item.category is "image"
-                    # $scope.target_result = e.target.result
-                    # console.log "scope.target_result", $scope.target_result
-
-
-                    # window.setTimeout(->
-                    #     $scope.file.show_progress = false
-                    #     $scope.file.ready = true
-                    #     $scope.$apply()
-                    # , 1000)
-
-                    # FileService.createFile( $scope.item.id, e.target.result )
-                    # $scope.$apply() if !$scope.$$phase
 
 
                 # reader.onprogress = (e) ->
@@ -152,7 +128,7 @@ app.controller "FileCtrl", [
             $scope.newFile = false
             console.log "blubb"
 
-            FileSystem.getFile( 
+            FileSystem.getFile(
                 $scope.item.id
                 (file) ->
                     if file

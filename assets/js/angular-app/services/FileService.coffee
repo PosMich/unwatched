@@ -8,7 +8,8 @@ app = angular.module "unwatched.services"
 app.service "FileService", [
     "$rootScope"
     "RoomService"
-    ($rootScope, RoomService) ->
+    "SharesService"
+    ($rootScope, RoomService, SharesService) ->
 
         console.log "file"
 
@@ -20,11 +21,11 @@ app.service "FileService", [
             window.requestFileSystem = window.requestFileSystem ||
                 window.webkitRequestFileSystem
 
-            navigator.webkitTemporaryStorage.requestQuota(
+            navigator.webkitPersistentStorage.requestQuota(
                 1024 * 1024 * 1024 * 5
                 (grantedBytes) =>
                     window.requestFileSystem(
-                        window.TEMPORARY
+                        window.PERSISTENT
                         grantedBytes
                         @onInitFs
                         @onErrorFs
@@ -32,12 +33,6 @@ app.service "FileService", [
                 (e) ->
                     console.log 'Error', e
             )
-
-            # window.requestFileSystem window.PERSISTENT,
-            #     1024 * 1024 * 1024 * 10 * 5,
-            #     @onInitFs,
-            #     @onErrorFs
-
 
         @onInitFs = (fs) =>
             console.log "created file-system " + fs.name + ":"
@@ -58,84 +53,141 @@ app.service "FileService", [
                 console.log "quota exceeded"
 
 
-        @saveFile = (id, file) ->
-
-            reader = new FileReader()
-
-            @roomDir.getFile(
-                id.toString()
+        @createDirectory = (baseDir, name, callback) ->
+            baseDir.getDirectory(
+                name
                 { create: true }
-                (fileEntry) ->
-                    console.log "created fileEntry", fileEntry
-                    fileEntry.createWriter(
-                        (fileWriter) ->
-                            CHUNK_SIZE = 1024 * 1024
-                            i = 0
-                            start = i * CHUNK_SIZE
-
-                            console.log "trying to write data"
-
-                            reader.readAsArrayBuffer file.slice( start, start + CHUNK_SIZE )
-
-                            reader.onload = (e) ->
-
-                                fileWriter.seek( fileWriter.length )
-                                fileWriter.write(new Blob(
-                                    [e.target.result]
-                                ))
-
-                            fileWriter.onwritestart = (e) ->
-                                console.log "started writing", e
-
-                            fileWriter.onwriteend = (e) ->
-                                console.log "finished writing, next step = " + (i * CHUNK_SIZE)
-                                i++
-                                start = i * CHUNK_SIZE
-
-                                if start < file.size
-                                    reader.readAsArrayBuffer file.slice(
-                                        start, start + CHUNK_SIZE )
-                                else
-                                    console.log "finished writing 100% :D"
-
-
-                            fileWriter.onerror = (error) ->
-                                console.log "filewriter error", error
-                        (error) ->
-                            console.log "error on create writer", error
-                    )
-
+                (dir) ->
+                    console.log "successfully created directory '" + baseDir +
+                        "/" + name + "'"
+                    callback(dir)
                 (error) ->
-                    console.log "error creating fileEntry", error
-            )
-
-
-
-
-
-
-        @getFile = (id, callback) ->
-            console.log "roomDir is " + @roomDir
-            @roomDir.getFile(
-                id.toString()
-                {}
-                (file) ->
-                    callback(file)
-                ->
+                    console.log "failed to created directory", error
                     callback(false)
             )
 
-        @createFile = (id, fileSource) ->
-            console.log "fileSource"
 
-            # fileSource = new Uint8Array( fileSource )
+        @createFile = (baseDir, name, callback) ->
+            baseDir.getFile(
+                name
+                { create: true }
+                (fileEntry) ->
+                    console.log "successfully created fileEntry '" + baseDir +
+                        "/" + name + "'"
+                    callback(fileEntry)
+                (error) ->
+                    console.log "failed to created directory", error
+                    callback(false)
+            )
 
-            # myblob = new Blob( fileSource )
+        @saveFile = (id, file) ->
 
+            reader = new FileReader()
+            item = SharesService.get(id)
+
+            name = item.originalName
+            size = item.size
+
+            console.log "item size " + size
+            console.log "file size " + file.size
+
+            updateProgress = (currentSize) ->
+
+                item.progress = Math.round( currentSize / size * 100 )
+
+                if item.progress >= 100
+                    item.progress = 100
+
+                console.log "updated progress to " + item.progress
+
+                $rootScope.$apply() if !$rootScope.$$phase
+
+            writer = (fileEntry) =>
+                console.log "WRITER :: fileEntry", fileEntry
+                fileEntry.createWriter(
+                    (fileWriter) =>
+
+                        CHUNK_SIZE = 1024 * 1024 * 5
+                        i = 0
+                        start = i * CHUNK_SIZE
+
+                        console.log "trying to write data"
+
+                        reader.readAsArrayBuffer file.slice( start,
+                            start + CHUNK_SIZE )
+
+                        reader.onload = (e) ->
+
+                            fileWriter.seek( fileWriter.length )
+                            fileWriter.write(new Blob(
+                                [e.target.result]
+                            ))
+
+                        fileWriter.onwritestart = (e) ->
+                            console.log "started writing", e
+
+                        fileWriter.onwriteend = (e) =>
+                            console.log "finished writing, next " +
+                                "step = " + (i * CHUNK_SIZE)
+                            i++
+                            start = i * CHUNK_SIZE
+
+                            updateProgress(start)
+
+                            if start < file.size
+                                reader.readAsArrayBuffer file.slice(
+                                    start, start + CHUNK_SIZE )
+                            else
+                                console.log "finished writing 100% :D"
+                                @setURL(id)
+
+
+                        fileWriter.onerror = (error) ->
+                            console.log "filewriter error", error
+                            console.log "error was" + fileWriter.error.message
+
+                    (error) ->
+                        console.log "error on create writer", error
+                )
+
+            @createDirectory(
+                @roomDir
+                id.toString()
+                (dir) =>
+                    if !dir
+                        return
+                    @createFile(
+                        dir
+                        name
+                        (fileEntry) =>
+                            if !fileEntry
+                                return
+                            console.log "created fileEntry", fileEntry
+                            writer(fileEntry)
+
+                    )
+            )
+
+        @setURL = (id) ->
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+            @root.getFile(
+                filename
+                {}
+                (file) ->
+                    item.content = file.toURL()
+                    console.log "changed item content to url: " + item.content
+            )
 
         @deleteFile = (id) ->
-            @roomDir.getFile(
-                id.toString()
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+            @root.getFile(
+                filename
                 { create: false }
                 (file) ->
                     file.remove(

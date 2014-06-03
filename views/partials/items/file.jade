@@ -64,10 +64,10 @@
             .drop-box(ng-file-drop="onFileSelect($files)",
                 ng-file-drag-over-class="drag-over-class")
                 | or drop file here
-            .progress-container(ng-show="file.show_progress")
+            .progress-container(ng-if="item.progress < 100 && item.progress > 0")
                 progressbar.progress-striped.active(max="100", type="info",
-                    value="file.progress")
-                    i {{file.progress}}%
+                    value="item.progress")
+                    i {{item.progress}}%
         .alert.alert-success(ng-show="file.ready")
             | You have <strong>successfully</strong> shared a file.
         //- .image-container.ng-hide(ng-show="item.category=='image'||item.category=='screenshot'")
