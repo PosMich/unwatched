@@ -54,7 +54,7 @@
                         .col-xs-6.col-offset-xs-1(ng-class="{'has-error': joinRoomForm.jPassword.$invalid && joinRoomForm.jPassword.$dirty}")
                             input#jPassword.form-control(type='password',
                                 name="jPassword" ng-model="room.joinPassword",
-                                placeholder='Password', ng-minlength="4",
+                                placeholder='Password', ng-minlength="5",
                                 ng-disabled="inputDisabled", required)
                             span.help-block(ng-show="joinRoomForm.jPassword.$error.required && joinRoomForm.jPassword.$dirty")
                                 | *Required field.

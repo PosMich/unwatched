@@ -1187,6 +1187,10 @@ class RTCService
     requestItem: (itemId) ->
         @P2PService.requestItem itemId
 
+    changePassword: (password) ->
+        @handler.password = password
+        console.log "new password is: " + @handler.password
+
 app.service "RTCService", [
     "$rootScope"
     "UserService"

@@ -145,12 +145,4 @@ app.controller "RoomCtrl", [
                 # broadcast new user name
                 RTCService.broadcastUserChanges("userNameHasChanged", message)
 
-
-        # init dummy shares if master
-        if $scope.user.isMaster and !$rootScope.sharesInit
-            $rootScope.sharesInit = true
-
-            sharedId = undefined
-            sharedItem = undefined
-
 ]
