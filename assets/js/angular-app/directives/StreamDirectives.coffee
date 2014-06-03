@@ -46,24 +46,23 @@ app.directive "killStream", [
     "$rootScope"
     "$location"
     "RTCService"
-    (SharesService, $rootScope, $location, RTCService) ->
+    "UserService"
+    (SharesService, $rootScope, $location, RTCService, UserService) ->
         restrict: 'A'
         link: (scope, element, attrs) ->
 
             element.on "click", ->
-                SharesService.delete $rootScope.streamId[attrs.killStream]
-
-                $rootScope.isStreaming[attrs.killStream] = false
-                $rootScope.streamId[attrs.killStream] = -1
-
                 angular.element("#" + attrs.killStream).src = null
 
                 if $location.path().indexOf("/share/stream") isnt -1
                     $location.path("/share")
 
 
-                RTCService.sendItemDeleted( scope.user, scope.item.id )
+                RTCService.sendItemDeleted( UserService.getUser($rootScope.userId), $rootScope.streamId[attrs.killStream] )
 
+                SharesService.delete $rootScope.streamId[attrs.killStream]
+                $rootScope.isStreaming[attrs.killStream] = false
+                $rootScope.streamId[attrs.killStream] = -1
                 $rootScope.$apply() if !$rootScope.$$phase
 
 ]

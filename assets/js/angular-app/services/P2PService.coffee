@@ -285,8 +285,25 @@ class P2PService
     constructor: (@$rootScope, @SharesService, @UserService) ->
         console.log "p2pService: constructor", @ if @debug
 
+
     setup: (@p2p) ->
         console.log "p2pService: setup", @p2p if @debug
+        @$rootScope.$watch =>
+            @SharesService.shares
+        , (shares) =>
+            console.log "shares changed!!!"
+            for p2pConn in @p2pConnections
+                console.log "p2pConn", p2pConn
+                found = false
+                for share in shares
+                    console.log "shaare", share
+                    if share.id is p2pConn.itemId
+                        found = true
+                        break
+                if !found
+                    @suicide p2pConn.itemId
+        , true
+
 
     requestItem: (itemId) ->
         console.log "p2pService: requestItem", itemId if @debug
@@ -312,11 +329,13 @@ class P2PService
 
     suicide: (itemId) ->
         console.log "p2pService: try to killing him softly", itemId if @debug
-        for p2pConn, index in @p2pConnection
+        for p2pConn, index in @p2pConnections
             if p2pConn.itemId is itemId
                 console.log "p2pService: killing him softly", p2pConn if @debug
-                @p2pConnection.splice index, 1
+                p2pConn.connection.close()
+                @p2pConnections.splice index, 1
                 break
+
 
 angular.module("unwatched.services").service "P2PService", [
     "$rootScope"

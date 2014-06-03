@@ -59,7 +59,7 @@ app.controller "StreamCtrl", [
                 successCallback = (stream) =>
                     $scope.item.content = stream
                     stream.onended = ->
-                        console.log "blubb"
+                        console.log "bluibb"
                         $scope.killstream()
                     RTCService.sendNewStream($scope.item, $scope.user.isMaster)
                     angular.element("video").first().on "loadeddata", ->
@@ -160,7 +160,15 @@ app.controller "StreamCtrl", [
             RTCService.sendItemDeleted( $scope.user, $scope.item.id )
 
             $rootScope.$apply() if !$rootScope.$$phase
-
+        $scope.$watch ->
+            $scope.item
+        , (newval, oldval) ->
+            console.log "newval", newval
+            console.log "oldval", oldval
+            return if !oldval or !newval
+            if oldval.content isnt "" and newval.content is ""
+                $location.path "/share"
+        , true
 
         $scope.$on "$routeChangeStart", (scope, next, current) ->
             return if !current.scope.item

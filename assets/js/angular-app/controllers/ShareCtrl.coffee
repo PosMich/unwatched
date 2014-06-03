@@ -58,13 +58,13 @@ app.controller "ShareCtrl", [
             )
 
             modalInstance.result.then( ->
+                RTCService.sendItemDeleted($scope.user, item_id)
                 category = SharesService.get(item_id).category
                 if category is "screen" or category is "webcam"
                     $scope.deleteStream item_id
                 else
                     SharesService.delete(item_id)
 
-                RTCService.sendItemDeleted($scope.user, item_id)
             )
 
         $scope.setLayout = (layout) ->
@@ -81,6 +81,8 @@ app.controller "ShareCtrl", [
             id = item.id
             category = item.category
 
+            RTCService.sendItemDeleted( $scope.user, id )
+
             SharesService.delete id
 
             $rootScope.isStreaming[category] = false
@@ -88,7 +90,6 @@ app.controller "ShareCtrl", [
 
             angular.element("#" + category).src = null
 
-            RTCService.sendItemDeleted( $scope.user, $scope.item.id )
 
             $rootScope.$apply() if !$rootScope.$$phase
 ]

@@ -93,14 +93,17 @@ class Shares
         @shares[ @getItemIndex(id) ]
 
     delete: (id) ->
-
+        console.log "delete: ", id
         item = @get id
 
-        if item.category is "screen" or item.category is "webcam"
-            item.content.stop() if item.content isnt ""
+        return if !item
 
+        if item.category is "screen" or item.category is "webcam"
+            item.content = "" if item.content isnt ""
 
         @shares.splice( @getItemIndex(id), 1 )
+
+        @$rootScope.$apply() if !@$rootScope.$$phase
 
 
     create: (author, category) ->
