@@ -500,7 +500,7 @@ class RTCService
                         for client in @signaller.signallingClients
                             if !client.authenticated
                                 continue
-                            if client.id isnt parsedMsg.id
+                            if client.id isnt parsedMsg.userId
                                 client.DCsend parsedMsg
 
                     when "offer"

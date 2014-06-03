@@ -8,10 +8,10 @@ app = angular.module "unwatched.controllers"
 app.controller "RoomCtrl", [
     "$scope", "RoomService", "UserService", "SharesService",
     "ChatStateService", "$routeParams", "RTCService", "$rootScope",
-    "$location"
+    "$location", "FileService"
     ($scope, RoomService, UserService, SharesService,
         ChatStateService, $routeParams, RTCService, $rootScope,
-        $location) ->
+        $location, FileService) ->
 
         $scope.isInRoom = RoomService.id isnt ""
         if !$scope.isInRoom
@@ -39,6 +39,9 @@ app.controller "RoomCtrl", [
         # room infos
         $scope.room.users = UserService.users
         $scope.room.files = SharesService.shares
+
+        # init fs
+        FileService.initFs()
 
         # image processing
         $scope.avatar_ready = false

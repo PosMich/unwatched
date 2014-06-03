@@ -7,9 +7,9 @@ app = angular.module "unwatched.controllers"
 
 app.controller "FileCtrl", [
     "$scope", "$routeParams", "SharesService", "$location", "$modal",
-    "UserService", "$rootScope", "RTCService"
+    "UserService", "$rootScope", "RTCService", "FileService"
     ($scope, $routeParams, SharesService, $location, $modal, UserService,
-        $rootScope, RTCService) ->
+        $rootScope, RTCService, FileService) ->
 
         $scope.users = UserService.users
         $scope.user = $scope.users[$rootScope.userId]
@@ -17,16 +17,23 @@ app.controller "FileCtrl", [
         if !$routeParams.id?
             # create new image item
 
-            $scope.newFile = true
-            sharedItemId = SharesService.create( $rootScope.userId, "file" )
-            $scope.item = SharesService.get( sharedItemId )
-
-            RTCService.sendNewFile( $scope.item, $scope.user.isMaster )
-
-            $scope.item.mime_type = ""
             $scope.file = {}
+            $scope.item = {}
+            $scope.item.size = 0
+            $scope.item.name = "Untitled"
+            $scope.newFile = true
+
+
+
 
             $scope.onFileSelect = ($files) ->
+                sharedItemId = SharesService.create( $rootScope.userId, "file" )
+                $scope.item = SharesService.get( sharedItemId )
+                $scope.item.mime_type = ""
+
+
+                RTCService.sendNewFile( $scope.item, $scope.user.isMaster )
+
                 $scope.file.source = $files[0]
 
                 $scope.item.name = $scope.file.source.name
@@ -49,19 +56,13 @@ app.controller "FileCtrl", [
                     if $scope.item.category is "image"
                         $scope.target_result = e.target.result
 
-                    window.setTimeout((->
+                    window.setTimeout(->
                         $scope.file.show_progress = false
                         $scope.file.ready = true
                         $scope.$apply()
-                    ), 2000)
+                    , 2000)
 
-                    window.requestFileSystem  = window.requestFileSystem ||
-                        window.webkitRequestFileSystem
-
-                    window.requestFileSystem window.TEMPORARY,
-                        10 * 1024 * 1024,
-                        onInitFs,
-                        onErrorFs
+                    FileService.createFile( $scope.item.id, $scope.file.source )
 
                 reader.onprogress = (e) ->
                     console.log "progress"
@@ -71,29 +72,6 @@ app.controller "FileCtrl", [
                     $scope.file.progress = percentLoaded
 
                 reader.readAsDataURL $scope.file.source
-
-
-            onInitFs = (fs) ->
-                console.log "created file-system " + fs.name + ":"
-                console.log fs
-
-                fs.root.getFile( $scope.item.name,
-                    { create: true, exclusive: false }, onCreateFile,
-                    onErrorCreateFile )
-
-            onErrorFs = (error) ->
-                if error.code is FileError.QUOTA_EXCEEDED_ERR
-                    console.log "quota exceeded"
-
-            onCreateFile = (fileEntry) ->
-                console.log fileEntry
-                fileEntry.createWriter( (fileWriter) ->
-                    fileWriter.write($scope.file.source)
-                    console.log "wrote file"
-                )
-
-            onErrorCreateFile = (error) ->
-                console.log error
 
             $scope.$watch ->
                 $scope.file.ready
@@ -148,11 +126,8 @@ app.controller "FileCtrl", [
                     RTCService.sendFileHasChanged(fileMessage,
                         $scope.item.id, $scope.user)
 
-                    window.setTimeout((->
-                        console.log "NOW"
-                        $location.path("/share/file/" + $scope.item.id)
-                        $scope.$apply() if !$scope.$$phase
-                    ), 2500)
+                    $location.path("/share/file/" + $scope.item.id)
+                    $rootScope.$apply() if !$rootScope.$$phase
 
             , true
 

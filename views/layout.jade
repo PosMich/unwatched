@@ -28,8 +28,8 @@ html(ng-app="unwatched")
                       .side-popover
                         .arrow
                         .content tutorial
-                  .subicon-container.bottom1
-                    a.menu-create-room.subicon(href="/createRoom").side-tooltip
+                  .subicon-container.bottom1(ng-if="isInRoom")
+                    a.menu-create-room.subicon(href="/createRoom", target="_blank").side-tooltip
                       .stack-align
                         span.fa-stack
                           i.fa.fa-building.fa-stack-1x
