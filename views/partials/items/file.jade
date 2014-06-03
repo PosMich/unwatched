@@ -8,16 +8,16 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                a(ng-if="newItem" ng-download="'{{item.name}}'",
-                    content="file.source", mime-type="'{{item.mime_type}}'" )
-                    .download
-                        i.fa.fa-download
-                        span Download
-                a(ng-if="!newItem" ng-download="'{{item.name}}'",
-                    content="file_source", mime-type="'{{item.mime_type}}'" )
-                    .download
-                        i.fa.fa-download
-                        span Download
+                //- a(ng-if="newFile", ng-download="'{{item.name}}'",
+                //-     content="file.source", mime-type="'{{item.mime_type}}'" )
+                //-     .download
+                //-         i.fa.fa-download
+                //-         span Download
+                //- a(ng-if="!newItem" ng-download="'{{item.name}}'",
+                //-     content="file_source", mime-type="'{{item.mime_type}}'" )
+                //-     .download
+                //-         i.fa.fa-download
+                //-         span Download
                 a(ng-href="#", ng-click="save()")
                     .copy-clipboard
                         i.fa.fa-clipboard
@@ -70,6 +70,6 @@
                     i {{file.progress}}%
         .alert.alert-success(ng-show="file.ready")
             | You have <strong>successfully</strong> shared a file.
-        .image-container.ng-hide(ng-show="item.category=='image'||item.category=='screenshot'")
-            .img(ng-if="!newFile")
+        //- .image-container.ng-hide(ng-show="item.category=='image'||item.category=='screenshot'")
+            //- .img(ng-if="!newFile && (item.category=='image' || item.category=='screenshot')")
                 img.thumbnail(ng-src="{{item.content}}")

@@ -16,25 +16,22 @@ app.controller "FileCtrl", [
 
         if !$routeParams.id?
             # create new image item
-
+            sharedItemId = SharesService.create( $rootScope.userId, "file" )
+            $scope.item = SharesService.get( sharedItemId )
+            $scope.item.mime_type = ""
             $scope.file = {}
-            $scope.item = {}
-            $scope.item.size = 0
-            $scope.item.name = "Untitled"
+
             $scope.newFile = true
 
-
-
-
             $scope.onFileSelect = ($files) ->
-                sharedItemId = SharesService.create( $rootScope.userId, "file" )
-                $scope.item = SharesService.get( sharedItemId )
-                $scope.item.mime_type = ""
-
-
-                RTCService.sendNewFile( $scope.item, $scope.user.isMaster )
-
+                
                 $scope.file.source = $files[0]
+                $scope.item.size = 0
+                $scope.item.name = "Untitled"
+                
+
+                # RTCService.sendNewFile( $scope.item, $scope.user.isMaster )
+
 
                 $scope.item.name = $scope.file.source.name
                 $scope.item.mime_type = $scope.file.source.type
@@ -42,115 +39,143 @@ app.controller "FileCtrl", [
                 $scope.item.created = $scope.file.source.lastModifiedDate
                 $scope.item.uploaded = new Date()
 
+                console.log $scope.item
+
                 if $scope.item.size < 30000000
                     $scope.file.progress = 100
 
                 if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
                     $scope.item.category = "image"
 
+
                 # read file
-                reader = new FileReader()
+                # reader = new FileReader()
 
-                reader.onload = (e) ->
+                # reader.onload = (e) ->
+                #     console.log "onload event", e
+                #     console.log e.target.result
 
-                    if $scope.item.category is "image"
-                        $scope.target_result = e.target.result
+                    # if $scope.item.category is "image"
+                    # $scope.target_result = e.target.result
+                    # console.log "scope.target_result", $scope.target_result
 
-                    window.setTimeout(->
-                        $scope.file.show_progress = false
-                        $scope.file.ready = true
-                        $scope.$apply()
-                    , 2000)
 
-                    FileService.createFile( $scope.item.id, $scope.file.source )
+                    # window.setTimeout(->
+                    #     $scope.file.show_progress = false
+                    #     $scope.file.ready = true
+                    #     $scope.$apply()
+                    # , 1000)
 
-                reader.onprogress = (e) ->
-                    console.log "progress"
-                    $scope.file.show_progress = true
-                    $scope.$apply()
-                    percentLoaded = Math.round((e.loaded / e.total) * 100)
-                    $scope.file.progress = percentLoaded
+                    # FileService.createFile( $scope.item.id, e.target.result )
+                    # $scope.$apply() if !$scope.$$phase
 
-                reader.readAsDataURL $scope.file.source
 
-            $scope.$watch ->
-                $scope.file.ready
-            , (ready) ->
-                if ready
-                    $scope.item.content = $scope.target_result
+                # reader.onprogress = (e) ->
+                #     console.log "progress"
+                #     $scope.file.show_progress = true
+                #     $scope.$apply()
+                #     percentLoaded = Math.round((e.loaded / e.total) * 100)
+                #     $scope.file.progress = percentLoaded
 
-                    img = document.createElement("img")
-                    canvas = document.createElement("canvas")
 
-                    if $scope.item.category is "image"
-                        img.src = $scope.target_result
-                        img.onload = ->
+                FileService.saveFile $scope.item.id, $scope.file.source
 
-                            max_width = 300
-                            width = img.width
-                            height = img.height
+            # $scope.$watch ->
+            #     $scope.file.ready
+            # , (ready) ->
+            #     console.log "readystate: " + ready
+            #     if ready is true
+            #         $scope.item.content = $scope.target_result
 
-                            if width > max_width
-                                height *= max_width / width
-                                width = max_width
+                    # console.log "content", $scope.item.content
+                    # console.log "target result", $scope.target_result
 
-                            canvas.width = width
-                            canvas.height = height
+                    # if $scope.item.category is "image"
+                    #     img = document.createElement("img")
+                    #     canvas = document.createElement("canvas")
+                    #     reader = new FileReader()
 
-                            ctx = canvas.getContext "2d"
-                            ctx.drawImage( img, 0, 0, width, height )
+                    #     img.src = $scope.target_result
+                    #     img.onload = ->
 
-                            $scope.item.thumbnail = canvas.toDataURL(
-                                $scope.item.mime_type
-                            )
+                    #         max_width = 300
+                    #         width = img.width
+                    #         height = img.height
 
-                            $scope.$apply() if !$scope.$$phase
-            , true
+                    #         if width > max_width
+                    #             height *= max_width / width
+                    #             width = max_width
 
-            $scope.$watch ->
-                $scope.item.thumbnail
-            , (thumbnail) ->
-                if thumbnail? and thumbnail.length isnt 0
-                    # send file changes
-                    fileMessage =
-                        category: $scope.item.category
-                        size: $scope.item.size
-                        created: $scope.item.created
-                        uploaded: $scope.item.uploaded
-                        mime_type: $scope.item.mime_type
-                        thumbnail: $scope.item.thumbnail
+                    #         canvas.width = width
+                    #         canvas.height = height
 
-                    if $scope.item.size < (1024*1024*2)
-                        fileMessage.content = $scope.item.content
+                    #         ctx = canvas.getContext "2d"
+                    #         ctx.drawImage( img, 0, 0, width, height )
 
-                    RTCService.sendFileHasChanged(fileMessage,
-                        $scope.item.id, $scope.user)
+                    #         $scope.item.thumbnail = canvas.toDataURL(
+                    #             $scope.item.mime_type
+                    #         )
 
-                    $location.path("/share/file/" + $scope.item.id)
-                    $rootScope.$apply() if !$rootScope.$$phase
+                    #         $scope.$apply() if !$scope.$$phase
+            # , true
 
-            , true
+            # $scope.$watch ->
+            #     $scope.item.thumbnail
+            # , (thumbnail) ->
+            #     if thumbnail? and thumbnail.length isnt 0
+            #         console.log "make thumbnail", thumbnail
+            #         # send file changes
+            #         fileMessage =
+            #             category: $scope.item.category
+            #             size: $scope.item.size
+            #             created: $scope.item.created
+            #             uploaded: $scope.item.uploaded
+            #             mime_type: $scope.item.mime_type
+            #             thumbnail: $scope.item.thumbnail
+
+            #         if $scope.item.size < (1024*1024*2)
+            #             fileMessage.content = $scope.item.content
+
+            #         RTCService.sendFileHasChanged(fileMessage,
+            #             $scope.item.id, $scope.user)
+
+            #         $location.path("/share/file/" + $scope.item.id)
+            #         $rootScope.$apply() if !$rootScope.$$phase
+
+            # , true
 
 
         else
+            console.log "blabb"
             $scope.item = SharesService.get($routeParams.id)
-            $location.path "/404" if !$scope.item?
+            # $location.path "/404" if !$scope.item?
             $scope.newFile = false
+            console.log "blubb"
+
+            FileSystem.getFile( 
+                $scope.item.id
+                (file) ->
+                    if file
+                        console.log "controller got file", file
+            )
 
             # create file from item.content
-            if $scope.item.content? and $scope.item.content.length isnt 0
-                console.log $scope.item.content
 
-                byteString = atob($scope.item.content.split(',')[1])
-                ab = new ArrayBuffer byteString.length
-                ia = new Uint8Array ab
 
-                for i of byteString
-                    ia[i] = byteString.charCodeAt i
+            # if $scope.item.content? and $scope.item.content.length isnt 0
+            #     console.log "content is here"
+            #     # console.log $scope.item.content
 
-                console.log "uint8array is", ia
+            #     byteString = atob($scope.item.content.split(',')[1])
+            #     ab = new ArrayBuffer byteString.length
+            #     ia = new Uint16Array ab
 
-                $scope.file_source = ia
+            #     for i of byteString
+            #         ia[i] = byteString.charCodeAt i
+
+                # console.log "uint8array is", ia
+
+                # $scope.file_source = ia
 
         $scope.$watch ->
             $scope.item.name
