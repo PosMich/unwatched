@@ -521,13 +521,18 @@ class RTCService
                                     client.DCsend parsedMsg
 
                     when "answer"
+                        console.log "DChandle: got p2pAnswer"
                         if parsedMsg.requesterId is @signaller.id
+                            console.log "requester is master"
                             for p2pConn in @signaller.service.P2PService.p2pConnections
                                 if p2pConn.itemId is parsedMsg.itemId
                                     p2pConn.handleSignallingMsg parsedMsg
                         else
+                            console.log "DChandle: requester is a client"
                             for client in @signaller.signallingClients
                                 if client.id is parsedMsg.requesterId
+                                    console.log "DChandle: requester found!" + parsedMsg.requesterId, client
+                                    console.log
                                     client.DCsend parsedMsg
 
                     when "candidate"
@@ -539,7 +544,7 @@ class RTCService
                             for p2pConn in @signaller.service.P2PService.p2pConnections
                                 if p2pConn.itemId is parsedMsg.itemId and parsedMsg.requesterId is p2pConn.requesterId
                                     p2pConn.handleSignallingMsg parsedMsg
-                                    break
+
 
                         else
                             if authorId is @id
@@ -549,12 +554,12 @@ class RTCService
                                     for p2pConn in @signaller.service.P2PService.p2pConnections
                                         if p2pConn.itemId is parsedMsg.itemId and parsedMsg.resolverId is p2pConn.resolverId
                                             p2pConn.handleSignallingMsg parsedMsg
-                                            break
+
                                 else
                                     for client in @signaller.signallingClients
                                         if client.id is parsedMsg.requesterId
                                             client.DCsend parsedMsg
-                                            break
+
 
                             else
                                 # send to other clients
@@ -562,7 +567,7 @@ class RTCService
                                 for client in @signaller.signallingClients
                                     if client.id is parsedMsg.resolverId
                                         client.DCsend parsedMsg
-                                        break
+
 
                     else
                         console.log "DChandle: unknown msg"
@@ -891,7 +896,7 @@ class RTCService
                         parsedMsg.requesterId
 
                     for p2pConn in @service.P2PService.p2pConnections
-                        if p2pConn.itemId is parsedMsg.itemId
+                        if p2pConn.itemId is parsedMsg.itemId and p2pConn.requesterId is parsedMsg.requesterId
                             p2pConn.handleSignallingMsg parsedMsg
                 when "answer"
                     console.log "DChandle: got p2panswer", parsedMsg

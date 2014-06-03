@@ -275,6 +275,7 @@ class P2PService
             console.log "p2pResolve: handleSignallingMsg", message if @debug
             switch message.type
                 when "offer"
+                    console.log "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                     @handleOffer message
                 when "candidate"
                     @handleIceCandidate message
