@@ -916,6 +916,7 @@ class RTCService
             console.log "got an DC error!", error
         DChandleOpen: =>
             console.log "DC is open!"
+            @signalConnection.close()
             @service.$rootScope.$apply() if !@service.$rootScope.$$phase
         DChandleClose: ->
             console.log "DC is closed!"
