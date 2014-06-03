@@ -59,8 +59,8 @@ class RTCService
                 "turn:23.251.129.121:3479?transport=udp"
                 "turn:23.251.129.121:3479?transport=tcp"
             ]
-            "credential":"2JFi7SIVPMo9qLlog6uUu8dg4zA="
-            "username":"1401737730:15282694"
+            "credential":"QDIQId1PHMHLu4XvJBAQKoRAVgU="
+            "username":"1401858181:44662895"
         }
     ]
     ###
