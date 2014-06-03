@@ -84,6 +84,8 @@ app.directive "showStream", [
                 scope.item
             , (item) ->
                 if item.content? and item.content isnt ""
+                    console.log item
+                    console.log item.content
                     element[0].src =
                         window.URL.createObjectURL item.content
                     element[0].play()
@@ -92,11 +94,11 @@ app.directive "showStream", [
             element.on "click", ->
                 if $rootScope.userId is scope.item.author
                     $rootScope.screenshotCountdown = 5
-                    $scope.countdown = $interval(->
+                    scope.countdown = $interval(->
                         if $rootScope.screenshotCountdown <= 0
                             console.log "ASDFASDF"
-                            $interval.cancel $scope.countdown
-                            $scope.countdown = undefined
+                            $interval.cancel scope.countdown
+                            scope.countdown = undefined
                             takeScreenshot()
                             # $rootScope.screenshotCountdown = -1
                         --$rootScope.screenshotCountdown

@@ -188,174 +188,6 @@ class RTCService
 
             # add to Chunkfiles
 
-    class P2P
-        @::debug          = true
-        @::signaller      = null
-        @::isOfferer      = true
-        @::connection     = null
-        @::id             = null
-        @::sdpConstraints =
-            optional: []
-            mandatory:
-                OfferToReceiveAudio: true
-                OfferToReceiveVideo: true
-        @::streamOptions = [
-            RtpDataChannels: true
-        ]
-        constructor: () ->
-
-        setup: -> (@signaller, @requestUserId, @fileId, @isOfferer = true, @dataOnly = true) ->
-            console.log "P2P setup" if @debug
-
-            if @dataOnly
-                @streamOptions = null
-                @sdpConstraints = null
-
-
-            @connection = new RTCPeerConnection(
-                iceServers:  @signaller.iceServers
-            ,
-                @streamOptions
-            )
-            @connection.onicecandidate = @handleOwnIce
-
-            @connection.onnegotiationneeded = @handleNegotiation
-            @connection.onsignalingstatechange = @handleStateChange
-
-            @connection.onaddstream = @onAddStream
-            @connection.onremovestream = @onRemoveStream
-
-            @connection.ondatachannel = @gotDataChannel
-
-        signalSend: (msg) ->
-            if @signalConnection.readyState is 1
-                @signalConnection.send JSON.stringify(msg)
-            else
-                console.log "Signalling Channel isn't ready"
-                setTimeout =>
-                    @signalSend msg
-                , 25
-        handleSignalOpen: (event) ->
-            console.log "Signalling Channel Opened"
-        handleSignalMessage: (event) =>
-            console.log "got message!", event.data if @debug
-            try
-                parsedMsg = JSON.parse(event.data)
-
-                if !parsedMsg.type
-                    throw new Error("message Type not defined")
-
-                switch parsedMsg.type
-                    when "offer"
-                        @handleOffer( parsedMsg )
-                    when "answer"
-                        @handleAnswer( parsedMsg )
-                    when "candidate"
-                        @handleIce( parsedMsg )
-                    else
-                        console.log "other message"
-                        console.log parsedMsg
-            catch e
-                console.log "wasn't able to parse message"
-                console.log e.message
-        handleSignalError: (event) ->
-            console.log "Signalling Channel Error"
-            console.log event
-        handleSignalClose: (event) ->
-            console.log "Signalling Channel Closed"
-        handleOwnIce: (event) =>
-            console.log "handleOwnIce" if @debug
-            if event.candidate
-                @signalSend
-                    type: "candidate"
-                    label: event.candidate.sdpMLineIndex
-                    id: event.candidate.sdpMid
-                    candidate: event.candidate.candidate
-                    shareId: @id
-            else
-                console.log "end of candidates"
-        handleIce: (ice) ->
-            console.log "handleIce" if @debug
-            @connection.addIceCandidate new RTCIceCandidate(
-                sdpMLineIndex: ice.label
-                candidate: ice.candidate
-            )
-        handleOffer: (offer) =>
-            console.log "handle offer" if @debug
-            @connection.setRemoteDescription new RTCSessionDescription(offer)
-            @createAnswer()
-        createAnswer: ->
-            console.log "create answer" if @debug
-            @connection.createAnswer (description) =>
-                @connection.setLocalDescription description
-                description.clientId = @id
-                console.log @id if @debug
-                console.log "answer sent?" if @debug
-                @signalSend description
-            , null, @sdpConstraints
-        createOffer: ->
-            console.log "create offer" if @debug
-            @connection.createOffer (description) =>
-                @connection.setLocalDescription description
-                description.clientId = @id
-                @signalSend description
-            , null, @sdpConstraints
-        handleAnswer: (answer) ->
-            console.log "handle answer", answer if @debug
-            @connection.setRemoteDescription new RTCSessionDescription(
-                answer
-            )
-        handleNegotiation: ->
-            console.log "handleNegotiation"
-            if @isOfferer
-                createoffer()
-                try
-                    @dataChannel = @connection.createDataChannel "control",
-                        reliable: false
-                    @dataChannel.onmessage = @DChandleMessage
-                    @dataChannel.onerror   = @DChandleError
-                    @dataChannel.onopen    = @DChandleOpen
-                    @dataChannel.onclose   = @DChandleClose
-                catch error
-                    console.log "error creating Data Channel", error.message
-        handleStateChange: ->
-            console.log "stateChange"
-        onAddStream: ->
-            console.log "stream added"
-        onRemoveStream: ->
-            console.log "stream removed"
-        gotDataChannel: (event) =>
-            console.log "RTConnection gotDataChannel"
-            @dataChannel = event.channel
-            @dataChannel.onmessage = @DChandleMessage
-            @dataChannel.onerror   = @DChandleError
-            @dataChannel.onopen    = @DChandleOpen
-            @dataChannel.onclose   = @DChandleClose
-
-        DChandleMessage: (msg) =>
-            console.log "got a message from DC",
-            console.log msg
-
-
-            parsedMsg = JSON.parse(msg.data)
-            console.log "parsed"
-            console.log parsedMsg
-            switch parsedMsg.type#
-                when ""
-                else
-                    console.log "DChandle: unknown msg"
-        DChandleError: (error) ->
-            console.log "got an DC error!", error
-        DChandleOpen: =>
-            console.log "DC is open!"
-        DChandleClose: ->
-            console.log "DC is closed!"
-        DCsend: (message) ->
-            #messages =
-            console.log "DCsend", message
-            @dataChannel.send JSON.stringify(message)
-
-
 
     class Master
         @::roomId            = null
@@ -498,6 +330,15 @@ class RTCService
                                 .addUser("Unnamed")
                             room = @signaller.service.RoomService
                             # if password is true, send back the init data
+
+                            shares = angular.copy(
+                                @signaller.service.SharesService.shares
+                            )
+
+                            for share in shares
+                                if share.category is "code" or share.category is "note"
+                                    continue
+                                share.content = ""
 
                             initData =
                                 type: "password"
@@ -661,8 +502,68 @@ class RTCService
                                 continue
                             if client.id isnt parsedMsg.id
                                 client.DCsend parsedMsg
-                    when "p2p"
-                        console.log "p2p"
+
+                    when "offer"
+                        console.log "DChandle: got p2pOffer", parsedMsg
+                        if parsedMsg.resolverId is @signaller.id
+                            # master is resolver
+                            console.log "master is resolver"
+                            @signaller.service.P2PService.resolveItem parsedMsg.itemId,
+                                parsedMsg.requesterId
+
+                            for p2pConn in @signaller.service.P2PService.p2pConnections
+                                if p2pConn.itemId is parsedMsg.itemId
+                                    console.log "p2p found"
+                                    p2pConn.handleSignallingMsg parsedMsg
+                        else
+                            for client in @signaller.signallingClients
+                                if client.id is parsedMsg.resolverId
+                                    client.DCsend parsedMsg
+
+                    when "answer"
+                        if parsedMsg.requesterId is @signaller.id
+                            for p2pConn in @signaller.service.P2PService.p2pConnections
+                                if p2pConn.itemId is parsedMsg.itemId
+                                    p2pConn.handleSignallingMsg parsedMsg
+                        else
+                            for client in @signaller.signallingClients
+                                if client.id is parsedMsg.requesterId
+                                    client.DCsend parsedMsg
+
+                    when "candidate"
+                        authorId = @signaller.service.SharesService.get(parsedMsg.itemId).author
+
+                        if authorId is @signaller.id
+                            console.log "p2pIceCandidate author is master"
+                            # master handles the message
+                            for p2pConn in @signaller.service.P2PService.p2pConnections
+                                if p2pConn.itemId is parsedMsg.itemId and parsedMsg.requesterId is p2pConn.requesterId
+                                    p2pConn.handleSignallingMsg parsedMsg
+                                    break
+
+                        else
+                            if authorId is @id
+                                # send to resolver
+                                console.log "p2pIceCandidate client is author"
+                                if parsedMsg.requesterId is @signaller.id
+                                    for p2pConn in @signaller.service.P2PService.p2pConnections
+                                        if p2pConn.itemId is parsedMsg.itemId and parsedMsg.resolverId is p2pConn.resolverId
+                                            p2pConn.handleSignallingMsg parsedMsg
+                                            break
+                                else
+                                    for client in @signaller.signallingClients
+                                        if client.id is parsedMsg.requesterId
+                                            client.DCsend parsedMsg
+                                            break
+
+                            else
+                                # send to other clients
+                                console.log "p2pIceCandidate client & master is not author"
+                                for client in @signaller.signallingClients
+                                    if client.id is parsedMsg.resolverId
+                                        client.DCsend parsedMsg
+                                        break
+
                     else
                         console.log "DChandle: unknown msg"
 
@@ -983,8 +884,25 @@ class RTCService
                 when "fileHasChanged"
                     @service.SharesService.updateItem( parsedMsg.itemId,
                         parsedMsg.change )
-                when "p2p"
-                    console.log "p2p"
+
+                when "offer"
+                    console.log "DChandle: got p2pOffer", parsedMsg
+                    @service.P2PService.resolveItem parsedMsg.itemId,
+                        parsedMsg.requesterId
+
+                    for p2pConn in @service.P2PService.p2pConnections
+                        if p2pConn.itemId is parsedMsg.itemId
+                            p2pConn.handleSignallingMsg parsedMsg
+                when "answer"
+                    console.log "DChandle: got p2panswer", parsedMsg
+                    for p2pConn in @service.P2PService.p2pConnections
+                        if p2pConn.itemId is parsedMsg.itemId
+                            p2pConn.handleSignallingMsg parsedMsg
+                when "candidate"
+                    console.log "DChandle: got p2pcandidate", parsedMsg
+                    for p2pConn in @service.P2PService.p2pConnections
+                        if p2pConn.itemId is parsedMsg.itemId
+                            p2pConn.handleSignallingMsg parsedMsg
                 else
                     console.log "DChandle: unknown msg"
 
@@ -1006,9 +924,11 @@ class RTCService
             #@dataChannel.send JSON.stringify(message)
 
 
-    constructor: (@$rootScope, @UserService, @ChatService, @RoomService, @SharesService) ->
+    constructor: (@$rootScope, @UserService, @ChatService, @RoomService,
+        @SharesService, @P2PService) ->
 
     setup: (@roomId) ->
+        @P2PService.setup @
         console.log "setup done"
         if !@roomId # this is a master
             @handler = new Master(@)
@@ -1259,6 +1179,8 @@ class RTCService
                     continue
                 client.DCsend dataChannelMessage
 
+    requestItem: (itemId) ->
+        @P2PService.requestItem itemId
 
 app.service "RTCService", [
     "$rootScope"
@@ -1266,5 +1188,6 @@ app.service "RTCService", [
     "ChatService"
     "RoomService"
     "SharesService"
+    "P2PService"
     RTCService
 ]

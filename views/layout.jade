@@ -91,10 +91,10 @@ html(ng-app="unwatched")
               .subicons-container
                 .subicons
                   .subicon-container.top2
-                    a.menu-share-note.subicon(href="/share/note").side-tooltip
+                    a.menu-share-webcam.subicon(href="/share/stream").side-tooltip
                       .side-popover
                         .arrow
-                        .content edit and share a textfile
+                        .content  share your webcam/screen
                   .subicon-container.top1
                     a.menu-share-code.subicon(href="/share/code").side-tooltip
                       .side-popover
@@ -106,10 +106,10 @@ html(ng-app="unwatched")
                         .arrow
                         .content share a file/picture
                   .subicon-container.bottom2
-                    a.menu-share-webcam.subicon(href="/share/stream").side-tooltip
+                    a.menu-share-note.subicon(href="/share/note").side-tooltip
                       .side-popover
                         .arrow
-                        .content  share your webcam/screen
+                        .content edit and share a textfile
 
     .view-container(ng-controller="AppCtrl")
         .alert.alert-danger.shutdown.ng-hide(ng-show="isClosed",

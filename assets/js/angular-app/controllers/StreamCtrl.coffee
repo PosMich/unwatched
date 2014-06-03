@@ -29,8 +29,6 @@ app.controller "StreamCtrl", [
                 if $rootScope.isStreaming[category]
                     $location.path "/share/stream/" +
                         $rootScope.streamId[category]
-                    $scope.item =
-                        category: category
                     return
                 # create item
                 $scope.item = SharesService.get(
@@ -84,6 +82,8 @@ app.controller "StreamCtrl", [
             if $location.path() is "/share/stream/" + $rootScope.streamId[$scope.item.category]
                 $rootScope.disableStream[$scope.item.category] = true
 
+            if $scope.item.author isnt $rootScope.userId
+                RTCService.requestItem $scope.item.id
 
             angular.element("video").first().on "loadeddata", ->
                 # create thumbnail
@@ -121,8 +121,8 @@ app.controller "StreamCtrl", [
                 $rootScope.$apply() if $rootScope.$$phase
 
         $scope.snapshot = ->
-            do ->
-                angular.element("video").first().click()
+            take =
+                snapshot:  do -> angular.element("video").first().click()
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -161,6 +161,7 @@ app.controller "StreamCtrl", [
 
 
         $scope.$on "$routeChangeStart", (scope, next, current) ->
+            return if !current.scope.item
             $rootScope.disableStream[current.scope.item.category] = false
 
 ]
