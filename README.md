@@ -12,7 +12,7 @@
 > #### Windows
 >
 > [Try this](http://www.ubuntu.com/download/desktop), [this](http://wiki.centos.org/Download), or [this](http://fedoraproject.org/get-fedora).
- 
+
 ### coffee-script, grunt
 
 ```zsh
@@ -36,7 +36,7 @@ npm install
 ```
 
 ## Userconfig
-A <b>*`userconfig.coffe`*</b> file must be created in the `modules` directory, because sensible data is stored here, it isn't checked in into the version control system.
+A <b>*`userconfig.coffe`*</b> file must be created in the base directory, because sensible data is stored here, it isn't checked in into the version control system.
 
 ```coffee
 module.exports =
@@ -45,7 +45,6 @@ module.exports =
         https:  1235
         livereload: 35729
     appName: "Unwatched"
-    sessionSecret: ""
     ssl:
         key:    "cert/server.key"
         cert:   "cert/server.crt"
@@ -90,7 +89,7 @@ exports.config = {
         logStreams: {
             exceptions: [ "/var/www/unwatched/logs/exceptions.log" ],
             errors: [ "/var/www/unwatched/logs/errors.log" ],
-            warnings: [ "/var/www/unwatched/logs/warnings.log" ], 
+            warnings: [ "/var/www/unwatched/logs/warnings.log" ],
             infos: [ "/var/www/unwatched/logs/infos.log" ],
             silly: [ "/var/www/unwatched/logs/silly.log" ]
         },
@@ -100,11 +99,3 @@ exports.config = {
     }
 }
 ```
-
-
-## TODO
-*XSS!!!* node-validator
-
-
-### CI
- Would be nice :)

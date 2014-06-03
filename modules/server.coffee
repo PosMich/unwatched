@@ -1,5 +1,4 @@
 express = require "express"
-#assets  = require "connect-assets"
 http    = require "http"
 https   = require "https"
 fs      = require "fs"
@@ -19,9 +18,6 @@ process.on "uncaughtException", (err) ->
 
 app = express()
 
-#app.port =
-#    process.env.PORT or process.env.VMC_APP_PORT or config?.port or 3001
-
 # ***
 # ## View initialization
 
@@ -37,7 +33,8 @@ app.locals.pretty = true
 
 app.use require("compression")()
 app.use require("serve-static")(process.cwd() + "/public")
-app.use require("connect-livereload")(port: 35729)
+
+#app.use require("connect-livereload")(port: 35729)
 
 routes.route app
 routesAPI.route app

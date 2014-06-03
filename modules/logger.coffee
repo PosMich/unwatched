@@ -3,9 +3,6 @@ require "winston-logio"
 
 config = require "./userconfig"
 
-# logger consumes a lot cpu, y???
-# --> when logio isn't running..... check winstont-logio for reasons
-
 logger = new (winston.Logger)(transports: [
     new (winston.transports.Console)(
         colorize: true
