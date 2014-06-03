@@ -50,7 +50,7 @@ exports.connect = (server) ->
                         logger.info "ws: got 'connect' msg from ", wsConnection.clientId
                         for client in wss.clients
                             if client.isMaster and client.clientId is parsedMsg.roomId
-                                console.log "master found"
+                                logger.silly "master found"
                                 wsConnection.roomId = parsedMsg.roomId
 
                                 client.send JSON.stringify(
@@ -86,13 +86,13 @@ exports.connect = (server) ->
                     when "candidate"
                         logger.info "ws: got 'candidate' msg"
                         if wsConnection.isMaster
-                            console.log "from master"
+                            logger.silly "from master"
                             for client in wss.clients
                                 if client.clientId is parsedMsg.clientId
                                     client.send msg
                                     logger.info "sent to client"
                         else
-                            console.log "from client"
+                            logger.silly "from client"
                             for client in wss.clients
                                 if client.clientId is wsConnection.roomId
                                     client.send msg
