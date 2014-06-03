@@ -1,17 +1,16 @@
 .heading.clearfix.controls
     .row
-        .col-xs-1(ng-class="{'col-xs-5':chat_state=='expanded', 'col-xs-1':chat_state!='expanded'}")
-            .brand
-                | Unwatched
-        .sorting.clearfix.col-xs-6.ng-hide(ng-hide="chat_state=='expanded'",
-            ng-class="{'ascending':controls.sorting.ascending}")
-            span Sort by:
-            div(ng-class="{'active':controls.sorting.state=='name'}",
-                ng-click="setSortingState('name')") Name
-            div(ng-class="{'active':controls.sorting.state=='created'}",
-                ng-click="setSortingState('created')") Date
+        .sorting.clearfix(
+            ng-class="{'col-xs-3':chat_state=='expanded', 'col-xs-7':chat_state!='expanded'}")
+            .brand Unwatched
+            div(ng-hide="chat_state=='expanded'", ng-class="{'ascending':controls.sorting.ascending}")
+                span Sort by:
+                div(ng-class="{'active':controls.sorting.state=='name'}",
+                    ng-click="setSortingState('name')") Name
+                div(ng-class="{'active':controls.sorting.state=='joined'}",
+                    ng-click="setSortingState('joined')") Date
 
-        .layout(ng-class="{'col-xs-7':chat_state=='expanded', 'col-xs-5':chat_state!='expanded'}")
+        .layout(ng-class="{'col-xs-9':chat_state=='expanded', 'col-xs-5':chat_state!='expanded'}")
             form(name="controlSearch", no-validate)
                 .control-input
                     input#searchString.form-control(type="text",

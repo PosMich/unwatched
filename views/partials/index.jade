@@ -12,7 +12,7 @@
                             ng-class="{'has-error': createRoom.rName.$invalid && createRoom.rName.$dirty}")
                             input#roomName.form-control(type='text', name="rName"
                                 ng-model="room.name", placeholder='Room Name',
-                                ng-minlength="4", required)
+                                ng-minlength="5", required)
                             span.help-block(ng-show="createRoom.rName.$error.required && createRoom.rName.$dirty")
                                 | *Required field.
                             span.help-block(ng-show="createRoom.rName.$error.minlength && createRoom.rName.$dirty")
@@ -23,7 +23,7 @@
                             ng-class="{'has-error': createRoom.rPassword.$invalid && createRoom.rPassword.$dirty}")
                             input#roomPassword.form-control(type='password',
                                 name="rPassword" ng-model="room.password",
-                                placeholder='Password', ng-minlength="4", required)
+                                placeholder='Password', ng-minlength="5", required)
                             span.help-block(ng-show="createRoom.rPassword.$error.required && createRoom.rPassword.$dirty")
                                 | *Required field.
                             span.help-block(ng-show="createRoom.rPassword.$error.minlength && createRoom.rPassword.$dirty")

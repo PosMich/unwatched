@@ -674,7 +674,6 @@ class RTCService
 
     # only 1 pc to the server
     class Slave
-        @::signalServer = "wss://localhost:3001"
         @::roomId       = null
         @::id           = null
         @::connection   = null

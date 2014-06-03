@@ -44,6 +44,10 @@
                 i.fa.fa-camera
                 | Snapshot!
 
+        .infos-container(ng-show="captureError")
+            .alert.alert-danger(ng-show="captureError",
+                ng-bind-html="captureError")
+
 
         .stream-container
             .centered

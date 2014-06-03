@@ -123,8 +123,8 @@ app.directive "showStream", [
                 screenshot.content = canvas.toDataURL("image/png")
                 screenshot.mime_type = "image/png"
 
-                screenshot.name = "Screenshot\: " + scope.item.category + " of " +
-                    author.name
+                screenshot.name = "Snapshot\: " + scope.item.category +
+                    " from " + author.name
 
                 # create thumbnail
                 max_width = 300

@@ -102,10 +102,20 @@ app.controller "StreamCtrl", [
                         $rootScope.$apply() if !$rootScope.$$phase
                     $rootScope.$apply() if !$rootScope.$$phase
                 errorCallback = (error) ->
-                    SharesService.delete $scope.item.id
-                    $location.path "/share"
-                    $rootScope.$apply() if !$rootScope.$$phase
 
+                    $scope.captureError = "Unwatched has encountered a " +
+                        "problem with this feature. Are you sure you have " +
+                        "enabled the chrome-flag <a href=\"chrome://flags/#en" +
+                        "able-usermedia-screen-capture\" target='_blank'>" +
+                        "#enable-usermedia-screen-capture</a>? You will be " +
+                        "redirected to the share overview."
+                    $scope.$apply() if !$scope.$$phase
+
+                    $timeout ->
+                        SharesService.delete $scope.item.id
+                        $location.path "/share"
+                        $rootScope.$apply() if !$rootScope.$$phase
+                    , 6000
 
                 getUserMedia(userMediaOptions,
                     successCallback, errorCallback)

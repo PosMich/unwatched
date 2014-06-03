@@ -52,28 +52,10 @@ html(ng-app="unwatched")
                 .notification.ng-hide(ng-show="usersNotification!=0", ng-bind="usersNotification")
                 .side-popover
                   .arrow
-                  .content show/invite users
+                  .content show users
               .subicons-container
                 .subicons
                   .subicon-container.top2
-                    a.menu-user-settings.subicon(href="/settings").side-tooltip
-                      .stack-align
-                        span.fa-stack
-                          i.fa.fa-user.fa-stack-1x
-                          i.fa.fa-gear.fa-stack-1x
-                      .side-popover
-                        .arrow
-                        .content settings
-                  .subicon-container.top1
-                    a.menu-user-add.subicon(href="/addUser").side-tooltip
-                      .stack-align
-                        span.fa-stack
-                          i.fa.fa-user.fa-stack-1x
-                          i.fa.fa-plus.fa-stack-1x
-                      .side-popover
-                        .arrow
-                        .content add a user
-                  .subicon-container.bottom2
                     a.menu-user-history(href="/history").side-tooltip
                       .side-popover
                         .arrow

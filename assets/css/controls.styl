@@ -57,28 +57,33 @@
         padding-top 1px
         padding-left 40px
 
-        div, span
+        div.brand, span
             padding 7px 10px
             float left
             margin 0 2px
 
-        div
-            cursor pointer
-            position relative
-            transition background .3s ease-in-out
-            border-radius 5px
 
-            &.active, &:hover
-                background rgba(27,27,27, 1)
+        & > div:not(.brand)
+            div
+                cursor pointer
+                position relative
+                transition background .3s ease-in-out
+                border-radius 5px
+                padding 7px
+                float left
+                margin 0 2px
 
-            &.active:after
-                font-family FontAwesome
-                content: '\f0dd'
-                padding-left 7px
+                &.active, &:hover
+                    background rgba(27,27,27, 1)
 
-        &.ascending
-            .active:after
-                content: '\f0de'
+                &.active:after
+                    font-family FontAwesome
+                    content: '\f0dd'
+                    padding-left 7px
+
+            &.ascending
+                .active:after
+                    content: '\f0de'
 
 .chat-expanded
     .heading
