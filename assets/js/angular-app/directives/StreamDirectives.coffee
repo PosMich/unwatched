@@ -96,14 +96,14 @@ app.directive "showStream", [
                     $rootScope.screenshotCountdown = 5
                     scope.countdown = $interval(->
                         if $rootScope.screenshotCountdown <= 0
-                            console.log "ASDFASDF"
                             $interval.cancel scope.countdown
                             scope.countdown = undefined
                             takeScreenshot()
-                            # $rootScope.screenshotCountdown = -1
                         --$rootScope.screenshotCountdown
                         console.log $rootScope.screenshotCountdown
                     , 1000)
+                else
+                    takeScreenshot()
 
             takeScreenshot = ->
                 user = UserService.getUser $rootScope.userId

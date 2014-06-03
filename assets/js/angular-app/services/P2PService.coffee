@@ -266,7 +266,7 @@ class P2PService
             console.log "p2pResolve: signalSend", msg if @debug
             if @isMaster
                 for client in @p2p.handler.signallingClients
-                    if client.id is msg.requesterId
+                    if client.id is msg.requesterId and msg.itemId is @itemId
                         client.DCsend msg
             else
                 @p2p.handler.DCsend msg

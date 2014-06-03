@@ -110,7 +110,9 @@ class Shares
         return id
 
     updateItem: (itemId, change) ->
+        console.log "updateItem with id: " + itemId, change
         item = @get(itemId)
+        console.log "item", item
         changeKeys = Object.keys(change)
 
         for changeKey of changeKeys

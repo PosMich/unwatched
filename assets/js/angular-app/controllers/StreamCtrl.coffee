@@ -62,9 +62,45 @@ app.controller "StreamCtrl", [
                         console.log "blubb"
                         $scope.killstream()
                     RTCService.sendNewStream($scope.item, $scope.user.isMaster)
-                    $location.path("/share/stream/" + $scope.item.id)
-                    $rootScope.$apply() if !$rootScope.$$phase
+                    angular.element("video").first().on "loadeddata", ->
+                        console.log "scope", $scope
+                        console.log "item", $scope.item
+                        # create thumbnail
+                        element = angular.element("video").first()
+                        canvas = document.createElement("canvas")
 
+                        console.log "element width is", element.width()
+
+                        max_width = 300
+                        width = 1280
+                        height = 720
+
+                        if width > max_width
+                            height *= max_width / width
+                            width = max_width
+
+                        canvas.width = width
+                        canvas.height = height
+
+                        console.log "canvas is", canvas
+
+                        ctx_thumbnail = canvas.getContext "2d"
+                        ctx_thumbnail.drawImage( element[0], 0, 0, width, height )
+
+                        $scope.item.thumbnail = canvas.toDataURL("image/png")
+
+                        console.log "dataUrl", $scope.item.thumbnail
+
+                        updates =
+                            thumbnail: $scope.item.thumbnail
+
+                        RTCService.sendFileHasChanged(updates, $scope.item.id,
+                            $scope.user)
+
+
+                        $location.path("/share/stream/" + $scope.item.id)
+                        $rootScope.$apply() if !$rootScope.$$phase
+                    $rootScope.$apply() if !$rootScope.$$phase
                 errorCallback = (error) ->
                     SharesService.delete $scope.item.id
                     $location.path "/share"
@@ -85,40 +121,6 @@ app.controller "StreamCtrl", [
             if $scope.item.author isnt $rootScope.userId
                 RTCService.requestItem $scope.item.id
 
-            angular.element("video").first().on "loadeddata", ->
-                # create thumbnail
-                element = angular.element("video").first()
-                canvas = document.createElement("canvas")
-
-                console.log "element width is", element.width()
-
-                max_width = 300
-                width = 1280
-                height = 720
-
-                if width > max_width
-                    height *= max_width / width
-                    width = max_width
-
-                canvas.width = width
-                canvas.height = height
-
-                console.log "canvas is", canvas
-
-                ctx_thumbnail = canvas.getContext "2d"
-                ctx_thumbnail.drawImage( element[0], 0, 0, width, height )
-
-                $scope.item.thumbnail = canvas.toDataURL("image/png")
-
-                console.log "dataUrl", $scope.item.thumbnail
-
-                updates =
-                    thumbnail: $scope.item.thumbnail
-
-                RTCService.sendFileHasChanged(updates, $scope.item.id,
-                    $scope.user)
-
-                $rootScope.$apply() if $rootScope.$$phase
 
         $scope.snapshot = ->
             take =

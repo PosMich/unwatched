@@ -512,7 +512,7 @@ class RTCService
                                 parsedMsg.requesterId
 
                             for p2pConn in @signaller.service.P2PService.p2pConnections
-                                if p2pConn.itemId is parsedMsg.itemId
+                                if p2pConn.itemId is parsedMsg.itemId and parsedMsg.requesterId is p2pConn.requesterId
                                     console.log "p2p found"
                                     p2pConn.handleSignallingMsg parsedMsg
                         else
