@@ -858,6 +858,7 @@ class RTCService
                     console.log "DChandle: got p2pcandidate", parsedMsg
                     for p2pConn in @service.P2PService.p2pConnections
                         if p2pConn.itemId is parsedMsg.itemId
+                            console.log "p2pcandidate: other p2pConn found!"
                             p2pConn.handleSignallingMsg parsedMsg
                 else
                     console.log "DChandle: unknown msg"
