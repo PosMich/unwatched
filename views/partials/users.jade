@@ -40,9 +40,7 @@
                         |Joined at: {{user.joinedDate | date: 'dd.MM.yyyy - HH:mm'}}
                 .controls
                     .controls-inner.clearfix
-                        a(href="/share/screen")
+                        a(href="/share/stream/{{user.screen}}", ng-if="user.screen!=-1")
                             i.fa.fa-desktop
-                        a(href="/share/file")
-                            i.fa.fa-floppy-o
-                        a(href="/share/webcam")
+                        a(href="/share/stream/{{user.webcam}}", ng-if="user.webcam!=-1")
                             i.fa.fa-video-camera

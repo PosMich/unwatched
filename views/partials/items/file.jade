@@ -8,16 +8,6 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                //- a(ng-if="newFile", ng-download="'{{item.name}}'",
-                //-     content="file.source", mime-type="'{{item.mime_type}}'" )
-                //-     .download
-                //-         i.fa.fa-download
-                //-         span Download
-                //- a(ng-if="!newItem" ng-download="'{{item.name}}'",
-                //-     content="file_source", mime-type="'{{item.mime_type}}'" )
-                //-     .download
-                //-         i.fa.fa-download
-                //-         span Download
                 a(ng-href="#", ng-click="delete()")
                     .copy-clipboard
                         i.fa.fa-trash-o
@@ -64,12 +54,12 @@
                 progressbar.progress-striped.active(max="100", type="info",
                     value="item.progress")
                     i {{item.progress}}%
+        .alert.alert-success(ng-show="item.progress==100 && newFile")
+            | You have <strong>successfully</strong> shared a file.
         .download-container(ng-if="!newFile")
+            img.thumbnail(src="{{item.thumbnail}}", ng-if="item.category=='image' || item.category=='screenshot'")
+            p.text-muted(ng-if="item.category=='image' || item.category=='screenshot'")
+                | Download image for max resolution
             a.btn.btn-default.btn-lg(href="{{item.content}}", download="{{item.name}}", ng-disabled="item.content == '' || !item.content")
                 i.fa.fa-download
                 |  Download
-        .alert.alert-success(ng-show="item.progress==100 && newFile")
-            | You have <strong>successfully</strong> shared a file.
-        //- .image-container.ng-hide(ng-show="item.category=='image'||item.category=='screenshot'")
-            //- .img(ng-if="!newFile && (item.category=='image' || item.category=='screenshot')")
-                //- img.thumbnail(ng-src="{{item.content}}")

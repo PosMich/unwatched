@@ -281,7 +281,7 @@ class RTCService
                                     messages:
                                         @signaller.service.ChatService.messages
                                     shares:
-                                        @signaller.service.SharesService.shares
+                                        shares
                                     room:
                                         id: @signaller.roomId
                                         name: room.name
@@ -826,6 +826,9 @@ class RTCService
 
                         @service.ChatService.messages = parsedMsg.init.messages
                         @service.SharesService.shares = parsedMsg.init.shares
+                    else
+                        @service.$rootScope.loginError = "Wrong password."
+                        @service.$rootScope.$apply() if !@service.$rootScope.$$phase
 
                 when "newFile"
                     @service.SharesService.shares.push parsedMsg.file
