@@ -11,7 +11,7 @@ app.service "FileService", [
     "SharesService"
     "$location"
     "$timeout"
-    ($rootScope, RoomService, SharesService, $location, $timeout, RTCService) ->
+    ($rootScope, RoomService, SharesService, $location, $timeout) ->
 
         console.log "file"
 
@@ -25,11 +25,11 @@ app.service "FileService", [
             window.requestFileSystem = window.requestFileSystem ||
                 window.webkitRequestFileSystem
 
-            navigator.webkitPersistentStorage.requestQuota(
+            navigator.webkitTemporaryStorage.requestQuota(
                 1024 * 1024 * 1024 * 5
                 (grantedBytes) =>
                     window.requestFileSystem(
-                        window.PERSISTENT
+                        window.TEMPORARY
                         grantedBytes
                         @onInitFs
                         @onErrorFs
@@ -299,7 +299,7 @@ app.service "FileService", [
 
 
         @ab2ascii = (buf) ->
-            String.fromCharCode.apply(null, buf).trim()
+            String.fromCharCode.apply(null, buf)
 
         @ascii2ab = (str) ->
             buf = new Uint8Array(str.length)
@@ -402,6 +402,8 @@ app.service "FileService", [
                                 console.log "write end"
                                 #console.log fileWriter
                                 console.log "length is", fileWriter.length
+                                item.content = fileEntry.toURL()
+                                
                             fileWriter.onerror = (error) ->
                                 console.log "filewriter error", error
                                 console.log "error was" + fileWriter.error.message

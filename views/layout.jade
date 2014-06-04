@@ -100,8 +100,8 @@ html(ng-app="unwatched")
             ng-bind-html="'Your room is going to <strong>shut down</strong>...'")
         .clearfix.view-frame.container-fluid(ng-view)
 
-    .chat(chat)
-    div(ng-if="isChrome")
+    .chat(chat, ng-if="showChat")
+    div
       .video-container.clearfix
         .video.screen.ng-hide(ng-show="isStreaming['screen']&&!disableStream['screen']")
           .video-controls

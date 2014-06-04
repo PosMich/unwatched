@@ -253,9 +253,9 @@ class RTCService
 
                             --@loginAttempts
 
-                            @dataChannel.close() if @loginAttempts <= 0
-
-                            @signaller.removeSlave(@id)
+                            if @loginAttempts <= 0
+                                @dataChannel.close()
+                                @signaller.removeSlave(@id)
                         else
                             @authenticated = true
                             @id = @signaller.service.UserService

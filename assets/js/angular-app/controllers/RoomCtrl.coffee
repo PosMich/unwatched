@@ -16,8 +16,9 @@ app.controller "RoomCtrl", [
         $scope.isInRoom = RoomService.id isnt ""
         if !$scope.isInRoom
             return
-
+        console.log "blubb"
         $scope.room = RoomService
+        $scope.room.users = UserService.users
 
         $scope.user = UserService.getUser( $rootScope.userId )
 
@@ -33,6 +34,8 @@ app.controller "RoomCtrl", [
         , (new_state, old_state) ->
             $scope.chat_state = new_state
         , true
+
+
 
         # room infos
         $scope.usersLength = 0

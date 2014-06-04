@@ -7,9 +7,9 @@ app = angular.module "unwatched.controllers"
 
 app.controller "AppCtrl", [
     "$scope", "$rootScope", "SharesService", "StreamService", "ChatService",
-    "RoomService", "UserService", "RTCService"
+    "RoomService", "UserService", "RTCService", "FileService"
     ($scope, $rootScope, SharesService, StreamService, ChatService,
-        RoomService, UserService, RTCService) ->
+        RoomService, UserService, RTCService, FileService) ->
 
         $scope.isClosed = false
 
@@ -55,5 +55,6 @@ app.controller "AppCtrl", [
             console.log "deleted user"
             $rootScope.userId = undefined
             $rootScope.roomId = undefined
+            FileService.suicide()
 
 ]
