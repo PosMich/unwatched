@@ -18,8 +18,7 @@ app.service "FileService", [
         @fileSystem = undefined
         @root = undefined
         @roomDir = undefined
-        # id: 123, chunks: []
-        @chunkBlocks = {}
+        @pendingFiles = []
 
         @initFs = ->
             window.requestFileSystem = window.requestFileSystem ||
@@ -69,34 +68,8 @@ app.service "FileService", [
                     console.log "failed to created directory", error
                     callback(false)
             )
-        # write every 1000 junks
-        @initChunkFile = (id, callback) ->
-            ##@chunkBlocks[id] =
-            #    index: 0
-            #    blocks: [[],[]]
 
-            console.log "init chunk file", @chunkBlocks
 
-            @createDirectory(
-                @roomDir
-                id.toString()
-                (dir) =>
-                    if !dir
-                        callback(false)
-                        return
-                    console.log "created file"
-                    @createFile(
-                        dir
-                        SharesService.get(id).originalName
-                        (fileEntry) =>
-                            console.log "got fileentry"
-                            if !fileEntry
-                                callback(false)
-                                return
-                            console.log "created fileEntry", fileEntry
-                            callback(true)
-                    )
-            )
         @createFile = (baseDir, name, callback) ->
             baseDir.getFile(
                 name
@@ -312,7 +285,37 @@ app.service "FileService", [
             return buf
 
 
-        @chunks = []
+        # write every 1000 junks
+        @initChunkFile = (id, callback) ->
+            item = SharesService.get(id)
+
+            @pendingFiles.push
+                id: id
+                expectedSize: item.size
+                buffer: []
+                loadedSize: 0 # each buffer.length
+
+            @createDirectory(
+                @roomDir
+                id.toString()
+                (dir) =>
+                    if !dir
+                        callback(false)
+                        return
+                    console.log "created file"
+                    @createFile(
+                        dir
+                        item.originalName
+                        (fileEntry) =>
+                            console.log "got fileentry"
+                            if !fileEntry
+                                callback(false)
+                                return
+                            console.log "created fileEntry", fileEntry
+                            callback(true)
+                    )
+            )
+
 
         @getAbChunks = (id, callback, finishedCallback) ->
             item = SharesService.get( id )
@@ -320,7 +323,7 @@ app.service "FileService", [
             filename = room + "/" + item.originalName
 
 
-            CHUNK_SIZE = 800
+            CHUNK_SIZE = 1000
             i = 0
             start = i * CHUNK_SIZE
 
@@ -371,25 +374,54 @@ app.service "FileService", [
 
 
         @addChunk = (id, chunk) =>
-            @chunks.push @ascii2ab(chunk)
+            for pendingFile, index in @pendingFiles
+                if pendingFile.id is id
+                    pendingFile.buffer.push @ascii2ab(chunk)
+                    pendingFile.loadedSize += chunk.length
 
-        @writeChunks = (id) =>
+                    @updateProgress id, pendingFile.loadedSize
+
+                    if pendingFile.buffer.length >= 10000
+                        data = pendingFile.buffer
+                        pendingFile.buffer = []
+                        @writeChunks id, data
+
+                    if pendingFile.expectedSize is pendingFile.loadedSize
+                        data = pendingFile.buffer
+                        @writeChunks id, data, true
+
+                        console.log "file complete", id
+                        console.log "pendingFile", pendingFile
+
+                        @pendingFiles.splice index, 1
+
+                    break
+
+        @updateProgress = ( id, loadedVal ) ->
+            item = SharesService.get( id )
+            newProgress = Math.round( item.size / loadedVal * 100 )
+            if item.progress != newProgress
+                item.progress = newProgress
+                $rootScope.$apply() if !$rootScope.$$phase
+
+
+
+        @writeChunks = (id, chunks, finished = false) =>
             item = SharesService.get( id )
             room = RoomService.id.toString() + "/" + id
             filename = room + "/" + item.originalName
 
             #data = new Blob( @chunks )
 
-            data = @chunks
+            data = chunks
 
-            console.log "chunks.length", @chunks.length
+            console.log "chunks.length", chunks.length
 
 
 
             #@chunks = []
 
             console.log "data", data
-            index = 0
             @root.getFile(
                 filename
                 {}
@@ -402,8 +434,11 @@ app.service "FileService", [
                                 console.log "write end"
                                 #console.log fileWriter
                                 console.log "length is", fileWriter.length
-                                item.content = fileEntry.toURL()
-                                
+                                if finished
+                                    console.log "finished loading file, setting content url"
+                                    item.content = fileEntry.toURL()
+                                    $rootScope.$apply() if !$rootScope.$$phase
+
                             fileWriter.onerror = (error) ->
                                 console.log "filewriter error", error
                                 console.log "error was" + fileWriter.error.message
@@ -419,10 +454,6 @@ app.service "FileService", [
             )
 
 
-        @fileComplete = (id) ->
-            console.log "file complete", id
-            console.log "chunks", @chunks
-            @writeChunks(id)
 
 
 
