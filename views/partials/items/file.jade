@@ -43,14 +43,14 @@
             h4 Choose a file from you drive
             form.form-inline(role="form")
                 .form-group
-                    input.form-control.ng-file-select(type="file",
+                    input.form-control.file-select(type="file",
                         ng-file-select="onFileSelect($files)")
 
         .alert.alert-success(ng-show="item.progress==100 && newFile")
             | You have <strong>successfully</strong> shared a file.
-        .file-container(ng-if="newFile")
+        .file-container(ng-if="newFile", ng-click="uploadFile()")
             .drop-box(ng-file-drop="onFileSelect($files)",
-                ng-file-drag-over-class="drag-over-class", ng-click="uploadFile()")
+                ng-file-drag-over-class="drag-over-class")
                 | or drop file here
             .progress-container(ng-if="item.progress < 100 && item.progress > 0")
                 progressbar.progress-striped.active(max="100", type="info",
