@@ -173,13 +173,13 @@ app.service "FileService", [
                             updateProgress(start)
 
                             if start < file.size
-                                if (start+CHUNK_SIZE) > file.size
-                                    reader.readAsArrayBuffer file.slice(
-                                        start, file.size
-                                    )
-                                else
-                                    reader.readAsArrayBuffer file.slice(
-                                        start, start + CHUNK_SIZE )
+                                #if (start+CHUNK_SIZE) > file.size
+                                #    reader.readAsArrayBuffer file.slice(
+                                #        start, file.size
+                                #    )
+                                #else
+                                reader.readAsArrayBuffer file.slice(
+                                    start, start + CHUNK_SIZE )
                             else
                                 #console.log "finished writing 100% :D"
                                 @setURL(id)
