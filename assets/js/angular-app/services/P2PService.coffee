@@ -134,11 +134,7 @@ class P2PService
 
         DChandleMessage: (event) =>
             console.log "p2pRequest: DChandleMessage", event if @debug
-            if event.data is "finished!!!"
-                @FileService.fileComplete @itemId
-            else
-                ++@chunkCounter
-                @FileService.addChunk @itemId, event.data
+            @FileService.addChunk @itemId, event.data
         DChandleError: (error) =>
             console.log "p2pRequest: DChandleError", error if @debug
         DChandleOpen: (event) =>
