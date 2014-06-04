@@ -287,10 +287,11 @@ class P2PService
                             #++chunkNumber
                             @dataChannel.send chunk
                         =>
+                            @suicide @itemId
                             #finished
-                            setTimeout( =>
-                                @dataChannel.send "finished!!!"
-                            , 1000 )
+                            #setTimeout( =>
+                            #    @dataChannel.send "finished!!!"
+                            #, 1000 )
                     )
             catch e
                 console.log "p2pResolve: failed to parse JSON", parsedMsg
@@ -329,15 +330,13 @@ class P2PService
 
     setup: (@p2p) ->
         console.log "p2pService: setup", @p2p if @debug
+
         @$rootScope.$watch =>
             @SharesService.shares
         , (shares) =>
-            console.log "shares changed!!!"
             for p2pConn in @p2pConnections
-                console.log "p2pConn", p2pConn
                 found = false
                 for share in shares
-                    console.log "shaare", share
                     if share.id is p2pConn.itemId
                         found = true
                         break
