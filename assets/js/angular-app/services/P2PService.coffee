@@ -134,8 +134,11 @@ class P2PService
 
         DChandleMessage: (event) =>
             console.log "p2pRequest: DChandleMessage", event if @debug
-            ++@chunkCounter
-            @FileService.addChunk @itemId, event.data
+            if event.data is "finished!!!"
+                @FileService.fileComplete @itemId
+            else
+                ++@chunkCounter
+                @FileService.addChunk @itemId, event.data
         DChandleError: (error) =>
             console.log "p2pRequest: DChandleError", error if @debug
         DChandleOpen: (event) =>
@@ -152,7 +155,7 @@ class P2PService
         DChandleClose: (event) =>
             console.log "p2pRequest: DChandleClose", event if @debug
             # check if file size is correct
-            @FileService.fileComplete @itemId
+            #@FileService.fileComplete @itemId
 
 
         signalSend: (msg) ->
@@ -279,16 +282,18 @@ class P2PService
         DChandleMessage: (event) =>
             console.log "p2pResolve: DChandleMessage", event if @debug
             try
+                chunkNumber = 0
                 parsedMsg = JSON.parse event.data
                 if parsedMsg.type is "request"
                     @FileService.getAbChunks(
                         @itemId, (chunk) =>
-                            #console.log "chunk '" + chunks + "'"
+                            #console.log "chunk '", chunkNumber
+                            #++chunkNumber
                             @dataChannel.send chunk
-                        () ->
+                        =>
                             #finished
                             setTimeout( =>
-                                @dataChannel.close()
+                                @dataChannel.send "finished!!!"
                             , 1000 )
                     )
             catch e
