@@ -37,7 +37,7 @@ ul.items-container.clearfix.row(class="{{controls.layout}}", fit-item-height="{{
 
     li(ng-class="{'col-xs-12 item-container':controls.layout=='layout-list', 'col-lg-2 col-md-3 col-sm-4 col-xs-6':controls.layout=='layout-icons'&&chat_state!='expanded', 'col-lg-4 col-md-6 col-sm-6 col-xs-12':controls.layout=='layout-icons'&&chat_state=='expanded'}",
         ng-repeat="item in shared_items | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending",
-        ng-if="(item.category=='file' || item.category=='image') && item.size!=0")
+        ng-if="((item.category=='file' || item.category=='image') && item.size!=0) || (item.category!='file' && item.category!='image')")
 
 
         .item-container(ng-if="controls.layout=='layout-icons'")

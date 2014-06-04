@@ -7,46 +7,126 @@ app = angular.module "unwatched.controllers"
 
 app.controller "NoteCtrl", [
     "$scope", "$routeParams", "SharesService", "$location", "$modal",
-    "$filter"
+    "$filter", "$rootScope", "UserService", "RTCService", "$timeout"
     ($scope, $routeParams, SharesService, $location, $modal
-        $filter) ->
+        $filter, $rootScope, UserService, RTCService, $timeout) ->
+
+        if !$rootScope.userId?
+            return
 
         $scope.item = {}
+        $scope.users = UserService.users
+        $scope.user = $scope.users[$rootScope.userId]
 
         if !$routeParams.id?
             # create new note item
-            # $scope.item = SharesService.create($rootScope.userId, "note")
-            $scope.item = SharesService.get SharesService.create(0, "note")
+            $scope.item = SharesService.get(
+                SharesService.create($rootScope.userId, "note") )
+
+            RTCService.sendNewNoteItem( $scope.item, $scope.user.isMaster )
+
+            $scope.item.locked = $rootScope.userId
+
+            message =
+                locked: $rootScope.userId
+
+            RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
 
         else
             $scope.item = SharesService.get($routeParams.id)
             $location.path "/404" if !$scope.item?
 
-        $scope.text = $scope.item.content
+            # push to contributers
+            if $scope.item.contributors.indexOf($rootScope.userId) is -1
+                $scope.item.contributors.push $rootScope.userId
+
+                message =
+                    contributors: $scope.item.contributors
+
+                RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+
+
+        $scope.blocked = true
+
+        if $scope.item.locked is -1
+            console.log "WIESO"
+            $scope.blocked = false
+            $scope.item.locked = $rootScope.userId
+            message =
+                locked: $rootScope.userId
+
+            RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+
+        else if $scope.item.locked is $rootScope.userId
+            $scope.blocked = false
 
         # tinymce options
         $scope.tinymceOptions = {
             resize: "both"
             height: 400
-            handle_event_callback: (e) ->
-                console.log e
-            onchange_callback: (e) ->
-                console.log e
+            menubar: false
             setup: (editor) ->
                 editor.on "change", (e) ->
-                    console.log e
-                    col = e.level.bookmark.start[0]
-                    row = e.level.bookmark.start[2]
+            oninit: ->
+                console.log "blocked " + $scope.blocked
+                tinymce.activeEditor.getBody().setAttribute(
+                    'contenteditable', !$scope.blocked)
+
+
         }
 
-        # for inline editing
-        $scope.disabled = true
-        $scope.item_name = $scope.item.name
+        $scope.$watch ->
+            $scope.item.locked
+        , (value) ->
+            if tinymce.activeEditor?
+                if value is -1
+                    console.log "enabling editor"
+                    tinymce.activeEditor.getBody().setAttribute(
+                        'contenteditable', true)
+                    $scope.blocked = false
+
+                    $scope.item.locked = $rootScope.userId
+                    message =
+                        locked: $rootScope.userId
+
+                    RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+
+                else if value isnt $rootScope.userId
+                    console.log "disabling editor, because " + value + " is " + $rootScope.userId
+                    tinymce.activeEditor.getBody().setAttribute(
+                        'contenteditable', false)
+                    $scope.blocked = true
+
+        , true
 
         $scope.$watch ->
             $scope.item.name
         , (value) ->
-            $scope.item.thumbnail.title = $scope.item.name
+            if value? and value isnt ""
+                message =
+                    name: value
+                RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+        , true
+
+
+        $scope.save = ->
+
+            $scope.item.last_edited = new Date()
+            $scope.item.thumbnail = (String($scope.item.content).replace(/<[^>]+>/gm, '')).substr(0,200) + "..."
+
+            message =
+                content: $scope.item.content
+                last_edited: new Date()
+                thumbnail: $scope.item.thumbnail
+
+            RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+            $scope.success = true
+
+            $timeout(
+                ->
+                    $scope.success = false
+                1500
+            )
 
         $scope.delete = ->
             modalInstance = $modal.open(
@@ -60,8 +140,19 @@ app.controller "NoteCtrl", [
             )
 
             modalInstance.result.then( ->
+                RTCService.sendItemDeleted( $scope.user, $scope.item.id )
                 SharesService.delete $scope.item.id
                 $location.path "/share"
             )
+
+
+        $scope.$on "$routeChangeStart", (scope, next, current) ->
+
+            $scope.item.locked = -1
+            message =
+                locked: -1
+
+            RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+
 
 ]

@@ -8,7 +8,8 @@
                     .back
                         i.fa.fa-arrow-left
                         span Overview
-                a(ng-href="{{item.path}}")
+                a(ng-download="'{{item.name}}.html'",
+                    content="item.content" )
                     .download
                         i.fa.fa-download
                         span Download
@@ -16,43 +17,42 @@
                     .copy-clipboard
                         i.fa.fa-clipboard
                         span Copy infos to clipboard
+                a(ng-href="#", ng-click="save()")
+                    .save
+                        i.fa.fa-save
+                        span Save
                 a(ng-href="#", ng-click="delete()")
-                    .copy-clipboard
+                    .remove
                         i.fa.fa-trash-o
                         span Remove
 
     .jumbotron
-        .detail-heading(inline-edit="h1")
-            form(name="noteForm", ng-hide="disabled")
-                .input-container(ng-class="{'has-error': note.nName.$invalid}")
-                    input#noteName.form-control(type='text', name="nName"
-                        ng-model="item_name", required, ng-disabled="disabled"
-                        ng-class="{'input-disabled':disabled}")
-                    span.help-block(ng-show="note.nName.$error.required")
-                        | *Required field. Name won't be saved.
-            h1(ng-hide="!disabled")
-                | {{item.name}}
+        .detail-heading
+            edit-in-place(value="item.name")
+                h1 {{item.name}}
+                input.form-control(type="text", ng-model="item.name")
 
         .infos-container
             .info
-                b Size:
-                | {{item.size | humanReadableFileSize}}
-            .info
                 b Author:
-                | {{item.author}}
+                | {{users[item.author].name}}
             .info
                 b Created:
                 | {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
             .info(ng-show="item.last_edited")
                 b Last edited:
                 | {{item.last_edited | date: 'dd.MM.yyyy - HH:mm'}}
-            .info
-                b Path:
-                | {{item.path}}
+            .info(ng-show="item.contributors")
+                b Contributors
+                span(ng-repeat="contributor in item.contributors")
+                    | {{users[contributor].name}}
             .info
                 b Category:
                 | {{item.category}}
 
-        .note-container
+        .infos-container
+            .alert.alert-success(ng-show="success", ng-bind="'Successfully saved and shared.'")
+
+        .note-container(ng-class="{'blocked':blocked}")
             form
-                textarea#editor(ui-tinymce="tinymceOptions", ng-model="text")
+                textarea#editor(ui-tinymce="tinymceOptions", ng-model="item.content")

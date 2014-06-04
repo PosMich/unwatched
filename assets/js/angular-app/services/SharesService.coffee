@@ -23,6 +23,7 @@ class Shares
         @::templateUrl = ""
         @::contributors = undefined
         @::deltas = undefined
+        @::locked = false
         constructor: (@id, @name, @author, @category) ->
             if @category isnt "image"
                 @templateUrl = "/partials/items/thumbnails/" +
@@ -35,11 +36,16 @@ class Shares
                 @uploaded = new Date()
             @created = new Date()
 
-            if @category is "code" or @category is "note"
+            if @category is "code"
                 @contributors = []
                 @contributors.push
                     id: @author
                     active: true
+
+            if @category is "note"
+                @locked = false
+                @contributors = []
+                @contributors.push @author
 
             @extension = ""
 

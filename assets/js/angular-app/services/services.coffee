@@ -22,7 +22,6 @@ app.service "ChatService", [
 ]
 
 app.service "RoomService", [
-    "$filter"
     "$rootScope"
     "$http"
     "SERVER_URL"
@@ -37,9 +36,9 @@ app.service "RoomService", [
         @::url = ""
         @::isClosed = false
 
-        constructor: (@$filter, @$rootScope, @$http, @SERVER_URL,
+        constructor: (@$rootScope, @$http, @SERVER_URL,
             @SERVER_PORT) ->
-            @created = @$filter("date")(new Date(), "dd.MM.yyyy H:mm")
+            @created = new Date()
             @description = "Room description"
             isClose = false
 
