@@ -103,7 +103,7 @@ app.controller "FileCtrl", [
                     $scope.user)
             , true
 
-        $scope.upload = ->
+        $scope.uploadFile = ->
             make =
                 upload: do -> angular.element(".input.file-select").first().click()
 
