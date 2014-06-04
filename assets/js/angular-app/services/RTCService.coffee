@@ -21,12 +21,12 @@ class RTCService
                 "turn:23.251.129.121:3479?transport=udp"
                 "turn:23.251.129.121:3479?transport=tcp"
             ]
-            "credential":"QDIQId1PHMHLu4XvJBAQKoRAVgU="
-            "username":"1401858181:44662895"
+            "credential":"yEGAUhm4nsBhcZin3sqd/993MOk="
+            "username":"1401972163:15523811"
         }
     ]
 
-    @::signalServer = "wss://10.0.0.9:3001"
+    @::signalServer = "wss://10.0.0.10:3001"
 
 
     createChunks: (msg, userId) ->
@@ -180,7 +180,7 @@ class RTCService
 
                 try
                     @dataChannel = @connection.createDataChannel "control",
-                        reliable: false
+                        reliable: true
                     @dataChannel.onmessage = @DChandleMessage
                     @dataChannel.onerror   = @DChandleError
                     @dataChannel.onopen    = @DChandleOpen

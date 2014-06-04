@@ -76,7 +76,7 @@ app.controller "SideCtrl", [
                     position: "right"
                 }
                 {
-                    element: "#step1"
+                    element: "#step2"
                     intro: "This is the main Menu. <br>Hover to show the tooltips and Submenu buttons."
                     position: "right"
                 }
