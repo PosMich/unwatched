@@ -64,24 +64,108 @@ app.controller "SideCtrl", [
 
         $scope.leaveRoom = ->
             window.location = "/"
+
+
+
+
+        intros =
+            home: [
+                {
+                    element: "#step1"
+                    intro: "This is the main Menu. <br>Hover to show the tooltips and Submenu buttons."
+                    position: "right"
+                }
+                {
+                    element: "#step1"
+                    intro: "This is the main Menu. <br>Hover to show the tooltips and Submenu buttons."
+                    position: "right"
+                }
+                {
+                    element: "#step4"
+                    intro: "Create a room if you want to share something."
+                    position: "left"
+                }
+            ]
+            dashboard: [
+                {
+                    element: ""
+                    intro: ""
+                    position: ""
+                }
+                {
+                    element: ""
+                    intro: ""
+                    position: ""
+                }
+            ]
+            user: [
+                {
+                    element: ""
+                    intro: ""
+                    position: ""
+                }
+                {
+                    element: ""
+                    intro: ""
+                    position: ""
+                }
+            ]
+            share:
+                main: [
+                    {
+                        element: ""
+                        intro: ""
+                        position: ""
+                    }
+                    {
+                        element: ""
+                        intro: ""
+                        position: ""
+                    }
+                ]
+                stream: [
+                    {
+                        element: ""
+                        intro: ""
+                        position: ""
+                    }
+                    {
+                        element: ""
+                        intro: ""
+                        position: ""
+                    }
+                ]
+                file: [
+                    {
+                        element: ""
+                        intro: ""
+                        position: ""
+                    }
+                    {
+                        element: ""
+                        intro: ""
+                        position: ""
+                    }
+                ]
+                code: [
+                    {}
+                    {}
+                ]
+                note: [
+                    {}
+                    {}
+                ]
+
+        steps = intros["home"]
+
         $scope.IntroOptions =
-          steps: [
-            {
-              element: "#step1"
-              intro: "This is the main Menu. <br>Hover to show the tooltips."
-              position: "right"
-            }
-            {
-              element: "#step2"
-              intro: "Create a room if you want to share something."
-              position: "left"
-            }
-          ]
-          showStepNumbers: false
-          exitOnOverlayClick: true
-          exitOnEsc: true
-          nextLabel: "<span style=\"color:green\">Next</span>"
-          prevLabel: "<span style=\"color:green\">Previous</span>"
-          skipLabel: "Exit"
-          doneLabel: "Thanks"
+            steps:
+              steps
+            showStepNumbers: false
+            exitOnOverlayClick: true
+            exitOnEsc: true
+            nextLabel: "<span style=\"color:green\">Next</span>"
+            prevLabel: "<span style=\"color:green\">Previous</span>"
+            skipLabel: "Exit"
+            doneLabel: "Thanks"
         ]

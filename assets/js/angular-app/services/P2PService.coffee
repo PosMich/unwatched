@@ -12,7 +12,7 @@ class P2PService
 
     class P2pRequestConnection
         @::type = "requester"
-        @::debug = false
+        @::debug = true
         @::userId
         @::resolverId
         @::itemId
@@ -176,7 +176,7 @@ class P2PService
 
     class P2pResolveConnection
         @::type = "resolver"
-        @::debug = false
+        @::debug = true
         @::userId
         @::requesterId
         @::itemId

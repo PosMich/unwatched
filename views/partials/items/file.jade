@@ -51,7 +51,7 @@
         .file-container(ng-if="newFile", ng-click="uploadFile()")
             .drop-box(ng-file-drop="onFileSelect($files)",
                 ng-file-drag-over-class="drag-over-class")
-                | or drop file here
+                | drop file or click here
             .progress-container(ng-if="item.progress < 100 && item.progress > 0")
                 progressbar.progress-striped.active(max="100", type="info",
                     value="item.progress")
