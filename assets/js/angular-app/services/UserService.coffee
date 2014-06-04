@@ -98,7 +98,7 @@ class Users
 
     delete: (id) ->
         @users[id].isActive = false
-        console.log "set user with id " + id + " to inActive"
+        #console.log "set user with id " + id + " to inActive"
 
         # delete files (screen, webcam, files, images)
         shares = @SharesService.shares

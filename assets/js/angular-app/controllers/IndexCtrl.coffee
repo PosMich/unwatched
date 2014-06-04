@@ -22,7 +22,7 @@ app.controller "IndexCtrl", [
         $scope.room = RoomService
         $scope.room.id = ""
 
-        console.log webrtcDetectedBrowser
+        #console.log webrtcDetectedBrowser
 
         $rootScope.isChrome = webrtcDetectedBrowser is "chrome"
 
@@ -33,7 +33,7 @@ app.controller "IndexCtrl", [
             $scope.$watch ->
                 RTCService.handler.dataChannel
             , (value) ->
-                console.log value
+                #console.log value
                 if value
                     $scope.inputDisabled = false
             , true

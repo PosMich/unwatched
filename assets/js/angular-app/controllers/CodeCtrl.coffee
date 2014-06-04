@@ -149,7 +149,7 @@ app.controller "CodeCtrl", [
                         cursor:
                             row: 0
                             col: 0
-                    console.log "pushed marker"
+                    #console.log "pushed marker"
 
         # set init value of code and clear predefined selection
         $scope.editor.setValue($scope.item.content)
@@ -258,7 +258,7 @@ app.controller "CodeCtrl", [
                 found = false
                 for marker, index in $rootScope.markers
                     if marker.contributorId is contributor.id
-                        console.log "FOUND"
+                        #console.log "FOUND"
                         found = true
                         if !contributor.active
                             $scope.editor.session.removeMarker marker.marker
@@ -273,8 +273,8 @@ app.controller "CodeCtrl", [
                         cursor:
                             row: 0
                             col: 0
-                    console.log "pushed marker"
-                    console.log "MARKERS", $rootScope.markers
+                    #console.log "pushed marker"
+                    #console.log "MARKERS", $rootScope.markers
 
 
         )
@@ -294,7 +294,7 @@ app.controller "CodeCtrl", [
         $scope.$watch (->
             return $scope.item.deltas
         ), ((deltas) ->
-            console.log "got new deltas, apply: ", deltas
+            #console.log "got new deltas, apply: ", deltas
             if deltas? and deltas.length isnt 0
                 $scope.block = true
                 $scope.editor.session.doc.applyDeltas [deltas]

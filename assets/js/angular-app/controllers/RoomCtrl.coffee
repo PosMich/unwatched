@@ -16,7 +16,7 @@ app.controller "RoomCtrl", [
         $scope.isInRoom = RoomService.id isnt ""
         if !$scope.isInRoom
             return
-        console.log "blubb"
+        #console.log "blubb"
         $scope.room = RoomService
         $scope.room.users = UserService.users
 
@@ -97,9 +97,9 @@ app.controller "RoomCtrl", [
                     canvas.height = 400
 
                     ctx = canvas.getContext "2d"
-                    console.log "processing image: " + coord_x + ", " + coord_y
-                    console.log "source boundaries: " + img_width +
-                        ", " + img_height
+                    #console.log "processing image: " + coord_x + ", " + coord_y
+                    #console.log "source boundaries: " + img_width +
+                    #    ", " + img_height
 
                     ctx.drawImage( img, coord_x, coord_y, img_width, img_height,
                         0, 0, 400, 400 )

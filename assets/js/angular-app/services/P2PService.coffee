@@ -6,13 +6,13 @@
 
 
 class P2PService
-    @::debug = true
+    @::debug = false
     @::p2p
     @::p2pConnections = []
 
     class P2pRequestConnection
         @::type = "requester"
-        @::debug = true
+        @::debug = false
         @::userId
         @::resolverId
         @::itemId
@@ -49,10 +49,10 @@ class P2PService
                 ,
                     null
             catch error
-                console.log "AAAAAH"
+                #console.log "AAAAAH"
                 console.log error.message
 
-            console.log "blubb", @connection
+            #console.log "blubb", @connection
             @connection.onicecandidate = @handleOwnIce
 
             @connection.onnegotiationneeded = @handleNegotiation
@@ -176,7 +176,7 @@ class P2PService
 
     class P2pResolveConnection
         @::type = "resolver"
-        @::debug = true
+        @::debug = false
         @::userId
         @::requesterId
         @::itemId
@@ -214,7 +214,7 @@ class P2PService
             if @item.category is "screen" or @item.category is "webcam"
                 @connection.addStream @item.content
             else
-                console.log "da file oida"
+                console.log "got file"
         handleNegotiation: =>
             console.log "p2pResolve: handleNegotiation" if @debug
 
@@ -317,7 +317,6 @@ class P2PService
             console.log "p2pResolve: handleSignallingMsg", message if @debug
             switch message.type
                 when "offer"
-                    console.log "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
                     @handleOffer message
                 when "candidate"
                     @handleIceCandidate message
@@ -350,10 +349,10 @@ class P2PService
 
         for p2pConn in @p2pConnections
             if p2pConn.itemId is itemId
-                console.log "p2pService: requestItem item found"
+                #console.log "p2pService: requestItem item found"
                 return
 
-        console.log "p2pService: requestItem item not found"
+        #console.log "p2pService: requestItem item not found"
         @p2pConnections.push new P2pRequestConnection(@, @p2p, itemId)
 
     resolveItem: (itemId, requesterId) ->
@@ -361,10 +360,10 @@ class P2PService
 
         for p2pConn in @p2pConnections
             if p2pConn.itemId is itemId and p2pConn.requesterId is requesterId
-                console.log "p2pService: resolveItem item found"
+                #console.log "p2pService: resolveItem item found"
                 return
 
-        console.log "p2pService: resolveItem item not found"
+        #console.log "p2pService: resolveItem item not found"
         @p2pConnections.push new P2pResolveConnection(@, @p2p, itemId, requesterId)
 
     suicide: (itemId) ->
