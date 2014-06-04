@@ -58,3 +58,17 @@ app.controller "AppCtrl", [
             FileService.suicide()
 
 ]
+
+app.controller "DeleteModalInstanceCtrl", [
+    "$scope", "$modalInstance", "item", "UserService"
+    ($scope, $modalInstance, item, UserService) ->
+        $scope.item = item
+        $scope.users = UserService.users
+
+        $scope.ok = ->
+            $modalInstance.close()
+
+        $scope.cancel = ->
+            $modalInstance.dismiss('cancel')
+
+]
