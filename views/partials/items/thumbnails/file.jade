@@ -8,11 +8,16 @@
                     td
                         b Name
                     td {{item.name}}
-                tr
+                tr(ng-if="item.mime_type")
                     td
-                        b Ext.
-                    td {{item.extension}}
+                        b Mime
+                    td {{item.mime_type}}
+
         i.fa.fa-file
+        i(ng-if="item.progress < 100 && item.progress > 0") {{item.progress}}%
+        .progress-container(ng-if="item.progress < 100 && item.progress > 0")
+            progressbar.progress-striped.active(max="100", type="info",
+                value="item.progress")
     .item-infos
         table
             tr
@@ -27,7 +32,7 @@
                 td
                     b Author
                 td {{users[item.author].name}}
-            tr
+            tr(ng-if="item.created!=''")
                 td
                     b Created
                 td {{item.created | date: 'dd.MM.yyyy - HH:mm'}}
@@ -46,13 +51,12 @@
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
                 i.fa.fa-clipboard
-            //- a(ng-if="item.content!=''", ng-href="{{item.path}}",
-            //-     popover="Download", popover-trigger="mouseenter",
-            //-     popover-placement="bottom", popover-popup-delay="750",
-            //-     ng-download="'item.name'", content="file_source",
-            //-     mime-type="'item.mime_type'")
-            //-     i.fa.fa-download
-            a(ng-href="/share/file/{{item.id}}", popover="Edit",
+            a(ng-href="{{item.content}}", download="{{item.name}}",
+                popover="Download", popover-trigger="mouseenter",
+                popover-placement="bottom", popover-popup-delay="750",
+                ng-if="item.content&&item.content!=''")
+                i.fa.fa-download
+            a(ng-href="/share/file/{{item.id}}", popover="View",
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
-                i.fa.fa-pencil
+                i.fa.fa-eye

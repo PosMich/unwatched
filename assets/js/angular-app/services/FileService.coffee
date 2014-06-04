@@ -9,7 +9,9 @@ app.service "FileService", [
     "$rootScope"
     "RoomService"
     "SharesService"
-    ($rootScope, RoomService, SharesService) ->
+    "$location"
+    "$timeout"
+    ($rootScope, RoomService, SharesService, $location, $timeout) ->
 
         console.log "file"
 
@@ -66,7 +68,26 @@ app.service "FileService", [
                     callback(false)
             )
 
+        @initChunkFile = (id, callback) ->
+            @createDirectory(
+                @roomDir
+                id.toString()
+                (dir) =>
+                    if !dir
+                        callback(false)
+                        return
+                    @createFile(
+                        dir
+                        SharesService.get(id).originalName
+                        (fileEntry) =>
+                            if !fileEntry
+                                callback(false)
+                                return
+                            console.log "created fileEntry", fileEntry
+                            callback(true)
 
+                    )
+            )
         @createFile = (baseDir, name, callback) ->
             baseDir.getFile(
                 name
@@ -80,7 +101,7 @@ app.service "FileService", [
                     callback(false)
             )
 
-        @saveFile = (id, file) ->
+        @saveFile = (id, file, callback) ->
 
             reader = new FileReader()
             item = SharesService.get(id)
@@ -97,8 +118,6 @@ app.service "FileService", [
 
                 if item.progress >= 100
                     item.progress = 100
-
-                console.log "updated progress to " + item.progress
 
                 $rootScope.$apply() if !$rootScope.$$phase
 
@@ -141,13 +160,22 @@ app.service "FileService", [
                                 console.log "finished writing 100% :D"
                                 @setURL(id)
 
+                                $timeout(
+                                    ->
+                                        $location.path "/share/file/" + id
+                                        $rootScope.$apply() if !$rootScope.$$phase
+                                    1000
+                                )
+                                callback(true)
 
                         fileWriter.onerror = (error) ->
                             console.log "filewriter error", error
                             console.log "error was" + fileWriter.error.message
+                            callback(false)
 
                     (error) ->
                         console.log "error on create writer", error
+                        callback(false)
                 )
 
             @createDirectory(
@@ -155,12 +183,14 @@ app.service "FileService", [
                 id.toString()
                 (dir) =>
                     if !dir
+                        callback(false)
                         return
                     @createFile(
                         dir
                         name
                         (fileEntry) =>
                             if !fileEntry
+                                callback(false)
                                 return
                             console.log "created fileEntry", fileEntry
                             writer(fileEntry)
@@ -200,6 +230,128 @@ app.service "FileService", [
                     console.log "was not able to get file due:", error
             )
 
+        @fileExists = (id, callback) ->
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+            @root.getFile(
+                filename
+                { create: false }
+                (file) ->
+                    callback true
+                    console.log "get file success", file
+                ->
+                    callback false
+                    console.log "get file error"
+            )
+
+        @getStringChunks = (id, callback) ->
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+
+            CHUNK_SIZE = 1000
+            i = 0
+            start = i * CHUNK_SIZE
+
+            @root.getFile(
+                filename
+                {}
+                (fileEntry) ->
+                    fileEntry.file(
+                        (file) ->
+                            reader = new FileReader()
+                            reader.onloadend = (evt) ->
+                                if evt.target.readyState is FileReader.DONE
+                                    callback evt.target.result
+                                console.log "got chunk", evt.target.result
+                                console.log "length", evt.target.result.length
+                                if start + CHUNK_SIZE > file.size
+                                    return
+
+                                start = ++i * CHUNK_SIZE
+                                console.log "start", start
+                                console.log "end", start+CHUNK_SIZE
+                                reader.readAsBinaryString file.slice(
+                                        start
+                                        start + CHUNK_SIZE
+                                    )
+
+                            reader.readAsBinaryString file.slice(
+                                    start
+                                    start + CHUNK_SIZE
+                                )
+
+                         (error) ->
+                             console.log "FileService error", error
+                    )
+            )
+
+            #@itemId, (chunks) =>
+
+        @addStringChunks = (id, chunk) ->
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+
+
+            CHUNK_SIZE = 1000
+            i = 0
+            start = i * CHUNK_SIZE
+
+            @root.getFile(
+                filename
+                {}
+                (fileEntry) ->
+                    fileEntry.createWriter(
+                        (fileWriter) ->
+                            console.log fileWriter.length
+                            fileWriter.seek( i*CHUNK_SIZE )
+                            ++i
+                            fileWriter.write(new Blob(
+                                [chunk]
+                            ))
+
+                            fileWriter.onwritestart = (e) ->
+                                console.log "started writing", e
+
+                            fileWriter.onwriteend = (e) =>
+
+                                console.log "finished writing"
+                                ###
+                                i++
+                                start = i * CHUNK_SIZE
+
+                                updateProgress(start)
+
+                                if start < file.size
+                                    reader.readAsArrayBuffer file.slice(
+                                        start, start + CHUNK_SIZE )
+                                else
+                                    console.log "finished writing 100% :D"
+                                    @setURL(id)
+
+                                    $timeout(
+                                        ->
+                                            $location.path "/share/file/" + id
+                                            $rootScope.$apply() if !$rootScope.$$phase
+                                        1000
+                                    )
+                                    callback(true)
+                                ###
+                            fileWriter.onerror = (error) ->
+                                console.log "filewriter error", error
+                                console.log "error was" + fileWriter.error.message
+                                callback(false)
+                        (error) ->
+                             console.log "FileService error", error
+                    )
+            )
+
+
         @suicide = ->
             @roomDir.removeRecursively(
                 ->
@@ -208,6 +360,38 @@ app.service "FileService", [
                     console.log "error on room dir removal", error
             )
             @roomDir = undefined
+
+        @removeAllDirs = ->
+            dirReader = @root.createReader()
+
+            dirReader.readEntries( (entries) ->
+                for entry in entries
+                    if entry.isDirectory
+                        entry.removeRecursively(->)
+            )
+
+        @listAllDirs = ->
+            dirReader = @root.createReader()
+            dirReader.readEntries( (entries) ->
+                for entry in entries
+                    if entry.isDirectory
+                        console.log entry
+            )
+
+        @listAllFiles = (directory) ->
+            if !directory
+                dirReader = @root.createReader()
+            else
+                dirReader = directory.createReader()
+            dirReader.readEntries( (entries) =>
+                for entry in entries
+                    console.log entry
+                    if !entry.isDirectory
+                        console.log entry.toURL()
+                    else
+                        @listAllFiles( entry )
+
+            )
 
         return
 

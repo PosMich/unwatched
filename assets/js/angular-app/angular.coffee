@@ -29,8 +29,9 @@ app = angular.module "unwatched", [
 app.config [
     "$routeProvider"
     "$locationProvider"
+    "$compileProvider"
     #"RTCProvider"
-    ($routeProvider, $locationProvider) ->
+    ($routeProvider, $locationProvider, $compileProvider) ->
     #, RTCProvider) ->
 
         #RTCProvider.setName "Alibert"
@@ -40,6 +41,9 @@ app.config [
 
         $locationProvider.html5Mode true
         $locationProvider.hashPrefix ""
+        $compileProvider.aHrefSanitizationWhitelist ///
+            ^\s*(https?|ftp|mailto|chrome|filesystem):
+        ///
 
         # ### Routes
 

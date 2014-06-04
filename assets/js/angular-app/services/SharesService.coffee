@@ -31,10 +31,9 @@ class Shares
                 @templateUrl = "/partials/items/thumbnails/file.html"
             @size = 0
 
-            if @category isnt "file" and @category isnt "image"
-                @created = new Date()
-            else
+            if @category is "file" and @category is "image"
                 @uploaded = new Date()
+            @created = new Date()
 
             if @category is "code" or @category is "note"
                 @contributors = []

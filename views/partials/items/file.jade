@@ -46,7 +46,7 @@
             .info(ng-show="item.uploaded")
                 b Uploaded:
                 | {{item.uploaded | date: 'dd.MM.yyyy - HH:mm'}}
-            .info(ng-show="item.mime_type!=''")
+            .info(ng-show="item.mime_type")
                 b MIME-Type:
                 | {{item.mime_type}}
             .info
@@ -60,7 +60,7 @@
                     input.form-control(type="file",
                         ng-file-select="onFileSelect($files)")
 
-        .file-container(ng-hide="file.ready", ng-if="newFile")
+        .file-container(ng-if="newFile")
             .drop-box(ng-file-drop="onFileSelect($files)",
                 ng-file-drag-over-class="drag-over-class")
                 | or drop file here
@@ -68,8 +68,12 @@
                 progressbar.progress-striped.active(max="100", type="info",
                     value="item.progress")
                     i {{item.progress}}%
-        .alert.alert-success(ng-show="file.ready")
+        .download-container(ng-if="!newFile")
+            a.btn.btn-default.btn-lg(href="{{item.content}}", download="{{item.name}}", ng-disabled="item.content == '' || !item.content")
+                i.fa.fa-download
+                |  Download
+        .alert.alert-success(ng-show="item.progress==100 && newFile")
             | You have <strong>successfully</strong> shared a file.
         //- .image-container.ng-hide(ng-show="item.category=='image'||item.category=='screenshot'")
             //- .img(ng-if="!newFile && (item.category=='image' || item.category=='screenshot')")
-                img.thumbnail(ng-src="{{item.content}}")
+                //- img.thumbnail(ng-src="{{item.content}}")

@@ -15,22 +15,26 @@ app.controller "FileCtrl", [
         $scope.user = $scope.users[$rootScope.userId]
 
         if !$routeParams.id?
-            # create new image item
-            sharedItemId = SharesService.create( $rootScope.userId, "file" )
-            $scope.item = SharesService.get( sharedItemId )
-            $scope.item.mime_type = ""
+            $scope.newFile = true
+
+            $scope.item =
+                size: 0
+                name: "New file"
+                progress: -1
+
             $scope.file = {}
 
-            $scope.newFile = true
-            $scope.item.progress = -1
-
             $scope.onFileSelect = ($files) ->
+                # create new image item
+                sharedItemId = SharesService.create( $rootScope.userId, "file" )
+                $scope.item = SharesService.get( sharedItemId )
+
+                RTCService.sendNewFile( $scope.item,
+                    $scope.user.isMaster )
+
+                $scope.item.mime_type = ""
 
                 $scope.file.source = $files[0]
-                $scope.item.size = 0
-                $scope.item.name = "Untitled"
-
-                # RTCService.sendNewFile( $scope.item, $scope.user.isMaster )
 
                 $scope.item.name = $scope.file.source.name
                 $scope.item.originalName = $scope.file.source.name
@@ -38,23 +42,37 @@ app.controller "FileCtrl", [
                 $scope.item.size = $scope.file.source.size
                 $scope.item.created = $scope.file.source.lastModifiedDate
                 $scope.item.uploaded = new Date()
-                #
-                # if $scope.item.size < 30000000
-                #     $scope.item.progress = 100
 
                 if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
                     $scope.item.category = "image"
 
-
-                # reader.onprogress = (e) ->
-                #     console.log "progress"
-                #     $scope.file.show_progress = true
-                #     $scope.$apply()
-                #     percentLoaded = Math.round((e.loaded / e.total) * 100)
-                #     $scope.file.progress = percentLoaded
+                FileService.saveFile(
+                    $scope.item.id
+                    $scope.file.source
+                    (success) ->
+                        if success
 
 
-                FileService.saveFile $scope.item.id, $scope.file.source
+                            # send changes
+                            changes =
+                                name: $scope.item.name
+                                originalName: $scope.item.originalName
+                                mime_type: $scope.item.mime_type
+                                size: $scope.item.size
+                                created: $scope.item.created
+                                uploaded: $scope.item.uploaded
+                                category: $scope.item.category
+
+                            RTCService.sendFileHasChanged(
+                                changes
+                                $scope.item.id
+                                $scope.user
+                            )
+                        else
+                            $location.path "/shares"
+                            $rootScope.$apply() if $rootScope.$$phase
+                )
+
 
             # $scope.$watch ->
             #     $scope.file.ready
@@ -95,72 +113,25 @@ app.controller "FileCtrl", [
                     #         $scope.$apply() if !$scope.$$phase
             # , true
 
-            # $scope.$watch ->
-            #     $scope.item.thumbnail
-            # , (thumbnail) ->
-            #     if thumbnail? and thumbnail.length isnt 0
-            #         console.log "make thumbnail", thumbnail
-            #         # send file changes
-            #         fileMessage =
-            #             category: $scope.item.category
-            #             size: $scope.item.size
-            #             created: $scope.item.created
-            #             uploaded: $scope.item.uploaded
-            #             mime_type: $scope.item.mime_type
-            #             thumbnail: $scope.item.thumbnail
-
-            #         if $scope.item.size < (1024*1024*2)
-            #             fileMessage.content = $scope.item.content
-
-            #         RTCService.sendFileHasChanged(fileMessage,
-            #             $scope.item.id, $scope.user)
-
-            #         $location.path("/share/file/" + $scope.item.id)
-            #         $rootScope.$apply() if !$rootScope.$$phase
-
-            # , true
-
-
         else
-            console.log "blabb"
             $scope.item = SharesService.get($routeParams.id)
-            # $location.path "/404" if !$scope.item?
+            $location.path "/404" if !$scope.item?
             $scope.newFile = false
-            console.log "blubb"
 
-            FileSystem.getFile(
-                $scope.item.id
-                (file) ->
-                    if file
-                        console.log "controller got file", file
+            FileService.fileExists( $scope.item.id, (exists) ->
+                if !exists
+                    RTCService.requestItem $scope.item.id
+                    console.log "request file"
             )
 
-            # create file from item.content
-
-
-            # if $scope.item.content? and $scope.item.content.length isnt 0
-            #     console.log "content is here"
-            #     # console.log $scope.item.content
-
-            #     byteString = atob($scope.item.content.split(',')[1])
-            #     ab = new ArrayBuffer byteString.length
-            #     ia = new Uint16Array ab
-
-            #     for i of byteString
-            #         ia[i] = byteString.charCodeAt i
-
-                # console.log "uint8array is", ia
-
-                # $scope.file_source = ia
-
-        $scope.$watch ->
-            $scope.item.name
-        , (name) ->
-            fileMessage =
-                name: name
-            RTCService.sendFileHasChanged(fileMessage, $scope.item.id,
-                $scope.user)
-        , true
+            $scope.$watch ->
+                $scope.item.name
+            , (name) ->
+                fileMessage =
+                    name: name
+                RTCService.sendFileHasChanged(fileMessage, $scope.item.id,
+                    $scope.user)
+            , true
 
 
         $scope.delete = ->

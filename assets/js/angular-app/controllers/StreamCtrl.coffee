@@ -105,7 +105,7 @@ app.controller "StreamCtrl", [
 
                     $scope.captureError = "Unwatched has encountered a " +
                         "problem with this feature. Are you sure you have " +
-                        "enabled the chrome-flag <a href=\"chrome://flags/#en" +
+                        "enabled the chrome-flag <a ng-href=\"chrome://flags/#en" +
                         "able-usermedia-screen-capture\" target='_blank'>" +
                         "#enable-usermedia-screen-capture</a>? You will be " +
                         "redirected to the share overview."

@@ -20,6 +20,7 @@ class P2PService
         @::connection
         @::dataChannel
         @::isMaster = false
+        @::createDC = false
         @::sdpConstraints =
             optional: []
             mandatory:
@@ -32,8 +33,10 @@ class P2PService
             @resolverId = @item.author
             @userId = @service.$rootScope.userId
             @isMaster = @service.UserService.getUser(@userId).isMaster
+            @FileService = @service.FileService
 
-            if @item.category is "file"
+            if @item.category is "file" or @item.category is "image"
+                @createDC = true
                 @sdpConstraints = null
             else if @item.category is "screen"
                 @sdpConstraints.mandatory.OfferToReceiveAudio = false
@@ -56,7 +59,17 @@ class P2PService
             @connection.onaddstream = @onAddStream
             @connection.onremovestream = @onRemoveStream
 
-            @connection.ondatachannel = @gotDataChannel
+            if @createDC
+                try
+                    @dataChannel = @connection.createDataChannel "p2p",
+                        reliable: true
+                    @dataChannel.onmessage = @DChandleMessage
+                    @dataChannel.onerror   = @DChandleError
+                    @dataChannel.onopen    = @DChandleOpen
+                    @dataChannel.onclose   = @DChandleClose
+                catch error
+                    console.log "error creating Data Channel", error.message
+
 
             @createOffer()
 
@@ -117,23 +130,27 @@ class P2PService
             @service.$rootScope.$apply() if !@service.$rootScope.$$phase
             @service.suicide @itemId
 
-        gotDataChannel: (event) =>
-            console.log "p2pRequest: gotDataChannel", event if @debug
-            @dataChannel = event.channel
-            @dataChannel.onmessage = @DChandleMessage
-            @dataChannel.onerror   = @DChandleError
-            @dataChannel.onopen    = @DChandleOpen
-            @dataChannel.onclose   = @DChandleClose
-
         DChandleMessage: (event) =>
             console.log "p2pRequest: DChandleMessage", event if @debug
+
+            @FileService.addStringChunks @itemId, event.data
+
         DChandleError: (error) =>
             console.log "p2pRequest: DChandleError", error if @debug
         DChandleOpen: (event) =>
             console.log "p2pRequest: DChandleOpen", event if @debug
+
+            @FileService.initChunkFile @itemId, (success) =>
+                if success
+                    @dataChannel.send JSON.stringify
+                        itemId: @item.id
+                        type: "request"
+                else
+                    console.log "p2pRequest: failed to create file" if @debug
+
         DChandleClose: (event) =>
             console.log "p2pRequest: DChandleClose", event if @debug
-
+            # check if file size is correct
 
 
         signalSend: (msg) ->
@@ -171,6 +188,7 @@ class P2PService
         constructor: (@service, @p2p, @itemId, @requesterId) ->
             console.log "p2pResolve: constructor" if @debug
             @item = @service.SharesService.get @itemId
+            @FileService = @service.FileService
 
             @userId = @service.$rootScope.userId
 
@@ -192,7 +210,7 @@ class P2PService
 
             @connection.ondatachannel = @gotDataChannel
 
-            if @item.category isnt "file"
+            if @item.category is "screen" or @item.category is "webcam"
                 @connection.addStream @item.content
             else
                 console.log "da file oida"
@@ -250,9 +268,22 @@ class P2PService
 
         gotDataChannel: (event) =>
             console.log "p2pResolve: gotDataChannel", event if @debug
+            @dataChannel = event.channel
+            @dataChannel.onmessage = @DChandleMessage
+            @dataChannel.onerror   = @DChandleError
+            @dataChannel.onopen    = @DChandleOpen
+            @dataChannel.onclose   = @DChandleClose
 
         DChandleMessage: (event) =>
             console.log "p2pResolve: DChandleMessage", event if @debug
+            try
+                parsedMsg = JSON.parse event.data
+                if parsedMsg.type is "request"
+                    @FileService.getStringChunks @itemId, (chunks) =>
+                        console.log "chunk '" + chunks + "'"
+                        @dataChannel.send chunks
+            catch e
+                console.log "p2pResolve: failed to parse JSON", parsedMsg
         DChandleError: (error) =>
             console.log "p2pResolve: DChandleError", error if @debug
         DChandleOpen: (event) =>
@@ -282,7 +313,7 @@ class P2PService
                 else
                     console.log "p2pResolve: handleSignallingMsg, unknown message type", message
 
-    constructor: (@$rootScope, @SharesService, @UserService) ->
+    constructor: (@$rootScope, @SharesService, @UserService, @FileService) ->
         console.log "p2pService: constructor", @ if @debug
 
 
@@ -341,5 +372,6 @@ angular.module("unwatched.services").service "P2PService", [
     "$rootScope"
     "SharesService"
     "UserService"
+    "FileService"
     P2PService
 ]
