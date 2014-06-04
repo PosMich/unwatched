@@ -120,5 +120,5 @@ app.constant "ace_themes", [
     { value: "terminal", name: "Terminal"}
 ]
 
-app.constant "SERVER_URL", "https://10.0.0.9"
+app.constant "SERVER_URL", "https://10.0.0.10"
 app.constant "SERVER_PORT", "3001"

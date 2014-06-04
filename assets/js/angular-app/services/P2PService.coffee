@@ -21,6 +21,8 @@ class P2PService
         @::dataChannel
         @::isMaster = false
         @::createDC = false
+        @::CHUNK_SIZE = 1000
+        @::chunkCounter = 0
         @::sdpConstraints =
             optional: []
             mandatory:
@@ -132,14 +134,15 @@ class P2PService
 
         DChandleMessage: (event) =>
             console.log "p2pRequest: DChandleMessage", event if @debug
-
-            @FileService.addStringChunks @itemId, event.data
-
+            ++@chunkCounter
+            @FileService.addChunks @itemId, event.data
+            if @chunkCounter * @CHUNK_SIZE > @item.size
+                @FileService.fileComplete( @itemId )
         DChandleError: (error) =>
             console.log "p2pRequest: DChandleError", error if @debug
         DChandleOpen: (event) =>
             console.log "p2pRequest: DChandleOpen", event if @debug
-
+            @FileService.files = []
             @FileService.initChunkFile @itemId, (success) =>
                 if success
                     @dataChannel.send JSON.stringify
@@ -279,7 +282,7 @@ class P2PService
             try
                 parsedMsg = JSON.parse event.data
                 if parsedMsg.type is "request"
-                    @FileService.getStringChunks @itemId, (chunks) =>
+                    @FileService.getAbChunks @itemId, (chunks) =>
                         console.log "chunk '" + chunks + "'"
                         @dataChannel.send chunks
             catch e

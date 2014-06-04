@@ -18,6 +18,8 @@ app.service "FileService", [
         @fileSystem = undefined
         @root = undefined
         @roomDir = undefined
+        # id: 123, chunks: []
+        @files = []
 
         @initFs = ->
             window.requestFileSystem = window.requestFileSystem ||
@@ -69,6 +71,10 @@ app.service "FileService", [
             )
 
         @initChunkFile = (id, callback) ->
+            @files.push
+                id: id
+                chunks: []
+
             @createDirectory(
                 @roomDir
                 id.toString()
@@ -246,7 +252,8 @@ app.service "FileService", [
                     console.log "get file error"
             )
 
-        @getStringChunks = (id, callback) ->
+
+        @getAbChunks = (id, callback) ->
             item = SharesService.get( id )
             room = RoomService.id.toString() + "/" + id
             filename = room + "/" + item.originalName
@@ -259,27 +266,27 @@ app.service "FileService", [
             @root.getFile(
                 filename
                 {}
-                (fileEntry) ->
+                (fileEntry) =>
                     fileEntry.file(
-                        (file) ->
+                        (file) =>
                             reader = new FileReader()
-                            reader.onloadend = (evt) ->
+                            reader.onloadend = (evt) =>
                                 if evt.target.readyState is FileReader.DONE
-                                    callback evt.target.result
-                                console.log "got chunk", evt.target.result
-                                console.log "length", evt.target.result.length
+                                    callback @ab2ascii(new Uint8Array(evt.target.result))
+                                #console.log "got chunk", evt.target.result
+                                #console.log "length", evt.target.result.length
                                 if start + CHUNK_SIZE > file.size
                                     return
 
                                 start = ++i * CHUNK_SIZE
-                                console.log "start", start
-                                console.log "end", start+CHUNK_SIZE
-                                reader.readAsBinaryString file.slice(
+                                #console.log "start", start
+                                #console.log "end", start+CHUNK_SIZE
+                                reader.readAsArrayBuffer file.slice(
                                         start
                                         start + CHUNK_SIZE
                                     )
 
-                            reader.readAsBinaryString file.slice(
+                            reader.readAsArrayBuffer file.slice(
                                     start
                                     start + CHUNK_SIZE
                                 )
@@ -291,7 +298,87 @@ app.service "FileService", [
 
             #@itemId, (chunks) =>
 
-        @addStringChunks = (id, chunk) ->
+        @ab2ascii = (buf) ->
+            String.fromCharCode.apply(null, buf).trim()
+
+        @ascii2ab = (str) ->
+            buf = new Uint8Array(str.length)
+            for i of buf
+                buf[i] = str.charCodeAt i
+
+            return buf
+
+        @addChunks = (id, chunk) ->
+            console.log "add chunk"
+            for file in @files
+                if file.id is id
+                    file.chunks.push @ascii2ab(chunk)
+
+        @fileComplete = (id) ->
+            console.log "file complete"
+            for file in @files
+                if file.id is id
+                    @writeFile( id )
+
+        @writeFile = (id) ->
+            console.log "write File"
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+            for file in @files
+                if file.id is id
+                    chunks = file.chunks
+
+            @root.getFile(
+                filename
+                {}
+                (fileEntry) ->
+                    fileEntry.createWriter(
+                        (fileWriter) ->
+                            fileWriter.write(new Blob(
+                                chunks
+                            ))
+
+                            fileWriter.onwritestart = (e) ->
+                                console.log "started writing", e
+
+                            fileWriter.onwriteend = (e) =>
+
+                                console.log "finished writing"
+                                ###
+                                i++
+                                start = i * CHUNK_SIZE
+
+                                updateProgress(start)
+
+                                if start < file.size
+                                    reader.readAsArrayBuffer file.slice(
+                                        start, start + CHUNK_SIZE )
+                                else
+                                    console.log "finished writing 100% :D"
+                                    @setURL(id)
+
+                                    $timeout(
+                                        ->
+                                            $location.path "/share/file/" + id
+                                            $rootScope.$apply() if !$rootScope.$$phase
+                                        1000
+                                    )
+                                    callback(true)
+                                ###
+                            fileWriter.onerror = (error) ->
+                                console.log "filewriter error", error
+                                console.log "error was" + fileWriter.error.message
+
+                        (error) ->
+                             console.log "FileService error", error
+                    )
+            )
+
+
+
+        @asdf = ->
             item = SharesService.get( id )
             room = RoomService.id.toString() + "/" + id
             filename = room + "/" + item.originalName
@@ -309,7 +396,7 @@ app.service "FileService", [
                     fileEntry.createWriter(
                         (fileWriter) ->
                             console.log fileWriter.length
-                            fileWriter.seek( i*CHUNK_SIZE )
+                            fileWriter.seek( fileWriter.length )
                             ++i
                             fileWriter.write(new Blob(
                                 [chunk]
