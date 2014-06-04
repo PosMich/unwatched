@@ -26,7 +26,7 @@ class RTCService
         }
     ]
 
-    @::signalServer = "wss://10.0.0.10:3001"
+    @::signalServer = "wss://10.0.0.9:3001"
 
 
     createChunks: (msg, userId) ->
@@ -271,6 +271,7 @@ class RTCService
                                 if share.category is "code" or share.category is "note"
                                     continue
                                 share.content = ""
+                                share.progress = -1
 
                             initData =
                                 type: "password"

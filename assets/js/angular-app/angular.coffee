@@ -44,7 +44,7 @@ app.config [
         $locationProvider.hashPrefix ""
         ngClipProvider.setPath "/swf/ZeroClipboard.swf"
         $compileProvider.aHrefSanitizationWhitelist ///
-            ^\s*(https?|ftp|mailto|chrome|filesystem):
+            ^\s*(https?|ftp|mailto|chrome|filesystem|data):
         ///
 
         # ### Routes

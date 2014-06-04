@@ -33,7 +33,7 @@
                 ng-hide="item", ng-bind="'Share my webcam'")
             button.btn.btn-primary(ng-href="#", ng-click="startSharing('screen')"
                 ng-hide="item", ng-bind="'Share my screen'")
-            button.btn.btn-danger(ng-href="#", ng-show="item",
+            button.btn.btn-danger(ng-href="#", ng-show="item", ng-if="item.author == userId",
                 kill-stream="{{item.category}}", ng-bind="'Stop sharing'")
             button.btn.btn-primary(ng-href="#", ng-show="item",
                 ng-click="snapshot()")

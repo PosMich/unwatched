@@ -90,6 +90,8 @@ app.controller "FileCtrl", [
             FileService.fileExists( $scope.item.id, (exists) ->
                 if !exists
                     RTCService.requestItem $scope.item.id
+                else
+                    FileService.setURL $scope.item.id
             )
 
             $scope.$watch ->

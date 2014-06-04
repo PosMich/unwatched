@@ -286,8 +286,8 @@ class P2PService
                             #console.log "chunk '", chunkNumber
                             #++chunkNumber
                             @dataChannel.send chunk
-                        =>
-                            @suicide @itemId
+                        , =>
+                            @service.suicide @itemId
                             #finished
                             #setTimeout( =>
                             #    @dataChannel.send "finished!!!"

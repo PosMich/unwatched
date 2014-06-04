@@ -24,11 +24,11 @@ app.service "FileService", [
             window.requestFileSystem = window.requestFileSystem ||
                 window.webkitRequestFileSystem
 
-            navigator.webkitTemporaryStorage.requestQuota(
+            navigator.webkitPersistentStorage.requestQuota(
                 1024 * 1024 * 1024 * 5
                 (grantedBytes) =>
                     window.requestFileSystem(
-                        window.TEMPORARY
+                        window.PERSISTENT
                         grantedBytes
                         @onInitFs
                         @onErrorFs
@@ -399,9 +399,11 @@ app.service "FileService", [
 
         @updateProgress = ( id, loadedVal ) ->
             item = SharesService.get( id )
-            newProgress = Math.round( item.size / loadedVal * 100 )
+            newProgress = Math.round( loadedVal / item.size * 100 )
             if item.progress != newProgress
+                console.log item.progress
                 item.progress = newProgress
+                item.progress = 100 if item.progress >= 100
                 $rootScope.$apply() if !$rootScope.$$phase
 
 
@@ -434,7 +436,7 @@ app.service "FileService", [
                                 console.log "write end"
                                 #console.log fileWriter
                                 console.log "length is", fileWriter.length
-                                if finished
+                                if fileWriter.length is item.size
                                     console.log "finished loading file, setting content url"
                                     item.content = fileEntry.toURL()
                                     $rootScope.$apply() if !$rootScope.$$phase
@@ -442,6 +444,8 @@ app.service "FileService", [
                             fileWriter.onerror = (error) ->
                                 console.log "filewriter error", error
                                 console.log "error was" + fileWriter.error.message
+
+                            fileWriter.seek fileWriter.length
 
                             fileWriter.write new Blob( data )
                             console.log fileWriter
