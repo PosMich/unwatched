@@ -119,10 +119,7 @@ html(ng-app="unwatched")
 
 
     .browser(ng-if="!isChrome")
-        .info
-            | We are afraid to tell you, that this project currently just works on
-            | the latest Chrome Browser. Get the latest Chrome under <a href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a> to
-            | check out Unwatched - <b>Pretty Close Collaboration</b>.
+        .info(ng-bind-html="We are afraid to tell you, that this project currently just works on the latest Chrome Browser. Get the latest Chrome under <a href='https://www.google.com/intl/en/chrome/browser/\'>Google Chrome</a> to check out Unwatched - <b>Pretty Close Collaboration</b>.")
 
 
     script(src='/js/app.js')
