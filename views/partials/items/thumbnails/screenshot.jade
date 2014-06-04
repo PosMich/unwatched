@@ -8,10 +8,6 @@
                 td {{item.name}}
             tr
                 td
-                    b Size
-                td {{item.size | humanReadableFileSize}}
-            tr
-                td
                     b Author
                 td {{users[item.author].name}}
             tr
@@ -23,15 +19,11 @@
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
                 i.fa.fa-trash-o
-            a(ng-click="copyClipboard(item.id)", popover="Copy to clipboard",
-                popover-trigger="mouseenter", popover-placement="bottom",
-                popover-popup-delay="750")
-                i.fa.fa-clipboard
             a(ng-href="{{item.path}}", popover="Download",
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
                 i.fa.fa-download
-            a(ng-href="/share/screenshot/{{item.id}}", popover="View",
+            a(ng-href="/share/file/{{item.id}}", popover="View",
                 popover-trigger="mouseenter", popover-placement="bottom",
                 popover-popup-delay="750")
                 i.fa.fa-eye

@@ -11,12 +11,11 @@ app.controller "NoteCtrl", [
     ($scope, $routeParams, SharesService, $location, $modal
         $filter, $rootScope, UserService, RTCService, $timeout) ->
 
-        if !$rootScope.userId?
-            return
-
         $scope.item = {}
         $scope.users = UserService.users
         $scope.user = $scope.users[$rootScope.userId]
+
+        $scope.copiedText = false
 
         if !$routeParams.id?
             # create new note item
@@ -49,7 +48,6 @@ app.controller "NoteCtrl", [
         $scope.blocked = true
 
         if $scope.item.locked is -1
-            console.log "WIESO"
             $scope.blocked = false
             $scope.item.locked = $rootScope.userId
             message =
@@ -144,6 +142,16 @@ app.controller "NoteCtrl", [
                 SharesService.delete $scope.item.id
                 $location.path "/share"
             )
+
+        $scope.getClipText = ->
+            $scope.copiedText = true
+            $scope.$apply() if !$scope.$$phase
+            $timeout(
+                ->
+                    $scope.copiedText = false
+                2500
+            )
+            return $scope.item.content
 
 
         $scope.$on "$routeChangeStart", (scope, next, current) ->

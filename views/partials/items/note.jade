@@ -13,10 +13,10 @@
                     .download
                         i.fa.fa-download
                         span Download
-                a(ng-href="#", ng-click="save()")
+                a(ng-href="#",  clip-copy="getClipText()")
                     .copy-clipboard
                         i.fa.fa-clipboard
-                        span Copy infos to clipboard
+                        span Copy text to clipboard
                 a(ng-href="#", ng-click="save()")
                     .save
                         i.fa.fa-save
@@ -52,6 +52,8 @@
 
         .infos-container
             .alert.alert-success(ng-show="success", ng-bind="'Successfully saved and shared.'")
+            .alert.alert-info(ng-show="copiedText")
+                | Copied infos to clipboard.
 
         .note-container(ng-class="{'blocked':blocked}")
             form

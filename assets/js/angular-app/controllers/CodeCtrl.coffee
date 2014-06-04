@@ -9,23 +9,20 @@ app.controller "CodeCtrl", [
     "$scope", "$routeParams", "SharesService", "ChatStateService",
     "available_extensions", "font_sizes", "ace_themes", "$location",
     "AceSettingsService", "$modal", "UserService", "RTCService",
-    "$rootScope"
+    "$rootScope", "$timeout"
     ($scope, $routeParams, SharesService, ChatStateService,
         available_extensions, font_sizes, ace_themes, $location,
         AceSettingsService, $modal, UserService, RTCService,
-        $rootScope) ->
+        $rootScope, $timeout) ->
 
         # init ace editor
         $scope.editor = ace.edit("editor")
+        $scope.copiedCode = false
 
         # testing
-        # $scope.editor2 = ace.edit("editor2")
 
         $scope.editor.getSession().setUseWorker(false)
         $scope.editor.session.setNewLineMode("unix")
-
-        # $scope.editor2.getSession().setUseWorker(false)
-        # $scope.editor2.session.setNewLineMode("unix")
 
         # init settings for ace editor
         $scope.settings = {}
@@ -41,7 +38,6 @@ app.controller "CodeCtrl", [
         # helper functions
         $scope.containerResize = ->
             $scope.editor.resize()
-            # $scope.editor2.resize()
 
         $scope.setEditorExtension = (extension) ->
             return if extension is ""
@@ -50,16 +46,13 @@ app.controller "CodeCtrl", [
             ace_ext = "ruby" if extension is "rb"
             ace_ext = "python" if extension is "py"
             $scope.editor.getSession().setMode("ace/mode/" + ace_ext)
-            # $scope.editor2.getSession().setMode("ace/mode/" + ace_ext)
 
         $scope.setEditorFontSize = (font_size) ->
             $scope.editor.setFontSize(font_size)
-            # $scope.editor2.setFontSize(font_size)
             return
 
         $scope.setEditorTheme = (theme) ->
             $scope.editor.setTheme("ace/theme/" + theme)
-            # $scope.editor2.setTheme("ace/theme/" + theme)
             return
 
         $scope.getExtensionId = (value) ->
@@ -97,12 +90,21 @@ app.controller "CodeCtrl", [
                 $location.path "/share"
             )
 
+        $scope.getClipText = ->
+            $scope.copiedCode = true
+            $scope.$apply() if !$scope.$$phase
+            $timeout(
+                ->
+                    $scope.copiedCode = false
+                2500
+            )
+            return $scope.item.content
+
         $scope.users = UserService.users
         $scope.user = $scope.users[$rootScope.userId]
 
         if !$routeParams.id?
             # create new code item
-            # $scope.item = SharesService.create($rootScope.userId, "code")
             sharedItemId = SharesService.create( $rootScope.userId, "code" )
             $scope.item = SharesService.get( sharedItemId )
 
@@ -149,15 +151,10 @@ app.controller "CodeCtrl", [
                             col: 0
                     console.log "pushed marker"
 
-        console.log "MARKER", $rootScope.markers
-        console.log "ITEM", $scope.item
-
         # set init value of code and clear predefined selection
         $scope.editor.setValue($scope.item.content)
         $scope.editor.clearSelection()
 
-        # $scope.editor2.setValue($scope.item.getContent())
-        # $scope.editor2.clearSelection()
 
         # for inline editing
         $scope.disabled = true
@@ -311,8 +308,6 @@ app.controller "CodeCtrl", [
         ), ((markers) ->
             if $rootScope.markersChanged
                 for marker in markers
-                    console.log "setting marker"
-                    console.log "MAAARKER", marker
                     $scope.editor.session.removeMarker( marker.marker )
 
                     row = marker.cursor.row
