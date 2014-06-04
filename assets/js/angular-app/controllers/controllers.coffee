@@ -49,10 +49,10 @@ app.controller "AppCtrl", [
 
         window.onunload = ->
             # set user to inactive
-            console.log "unloading"
+            #console.log "unloading"
             UserService.getUser($rootScope.userId).isActive = false
             RTCService.sendUserDeleted( UserService.getUser($rootScope.userId) )
-            console.log "deleted user"
+            #console.log "deleted user"
             $rootScope.userId = undefined
             $rootScope.roomId = undefined
             FileService.suicide()

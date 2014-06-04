@@ -34,7 +34,7 @@ app.directive "stream", [
             , true
 
             element.on "click", ->
-                console.log "click"
+                #console.log "click"
                 $location.path "/share/stream/" +
                     $rootScope.streamId[attrs.stream]
 

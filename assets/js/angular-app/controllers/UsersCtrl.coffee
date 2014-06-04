@@ -37,14 +37,14 @@ app.controller "UsersCtrl", [
         $scope.$watch ->
             SharesService.shares
         , (shares) ->
-            console.log "shares should update user"
+            #console.log "shares should update user"
             for user in $scope.users
                 foundWebcam = false
                 foundScreen = false
                 for share in shares
-                    console.log "share author " + share.author + " user id " + user.id
+                    #console.log "share author " + share.author + " user id " + user.id
                     if share.author is user.id
-                        console.log "share category " + share.category
+                        #console.log "share category " + share.category
                         if share.category is "webcam"
                             user.webcam = share.id
                             $scope.$apply() if !$scope.$$phase

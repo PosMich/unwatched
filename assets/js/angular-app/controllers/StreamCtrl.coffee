@@ -35,7 +35,7 @@ app.controller "StreamCtrl", [
                     SharesService.create $rootScope.userId, category
                 )
                 $scope.item.name = $scope.user.name + "'s " + category
-                console.log "scope is", $scope
+                #console.log "scope is", $scope
 
                 # request user media
                 if category is "screen"
@@ -59,17 +59,17 @@ app.controller "StreamCtrl", [
                 successCallback = (stream) =>
                     $scope.item.content = stream
                     stream.onended = ->
-                        console.log "bluibb"
+                        #console.log "bluibb"
                         $scope.killstream()
                     RTCService.sendNewStream($scope.item, $scope.user.isMaster)
                     angular.element("video").first().on "loadeddata", ->
-                        console.log "scope", $scope
-                        console.log "item", $scope.item
+                        #console.log "scope", $scope
+                        #console.log "item", $scope.item
                         # create thumbnail
                         element = angular.element("video").first()
                         canvas = document.createElement("canvas")
 
-                        console.log "element width is", element.width()
+                        #console.log "element width is", element.width()
 
                         max_width = 300
                         width = 1280
@@ -82,14 +82,14 @@ app.controller "StreamCtrl", [
                         canvas.width = width
                         canvas.height = height
 
-                        console.log "canvas is", canvas
+                        #console.log "canvas is", canvas
 
                         ctx_thumbnail = canvas.getContext "2d"
                         ctx_thumbnail.drawImage( element[0], 0, 0, width, height )
 
                         $scope.item.thumbnail = canvas.toDataURL("image/png")
 
-                        console.log "dataUrl", $scope.item.thumbnail
+                        #console.log "dataUrl", $scope.item.thumbnail
 
                         updates =
                             thumbnail: $scope.item.thumbnail
@@ -151,7 +151,7 @@ app.controller "StreamCtrl", [
             )
 
         $scope.killstream = ->
-            console.log "blabb"
+            #console.log "blabb"
             id = $scope.item.id
             category = $scope.item.category
 
@@ -173,8 +173,8 @@ app.controller "StreamCtrl", [
         $scope.$watch ->
             $scope.item
         , (newval, oldval) ->
-            console.log "newval", newval
-            console.log "oldval", oldval
+            #console.log "newval", newval
+            #console.log "oldval", oldval
             return if !oldval or !newval
             if oldval.content isnt "" and newval.content is ""
                 $location.path "/share"

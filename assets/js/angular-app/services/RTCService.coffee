@@ -30,7 +30,7 @@ class RTCService
 
 
     createChunks: (msg, userId) ->
-        console.log "createChunks", msg
+        #console.log "createChunks", msg
         chunks = []
 
 
@@ -70,7 +70,7 @@ class RTCService
                 data: chunks[i]
             ++i
 
-        console.log "sendMessages =", sendMessages
+        #console.log "sendMessages =", sendMessages
         sendMessages
 
     #   {
@@ -90,12 +90,12 @@ class RTCService
         #console.log "currentChunkFile", currentChunkFile
         alltogether = ""
         if currentChunkFile
-            console.log "chunk file exists", chunk.data
+            #console.log "chunk file exists", chunk.data
             currentChunkFile.chunks.push chunk.data
 
             if currentChunkFile.chunks.length is chunk.length
                 for chunk in currentChunkFile.chunks
-                    console.log chunk.id
+                    #console.log chunk.id
                     alltogether += chunk
 
                 if @isMaster
@@ -112,7 +112,7 @@ class RTCService
                     if chunkFile.id is chunk.id and chunkFile.userId is userId
                         @ReceiveChunkFiles.splice index, 1
         else
-            console.log "push chunk file"
+            #console.log "push chunk file"
             @ReceiveChunkFiles.push
                 id: chunk.id
                 chunks: [chunk.data]
@@ -155,7 +155,7 @@ class RTCService
             @::connection = null
             @::signaller  = null
             @::dataChannel = null
-            @::debug      = true
+            @::debug      = false
             @::loginAttempts = 3
             @::authenticated = false
 
@@ -232,7 +232,7 @@ class RTCService
                 # console.log "got a message from DC", msg
 
                 parsedMsg = JSON.parse(msg.data)
-                console.log parsedMsg.type
+                # console.log parsedMsg.type
                 # console.log "parsed"
                 # console.log parsedMsg
                 switch parsedMsg.type
@@ -244,8 +244,8 @@ class RTCService
                         )
 
                     when "password"
-                        console.log "parsed: " + parsedMsg.password
-                        console.log "signaller: " + @signaller.password
+                        #console.log "parsed: " + parsedMsg.password
+                        #console.log "signaller: " + @signaller.password
                         if parsedMsg.password isnt @signaller.password
                             @DCsend
                                 type: "password"
@@ -381,7 +381,7 @@ class RTCService
                                 continue
                             if active_contributors.indexOf( client.id ) isnt -1
                                 if client.id isnt parsedMsg.userId
-                                    console.log "sending code to client with id", client.id
+                                    #console.log "sending code to client with id", client.id
                                     client.DCsend parsedMsg
 
                     when "cursorHasChanged"
@@ -447,16 +447,16 @@ class RTCService
                                 client.DCsend parsedMsg
 
                     when "offer"
-                        console.log "DChandle: got p2pOffer", parsedMsg
+                        #console.log "DChandle: got p2pOffer", parsedMsg
                         if parsedMsg.resolverId is @signaller.id
                             # master is resolver
-                            console.log "master is resolver"
+                            #console.log "master is resolver"
                             @signaller.service.P2PService.resolveItem parsedMsg.itemId,
                                 parsedMsg.requesterId
 
                             for p2pConn in @signaller.service.P2PService.p2pConnections
                                 if p2pConn.itemId is parsedMsg.itemId and parsedMsg.requesterId is p2pConn.requesterId
-                                    console.log "p2p found"
+                                    #console.log "p2p found"
                                     p2pConn.handleSignallingMsg parsedMsg
                         else
                             for client in @signaller.signallingClients
@@ -464,25 +464,25 @@ class RTCService
                                     client.DCsend parsedMsg
 
                     when "answer"
-                        console.log "DChandle: got p2pAnswer"
+                        #console.log "DChandle: got p2pAnswer"
                         if parsedMsg.requesterId is @signaller.id
-                            console.log "requester is master"
+                            #console.log "requester is master"
                             for p2pConn in @signaller.service.P2PService.p2pConnections
                                 if p2pConn.itemId is parsedMsg.itemId
                                     p2pConn.handleSignallingMsg parsedMsg
                         else
-                            console.log "DChandle: requester is a client"
+                            #console.log "DChandle: requester is a client"
                             for client in @signaller.signallingClients
                                 if client.id is parsedMsg.requesterId
-                                    console.log "DChandle: requester found!" + parsedMsg.requesterId, client
-                                    console.log
+                                    #console.log "DChandle: requester found!" + parsedMsg.requesterId, client
+                                    #console.log
                                     client.DCsend parsedMsg
 
                     when "candidate"
                         authorId = @signaller.service.SharesService.get(parsedMsg.itemId).author
 
                         if authorId is @signaller.id
-                            console.log "p2pIceCandidate author is master"
+                            #console.log "p2pIceCandidate author is master"
                             # master handles the message
                             for p2pConn in @signaller.service.P2PService.p2pConnections
                                 if p2pConn.itemId is parsedMsg.itemId and parsedMsg.requesterId is p2pConn.requesterId
@@ -492,7 +492,7 @@ class RTCService
                         else
                             if authorId is @id
                                 # send to resolver
-                                console.log "p2pIceCandidate client is author"
+                                #console.log "p2pIceCandidate client is author"
                                 if parsedMsg.requesterId is @signaller.id
                                     for p2pConn in @signaller.service.P2PService.p2pConnections
                                         if p2pConn.itemId is parsedMsg.itemId and parsedMsg.resolverId is p2pConn.resolverId
@@ -506,14 +506,14 @@ class RTCService
 
                             else
                                 # send to other clients
-                                console.log "p2pIceCandidate client & master is not author"
+                                #console.log "p2pIceCandidate client & master is not author"
                                 for client in @signaller.signallingClients
                                     if client.id is parsedMsg.resolverId
                                         client.DCsend parsedMsg
 
 
                     else
-                        console.log "DChandle: unknown msg"
+                        #console.log "DChandle: unknown msg"
 
                 if !@signaller.service.$rootScope.$$phase
                     @signaller.service.$rootScope.$apply()
@@ -540,7 +540,7 @@ class RTCService
                     console.log "sent?", message
 
         constructor: (@service) ->
-            console.log "setup" if @debug
+            #console.log "setup" if @debug
             @signalConnection = new WebSocket(@service.signalServer)
             @signalConnection.onopen    = @handleSignalOpen
             @signalConnection.onmessage = @handleSignalMessage
@@ -552,16 +552,16 @@ class RTCService
             if @signalConnection.readyState is 1
                 @signalConnection.send JSON.stringify(msg)
             else
-                console.log "Signalling Channel isn't ready"
+                #console.log "Signalling Channel isn't ready"
                 setTimeout =>
                     @signalSend msg
                 , 25
 
         handleSignalOpen: (event) ->
-            console.log "Signalling Channel Opened"
+            #console.log "Signalling Channel Opened"
 
         handleSignalMessage: (event) =>
-            console.log "got message!", event if @debug
+            #console.log "got message!", event if @debug
             try
                 parsedMsg = JSON.parse(event.data)
 
@@ -569,13 +569,13 @@ class RTCService
                     throw new Error("message Type not defined")
 
             catch e
-                console.log "wasn't able to parse message", e.message
+                #console.log "wasn't able to parse message", e.message
 
             switch parsedMsg.type
                 when "id" # room creation successful
                     console.log "got id: " + parsedMsg.roomId if @debug
                     @roomId = parsedMsg.roomId
-                    console.log "created room: " + parsedMsg.roomId
+                    #console.log "created room: " + parsedMsg.roomId
 
                 when "connect"  # new client
                     console.log "client want's to connect"  if @debug
@@ -620,7 +620,7 @@ class RTCService
         @::roomId       = null
         @::id           = null
         @::connection   = null
-        @::debug        = true
+        @::debug        = false
         @::dataChannel  = null
         @::sdpConstraints =
             optional: []
@@ -693,9 +693,9 @@ class RTCService
                         console.log parsedMsg
             catch e
                 console.log "wasn't able to parse message"
-                console.log e.message
+                #console.log e.message
                 console.log event
-                console.log event.data
+                #console.log event.data
         handleSignalError: (event) ->
             console.log "Signalling Channel Error"
             console.log event
@@ -748,16 +748,16 @@ class RTCService
             @dataChannel.onclose   = @DChandleClose
 
         DChandleMessage: (msg) =>
-            console.log "got a message from DC",
-            console.log msg
+            #console.log "got a message from DC",
+            #console.log msg
 
 
             parsedMsg = JSON.parse(msg.data)
-            console.log "parsed"
-            console.log parsedMsg
+            #console.log "parsed"
+            #console.log parsedMsg
             switch parsedMsg.type#
                 when "chunk"
-                    console.log "received chunk"
+                    #console.log "received chunk"
                     @service.receiveChunk(parsedMsg, @id)
                 when "chat"
                     # message
@@ -842,7 +842,7 @@ class RTCService
                         parsedMsg.change )
 
                 when "offer"
-                    console.log "DChandle: got p2pOffer", parsedMsg
+                    #console.log "DChandle: got p2pOffer", parsedMsg
                     @service.P2PService.resolveItem parsedMsg.itemId,
                         parsedMsg.requesterId
 
@@ -850,18 +850,18 @@ class RTCService
                         if p2pConn.itemId is parsedMsg.itemId and p2pConn.requesterId is parsedMsg.requesterId
                             p2pConn.handleSignallingMsg parsedMsg
                 when "answer"
-                    console.log "DChandle: got p2panswer", parsedMsg
+                    #console.log "DChandle: got p2panswer", parsedMsg
                     for p2pConn in @service.P2PService.p2pConnections
                         if p2pConn.itemId is parsedMsg.itemId
                             p2pConn.handleSignallingMsg parsedMsg
                 when "candidate"
-                    console.log "DChandle: got p2pcandidate", parsedMsg
+                    #console.log "DChandle: got p2pcandidate", parsedMsg
                     for p2pConn in @service.P2PService.p2pConnections
                         if p2pConn.itemId is parsedMsg.itemId
-                            console.log "p2pcandidate: other p2pConn found!"
+                            #console.log "p2pcandidate: other p2pConn found!"
                             p2pConn.handleSignallingMsg parsedMsg
                 else
-                    console.log "DChandle: unknown msg"
+                    #console.log "DChandle: unknown msg"
 
             @service.$rootScope.$apply() if !@service.$rootScope.$$phase
         DChandleError: (error) ->
@@ -878,7 +878,7 @@ class RTCService
 
             for message in messages
                 @dataChannel.send JSON.stringify(message)
-                console.log "DCsend", message
+                #console.log "DCsend", message
             #@dataChannel.send JSON.stringify(message)
 
 
@@ -887,7 +887,7 @@ class RTCService
 
     setup: (@roomId) ->
         @P2PService.setup @
-        console.log "setup done"
+        #console.log "setup done"
         if !@roomId # this is a master
             @handler = new Master(@)
             @isMaster = true
@@ -951,7 +951,7 @@ class RTCService
                 i = old_messages.length
                 while i < new_messages.length
                     if new_messages[i].sender is @$rootScope.userId
-                        console.log "sending message ", new_messages[i]
+                        #console.log "sending message ", new_messages[i]
                         @handler.DCsend
                             type: "chat"
                             message: new_messages[i].message
@@ -966,7 +966,7 @@ class RTCService
             @handler.setPassword password
 
     checkPassword: (password) ->
-        console.log "checkPassword: " + password
+        #console.log "checkPassword: " + password
         @handler.DCsend
             type: "password"
             password: password
@@ -1158,7 +1158,7 @@ class RTCService
 
     changePassword: (password) ->
         @handler.password = password
-        console.log "new password is: " + @handler.password
+        #console.log "new password is: " + @handler.password
 
 app.service "RTCService", [
     "$rootScope"

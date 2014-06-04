@@ -13,7 +13,7 @@ app.service "FileService", [
     "$timeout"
     ($rootScope, RoomService, SharesService, $location, $timeout) ->
 
-        console.log "file"
+        #console.log "file"
 
         @fileSystem = undefined
         @root = undefined
@@ -38,8 +38,8 @@ app.service "FileService", [
             )
 
         @onInitFs = (fs) =>
-            console.log "created file-system " + fs.name + ":"
-            console.log fs
+            #console.log "created file-system " + fs.name + ":"
+            #console.log fs
             @fileSystem = fs
             @root = @fileSystem.root
             @root.getDirectory(
@@ -61,8 +61,8 @@ app.service "FileService", [
                 name
                 { create: true }
                 (dir) ->
-                    console.log "successfully created directory '" + baseDir +
-                        "/" + name + "'"
+                    #console.log "successfully created directory '" + baseDir +
+                    #    "/" + name + "'"
                     callback(dir)
                 (error) ->
                     console.log "failed to created directory", error
@@ -75,8 +75,8 @@ app.service "FileService", [
                 name
                 { create: true }
                 (fileEntry) ->
-                    console.log "successfully created fileEntry '" + baseDir +
-                        "/" + name + "'"
+                    #console.log "successfully created fileEntry '" + baseDir +
+                    #    "/" + name + "'"
                     callback(fileEntry)
                 (error) ->
                     console.log "failed to created directory", error
@@ -128,8 +128,8 @@ app.service "FileService", [
 
                 thumbReader.readAsDataURL file
 
-            console.log "item size " + size
-            console.log "file size " + file.size
+            #console.log "item size " + size
+            #console.log "file size " + file.size
 
             updateProgress = (currentSize) ->
 
@@ -141,7 +141,7 @@ app.service "FileService", [
                 $rootScope.$apply() if !$rootScope.$$phase
 
             writer = (fileEntry) =>
-                console.log "WRITER :: fileEntry", fileEntry
+                #console.log "WRITER :: fileEntry", fileEntry
                 fileEntry.createWriter(
                     (fileWriter) =>
 
@@ -149,7 +149,7 @@ app.service "FileService", [
                         i = 0
                         start = i * CHUNK_SIZE
 
-                        console.log "trying to write data"
+                        #console.log "trying to write data"
 
                         reader.readAsArrayBuffer file.slice( start,
                             start + CHUNK_SIZE )
@@ -162,10 +162,10 @@ app.service "FileService", [
                             ))
 
                         fileWriter.onwritestart = (e) ->
-                            console.log "started writing", e
+                            #console.log "started writing", e
 
                         fileWriter.onwriteend = (e) =>
-                            console.log "finished writing, next " +
+                            #console.log "finished writing, next " +
                                 "step = " + (i * CHUNK_SIZE)
                             i++
                             start = i * CHUNK_SIZE
@@ -181,7 +181,7 @@ app.service "FileService", [
                                     reader.readAsArrayBuffer file.slice(
                                         start, start + CHUNK_SIZE )
                             else
-                                console.log "finished writing 100% :D"
+                                #console.log "finished writing 100% :D"
                                 @setURL(id)
 
                                 $timeout(
@@ -193,12 +193,12 @@ app.service "FileService", [
                                 callback(true)
 
                         fileWriter.onerror = (error) ->
-                            console.log "filewriter error", error
-                            console.log "error was" + fileWriter.error.message
+                            #console.log "filewriter error", error
+                            #console.log "error was" + fileWriter.error.message
                             callback(false)
 
                     (error) ->
-                        console.log "error on create writer", error
+                        #console.log "error on create writer", error
                         callback(false)
                 )
 
@@ -216,7 +216,7 @@ app.service "FileService", [
                             if !fileEntry
                                 callback(false)
                                 return
-                            console.log "created fileEntry", fileEntry
+                            #console.log "created fileEntry", fileEntry
                             writer(fileEntry)
 
                     )
@@ -232,7 +232,7 @@ app.service "FileService", [
                 {}
                 (file) ->
                     item.content = file.toURL()
-                    console.log "changed item content to url: " + item.content
+                    #console.log "changed item content to url: " + item.content
             )
 
         @deleteFile = (id) ->
@@ -264,10 +264,10 @@ app.service "FileService", [
                 { create: false }
                 (file) ->
                     callback true
-                    console.log "get file success", file
+                    #console.log "get file success", file
                 ->
                     callback false
-                    console.log "get file error"
+                    #console.log "get file error"
             )
 
 
@@ -302,16 +302,16 @@ app.service "FileService", [
                     if !dir
                         callback(false)
                         return
-                    console.log "created file"
+                    #console.log "created file"
                     @createFile(
                         dir
                         item.originalName
                         (fileEntry) =>
-                            console.log "got fileentry"
+                            #console.log "got fileentry"
                             if !fileEntry
                                 callback(false)
                                 return
-                            console.log "created fileEntry", fileEntry
+                            #console.log "created fileEntry", fileEntry
                             callback(true)
                     )
             )
@@ -343,7 +343,7 @@ app.service "FileService", [
                                 start = i * CHUNK_SIZE
 
                                 if start > file.size
-                                    console.log "finished", i
+                                    #console.log "finished", i
                                     finishedCallback()
                                     return
 
@@ -353,9 +353,9 @@ app.service "FileService", [
                                         start + CHUNK_SIZE
                                     )
                                 else
-                                    console.log "read last bits"
-                                    console.log "start", start
-                                    console.log "file.size", file.size
+                                    #console.log "read last bits"
+                                    #console.log "start", start
+                                    #console.log "file.size", file.size
                                     reader.readAsArrayBuffer file.slice(
                                         start
                                         file.size
@@ -390,8 +390,8 @@ app.service "FileService", [
                         data = pendingFile.buffer
                         @writeChunks id, data, true
 
-                        console.log "file complete", id
-                        console.log "pendingFile", pendingFile
+                        #console.log "file complete", id
+                        #console.log "pendingFile", pendingFile
 
                         @pendingFiles.splice index, 1
 
@@ -417,13 +417,13 @@ app.service "FileService", [
 
             data = chunks
 
-            console.log "chunks.length", chunks.length
+            #console.log "chunks.length", chunks.length
 
 
 
             #@chunks = []
 
-            console.log "data", data
+            #console.log "data", data
             @root.getFile(
                 filename
                 {}
@@ -433,11 +433,11 @@ app.service "FileService", [
                             fileWriter.onwritestart = (e) ->
                                 console.log "write Block"
                             fileWriter.onwriteend = (e) =>
-                                console.log "write end"
+                                #console.log "write end"
                                 #console.log fileWriter
-                                console.log "length is", fileWriter.length
+                                #console.log "length is", fileWriter.length
                                 if fileWriter.length is item.size
-                                    console.log "finished loading file, setting content url"
+                                    #console.log "finished loading file, setting content url"
                                     item.content = fileEntry.toURL()
                                     $rootScope.$apply() if !$rootScope.$$phase
 
@@ -448,8 +448,8 @@ app.service "FileService", [
                             fileWriter.seek fileWriter.length
 
                             fileWriter.write new Blob( data )
-                            console.log fileWriter
-                            console.log "length is", fileWriter.length
+                            #console.log fileWriter
+                            #console.log "length is", fileWriter.length
 
 
                         (error) ->

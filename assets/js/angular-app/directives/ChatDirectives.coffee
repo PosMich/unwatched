@@ -73,7 +73,7 @@ app.directive "fitWindowHeight", [
             scope.$watch ->
                 scope.getElementDimensions()
             , (dimensions) ->
-                console.log dimensions
+                #console.log dimensions
                 element.height dimensions.height
             , true
 

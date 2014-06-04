@@ -66,7 +66,7 @@ app.controller "NoteCtrl", [
             setup: (editor) ->
                 editor.on "change", (e) ->
             oninit: ->
-                console.log "blocked " + $scope.blocked
+                #console.log "blocked " + $scope.blocked
                 tinymce.activeEditor.getBody().setAttribute(
                     'contenteditable', !$scope.blocked)
 
@@ -78,7 +78,7 @@ app.controller "NoteCtrl", [
         , (value) ->
             if tinymce.activeEditor?
                 if value is -1
-                    console.log "enabling editor"
+                    #console.log "enabling editor"
                     tinymce.activeEditor.getBody().setAttribute(
                         'contenteditable', true)
                     $scope.blocked = false
@@ -90,7 +90,7 @@ app.controller "NoteCtrl", [
                     RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
 
                 else if value isnt $rootScope.userId
-                    console.log "disabling editor, because " + value + " is " + $rootScope.userId
+                    #console.log "disabling editor, because " + value + " is " + $rootScope.userId
                     tinymce.activeEditor.getBody().setAttribute(
                         'contenteditable', false)
                     $scope.blocked = true

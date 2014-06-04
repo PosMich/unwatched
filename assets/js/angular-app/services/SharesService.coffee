@@ -98,7 +98,7 @@ class Shares
         @shares[ @getItemIndex(id) ]
 
     delete: (id) ->
-        console.log "delete: ", id
+        #console.log "delete: ", id
         item = @get id
 
         return if !item
@@ -119,14 +119,14 @@ class Shares
         return id
 
     updateItem: (itemId, change) ->
-        console.log "updateItem with id: " + itemId, change
+        #console.log "updateItem with id: " + itemId, change
         item = @get(itemId)
-        console.log "item", item
+        #console.log "item", item
         changeKeys = Object.keys(change)
 
         for changeKey of changeKeys
             item[changeKeys[changeKey]] = change[changeKeys[changeKey]]
-            console.log "changing " + changeKeys[changeKey] + " to:",
+            #console.log "changing " + changeKeys[changeKey] + " to:",
                 change[changeKeys[changeKey]]
 
 
