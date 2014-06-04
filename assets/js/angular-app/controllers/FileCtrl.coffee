@@ -103,6 +103,10 @@ app.controller "FileCtrl", [
                     $scope.user)
             , true
 
+        $scope.upload = ->
+            make =
+                upload: do -> angular.element(".input.file-select").first().click()
+
 
         $scope.delete = ->
             modalInstance = $modal.open(
