@@ -19,7 +19,7 @@ app.service "FileService", [
         @root = undefined
         @roomDir = undefined
         # id: 123, chunks: []
-        @files = []
+        @chunkBlocks = {}
 
         @initFs = ->
             window.requestFileSystem = window.requestFileSystem ||
@@ -69,11 +69,13 @@ app.service "FileService", [
                     console.log "failed to created directory", error
                     callback(false)
             )
-
+        # write every 1000 junks
         @initChunkFile = (id, callback) ->
-            @files.push
-                id: id
-                chunks: []
+            @chunkBlocks[id] =
+                index: 0
+                blocks: [[],[]]
+
+            console.log "init chunk file", @chunkBlocks
 
             @createDirectory(
                 @roomDir
@@ -82,16 +84,17 @@ app.service "FileService", [
                     if !dir
                         callback(false)
                         return
+                    console.log "created file"
                     @createFile(
                         dir
                         SharesService.get(id).originalName
                         (fileEntry) =>
+                            console.log "got fileentry"
                             if !fileEntry
                                 callback(false)
                                 return
                             console.log "created fileEntry", fileEntry
                             callback(true)
-
                     )
             )
         @createFile = (baseDir, name, callback) ->
@@ -273,14 +276,12 @@ app.service "FileService", [
                             reader.onloadend = (evt) =>
                                 if evt.target.readyState is FileReader.DONE
                                     callback @ab2ascii(new Uint8Array(evt.target.result))
-                                #console.log "got chunk", evt.target.result
-                                #console.log "length", evt.target.result.length
+
                                 if start + CHUNK_SIZE > file.size
                                     return
 
                                 start = ++i * CHUNK_SIZE
-                                #console.log "start", start
-                                #console.log "end", start+CHUNK_SIZE
+
                                 reader.readAsArrayBuffer file.slice(
                                         start
                                         start + CHUNK_SIZE
@@ -296,8 +297,6 @@ app.service "FileService", [
                     )
             )
 
-            #@itemId, (chunks) =>
-
         @ab2ascii = (buf) ->
             String.fromCharCode.apply(null, buf).trim()
 
@@ -308,17 +307,60 @@ app.service "FileService", [
 
             return buf
 
-        @addChunks = (id, chunk) ->
-            console.log "add chunk"
-            for file in @files
-                if file.id is id
-                    file.chunks.push @ascii2ab(chunk)
+
+
+
+
+
+        @addChunk = (id, chunk) =>
+            store = @chunkBlocks[id]
+            console.log "store", store
+            console.log store.blocks
+            store.blocks[store.index].push chunk
+
+            if store.blocks[store.index].length is 300
+                store.index = 1
+                @addChunkBlock(
+                    id
+                    store.blocks[0],
+                    =>
+                        store.blocks.splice(store.index, 1)
+                        store.index = 0
+                )
+
+        @addChunkBlock = (id, chunkBlock, callback) =>
+            item = SharesService.get( id )
+            room = RoomService.id.toString() + "/" + id
+            filename = room + "/" + item.originalName
+
+            index = 0
+            @root.getFile(
+                filename
+                {}
+                (fileEntry) =>
+                    fileEntry.createWriter(
+                        (fileWriter) =>
+                            fileWriter.write new Blob(@ascii2ab(chunkBlock[index]))
+                            fileWriter.onwritestart = (e) ->
+                            fileWriter.onwriteend = (e) =>
+                                ++index
+                                if index >= chunkBlock.length
+                                    callback()
+                                    return
+                                fileWriter.write new Blob(@ascii2ab(chunkBlock[index]))
+                            fileWriter.onerror = (error) ->
+                                console.log "filewriter error", error
+                                console.log "error was" + fileWriter.error.message
+
+                        (error) ->
+                             console.log "FileService error", error
+                    )
+            )
+
 
         @fileComplete = (id) ->
             console.log "file complete"
-            for file in @files
-                if file.id is id
-                    @writeFile( id )
+            @addChunkBlock id, @chunkBlocks[id].block[@chunkBlocks[id].index]
 
         @writeFile = (id) ->
             console.log "write File"
