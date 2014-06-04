@@ -12,7 +12,7 @@ class P2PService
 
     class P2pRequestConnection
         @::type = "requester"
-        @::debug = true
+        @::debug = false
         @::userId
         @::resolverId
         @::itemId
@@ -21,6 +21,8 @@ class P2PService
         @::dataChannel
         @::isMaster = false
         @::createDC = false
+        @::CHUNK_SIZE = 1000
+        @::chunkCounter = 0
         @::sdpConstraints =
             optional: []
             mandatory:
@@ -132,16 +134,15 @@ class P2PService
 
         DChandleMessage: (event) =>
             console.log "p2pRequest: DChandleMessage", event if @debug
-
-            @FileService.addStringChunks @itemId, event.data
-
+            ++@chunkCounter
+            @FileService.addChunk @itemId, event.data
         DChandleError: (error) =>
             console.log "p2pRequest: DChandleError", error if @debug
         DChandleOpen: (event) =>
             console.log "p2pRequest: DChandleOpen", event if @debug
-
             @FileService.initChunkFile @itemId, (success) =>
                 if success
+                    console.log "successfully created ChunkFile?"
                     @dataChannel.send JSON.stringify
                         itemId: @item.id
                         type: "request"
@@ -151,6 +152,7 @@ class P2PService
         DChandleClose: (event) =>
             console.log "p2pRequest: DChandleClose", event if @debug
             # check if file size is correct
+            @FileService.fileComplete @itemId
 
 
         signalSend: (msg) ->
@@ -175,7 +177,7 @@ class P2PService
 
     class P2pResolveConnection
         @::type = "resolver"
-        @::debug = true
+        @::debug = false
         @::userId
         @::requesterId
         @::itemId
@@ -279,9 +281,16 @@ class P2PService
             try
                 parsedMsg = JSON.parse event.data
                 if parsedMsg.type is "request"
-                    @FileService.getStringChunks @itemId, (chunks) =>
-                        console.log "chunk '" + chunks + "'"
-                        @dataChannel.send chunks
+                    @FileService.getAbChunks(
+                        @itemId, (chunk) =>
+                            #console.log "chunk '" + chunks + "'"
+                            @dataChannel.send chunk
+                        () ->
+                            #finished
+                            setTimeout( =>
+                                @dataChannel.close()
+                            , 1000 )
+                    )
             catch e
                 console.log "p2pResolve: failed to parse JSON", parsedMsg
         DChandleError: (error) =>
