@@ -127,7 +127,7 @@ class Shares
         for changeKey of changeKeys
             item[changeKeys[changeKey]] = change[changeKeys[changeKey]]
             #console.log "changing " + changeKeys[changeKey] + " to:",
-                change[changeKeys[changeKey]]
+            #    change[changeKeys[changeKey]]
 
 
 
