@@ -23,7 +23,7 @@
                 dt Shared files
                 dd {{room.files.length}}
                 dt Up since
-                dd {{room.created}}
+                dd {{room.created | date: 'dd.MM.yyyy - HH:mm'}}
                 dt(ng-hide="room.url==''") URL
                 dd(ng-hide="room.url==''")
                     a(ng-href="{{room.url}}" target="_blank") {{room.url}}

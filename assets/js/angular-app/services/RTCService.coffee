@@ -343,6 +343,16 @@ class RTCService
                             if client.id isnt parsedMsg.codeItem.author
                                 client.DCsend parsedMsg
 
+                    when "newNoteItem"
+                        @signaller.service.SharesService.shares.push(
+                            parsedMsg.noteItem )
+
+                        for client in @signaller.signallingClients
+                            if !client.authenticated
+                                continue
+                            if client.id isnt parsedMsg.noteItem.author
+                                client.DCsend parsedMsg
+
                     when "codeItemHasChanged"
                         @signaller.service.SharesService.updateItem(
                             parsedMsg.itemId, parsedMsg.change
@@ -779,6 +789,9 @@ class RTCService
                 when "newCodeItem"
                     @service.SharesService.shares.push parsedMsg.codeItem
 
+                when "newNoteItem"
+                    @service.SharesService.shares.push parsedMsg.noteItem
+
                 when "codeItemHasChanged"
                     @service.SharesService.updateItem( parsedMsg.itemId,
                         parsedMsg.change )
@@ -1092,6 +1105,20 @@ class RTCService
             itemId: itemId
 
         if !user.isMaster
+            @handler.DCsend dataChannelMessage
+        else
+            for client in @handler.signallingClients
+                if !client.authenticated
+                    continue
+                client.DCsend dataChannelMessage
+
+    sendNewNoteItem: (noteItem, isMaster) ->
+
+        dataChannelMessage =
+            type: "newNoteItem"
+            noteItem: noteItem
+
+        if !isMaster
             @handler.DCsend dataChannelMessage
         else
             for client in @handler.signallingClients

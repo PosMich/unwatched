@@ -1,17 +1,13 @@
 .item(class="{{item.category}}")
     .item-thumbnail
         h3 {{item.name}}
-        .content(ng-bind-html="item.thumbnail")
+        .content(ng-bind-html="item.thumbnail", ng-if="item.thumbnail && item.thumbnail != ''")
     .item-infos
         table
             tr
                 td
                     b Name
                 td {{item.name}}
-            tr
-                td
-                    b Size
-                td {{item.size | humanReadableFileSize}}
             tr
                 td
                     b Author
@@ -35,7 +31,8 @@
                 i.fa.fa-clipboard
             a(ng-href="{{item.path}}", popover="Download",
                 popover-trigger="mouseenter", popover-placement="bottom",
-                popover-popup-delay="750")
+                popover-popup-delay="750", content="item.content",
+                ng-download="'{{item.name}}.html'")
                 i.fa.fa-download
             a(ng-href="/share/note/{{item.id}}", popover="Edit",
                 popover-trigger="mouseenter", popover-placement="bottom",
