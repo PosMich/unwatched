@@ -30,7 +30,8 @@
 .row(ng-if="isInRoom")
     ul.user-container.clearfix(class="{{controls.layout}}")
         li.user(ng-repeat="user in users | filter:controls.searchString | orderBy:controls.sorting.state:controls.sorting.ascending",
-            ng-class="{'col-lg-3 col-md-4 col-sm-6 col-xs-12':chat_state!='expanded'&&controls.layout=='layout-icons', 'col-lg-6 col-md-6 col-sm-12':chat_state=='expanded'&&controls.layout=='layout-icons', 'col-xs-12':controls.layout=='layout-list'}",)
+            ng-class="{'col-lg-3 col-md-4 col-sm-6 col-xs-12':chat_state!='expanded'&&controls.layout=='layout-icons', 'col-lg-6 col-md-6 col-sm-12':chat_state=='expanded'&&controls.layout=='layout-icons', 'col-xs-12':controls.layout=='layout-list'}",
+            ng-if="user.isActive")
             .user-inner(ng-class="{'clearfix':controls.layout=='layout-list'}")
                 img(src="{{user.pic}}", style="box-shadow:0 0 50px 0 {{user.getColorWithOpacity(0.6)}}")
                 .info

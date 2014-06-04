@@ -324,7 +324,7 @@ class RTCService
 
                     when "userDeleted"
                         @signaller.service.UserService.delete parsedMsg.userId
-                        @dataChannel.close()
+                        @connection.close()
                         @signaller.removeSlave(@id)
 
                         for client in @signaller.signallingClients
@@ -786,6 +786,9 @@ class RTCService
                 when "roomClosed"
                     @service.RoomService.isClosed = true
 
+                when "userDeleted"
+                    @service.UserService.delete parsedMsg.userId
+
                 when "newCodeItem"
                     @service.SharesService.shares.push parsedMsg.codeItem
 
@@ -892,6 +895,8 @@ class RTCService
                 while i < new_messages.length
                     for client in @handler.signallingClients
                         if client.id isnt new_messages[i].sender
+                            if !client.authenticated
+                                continue
                             client.DCsend
                                 type: "chat"
                                 message: new_messages[i].message

@@ -24,8 +24,6 @@ app.controller "RoomCtrl", [
         if !$scope.user
             $location.path "/"
 
-        console.log "user", $scope.user
-        console.log "User is Master: " + $scope.user.isMaster
         $scope.user.borderColor = $scope.user.getColorAsRGB()
 
         $scope.chat_state = ChatStateService.chat_state
@@ -37,8 +35,17 @@ app.controller "RoomCtrl", [
         , true
 
         # room infos
-        $scope.room.users = UserService.users
+        $scope.usersLength = 0
         $scope.room.files = SharesService.shares
+
+        $scope.$watch ->
+            UserService.users
+        , (users) ->
+            $scope.usersLength = 0
+            for user in users
+                if user.isActive
+                    $scope.usersLength++
+        , true
 
         # init fs
         FileService.initFs()
