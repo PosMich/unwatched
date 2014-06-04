@@ -47,6 +47,7 @@ class Users
             joinedDate = false) ->
             console.log "new user: " + @name
             @joinedDate = if !joinedDate then new Date() else joinedDate
+            @isActive = true
             if !pic
                 @pic = "/images/avatar.png"
                 if Math.round(Math.random()) is 0
@@ -74,7 +75,7 @@ class Users
         changePic: (@pic) ->
         changeName: (@name) ->
 
-    constructor: (@$rootScope) ->
+    constructor: (@$rootScope, @SharesService) ->
         style = document.createElement "style"
         style.type = "text/css"
         style.innerHTML = ""
@@ -96,9 +97,20 @@ class Users
                 return user
 
     delete: (id) ->
-        for user, index in @users
-            if user.id is id
-                @users.splice(id, 1)
+        @users[id].isActive = false
+        console.log "set user with id " + id + " to inActive"
+
+        # delete files (screen, webcam, files, images)
+        shares = @SharesService.shares
+        for share in shares
+            if !share?
+                continue
+            if share.author is id
+                if share.category is "code" or share.category is "note"
+                    continue
+                @SharesService.delete(share.id)
+
+        @$rootScope.$apply() if @$rootScope.$$phase
 
     nameIsOccupied: (id, name) ->
         for user in @users
@@ -155,4 +167,4 @@ class Users
 
         return tmp_name
 
-app.service "UserService", ["$rootScope", Users ]
+app.service "UserService", ["$rootScope", "SharesService", Users ]

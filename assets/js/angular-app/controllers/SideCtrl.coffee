@@ -63,11 +63,6 @@ app.controller "SideCtrl", [
         , true
 
         $scope.leaveRoom = ->
-            RTCService.sendUserDeleted( UserService.getUser($rootScope.userId) )
-            UserService.delete()
-            $rootScope.userId = undefined
-            $rootScope.roomId = undefined
-
             window.location = "/"
         $scope.IntroOptions =
           steps: [

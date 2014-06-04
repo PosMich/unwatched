@@ -7,9 +7,9 @@ app = angular.module "unwatched.controllers"
 
 app.controller "AppCtrl", [
     "$scope", "$rootScope", "SharesService", "StreamService", "ChatService",
-    "RoomService"
+    "RoomService", "UserService", "RTCService"
     ($scope, $rootScope, SharesService, StreamService, ChatService,
-        RoomService) ->
+        RoomService, UserService, RTCService) ->
 
         $scope.isClosed = false
 
@@ -43,18 +43,17 @@ app.controller "AppCtrl", [
                     window.location = "/"
                 ), 5000)
 
-]
+        # window.onbeforeunload = ->
+        #     if !RoomService.isClosed
+        #         return "If you leave this page all of your data in this room will be deleted."
 
-app.controller "DeleteModalInstanceCtrl", [
-    "$scope", "$modalInstance", "item", "UserService"
-    ($scope, $modalInstance, item, UserService) ->
-        $scope.item = item
-        $scope.users = UserService.users
-
-        $scope.ok = ->
-            $modalInstance.close()
-
-        $scope.cancel = ->
-            $modalInstance.dismiss('cancel')
+        window.onunload = ->
+            # set user to inactive
+            console.log "unloading"
+            UserService.getUser($rootScope.userId).isActive = false
+            RTCService.sendUserDeleted( UserService.getUser($rootScope.userId) )
+            console.log "deleted user"
+            $rootScope.userId = undefined
+            $rootScope.roomId = undefined
 
 ]

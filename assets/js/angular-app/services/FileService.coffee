@@ -11,7 +11,7 @@ app.service "FileService", [
     "SharesService"
     "$location"
     "$timeout"
-    ($rootScope, RoomService, SharesService, $location, $timeout) ->
+    ($rootScope, RoomService, SharesService, $location, $timeout, RTCService) ->
 
         console.log "file"
 
@@ -113,10 +113,47 @@ app.service "FileService", [
         @saveFile = (id, file, callback) ->
 
             reader = new FileReader()
+            thumbReader = new FileReader()
+
             item = SharesService.get(id)
 
             name = item.originalName
             size = item.size
+
+            if item.category is "image"
+
+                #thumbnail processing
+                img = document.createElement("img")
+                canvas = document.createElement("canvas")
+                reader = new FileReader()
+
+                thumbReader.onload = (e) ->
+
+                    img.src = e.target.result
+
+                img.onload = ->
+
+                    max_width = 300
+                    width = img.width
+                    height = img.height
+
+                    if width > max_width
+                        height *= max_width / width
+                        width = max_width
+
+                    canvas.width = width
+                    canvas.height = height
+
+                    ctx = canvas.getContext "2d"
+                    ctx.drawImage( img, 0, 0, width, height )
+
+                    item.thumbnail = canvas.toDataURL(
+                        item.mime_type
+                    )
+
+                    $rootScope.$apply() if !$rootScope.$$phase
+
+                thumbReader.readAsDataURL file
 
             console.log "item size " + size
             console.log "file size " + file.size

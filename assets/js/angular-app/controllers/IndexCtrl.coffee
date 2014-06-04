@@ -22,6 +22,10 @@ app.controller "IndexCtrl", [
         $scope.room = RoomService
         $scope.room.id = ""
 
+        console.log webrtcDetectedBrowser
+
+        $rootScope.isChrome = webrtcDetectedBrowser is "chrome"
+
         if $routeParams.id
             $scope.joinAttempt = true
             RTCService.setup($routeParams.id)

@@ -13,10 +13,10 @@
                     .download
                         i.fa.fa-download
                         span Download
-                a(ng-href="#", ng-click="save()")
+                a(ng-href="#", clip-copy="getClipText()")
                     .copy-clipboard
                         i.fa.fa-clipboard
-                        span Copy infos to clipboard
+                        span Copy code to clipboard
                 a(ng-href="#", ng-click="delete()")
                     .copy-clipboard
                         i.fa.fa-trash-o
@@ -61,6 +61,9 @@
                 .form-group
                     select.form-control(ng-model="settings.theme",
                         ng-options="theme.name for theme in settings.available_themes")
+                .form-group
+                    .alert.alert-info(ng-show="copiedCode")
+                        | Copied code to clipboard.
 
 
         .code-container(resizable, on-resize="containerResize()",

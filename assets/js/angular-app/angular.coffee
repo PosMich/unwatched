@@ -30,8 +30,9 @@ app.config [
     "$routeProvider"
     "$locationProvider"
     "$compileProvider"
+    "ngClipProvider"
     #"RTCProvider"
-    ($routeProvider, $locationProvider, $compileProvider) ->
+    ($routeProvider, $locationProvider, $compileProvider, ngClipProvider) ->
     #, RTCProvider) ->
 
         #RTCProvider.setName "Alibert"
@@ -41,6 +42,7 @@ app.config [
 
         $locationProvider.html5Mode true
         $locationProvider.hashPrefix ""
+        ngClipProvider.setPath "/swf/ZeroClipboard.swf"
         $compileProvider.aHrefSanitizationWhitelist ///
             ^\s*(https?|ftp|mailto|chrome|filesystem):
         ///
@@ -237,12 +239,6 @@ app.config [
         # >
         # > redirect to `/`
         $routeProvider.otherwise redirectTo: "/"
-]
-
-app.config [
-    "ngClipProvider"
-    (ngClipProvider) ->
-        ngClipProvider.setPath "swf/ZeroClipboard.swf"
 ]
 
 app.run ($rootScope, $location) ->
