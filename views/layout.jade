@@ -7,7 +7,9 @@ html(ng-app="unwatched")
     meta(name="fragment" content="!")
     link(type='text/css', rel='stylesheet', href='/css/app.css')
   body
-    .sidenav-container(onmousedown="return false", ng-controller="SideCtrl", ng-intro-autostart="false", ng-intro-options="IntroOptions", ng-intro-method="tutorial")
+    .sidenav-container(onmousedown="return false", ng-controller="SideCtrl",
+      ng-intro-autostart="false", ng-intro-options="IntroOptions",
+      ng-intro-method="tutorial")
       .sidenav
         .icon-align
           .dummy(id="step1")
@@ -98,8 +100,8 @@ html(ng-app="unwatched")
             ng-bind-html="'Your room is going to <strong>shut down</strong>...'")
         .clearfix.view-frame.container-fluid(ng-view)
 
-    .chat(chat, ng-if="showChat")
-    div
+    .chat(chat)
+    div(ng-if="isChrome")
       .video-container.clearfix
         .video.screen.ng-hide(ng-show="isStreaming['screen']&&!disableStream['screen']")
           .video-controls
@@ -112,8 +114,15 @@ html(ng-app="unwatched")
               i.fa.fa-times-circle
           video#webcam(autoplay, stream="webcam")
 
-    .screenshot-overlay.ng-hide(ng-show="screenshotCountdown!=-1")
+    .screenshot-overlay.ng-hide(ng-show="screenshotCountdown!=-1", ng-if="isChrome")
         div(ng-bind="screenshotCountdown")
+
+
+    .browser(ng-if="!isChrome")
+        .info
+            | We are afraid to tell you, that this project currently just works on
+            | the latest Chrome Browser. Get the latest Chrome under <a href="https://www.google.com/intl/en/chrome/browser/">Google Chrome</a> to
+            | check out Unwatched - <b>Pretty Close Collaboration</b>.
 
 
     script(src='/js/app.js')
