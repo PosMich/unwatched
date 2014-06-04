@@ -58,6 +58,10 @@ app.config [
             templateUrl: "/partials/index.html"
             controller: "IndexCtrl"
 
+        $routeProvider.when "/about",
+            templateUrl: "/partials/about.html"
+            controller: "AboutCtrl"
+
         # ***
         # * <h3>route `/room/:id`</h3>
         # > test ro

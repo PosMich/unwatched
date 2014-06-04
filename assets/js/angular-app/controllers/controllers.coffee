@@ -72,3 +72,6 @@ app.controller "DeleteModalInstanceCtrl", [
             $modalInstance.dismiss('cancel')
 
 ]
+
+app.controller "AboutCtrl", ->
+    
