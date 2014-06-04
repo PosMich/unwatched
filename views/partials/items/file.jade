@@ -39,16 +39,16 @@
                 b Category:
                 | {{item.category}}
 
-        .settings-container.image(ng-hide="file.ready", ng-if="newFile")
+        .settings-container.image.ng-hide(ng-if="newFile")
             h4 Choose a file from you drive
             form.form-inline(role="form")
                 .form-group
-                    input.form-control(type="file",
+                    input.form-control.ng-file-select(type="file",
                         ng-file-select="onFileSelect($files)")
 
         .file-container(ng-if="newFile")
             .drop-box(ng-file-drop="onFileSelect($files)",
-                ng-file-drag-over-class="drag-over-class")
+                ng-file-drag-over-class="drag-over-class", ng-click="uploadFile()")
                 | or drop file here
             .progress-container(ng-if="item.progress < 100 && item.progress > 0")
                 progressbar.progress-striped.active(max="100", type="info",

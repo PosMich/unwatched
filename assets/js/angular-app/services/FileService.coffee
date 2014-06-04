@@ -434,10 +434,9 @@ app.service "FileService", [
                                 console.log "write end"
                                 #console.log fileWriter
                                 console.log "length is", fileWriter.length
-                                if finished
-                                    console.log "finished loading file, setting content url"
-                                    item.content = fileEntry.toURL()
-                                    $rootScope.$apply() if !$rootScope.$$phase
+                                #console.log "finished loading file, setting content url"
+                                #item.content = fileEntry.toURL()
+                                #$rootScope.$apply() if !$rootScope.$$phase
 
                             fileWriter.onerror = (error) ->
                                 console.log "filewriter error", error
