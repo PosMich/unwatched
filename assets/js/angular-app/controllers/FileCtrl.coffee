@@ -51,8 +51,6 @@ app.controller "FileCtrl", [
                     $scope.file.source
                     (success) ->
                         if success
-
-
                             # send changes
                             changes =
                                 name: $scope.item.name
@@ -73,45 +71,16 @@ app.controller "FileCtrl", [
                             $rootScope.$apply() if $rootScope.$$phase
                 )
 
+            $scope.$watch ->
+                $scope.item.thumbnail
+            , (thumbnail) ->
+                if thumbnail? and thumbnail isnt ""
+                    message =
+                        thumbnail: thumbnail
 
-            # $scope.$watch ->
-            #     $scope.file.ready
-            # , (ready) ->
-            #     console.log "readystate: " + ready
-            #     if ready is true
-            #         $scope.item.content = $scope.target_result
-
-                    # console.log "content", $scope.item.content
-                    # console.log "target result", $scope.target_result
-
-                    # if $scope.item.category is "image"
-                    #     img = document.createElement("img")
-                    #     canvas = document.createElement("canvas")
-                    #     reader = new FileReader()
-
-                    #     img.src = $scope.target_result
-                    #     img.onload = ->
-
-                    #         max_width = 300
-                    #         width = img.width
-                    #         height = img.height
-
-                    #         if width > max_width
-                    #             height *= max_width / width
-                    #             width = max_width
-
-                    #         canvas.width = width
-                    #         canvas.height = height
-
-                    #         ctx = canvas.getContext "2d"
-                    #         ctx.drawImage( img, 0, 0, width, height )
-
-                    #         $scope.item.thumbnail = canvas.toDataURL(
-                    #             $scope.item.mime_type
-                    #         )
-
-                    #         $scope.$apply() if !$scope.$$phase
-            # , true
+                    RTCService.sendFileHasChanged(message, $scope.item.id,
+                        $scope.user)
+            , true
 
         else
             $scope.item = SharesService.get($routeParams.id)

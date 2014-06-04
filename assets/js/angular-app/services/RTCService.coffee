@@ -26,7 +26,7 @@ class RTCService
         }
     ]
 
-    @::signalServer = "wss://10.0.0.10:3001"
+    @::signalServer = "wss://10.0.0.9:3001"
 
 
     createChunks: (msg, userId) ->
