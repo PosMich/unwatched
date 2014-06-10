@@ -7,9 +7,9 @@ app = angular.module "unwatched.controllers"
 
 app.controller "AppCtrl", [
     "$scope", "$rootScope", "SharesService", "StreamService", "ChatService",
-    "RoomService", "UserService", "RTCService", "FileService"
+    "RoomService", "UserService", "RTCService", "FileApiService"
     ($scope, $rootScope, SharesService, StreamService, ChatService,
-        RoomService, UserService, RTCService, FileService) ->
+        RoomService, UserService, RTCService, FileApiService) ->
 
         $scope.isClosed = false
 
@@ -55,7 +55,7 @@ app.controller "AppCtrl", [
             #console.log "deleted user"
             $rootScope.userId = undefined
             $rootScope.roomId = undefined
-            FileService.suicide()
+            FileApiService.suicide()
 
 ]
 
@@ -74,4 +74,4 @@ app.controller "DeleteModalInstanceCtrl", [
 ]
 
 app.controller "AboutCtrl", ->
-    
+

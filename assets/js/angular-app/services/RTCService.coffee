@@ -12,21 +12,9 @@ class RTCService
     # chunkFileId: 123, chunks: []
     @::isMaster = false
 
-    @::iceServers = [
-        {urls:"stun:stun.l.google.com:19302"}
-        {
-            urls: [
-                "turn:23.251.129.121:3478?transport=udp"
-                "turn:23.251.129.121:3478?transport=tcp"
-                "turn:23.251.129.121:3479?transport=udp"
-                "turn:23.251.129.121:3479?transport=tcp"
-            ]
-            "credential":"yEGAUhm4nsBhcZin3sqd/993MOk="
-            "username":"1401972163:15523811"
-        }
-    ]
+    @::iceServers = null
 
-    @::signalServer = "wss://10.0.0.10:3001"
+    @::signalServer = "wss://"
 
 
     createChunks: (msg, userId) ->
@@ -883,7 +871,14 @@ class RTCService
 
 
     constructor: (@$rootScope, @UserService, @ChatService, @RoomService,
-        @SharesService, @P2PService) ->
+        @SharesService, @P2PService, SERVER, SERVER_PORT, ICE_SERVERS) ->
+        @signalServer += SERVER
+        if SERVER_PORT isnt "" and SERVER_PORT isnt null
+            console.log "blubb"
+            @signalServer += ":" + SERVER_PORT
+
+        @iceServers = ICE_SERVERS
+
 
     setup: (@roomId) ->
         @P2PService.setup @
@@ -1167,5 +1162,8 @@ app.service "RTCService", [
     "RoomService"
     "SharesService"
     "P2PService"
+    "SERVER"
+    "SERVER_PORT"
+    "ICE_SERVERS"
     RTCService
 ]

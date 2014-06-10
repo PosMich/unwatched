@@ -5,7 +5,7 @@
 
 app = angular.module "unwatched.services"
 
-app.service "FileService", [
+app.service "FileApiService", [
     "$rootScope"
     "RoomService"
     "SharesService"
@@ -166,7 +166,7 @@ app.service "FileService", [
 
                         fileWriter.onwriteend = (e) =>
                             #console.log "finished writing, next " +
-                                "step = " + (i * CHUNK_SIZE)
+                            #    "step = " + (i * CHUNK_SIZE)
                             i++
                             start = i * CHUNK_SIZE
 
@@ -367,7 +367,7 @@ app.service "FileService", [
                                 )
 
                          (error) ->
-                             console.log "FileService error", error
+                             console.log "FileApiService error", error
                     )
             )
 
@@ -453,7 +453,7 @@ app.service "FileService", [
 
 
                         (error) ->
-                             console.log "FileService error", error
+                             console.log "FileApiService error", error
                     )
             )
 

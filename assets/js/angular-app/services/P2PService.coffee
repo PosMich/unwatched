@@ -35,7 +35,7 @@ class P2PService
             @resolverId = @item.author
             @userId = @service.$rootScope.userId
             @isMaster = @service.UserService.getUser(@userId).isMaster
-            @FileService = @service.FileService
+            @FileApiService = @service.FileApiService
 
             if @item.category is "file" or @item.category is "image"
                 @createDC = true
@@ -134,12 +134,12 @@ class P2PService
 
         DChandleMessage: (event) =>
             console.log "p2pRequest: DChandleMessage", event if @debug
-            @FileService.addChunk @itemId, event.data
+            @FileApiService.addChunk @itemId, event.data
         DChandleError: (error) =>
             console.log "p2pRequest: DChandleError", error if @debug
         DChandleOpen: (event) =>
             console.log "p2pRequest: DChandleOpen", event if @debug
-            @FileService.initChunkFile @itemId, (success) =>
+            @FileApiService.initChunkFile @itemId, (success) =>
                 if success
                     console.log "successfully created ChunkFile?"
                     @dataChannel.send JSON.stringify
@@ -151,7 +151,7 @@ class P2PService
         DChandleClose: (event) =>
             console.log "p2pRequest: DChandleClose", event if @debug
             # check if file size is correct
-            #@FileService.fileComplete @itemId
+            #@FileApiService.fileComplete @itemId
 
 
         signalSend: (msg) ->
@@ -189,7 +189,7 @@ class P2PService
         constructor: (@service, @p2p, @itemId, @requesterId) ->
             console.log "p2pResolve: constructor" if @debug
             @item = @service.SharesService.get @itemId
-            @FileService = @service.FileService
+            @FileApiService = @service.FileApiService
 
             @userId = @service.$rootScope.userId
 
@@ -281,7 +281,7 @@ class P2PService
                 chunkNumber = 0
                 parsedMsg = JSON.parse event.data
                 if parsedMsg.type is "request"
-                    @FileService.getAbChunks(
+                    @FileApiService.getAbChunks(
                         @itemId, (chunk) =>
                             #console.log "chunk '", chunkNumber
                             #++chunkNumber
@@ -323,7 +323,7 @@ class P2PService
                 else
                     console.log "p2pResolve: handleSignallingMsg, unknown message type", message
 
-    constructor: (@$rootScope, @SharesService, @UserService, @FileService) ->
+    constructor: (@$rootScope, @SharesService, @UserService, @FileApiService) ->
         console.log "p2pService: constructor", @ if @debug
 
 
@@ -380,6 +380,6 @@ angular.module("unwatched.services").service "P2PService", [
     "$rootScope"
     "SharesService"
     "UserService"
-    "FileService"
+    "FileApiService"
     P2PService
 ]

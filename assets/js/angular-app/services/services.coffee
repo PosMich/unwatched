@@ -24,7 +24,7 @@ app.service "ChatService", [
 app.service "RoomService", [
     "$rootScope"
     "$http"
-    "SERVER_URL"
+    "SERVER"
     "SERVER_PORT"
     class Room
         @::id = ""
@@ -36,8 +36,7 @@ app.service "RoomService", [
         @::url = ""
         @::isClosed = false
 
-        constructor: (@$rootScope, @$http, @SERVER_URL,
-            @SERVER_PORT) ->
+        constructor: (@$rootScope, @$http, @SERVER, @SERVER_PORT) ->
             @created = new Date()
             @description = "Room description"
             isClose = false
@@ -46,16 +45,15 @@ app.service "RoomService", [
             @name = name
 
         setUrl: (longUrl) ->
-            apiUrl = "https://www.googleapis.com/urlshortener/v1/url?"
-            url = @SERVER_URL + ":" + @SERVER_PORT + longUrl
-
-            @$http.post( apiUrl, longUrl: url ).success (data) =>
+            @$http.post(
+                "https://www.googleapis.com/urlshortener/v1/url?"
+                longUrl: "https://" + @SERVER + ":" + @SERVER_PORT + longUrl
+            ).success (data) =>
                 @url = data.id
 ]
 
 
 app.service "ChatStateService", ->
-
     @chat_state = "minimized"
     @chat_state_history = "compressed"
 
@@ -67,14 +65,15 @@ app.service "ChatStateService", ->
 
     return
 
-app.service "LayoutService", ->
 
+app.service "LayoutService", ->
     @layout = "layout-icons"
 
     @setLayout = (layout) ->
         @layout = layout
 
     return
+
 
 app.service "AceSettingsService", [
     "font_sizes", "ace_themes"
@@ -93,6 +92,7 @@ app.service "AceSettingsService", [
         return
 ]
 
+
 app.constant "available_extensions", [
     { value: "", name: "Choose language", extension: "" }
     { value: "html", name: "HTML", extension: "html" }
@@ -103,6 +103,7 @@ app.constant "available_extensions", [
     { value: "py", name: "Python", extension: "py" }
 ]
 
+
 app.constant "font_sizes", [
     { value: 12, name: "12px"}
     { value: 14, name: "14px"}
@@ -110,6 +111,7 @@ app.constant "font_sizes", [
     { value: 18, name: "18px"}
     { value: 20, name: "20px"}
 ]
+
 
 app.constant "ace_themes", [
     { value: "monokai", name: "Monokai"}
@@ -119,5 +121,20 @@ app.constant "ace_themes", [
     { value: "terminal", name: "Terminal"}
 ]
 
-app.constant "SERVER_URL", "https://10.0.0.10"
+
+app.constant "SERVER", "localhost"
 app.constant "SERVER_PORT", "3001"
+
+app.constant "ICE_SERVERS", [
+        {urls:"stun:stun.l.google.com:19302"}
+        {
+            urls: [
+                "turn:23.251.129.121:3478?transport=udp"
+                "turn:23.251.129.121:3478?transport=tcp"
+                "turn:23.251.129.121:3479?transport=udp"
+                "turn:23.251.129.121:3479?transport=tcp"
+            ]
+            "credential":"yEGAUhm4nsBhcZin3sqd/993MOk="
+            "username":"1401972163:15523811"
+        }
+    ]

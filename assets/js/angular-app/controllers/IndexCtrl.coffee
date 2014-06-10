@@ -7,14 +7,14 @@ app = angular.module "unwatched.controllers"
 
 app.controller "IndexCtrl", [
     "$scope", "$routeParams", "RTCService", "RoomService", "$location",
-    "$rootScope", "UserService", "SharesService", "FileService"
+    "$rootScope", "UserService", "SharesService", "FileApiService"
     ($scope, $routeParams, RTCService, RoomService, $location,
-        $rootScope, UserService, SharesService, FileService) ->
+        $rootScope, UserService, SharesService, FileApiService) ->
 
         window.rtcService = RTCService
         window.userService = UserService
         window.sharesService = SharesService
-        window.fileService = FileService
+        window.fileApiService = FileApiService
 
         $scope.joinAttempt = false
         $scope.inputDisabled = true

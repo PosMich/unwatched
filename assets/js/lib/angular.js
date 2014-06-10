@@ -75,7 +75,7 @@ function minErr(module) {
         encodeURIComponent(stringify(arguments[i]));
     }
 
-    /* HHIIIIERRR oiajfdsöoijsa okjsa blubb blubb */
+    /* hier oiajfdsöoijsa okjsa blubb blubb */
     /*console.error(message);*/
 
     return new Error(message);

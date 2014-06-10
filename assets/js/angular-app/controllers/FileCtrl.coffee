@@ -7,9 +7,9 @@ app = angular.module "unwatched.controllers"
 
 app.controller "FileCtrl", [
     "$scope", "$routeParams", "SharesService", "$location", "$modal",
-    "UserService", "$rootScope", "RTCService", "FileService"
+    "UserService", "$rootScope", "RTCService", "FileApiService"
     ($scope, $routeParams, SharesService, $location, $modal, UserService,
-        $rootScope, RTCService, FileService) ->
+        $rootScope, RTCService, FileApiService) ->
 
         $scope.users = UserService.users
         $scope.user = $scope.users[$rootScope.userId]
@@ -46,7 +46,7 @@ app.controller "FileCtrl", [
                 if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
                     $scope.item.category = "image"
 
-                FileService.saveFile(
+                FileApiService.saveFile(
                     $scope.item.id
                     $scope.file.source
                     (success) ->
@@ -87,11 +87,11 @@ app.controller "FileCtrl", [
             $location.path "/404" if !$scope.item?
             $scope.newFile = false
 
-            FileService.fileExists( $scope.item.id, (exists) ->
+            FileApiService.fileExists( $scope.item.id, (exists) ->
                 if !exists
                     RTCService.requestItem $scope.item.id
                 else
-                    FileService.setURL $scope.item.id
+                    FileApiService.setURL $scope.item.id
             )
 
             $scope.$watch ->
