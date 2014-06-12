@@ -27,21 +27,18 @@ app = angular.module "unwatched", [
 # > [angular docs](http://docs.angularjs.org/guide/dev_guide.services.$location)
 # > for $locationProvider details
 app.config [
+    "$provide"
     "$routeProvider"
     "$locationProvider"
     "$compileProvider"
     "ngClipProvider"
-    #"RTCProvider"
-    ($routeProvider, $locationProvider, $compileProvider, ngClipProvider) ->
-    #, RTCProvider) ->
+    ($provide, $routeProvider, $locationProvider, $compileProvider, ngClipProvider) ->
+        $locationProvider.html5Mode(true)
 
-        #RTCProvider.setName "Alibert"
-        #RTCProvider.setSignalServer "wss://localhost"
+        $provide.decorator "$sniffer", ($delegate) ->
+            $delegate.history = false
+            $delegate
 
-
-
-        $locationProvider.html5Mode true
-        $locationProvider.hashPrefix ""
         ngClipProvider.setPath "/swf/ZeroClipboard.swf"
         $compileProvider.aHrefSanitizationWhitelist ///
             ^\s*(https?|ftp|mailto|chrome|filesystem|data):
@@ -242,7 +239,9 @@ app.config [
         # > not found - route
         # >
         # > redirect to `/`
-        $routeProvider.otherwise redirectTo: "/"
+        $routeProvider.otherwise redirectTo: "/room"
+
+
 ]
 
 app.run ($rootScope, $location) ->
