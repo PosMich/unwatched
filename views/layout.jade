@@ -124,6 +124,8 @@ html(ng-app="unwatched")
 
     script(src="http://api.turnservers.com/api.js?key=nWbpkPHBnHRfYqrIkdzIyASZFZgodGZZ")
     script
+      |  window.iceServers = "";
+      |
       |  window.turnserversDotComAPI.iceServers(function(data) {
       |     window.iceServers = data;
       |     console.log("iceServers: ", data);
