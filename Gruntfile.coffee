@@ -303,8 +303,8 @@ module.exports = (grunt) ->
             options:
                 watch: ["modules/*"]
                 callback:  (nodemon) ->
-                    nodemon.on "log", (event) ->
-                        console.log event.colour
+                    #nodemon.on "log", (event) ->
+                        #console.log event.colour
 
 
                     nodemon.on "config:update", ->
@@ -312,8 +312,8 @@ module.exports = (grunt) ->
                             require("open")("http://localhost:#{config.port.http}")
                         , 2000
 
-                    nodemon.on "restart", ->
-                        console.log nodemon
+                    #nodemon.on "restart", ->
+                    #    console.log nodemon
 
             debug:
                 script: "app.js"
