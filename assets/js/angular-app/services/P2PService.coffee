@@ -6,13 +6,13 @@
 
 
 class P2PService
-    @::debug = false
+    @::debug = true
     @::p2p
     @::p2pConnections = []
 
     class P2pRequestConnection
         @::type = "requester"
-        @::debug = false
+        @::debug = true
         @::userId
         @::resolverId
         @::itemId
@@ -176,7 +176,7 @@ class P2PService
 
     class P2pResolveConnection
         @::type = "resolver"
-        @::debug = false
+        @::debug = true
         @::userId
         @::requesterId
         @::itemId
@@ -282,12 +282,16 @@ class P2PService
                 parsedMsg = JSON.parse event.data
                 if parsedMsg.type is "request"
                     @FileApiService.getAbChunks(
-                        @itemId, (chunk) =>
+                        @itemId
+                        , (chunk) =>
                             #console.log "chunk '", chunkNumber
                             #++chunkNumber
                             @dataChannel.send chunk
+                            return
                         , =>
                             @service.suicide @itemId
+                            console.log "finished"
+                            return
                             #finished
                             #setTimeout( =>
                             #    @dataChannel.send "finished!!!"

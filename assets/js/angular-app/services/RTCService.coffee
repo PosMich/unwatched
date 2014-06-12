@@ -143,7 +143,7 @@ class RTCService
             @::connection = null
             @::signaller  = null
             @::dataChannel = null
-            @::debug      = false
+            @::debug      = true
             @::loginAttempts = 3
             @::authenticated = false
 
@@ -608,7 +608,7 @@ class RTCService
         @::roomId       = null
         @::id           = null
         @::connection   = null
-        @::debug        = false
+        @::debug        = true
         @::dataChannel  = null
         @::sdpConstraints =
             optional: []
