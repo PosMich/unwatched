@@ -122,8 +122,8 @@ app.constant "ace_themes", [
 ]
 
 
-app.constant "SERVER", "localhost"
-app.constant "SERVER_PORT", "3001"
+app.constant "SERVER", "unwatched.multimediatechnology.at"
+app.constant "SERVER_PORT", "443"
 
 
 app.value "ICE_SERVERS", [
