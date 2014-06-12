@@ -659,7 +659,7 @@ class RTCService
                     @signalSend msg
                 , 25
         handleSignalOpen: (event) ->
-            console.log "Signalling Channel Opened"
+            console.log "Signalling Channel Opened" if @debug
         handleSignalMessage: (event) =>
             console.log "got message!" if @debug
             try
@@ -880,7 +880,13 @@ class RTCService
             @signalServer += ":" + SERVER_PORT
 
         if window.iceServers
-            @iceServers = window.iceServers
+
+            @iceServers = []
+            @iceServers.push
+                urls: "stun:stun.l.google.com:19302"
+            for server in window.iceServers
+                @iceServers.push server
+
         else
             @iceServers = ICE_SERVERS
 
