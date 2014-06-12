@@ -125,8 +125,6 @@ app.constant "ace_themes", [
 app.constant "SERVER", "localhost"
 app.constant "SERVER_PORT", "3001"
 
-app.constant "TURN_REQ",
-    "https://computeengineondemand.appspot.com/turn?username=1&key=1"
 
 app.value "ICE_SERVERS", [
         {urls:"stun:stun.l.google.com:19302"}
