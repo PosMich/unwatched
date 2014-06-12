@@ -624,6 +624,8 @@ class RTCService
             @signalConnection.onerror   = @handleSignalError
             @signalConnection.onclose   = @handleSignalClose
 
+            console.log "BKHFLAF", @service
+
             @connection = new RTCPeerConnection(
                 iceServers: @service.iceServers
             ,
@@ -877,7 +879,10 @@ class RTCService
             console.log "blubb"
             @signalServer += ":" + SERVER_PORT
 
-        @iceServers = ICE_SERVERS
+        if window.iceServers
+            @iceServers = window.iceServers
+        else
+            @iceServers = ICE_SERVERS
 
 
     setup: (@roomId) ->

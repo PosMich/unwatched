@@ -115,12 +115,17 @@ html(ng-app="unwatched")
           video#webcam(autoplay, stream="webcam")
 
     .screenshot-overlay.ng-hide(ng-show="screenshotCountdown!=-1", ng-if="isChrome")
-        div(ng-bind="screenshotCountdown")
+      div(ng-bind="screenshotCountdown")
 
 
     .browser(ng-if="!isChrome")
-        .info.ng-hide(ng-show="!isChrome")
-         | We are sorry to tell you that this project currently just works on the latest Google Chrome Browser. Get the latest Chrome under <a href=\'http://www.google.com/intl/en/chrome/browser/\'>Google Chrome</a> to check out Unwatched - <b>Pretty Close Collaboration</b>.
+      .info.ng-hide(ng-show="!isChrome")
+       | We are sorry to tell you that this project currently just works on the latest Google Chrome Browser. Get the latest Chrome under <a href=\'http://www.google.com/intl/en/chrome/browser/\'>Google Chrome</a> to check out Unwatched - <b>Pretty Close Collaboration</b>.
 
-
-    script(src='/js/app.js')
+    script(src="//api.turnservers.com/api.js?key=nWbpkPHBnHRfYqrIkdzIyASZFZgodGZZ")
+    script
+      |  window.turnserversDotComAPI.iceServers(function(data) {
+      |     window.iceServers = data;
+      |     console.log("iceServers: ", data);
+      |  });
+    script(src="/js/app.js")
