@@ -37,7 +37,7 @@ if navigator.mozGetUserMedia
     getUserMedia = navigator.mozGetUserMedia.bind(navigator)
 
     # Creates iceServer from the url for FF.
-    createIceServer = (url, username, password) ->
+    window.createIceServer = (url, username, password) ->
         iceServer = null
         url_parts = url.split(":")
         if url_parts[0].indexOf("stun") is 0
@@ -101,7 +101,7 @@ else if navigator.webkitGetUserMedia
     )
 
     # Creates iceServer from the url for Chrome.
-    createIceServer = (url, username, password) ->
+    window.createIceServer = (url, username, password) ->
         iceServer = null
         url_parts = url.split(":")
         if url_parts[0].indexOf("stun") is 0
