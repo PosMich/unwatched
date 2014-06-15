@@ -627,7 +627,7 @@ class RTCService
             @signalConnection.onerror   = @handleSignalError
             @signalConnection.onclose   = @handleSignalClose
 
-            console.log "BKHFLAF", @service
+            console.log @service.iceServers
 
             @connection = new RTCPeerConnection(
                 iceServers: @service.iceServers

@@ -26,7 +26,11 @@ app.controller "AppCtrl", [
             method: "GET"
             url: "/turn"
         ).success( (data, status, headers, config) ->
-            ICE_SERVERS[1] = data
+            ICE_SERVERS = createIceServers(
+                data.uris
+                data.username
+                data.password
+            )
         ).error( (data, status, headers, config) ->
             console.log "ERROR"
             console.log "data", data
