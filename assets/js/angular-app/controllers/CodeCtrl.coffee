@@ -262,7 +262,8 @@ app.controller "CodeCtrl", [
                         found = true
                         if !contributor.active
                             $scope.editor.session.removeMarker marker.marker
-                            $rootScope.markers.splice(index, 1) # remove inactive marker
+                            # remove inactive marker
+                            $rootScope.markers.splice(index, 1)
 
                 if !found and contributor.active
                     $rootScope.markers.push

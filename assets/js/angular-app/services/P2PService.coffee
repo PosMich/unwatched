@@ -45,7 +45,7 @@ class P2PService
 
             try
                 @connection = new RTCPeerConnection
-                    iceServers:  @p2p.iceServers
+                    iceServers: @p2p.iceServers
                 ,
                     null
             catch error
@@ -171,7 +171,10 @@ class P2PService
                 when "candidate"
                     @handleIceCandidate message
                 else
-                    console.log "p2pRequest: handleSignallingMsg, unknown message type", message
+                    console.log(
+                        "p2pRequest: handleSignallingMsg, unknown message type"
+                        message
+                    )
 
 
     class P2pResolveConnection
@@ -197,7 +200,7 @@ class P2PService
 
 
             @connection = new RTCPeerConnection
-                iceServers:  @p2p.iceServers
+                iceServers: @p2p.iceServers
             ,
                 null
 
@@ -325,7 +328,10 @@ class P2PService
                 when "candidate"
                     @handleIceCandidate message
                 else
-                    console.log "p2pResolve: handleSignallingMsg, unknown message type", message
+                    console.log(
+                        "p2pResolve: handleSignallingMsg, unknown message type"
+                        message
+                    )
 
     constructor: (@$rootScope, @SharesService, @UserService, @FileApiService) ->
         console.log "p2pService: constructor", @ if @debug
@@ -368,7 +374,9 @@ class P2PService
                 return
 
         #console.log "p2pService: resolveItem item not found"
-        @p2pConnections.push new P2pResolveConnection(@, @p2p, itemId, requesterId)
+        @p2pConnections.push(
+            new P2pResolveConnection(@, @p2p, itemId, requesterId)
+        )
 
     suicide: (itemId) ->
         console.log "p2pService: try to killing him softly", itemId if @debug

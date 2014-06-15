@@ -187,7 +187,8 @@ app.service "FileApiService", [
                                 $timeout(
                                     ->
                                         $location.path "/share/file/" + id
-                                        $rootScope.$apply() if !$rootScope.$$phase
+                                        if !$rootScope.$$phase
+                                            $rootScope.$apply()
                                     1000
                                 )
                                 callback(true)
@@ -212,7 +213,7 @@ app.service "FileApiService", [
                     @createFile(
                         dir
                         name
-                        (fileEntry) =>
+                        (fileEntry) ->
                             if !fileEntry
                                 callback(false)
                                 return
@@ -306,7 +307,7 @@ app.service "FileApiService", [
                     @createFile(
                         dir
                         item.originalName
-                        (fileEntry) =>
+                        (fileEntry) ->
                             #console.log "got fileentry"
                             if !fileEntry
                                 callback(false)
@@ -336,7 +337,11 @@ app.service "FileApiService", [
                             reader = new FileReader()
                             reader.onload = (evt) =>
                                 if evt.target.readyState is FileReader.DONE
-                                    callback @ab2ascii(new Uint8Array(evt.target.result))
+                                    callback(
+                                        @ab2ascii(
+                                            new Uint8Array(evt.target.result)
+                                        )
+                                    )
 
 
                                 i = i + 1
@@ -347,7 +352,7 @@ app.service "FileApiService", [
                                     finishedCallback()
                                     return
 
-                                if (start+CHUNK_SIZE) < file.size
+                                if (start + CHUNK_SIZE) < file.size
                                     reader.readAsArrayBuffer file.slice(
                                         start
                                         start + CHUNK_SIZE
@@ -427,24 +432,26 @@ app.service "FileApiService", [
             @root.getFile(
                 filename
                 {}
-                (fileEntry) =>
+                (fileEntry) ->
                     fileEntry.createWriter(
-                        (fileWriter) =>
+                        (fileWriter) ->
                             fileWriter.onwritestart = (e) ->
                                 console.log "write Block"
-                            fileWriter.onwriteend = (e) =>
+                            fileWriter.onwriteend = (e) ->
                                 #console.log "write end"
                                 #console.log fileWriter
                                 #console.log "length is", fileWriter.length
                                 if fileWriter.length is item.size
-                                    #console.log "finished loading file, setting content url"
+                                    #console.log "finished loading file, setting
+                                    # content url"
                                     item.content = fileEntry.toURL()
                                     $rootScope.$apply() if !$rootScope.$$phase
 
                             fileWriter.onerror = (error) ->
                                 console.log "filewriter error", error
-                                console.log "error was" + fileWriter.error.message
-
+                                console.log(
+                                    "error was " + fileWriter.error.message
+                                )
                             fileWriter.seek fileWriter.length
 
                             fileWriter.write new Blob( data )
@@ -477,7 +484,7 @@ app.service "FileApiService", [
             dirReader.readEntries( (entries) ->
                 for entry in entries
                     if entry.isDirectory
-                        entry.removeRecursively(->)
+                        entry.removeRecursively( -> )
             )
 
         @listAllDirs = ->

@@ -32,7 +32,8 @@ app.config [
     "$locationProvider"
     "$compileProvider"
     "ngClipProvider"
-    ($provide, $routeProvider, $locationProvider, $compileProvider, ngClipProvider) ->
+    ($provide, $routeProvider, $locationProvider,
+        $compileProvider, ngClipProvider) ->
 
         $locationProvider.html5Mode(true)
 

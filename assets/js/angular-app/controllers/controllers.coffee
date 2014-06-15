@@ -67,9 +67,12 @@ app.controller "AppCtrl", [
                     window.location = "/"
                 ), 5000)
 
-        # window.onbeforeunload = ->
-        #     if !RoomService.isClosed
-        #         return "If you leave this page all of your data in this room will be deleted."
+        window.onbeforeunload = ->
+            if !RoomService.isClosed
+                return """
+                    If you leave this page all of your data in this room will
+                    be deleted.
+                """
 
         window.onunload = ->
             # set user to inactive

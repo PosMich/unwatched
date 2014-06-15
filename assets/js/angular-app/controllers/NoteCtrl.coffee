@@ -42,7 +42,11 @@ app.controller "NoteCtrl", [
                 message =
                     contributors: $scope.item.contributors
 
-                RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+                RTCService.sendFileHasChanged(
+                    message
+                    $scope.item.id
+                    $scope.user
+                )
 
 
         $scope.blocked = true
@@ -87,10 +91,15 @@ app.controller "NoteCtrl", [
                     message =
                         locked: $rootScope.userId
 
-                    RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+                    RTCService.sendFileHasChanged(
+                        message
+                        $scope.item.id
+                        $scope.user
+                    )
 
                 else if value isnt $rootScope.userId
-                    #console.log "disabling editor, because " + value + " is " + $rootScope.userId
+                    #console.log "disabling editor, because "
+                    # + value + " is " + $rootScope.userId
                     tinymce.activeEditor.getBody().setAttribute(
                         'contenteditable', false)
                     $scope.blocked = true
@@ -103,14 +112,23 @@ app.controller "NoteCtrl", [
             if value? and value isnt ""
                 message =
                     name: value
-                RTCService.sendFileHasChanged(message, $scope.item.id, $scope.user)
+
+                RTCService.sendFileHasChanged(
+                    message
+                    $scope.item.id
+                    $scope.user
+                )
         , true
 
 
         $scope.save = ->
 
             $scope.item.last_edited = new Date()
-            $scope.item.thumbnail = (String($scope.item.content).replace(/<[^>]+>/gm, '')).substr(0,200) + "..."
+            thumbnail = String($scope.item.content).replace(/<[^>]+>/gm, '')
+            thumbnail = thumbnail.substr(0,200) + "..."
+
+
+            $scope.item.thumbnail = thumbnail
 
             message =
                 content: $scope.item.content

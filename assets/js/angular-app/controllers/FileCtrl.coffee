@@ -43,7 +43,9 @@ app.controller "FileCtrl", [
                 $scope.item.created = $scope.file.source.lastModifiedDate
                 $scope.item.uploaded = new Date()
 
-                if (/image\/(gif|jpeg|png)$/i).test($scope.file.source.type.toString())
+
+                imgRegex = /image\/(gif|jpeg|png)$/i
+                if (imgRegex).test($scope.file.source.type.toString())
                     $scope.item.category = "image"
 
                 FileApiService.saveFile(

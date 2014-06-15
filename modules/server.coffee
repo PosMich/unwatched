@@ -38,7 +38,8 @@ app.start = ->
     http = http.createServer( (req, res) ->
         logger.info "redirect"
         res.writeHead 301,
-            location: "https://#{req.headers["host"].split(":")[0]}:#{config.port.https}#{req.url}"
+            location: "https://" + req.headers["host"].split(":")[0] + ":" +
+                config.port.https + req.url
         res.end()
     )
 

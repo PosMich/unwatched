@@ -56,7 +56,7 @@ app.controller "StreamCtrl", [
                     audio: audio
                     video: video
 
-                successCallback = (stream) =>
+                successCallback = (stream) ->
                     $scope.item.content = stream
                     stream.onended = ->
                         #console.log "bluibb"
@@ -85,7 +85,13 @@ app.controller "StreamCtrl", [
                         #console.log "canvas is", canvas
 
                         ctx_thumbnail = canvas.getContext "2d"
-                        ctx_thumbnail.drawImage( element[0], 0, 0, width, height )
+                        ctx_thumbnail.drawImage(
+                            element[0]
+                            0
+                            0
+                            width
+                            height
+                        )
 
                         $scope.item.thumbnail = canvas.toDataURL("image/png")
 
@@ -105,8 +111,8 @@ app.controller "StreamCtrl", [
 
                     $scope.captureError = "Unwatched has encountered a " +
                         "problem with this feature. Are you sure you have " +
-                        "enabled the chrome-flag <a ng-href=\"chrome://flags/#en" +
-                        "able-usermedia-screen-capture\" target='_blank'>" +
+                        "enabled the chrome-flag <a ng-href=\"chrome://flags" +
+                        "/#enable-usermedia-screen-capture\" target='_blank'>" +
                         "#enable-usermedia-screen-capture</a>? You will be " +
                         "redirected to the share overview."
                     $scope.$apply() if !$scope.$$phase
@@ -125,7 +131,8 @@ app.controller "StreamCtrl", [
             $scope.item = SharesService.get $routeParams.id
             $location.path "/404" if !$scope.item?
 
-            if $location.path() is "/share/stream/" + $rootScope.streamId[$scope.item.category]
+            path = "/share/stream/" + $rootScope.streamId[$scope.item.category]
+            if $location.path() is path
                 $rootScope.disableStream[$scope.item.category] = true
 
             if $scope.item.author isnt $rootScope.userId
@@ -134,7 +141,7 @@ app.controller "StreamCtrl", [
 
         $scope.snapshot = ->
             take =
-                snapshot:  do -> angular.element("video").first().click()
+                snapshot: do -> angular.element("video").first().click()
 
         $scope.delete = ->
             modalInstance = $modal.open(

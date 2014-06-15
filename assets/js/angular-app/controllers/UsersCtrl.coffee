@@ -42,7 +42,6 @@ app.controller "UsersCtrl", [
                 foundWebcam = false
                 foundScreen = false
                 for share in shares
-                    #console.log "share author " + share.author + " user id " + user.id
                     if share.author is user.id
                         #console.log "share category " + share.category
                         if share.category is "webcam"

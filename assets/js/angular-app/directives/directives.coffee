@@ -102,27 +102,8 @@ app.directive "editInPlace", ->
 app.directive "myClip", ->
     link: (scope, element, attrs) ->
 
-        clip = new ZeroClipboard(angular.element("#test")[0], { moviePath: "/swf/ZeroClipboard.swf" })
-
-
-        # clipElem.on "loaded", ->
-        #     "elem is ready"
-        #     clip = new ZeroClipboard(clipElem, { moviePath: "/swf/ZeroClipboard.swf" })
-        #
-        #     clip.on( 'load', (client) ->
-        #         console.log "clipboard loaded"
-        #
-        #         onDataRequested = (client) ->
-        #             console.log "data requested"
-        #             client.setText("asdfasdfjklöjklö")
-        #
-        #         client.on('dataRequested', onDataRequested)
-
-        #       $scope.$on('$destroy', function() {
-        #     client.off('dataRequested', onDataRequested);
-        #     client.unclip(element);
-        #   });
-        # )
+        clip = new ZeroClipboard angular.element("#test")[0],
+            moviePath: "/swf/ZeroClipboard.swf"
 
         element.on "click", ->
             console.log "clicked"

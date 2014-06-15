@@ -41,9 +41,9 @@ class DownloadDirective
         for attr in attrNames
             do (attr) ->
                 attrs.$observe attr, (attrValue) ->
-                  watchers[attr]() if watchers[attr]?
-                  if attrValue
-                      watchers[attr] = scope.$watch attrValue, updateDom
+                    watchers[attr]() if watchers[attr]?
+                    if attrValue
+                        watchers[attr] = scope.$watch attrValue, updateDom
 
     setupUrlDownload: (a, url, filename, mimeType) =>
         @URL.revokeObjectURL a.href if a.href != '#'

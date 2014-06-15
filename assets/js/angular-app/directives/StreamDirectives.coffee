@@ -58,7 +58,10 @@ app.directive "killStream", [
                     $location.path("/share")
 
 
-                RTCService.sendItemDeleted( UserService.getUser($rootScope.userId), $rootScope.streamId[attrs.killStream] )
+                RTCService.sendItemDeleted(
+                    UserService.getUser($rootScope.userId)
+                    $rootScope.streamId[attrs.killStream]
+                )
 
                 SharesService.delete $rootScope.streamId[attrs.killStream]
                 $rootScope.isStreaming[attrs.killStream] = false

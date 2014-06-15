@@ -256,7 +256,9 @@ class RTCService
                             )
 
                             for share in shares
-                                if share.category is "code" or share.category is "note"
+                                if share.category is "code"
+                                    continue
+                                if  share.category is "note"
                                     continue
                                 share.content = ""
                                 share.progress = -1
@@ -369,7 +371,8 @@ class RTCService
                                 continue
                             if active_contributors.indexOf( client.id ) isnt -1
                                 if client.id isnt parsedMsg.userId
-                                    #console.log "sending code to client with id", client.id
+                                    #console.log "sending code to client with
+                                    # id", client.id
                                     client.DCsend parsedMsg
 
                     when "cursorHasChanged"
@@ -557,7 +560,7 @@ class RTCService
                     throw new Error("message Type not defined")
 
             catch e
-                #console.log "wasn't able to parse message", e.message
+                console.log "wasn't able to parse message", e.message
 
             switch parsedMsg.type
                 when "id" # room creation successful
