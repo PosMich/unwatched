@@ -6,10 +6,34 @@
 app = angular.module "unwatched.controllers"
 
 app.controller "AppCtrl", [
-    "$scope", "$rootScope", "SharesService", "StreamService", "ChatService",
-    "RoomService", "UserService", "RTCService", "FileApiService"
+    "$scope"
+    "$rootScope"
+    "SharesService"
+    "StreamService"
+    "ChatService"
+    "RoomService"
+    "UserService"
+    "RTCService"
+    "FileApiService"
+    "$http"
+    "ICE_SERVERS"
+
     ($scope, $rootScope, SharesService, StreamService, ChatService,
-        RoomService, UserService, RTCService, FileApiService) ->
+        RoomService, UserService, RTCService, FileApiService, $http,
+        ICE_SERVERS) ->
+
+        $http(
+            method: "GET"
+            url: "/turn"
+        ).success( (data, status, headers, config) ->
+            ICE_SERVERS[1] = data
+        ).error( (data, status, headers, config) ->
+            console.log "ERROR"
+            console.log "data", data
+            console.log "status", status
+            console.log "headers", headers
+            console.log "config", config
+        )
 
         $scope.isClosed = false
 

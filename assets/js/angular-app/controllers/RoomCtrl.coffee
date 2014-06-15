@@ -6,12 +6,21 @@
 app = angular.module "unwatched.controllers"
 
 app.controller "RoomCtrl", [
-    "$scope", "RoomService", "UserService", "SharesService",
-    "ChatStateService", "$routeParams", "RTCService", "$rootScope",
-    "$location", "FileApiService"
+    "$scope"
+    "RoomService"
+    "UserService"
+    "SharesService"
+    "ChatStateService"
+    "$routeParams"
+    "RTCService"
+    "$rootScope"
+    "$location"
+    "FileApiService"
+    "ICE_SERVERS"
     ($scope, RoomService, UserService, SharesService,
         ChatStateService, $routeParams, RTCService, $rootScope,
-        $location, FileApiService) ->
+        $location, FileApiService, ICE_SERVERS) ->
+
 
         $scope.isInRoom = RoomService.id isnt ""
         if !$scope.isInRoom

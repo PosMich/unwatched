@@ -1,15 +1,14 @@
 crypto = require "crypto"
-WebSocketServer = require("ws").Server
 logger = require "./logger"
-###
-    WebSocket stuff
-###
+
+WebSocketServer = require("ws").Server
 
 
 exports.connect = (server) ->
+    logger.info "wss init"
+
     wss = new WebSocketServer( server: server )
 
-    logger.info "wss init"
     wss.on "connection", (wsConnection) ->
         exists = true
         while exists
@@ -37,7 +36,9 @@ exports.connect = (server) ->
                 switch parsedMsg.type
                     # master --> server
                     when "new"
-                        logger.info "ws: got 'new' msg from ", wsConnection.clientId
+                        logger.info "ws: got 'new' msg from ",
+                            wsConnection.clientId
+
                         wsConnection.isMaster = true
 
                         wsConnection.send JSON.stringify(
@@ -47,17 +48,20 @@ exports.connect = (server) ->
 
                     # client --> server --> master
                     when "connect"
-                        logger.info "ws: got 'connect' msg from ", wsConnection.clientId
-                        for client in wss.clients
-                            if client.isMaster and client.clientId is parsedMsg.roomId
-                                logger.silly "master found"
-                                wsConnection.roomId = parsedMsg.roomId
+                        logger.info "ws: got 'connect' msg from ",
+                            wsConnection.clientId
 
-                                client.send JSON.stringify(
-                                    type: "connect"
-                                    clientId: wsConnection.clientId
-                                )
-                                break
+                        for client in wss.clients
+                            if client.isMaster
+                                if client.clientId is parsedMsg.roomId
+                                    logger.silly "master found"
+                                    wsConnection.roomId = parsedMsg.roomId
+
+                                    client.send JSON.stringify(
+                                        type: "connect"
+                                        clientId: wsConnection.clientId
+                                    )
+                                    break
 
                         wsConnection.send JSON.stringify(
                             type: "id"

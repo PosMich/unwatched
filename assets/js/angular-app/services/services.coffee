@@ -130,13 +130,8 @@ app.value "ICE_SERVERS", [
         {urls:"stun:stun.l.google.com:19302"}
         # { urls: "stun.turnservers.com:3478" }
         {
-            urls: [
-                "turn:23.251.129.121:3478?transport=udp"
-                "turn:23.251.129.121:3478?transport=tcp"
-                "turn:23.251.129.121:3479?transport=udp"
-                "turn:23.251.129.121:3479?transport=tcp"
-            ]
-            "credential":"yEGAUhm4nsBhcZin3sqd/993MOk="
-            "username":"1401972163:15523811"
+            urls: []
+            "credential":""
+            "username":""
         }
     ]
