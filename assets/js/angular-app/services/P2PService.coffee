@@ -287,7 +287,7 @@ class P2PService
                     @FileApiService.getAbChunks(
                         @itemId
                         , (chunk) =>
-                            #console.log "chunk '", chunkNumber
+                            console.log "chunk"
                             #++chunkNumber
                             @dataChannel.send chunk
                             return

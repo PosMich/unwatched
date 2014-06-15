@@ -353,18 +353,22 @@ app.service "FileApiService", [
                                     return
 
                                 if (start + CHUNK_SIZE) < file.size
-                                    reader.readAsArrayBuffer file.slice(
-                                        start
-                                        start + CHUNK_SIZE
-                                    )
+                                    setTimeout ->
+                                        reader.readAsArrayBuffer file.slice(
+                                            start
+                                            start + CHUNK_SIZE
+                                        )
+                                    , 5
                                 else
                                     #console.log "read last bits"
                                     #console.log "start", start
                                     #console.log "file.size", file.size
-                                    reader.readAsArrayBuffer file.slice(
-                                        start
-                                        file.size
-                                    )
+                                    setTimeout ->
+                                        reader.readAsArrayBuffer file.slice(
+                                            start
+                                            file.size
+                                        )
+                                    , 5
 
                             reader.readAsArrayBuffer file.slice(
                                     start
