@@ -6,10 +6,21 @@
 app = angular.module "unwatched.controllers"
 
 app.controller "IndexCtrl", [
-    "$scope", "$routeParams", "RTCService", "RoomService", "$location",
-    "$rootScope", "UserService", "SharesService", "FileApiService"
+    "$scope"
+    "$routeParams"
+    "RTCService"
+    "RoomService"
+    "$location"
+    "$rootScope"
+    "UserService"
+    "SharesService"
+    "FileApiService"
+    "$http"
+    "ICE_SERVERS"
     ($scope, $routeParams, RTCService, RoomService, $location,
-        $rootScope, UserService, SharesService, FileApiService) ->
+        $rootScope, UserService, SharesService, FileApiService, $http,
+        ICE_SERVERS) ->
+        console.log "blubb index blubb"
 
         window.rtcService = RTCService
         window.userService = UserService
@@ -26,25 +37,48 @@ app.controller "IndexCtrl", [
 
         $rootScope.isChrome = webrtcDetectedBrowser is "chrome"
 
-        if $routeParams.id
-            $scope.joinAttempt = true
-            RTCService.setup($routeParams.id)
 
-            $scope.$watch ->
-                RTCService.handler.dataChannel
-            , (value) ->
-                #console.log value
-                if value
-                    $scope.inputDisabled = false
-            , true
 
-            $scope.$watch ->
-                RTCService.handler.passwordIsValid
-            , (value) ->
-                if value
-                    $location.path "/room"
-                else
-                    console.log "auth issue", value
+        $http(
+            method: "GET"
+            url: "/turn"
+        ).success( (data, status, headers, config) ->
+            console.log "store ice servers", data
+            ICE_SERVERS[1] = window.createIceServers(
+                data.uris
+                data.username
+                data.password
+            )
+            console.log "stored ice servers", ICE_SERVERS
+
+            if $routeParams.id
+                $scope.joinAttempt = true
+                RTCService.setup($routeParams.id)
+
+                $scope.$watch ->
+                    RTCService.handler.dataChannel
+                , (value) ->
+                    #console.log value
+                    if value
+                        $scope.inputDisabled = false
+                , true
+
+                $scope.$watch ->
+                    RTCService.handler.passwordIsValid
+                , (value) ->
+                    if value
+                        $location.path "/room"
+                    else
+                        console.log "auth issue", value
+
+        ).error( (data, status, headers, config) ->
+            console.log "ERROR"
+            console.log "data", data
+            console.log "status", status
+            console.log "headers", headers
+            console.log "config", config
+        )
+
 
 
         $scope.joinRoom = ->

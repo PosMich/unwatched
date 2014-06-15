@@ -627,7 +627,7 @@ class RTCService
             @signalConnection.onerror   = @handleSignalError
             @signalConnection.onclose   = @handleSignalClose
 
-            console.log @service.iceServers
+            console.log "tha Ice!", @service.iceServers
 
             @connection = new RTCPeerConnection(
                 iceServers: @service.iceServers
@@ -882,16 +882,7 @@ class RTCService
             console.log "blubb"
             @signalServer += ":" + SERVER_PORT
 
-        if window.iceServers
-
-            @iceServers = []
-            @iceServers.push
-                urls: "stun:stun.l.google.com:19302"
-            for server in window.iceServers
-                @iceServers.push server
-
-        else
-            @iceServers = ICE_SERVERS
+        @iceServers = ICE_SERVERS
 
 
     setup: (@roomId) ->

@@ -126,12 +126,7 @@ app.constant "SERVER", "unwatched.multimediatechnology.at"
 app.constant "SERVER_PORT", "443"
 
 
-app.value "ICE_SERVERS", [
+app.value "ICE_SERVERS",  [
         { urls: "stun:stun.l.google.com:19302"}
-        # { urls: "stun.turnservers.com:3478" }
-        {
-            urls: []
-            "credential": ""
-            "username": ""
-        }
+        {}
     ]

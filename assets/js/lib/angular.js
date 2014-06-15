@@ -76,7 +76,7 @@ function minErr(module) {
     }
 
     /* hier oiajfdsöoijsa okjsa blubb blubb */
-    /*console.error(message);*/
+    /* console.error(message); */
 
     return new Error(message);
   };

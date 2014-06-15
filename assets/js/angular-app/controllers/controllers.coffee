@@ -17,27 +17,9 @@ app.controller "AppCtrl", [
     "FileApiService"
     "$http"
     "ICE_SERVERS"
-
     ($scope, $rootScope, SharesService, StreamService, ChatService,
-        RoomService, UserService, RTCService, FileApiService, $http,
-        ICE_SERVERS) ->
+        RoomService, UserService, RTCService, FileApiService) ->
 
-        $http(
-            method: "GET"
-            url: "/turn"
-        ).success( (data, status, headers, config) ->
-            ICE_SERVERS = window.createIceServers(
-                data.uris
-                data.username
-                data.password
-            )
-        ).error( (data, status, headers, config) ->
-            console.log "ERROR"
-            console.log "data", data
-            console.log "status", status
-            console.log "headers", headers
-            console.log "config", config
-        )
 
         $scope.isClosed = false
 
@@ -71,12 +53,12 @@ app.controller "AppCtrl", [
                     window.location = "/"
                 ), 5000)
 
-        window.onbeforeunload = ->
-            if !RoomService.isClosed
-                return """
-                    If you leave this page all of your data in this room will
-                    be deleted.
-                """
+        #window.onbeforeunload = ->
+        #    if !RoomService.isClosed
+        #        return """
+        #            If you leave this page all of your data in this room will
+        #            be deleted.
+        #        """
 
         window.onunload = ->
             # set user to inactive
