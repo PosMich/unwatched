@@ -128,7 +128,7 @@ else if navigator.webkitGetUserMedia
         return iceServer
 
 
-    createIceServers = (urls, username, password) ->
+    window.createIceServers = (urls, username, password) ->
         iceServers = []
 
         if webrtcDetectedVersion >= 34

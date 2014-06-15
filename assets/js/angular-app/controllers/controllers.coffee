@@ -26,7 +26,7 @@ app.controller "AppCtrl", [
             method: "GET"
             url: "/turn"
         ).success( (data, status, headers, config) ->
-            ICE_SERVERS = createIceServers(
+            ICE_SERVERS = window.createIceServers(
                 data.uris
                 data.username
                 data.password
