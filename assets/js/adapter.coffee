@@ -68,6 +68,15 @@ if navigator.mozGetUserMedia
                     username: username
         iceServer
 
+    window.createIceServers = (urls, username, password) ->
+        iceServers = []
+
+        i = 0
+        while i < urls.length
+            iceServer = createIceServer(urls[i], username, password)
+            iceServers.push iceServer  if iceServer isnt null
+            i++
+        iceServers
 
     # Attach a media stream to an element.
     attachMediaStream = (element, stream) ->
@@ -115,7 +124,26 @@ else if navigator.webkitGetUserMedia
                 url: url
                 credential: password
                 username: username
-        iceServer
+
+        return iceServer
+
+
+    createIceServers = (urls, username, password) ->
+        iceServers = []
+
+        if webrtcDetectedVersion >= 34
+            iceServers =
+                urls: urls
+                credential: password
+                username: username
+        else
+            i = 0
+            while i < urls.length
+                iceServer = createIceServer(urls[i], username, password)
+                iceServers.push iceServer  if iceServer isnt null
+            i++
+
+        return iceServers
 
 
     # The RTCPeerConnection object.
